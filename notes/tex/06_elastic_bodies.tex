@@ -449,6 +449,21 @@ consistently, giving a single-valued displacement \(\xi\) unique up to a global
 rigid motion. This is the sufficiency part of Saint-Venant compatibility; on a
 multiply connected body, periods around noncontractible loops must also vanish.
 
+Here is a more constructive way to read the last sentence. Choose a base point
+\(X_0\), prescribe \(\xi(X_0)\) and the antisymmetric part
+\(\omega_{ij}(X_0)=-\omega_{ji}(X_0)\), and write
+\[
+  \partial_i\xi_j=e_{ij}+\omega_{ij}.
+\]
+Differentiating and eliminating \(\xi\) gives first-order equations for
+\(\omega\). The integrability conditions for this first-order system are
+precisely \(\operatorname{curl}\operatorname{curl}e=0\). Once those equations
+are satisfied, \((\xi,\omega)\) may be transported along any path from \(X_0\).
+Path independence on a simply connected body follows from the same flatness
+condition. Changing the initial \(\xi(X_0)\) adds a translation, and changing
+\(\omega(X_0)\) adds an infinitesimal rotation. Thus the only freedom left by
+the compatible strain is the expected rigid motion.
+
 \section{Hyperelastic Action And Piola Stress}
 \label{sec:hyperelastic-action}
 
@@ -528,6 +543,10 @@ The first Piola-Kirchhoff stress \(P\) measures force per reference area. The
 Cauchy stress \(\sigma\) measures force per current spatial area. The two
 stress tensors represent the same physical traction, but on different surface
 elements.
+Throughout this section, capital indices and normals are material/reference
+objects, while lower-case indices and normals are spatial/current objects. In
+linearized elasticity the two descriptions coincide to leading order, but the
+distinction is essential before linearization.
 Cauchy's 1822 tetrahedron argument is the classical reason a traction law
 linear in the surface normal must be represented by a stress tensor.
 
@@ -550,7 +569,13 @@ tetrahedron gives
 \]
 where \(V\) is the tetrahedron volume. Shrink the tetrahedron while keeping its
 shape fixed. Traction terms scale like area and the inertial and body-force
-terms scale like volume, so \(O(V)/A\to0\). Hence
+terms scale like volume, so \(O(V)/A\to0\). More explicitly, locality and
+continuity imply that the tractions on the shrinking faces differ from their
+values at the limiting point by \(o(1)\) uniformly for the finitely many face
+normals used in the tetrahedron; after multiplying by areas this gives an
+\(o(A)\) correction. The volume force is \(O(h^3)\) for a tetrahedron of size
+\(h\), while \(A=O(h^2)\). Dividing by \(A\) and taking \(h\to0\) removes all
+non-surface terms. Hence
 \[
   t(n)=-\sum_i n_i t(-e_i).
 \]
@@ -622,6 +647,9 @@ Since \(A\) is any skew matrix, the tensor \(PF^T\) must be symmetric:
 \[
   P^A{}_iF^j{}_A=P^A{}_jF^i{}_A.
 \]
+Equivalently, if \(B=PF^T-(PF^T)^T\), then in three dimensions
+\(B_{ij}=\epsilon_{ijk}b_k\) for some axial vector \(b\). The identity
+\(B:A=0\) for every skew \(A\) forces \(b=0\), hence \(B=0\).
 Therefore \(\sigma=\sigma^T\). Thus symmetry of stress follows from rotational
 invariance of stored energy, matching angular-momentum balance.
 
@@ -664,6 +692,12 @@ where \(\lambda,\mu\) are Lame moduli. The stress is
   =
   \lambda(\tr e)\delta_{ij}+2\mu e_{ij}.
 \]
+In a crystalline solid, one microscopic route to such an energy is the
+Cauchy-Born assumption: atoms in a unit cell are assumed to follow the
+macroscopic deformation gradient \(F\) affinely, so the lattice energy becomes a
+function \(W(F)\). The assumption is useful but not automatic; defects,
+multi-lattices, phase transitions, and short-wavelength instabilities can make
+the continuum energy depart from the affine lattice prediction.
 The linearized equation of motion is
 \[
   \rho_0\partial_t^2\xi_i=\partial_j\sigma_{ij}+\rho_0 b_i.
@@ -812,6 +846,16 @@ linear elastic solid one requires
   \qquad
   K_{\mathrm{bulk}}>0.
 \]
+These inequalities have two related meanings in the linear theory. They make
+the quadratic energy positive on pure shear strains and pure volumetric
+strains, after rigid translations and rotations have been removed. They also
+make the acoustic wave speeds real, because the shear and longitudinal wave
+speeds below contain \(\mu\) and
+\(\lambda+2\mu=K_{\mathrm{bulk}}+\frac43\mu\). For finite-strain elasticity,
+however, stability is subtler: strong ellipticity, rank-one convexity,
+quasiconvexity, and polyconvexity are distinct conditions. The linear isotropic
+model collapses these distinctions to the simple positive-definiteness test
+above, which is why the small-strain theory is so transparent.
 
 Engineers often use Young's modulus \(E_{\mathrm Y}\) and Poisson's ratio
 \(\nu_{\mathrm P}\) instead of \(\lambda,\mu\). The conversion is
@@ -906,13 +950,22 @@ bridge:
   \|\xi\|_{H^1(B)}
   \le C\left(\|e(\xi)\|_{L^2(B)}+\|\xi\|_{L^2(B)}\right),
 \]
-and, after fixing rigid motions or imposing displacement boundary conditions,
-the \(L^2\)-term can be removed. The inequality is an integration-by-parts
-statement that the skew part of \(\nabla\xi\) is controlled by the symmetric
-part once rigid rotations are excluded. With Korn's inequality, the bilinear
-elastic energy is coercive, and the Lax-Milgram theorem gives a unique weak
-solution for compatible loads. In a pure traction problem, uniqueness holds
-only modulo rigid motions, which must be removed by side constraints.
+which is often called Korn's second inequality. If \(\mathcal R\) denotes the
+finite-dimensional space of infinitesimal rigid motions
+\(r(X)=a+\Omega X\), \(\Omega^T=-\Omega\), the sharper rigid-motion form is
+\[
+  \inf_{r\in\mathcal R}\|\xi-r\|_{H^1(B)}
+  \le C\|e(\xi)\|_{L^2(B)}.
+\]
+After fixing the rigid part by displacement boundary conditions, zero mean
+translation and rotation, or another side condition, this becomes
+\(\|\xi\|_{H^1}\le C\|e(\xi)\|_{L^2}\). The inequality is an
+integration-by-parts statement that the skew part of \(\nabla\xi\) is controlled
+by the symmetric part once rigid rotations are excluded. With Korn's inequality,
+the bilinear elastic energy is coercive, and the Lax-Milgram theorem gives a
+unique weak solution for compatible loads. In a pure traction problem,
+uniqueness holds only modulo rigid motions, which must be removed by side
+constraints.
 
 \subsection{Uniaxial Extension}
 \label{subsec:uniaxial-extension}
@@ -984,12 +1037,39 @@ geometric moment of the cross-section.
 Circular shafts are special because warping vanishes. Saint-Venant's general
 torsion theory allows non-circular sections, but then the cross-section warps and
 the simple polar-moment formula must be replaced by a torsion function.
-For a non-circular cross-section \(A\), one writes the axial displacement as a
-warping function \(\chi(x,y)\) and solves a two-dimensional Poisson problem on
-\(A\) with Neumann boundary condition determined by the boundary tangent. The
-torsional rigidity is then not \(\mu J_{\mathrm{polar}}\), but an energy
-integral involving \(\chi\). The circular formula is the special case in which
-symmetry forces \(\chi=0\).
+For a non-circular cross-section \(A\), take the shaft axis to be \(z\) and let
+\(\tau=\Theta'(z)\) be the twist per length. A Saint-Venant ansatz is
+\[
+  u_x=-\tau zy,\qquad
+  u_y=\tau zx,\qquad
+  u_z=\tau\chi(x,y),
+\]
+where \(\chi\) is the warping function. The only nonzero shear stresses are
+\[
+  \sigma_{xz}=\mu\tau(\partial_x\chi-y),
+  \qquad
+  \sigma_{yz}=\mu\tau(\partial_y\chi+x).
+\]
+Equilibrium \(\partial_x\sigma_{xz}+\partial_y\sigma_{yz}=0\) gives
+\[
+  \Delta\chi=0\quad\text{in }A,
+\]
+and the traction-free lateral boundary condition
+\((\sigma_{xz},\sigma_{yz})\cdot n=0\) gives
+\[
+  \frac{\partial\chi}{\partial n}=yn_x-xn_y
+  \quad\text{on }\partial A.
+\]
+The torque is \(T_{\mathrm{end}}=\mu\tau J_t\), where the torsional rigidity is
+computed from the shear-energy integral
+\[
+  J_t=
+  \int_A
+  \left[(\partial_x\chi-y)^2+(\partial_y\chi+x)^2\right]\,\dd A .
+\]
+For a circular section, \(\chi=0\) satisfies the boundary condition and
+\(J_t=J_{\mathrm{polar}}\). For a non-circular section, warping changes the
+rigidity and the stress distribution.
 
 \subsection{Euler-Bernoulli Beam Bending}
 \label{subsec:euler-bernoulli-beam}
@@ -1012,6 +1092,21 @@ assumptions are:
 \item plane cross-sections remain plane and normal to the neutral axis;
 \item shear deformation and rotary inertia are neglected.
 \end{enumerate}
+Under these assumptions the axial displacement at height \(y\) from the neutral
+axis is \(u_x(x,y)=-y\,w'(x)\) to leading order. Hence the dominant axial strain
+is
+\[
+  e_{xx}=\partial_xu_x=-y\,w''(x).
+\]
+The three-dimensional elastic energy density
+\(\frac12 E_{\mathrm Y}e_{xx}^2\) therefore reduces to
+\[
+  \frac12 E_{\mathrm Y}(w'')^2\int_A y^2\,\dd A
+  =
+  \frac12 E_{\mathrm Y}I_{\mathrm{area}}(w'')^2,
+\]
+where \(I_{\mathrm{area}}=\int_A y^2\,\dd A\). This is the leading
+three-dimensional origin of the one-dimensional bending energy.
 The bending energy is
 \[
   U_{\mathrm{bend}}
@@ -1099,8 +1194,9 @@ It satisfies \(w(0)=w(L)=0\), zero bending moment at both supports, and
   \begin{scope}
     \draw[fill=blue!8, thick] (0,0.65) rectangle (3.5,1.15);
     \draw[thick] (0,0.55) -- (0,1.25);
-    \draw[thick, ->] (3.5,0.9) -- (4.3,0.9) node[right] {\(F_{\mathrm{end}}\)};
-    \draw[<->] (0,0.25) -- node[below] {\(L\)} (3.5,0.25);
+    \draw[thick, ->] (3.5,0.9) -- (4.3,0.9)
+      node[right, fill=white, inner sep=1pt] {\(F_{\mathrm{end}}\)};
+    \draw[<->] (0,0.25) -- node[below, fill=white, inner sep=1pt] {\(L\)} (3.5,0.25);
     \node[align=center, fill=white, inner sep=1.5pt] at (1.75,1.72)
       {uniaxial bar\\\(\Delta L=F_{\mathrm{end}}L/(E_{\mathrm Y}A_{\mathrm{cs}})\)};
   \end{scope}
@@ -1113,7 +1209,7 @@ It satisfies \(w(0)=w(L)=0\), zero bending moment at both supports, and
     \draw[red!75!black, thick, ->] (3.92,0.66) -- (3.92,-0.08);
     \node[red!75!black, anchor=west, fill=white, inner sep=1.5pt]
       at (4.03,0.29) {\(P_{\mathrm{end}}\)};
-    \draw[<->] (0,0.02) -- node[below] {\(L\)} (3.6,0.02);
+    \draw[<->] (0,0.02) -- node[below, fill=white, inner sep=1pt] {\(L\)} (3.6,0.02);
     \draw[densely dashed] (3.6,1.05) -- (3.6,0.34);
     \draw[<->, purple!75!black] (3.35,1.05) -- (3.35,0.34)
       node[midway, left, fill=white, inner sep=1pt] {\(w(L)\)};

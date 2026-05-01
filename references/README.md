@@ -3,19 +3,12 @@
 This folder is reserved for bibliographies, reading paths, and short annotated
 reference notes.
 
+This folder should contain only public-facing reference material. Private
+planning notes, extraction ledgers, and machine-local source paths are
+intentionally ignored by Git.
+
 Starter references to organize later:
 
-- Local handwritten source: `/Users/xiyin/Dropbox/2022 216/KAM lecture.pdf`.
-  See `references/kam_lecture_extraction.md` for the page-indexed extraction.
-  This is the primary source for the repo's classical mechanics spine:
-  Lagrangian versus Hamiltonian mechanics, rigid body on `SO(3)`, phase space
-  as `T^*SO(3)`, invariant tori, action-angle variables, canonical
-  perturbation theory, small divisors, KAM persistence, and Poincare-section
-  chaos near resonances.
-- Local teaching source: `/Users/xiyin/Dropbox/Physics 151`. See
-  `references/physics_151_extraction.md` for the comprehensive source ledger:
-  authored TeX extraction, notebook equations and workflows, reference-shelf
-  catalog, and integration map.
 - V. I. Arnold, *Mathematical Methods of Classical Mechanics*.
 - H. Goldstein, C. Poole, and J. Safko, *Classical Mechanics*.
 - J. E. Marsden and T. S. Ratiu, *Introduction to Mechanics and Symmetry*.

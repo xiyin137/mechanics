@@ -12,6 +12,9 @@ This script evaluates standard closed-form solutions:
 The formulas are exact under the assumptions stated in the lecture notes.  The
 Taylor-Green residual is computed analytically as a check on the nonlinear
 Navier-Stokes equation.
+
+Authors: OpenAI GPT 5.5 under the supervision of Xi Yin; review contributions
+from Anthropic Opus 4.7.
 """
 
 from __future__ import annotations
@@ -102,6 +105,8 @@ def plane_poiseuille_profile(
 
 
 def plane_poiseuille_flux(*, h: float = 1.0, mu: float = 1.0, pressure_gradient: float = 1.0) -> float:
+    _require_positive("h", h)
+    _require_positive("mu", mu)
     return pressure_gradient * h**3 / (12.0 * mu)
 
 
@@ -211,6 +216,7 @@ def taylor_green_energy_density(
     speed: float = 1.0,
     rho: float = 1.0,
 ) -> float:
+    _require_positive("rho", rho)
     amplitude = taylor_green_amplitude(t, nu=nu, wave_number=wave_number, speed=speed)
     return 0.25 * rho * amplitude**2
 
@@ -335,6 +341,14 @@ def parse_args() -> argparse.Namespace:
     args = parser.parse_args()
     if args.points < 4:
         parser.error("--points must be at least 4")
+    if args.nu <= 0.0:
+        parser.error("--nu must be > 0")
+    if args.mu <= 0.0:
+        parser.error("--mu must be > 0")
+    if args.h <= 0.0:
+        parser.error("--h must be > 0")
+    if args.pipe_radius <= 0.0:
+        parser.error("--pipe-radius must be > 0")
     return args
 
 

@@ -11,10 +11,10 @@ can be studied through the same geometric language.
 
 ## Current Contents
 
-- `PLANNING.md`: comprehensive course and repository plan.
 - `notes/tex`: TeX source for the integrated course notes.
 - `demos/python`: runnable Python simulations and numerical experiments.
 - `demos/mathematica`: Wolfram Language scripts for symbolic and numerical demos.
+- `references`: public reference shelf and bibliography notes.
 - `syllabus`: course map and module sequence.
 - `tests`: smoke and numerical-behavior tests for the demo code.
 

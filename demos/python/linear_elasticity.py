@@ -5,6 +5,9 @@ The script evaluates small-strain isotropic elastic constants, axial bar
 extension, circular-shaft torsion, Euler-Bernoulli beam deflection, and
 one-dimensional longitudinal bar modes.  These are reductions of the same
 linear elastic body model discussed in the notes.
+
+Authors: OpenAI GPT 5.5 under the supervision of Xi Yin; review contributions
+from Anthropic Opus 4.7.
 """
 
 from __future__ import annotations
@@ -272,6 +275,12 @@ def parse_args() -> argparse.Namespace:
     args = parser.parse_args()
     if args.points < 8:
         parser.error("--points must be at least 8")
+    if args.young <= 0.0:
+        parser.error("--young must be > 0")
+    if not (-1.0 < args.poisson < 0.5):
+        parser.error("--poisson must satisfy -1 < poisson < 1/2")
+    if args.rho <= 0.0:
+        parser.error("--rho must be > 0")
     return args
 
 

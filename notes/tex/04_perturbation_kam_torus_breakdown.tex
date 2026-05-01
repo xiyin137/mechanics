@@ -6,8 +6,9 @@
 
 A massless asteroid orbits the Sun while Jupiter perturbs it. Without Jupiter,
 the problem is Kepler motion, one of the most integrable systems in classical
-mechanics. Add Jupiter, and resonances appear. Invariant tori fragment.
-Transport channels open. The full restricted three-body formulation, including
+mechanics. After Jupiter is included, resonances appear, invariant tori
+fragment, and transport channels open. The full restricted three-body
+formulation, including
 Lagrange points and ejection statistics, is developed separately in
 Chapter~\ref{chap:three-body-problem}.
 
@@ -22,6 +23,16 @@ the failure: sufficiently irrational invariant tori persist, while resonant
 regions become the sites of islands, separatrix splitting, and transport. The
 standard map is this chapter's compact laboratory; the asteroid problem is the
 gravitational setting we revisit once the perturbative mechanisms are clear.
+
+The precise Poincare statement is not that no special integral can ever occur.
+It is a generic obstruction theorem. In lecture-note form: for a nondegenerate
+integrable Hamiltonian \(H_0(I)\) and a generic analytic perturbation
+\(H_0+\eps H_1\), there is no additional first integral analytic in
+\((I,\theta,\eps)\), independent of the Hamiltonian, and reducing at
+\(\eps=0\) to a genuinely new integral on the resonant region. The circular
+restricted three-body problem realizes this obstruction physically: the Jacobi
+constant survives, but one should not expect a second analytic integral that
+restores two-degree-of-freedom integrability.
 
 \begin{assumption}[Celestial perturbation model]
 When a celestial example is needed, this chapter uses a planar restricted
@@ -222,7 +233,7 @@ Hamiltonian perturbation theory supplied the phase-space explanation.
     \node[red!75!black, fill=white, inner sep=1pt] at (\x,\y) {\lab};
   }
   \fill[orange!80!black] (12.82,0) circle (2.2pt);
-  \node[orange!80!black, above=3pt] at (12.82,0.12) {Jupiter};
+  \node[orange!80!black, above=3pt, fill=white, inner sep=1pt] at (12.45,0.18) {Jupiter};
 \end{tikzpicture}
 \caption{Nominal mean-motion resonance locations with Jupiter, shown
 across an asteroid-belt-like range. The resonance positions use
@@ -263,14 +274,17 @@ theory gives the subtler answer: for small analytic perturbations, most
 sufficiently irrational tori persist, while resonant regions create islands,
 separatrices, and chaotic transport.
 
-The historical landmarks should be kept in the right order. Kolmogorov
-announced the KAM mechanism in 1954, while the Fermi-Pasta-Ulam-Tsingou
-computations were run in 1953--1955 and published in 1955 as a striking
-challenge to naive ergodicity. Arnold's analytic proof in 1963 and Moser's
-\(C^k\) theorem in 1962 made the survival mechanism into the modern KAM
-theorem. These developments are parallel windows onto the same fact: small
-perturbations can leave most invariant tori intact while still allowing
-chaotic regions.
+The chronology is useful because several ideas are often conflated. Kolmogorov
+announced the KAM mechanism in 1954. The Fermi-Pasta-Ulam-Tsingou computations
+were run in 1953--1955 and published in 1955 as a striking challenge to naive
+ergodicity; the recurrence they observed is one finite-lattice manifestation of
+near-integrable dynamics, not itself the KAM theorem. Siegel's 1942 work on
+small divisors is an important predecessor. Moser's \(C^k\) theorem in 1962 and
+Arnold's analytic proof in 1963 made the survival mechanism into the modern KAM
+theorem, with later refinements including P\"oschel's 1982 invariant-torus
+theorems and Eliasson's 1988 normal-form work. These developments are parallel
+windows onto the same fact: small perturbations can leave most invariant tori
+intact while still allowing chaotic regions.
 
 \section{Canonical Perturbation Theory And Small Divisors}
 \label{sec:canonical-perturbation-small-divisors}
@@ -446,11 +460,17 @@ If \(p/q=x-\eta\), then
   f(p/q)=\frac{p^2-2q^2}{q^2}.
 \]
 The numerator is a nonzero integer unless \(p/q=\sqrt2\), so its absolute value
-is at least one. Linearizing
+is at least one. The same estimate can be made without a formal Taylor
+expansion:
 \[
-  f(x-\eta)=f(x)-\eta f'(x)+O(\eta^2)
+  \left|\frac pq-\sqrt2\right|
+  \left|\frac pq+\sqrt2\right|
+  =
+  \left|\frac{p^2-2q^2}{q^2}\right|
+  \ge \frac1{q^2}.
 \]
-with \(f'(x)=2\sqrt2\) gives
+If \(|p/q-\sqrt2|\ge1\), the desired lower bound is immediate after decreasing
+\(A\). Otherwise \(|p/q+\sqrt2|\le 1+2\sqrt2\), and therefore
 \[
   |\eta|\geq \frac{A}{q^2}
 \]
@@ -613,6 +633,28 @@ each step, one removes most of the angle dependence and makes the error
 quadratically smaller. Diophantine estimates keep the small divisors under
 control; nondegeneracy lets one adjust the action label so the desired frequency
 remains fixed.
+
+The action adjustment is not cosmetic. After the oscillatory part of \(H_1\) is
+removed, the averaged term changes the frequency by
+\[
+  \omega(I)\longmapsto
+  \omega(I)+\eps\,\partial_I\langle H_1\rangle(I)+O(\eps^2).
+\]
+To keep a torus with prescribed Diophantine frequency \(\omega_*\), one changes
+the action label by \(\delta I\) and solves, to first order,
+\[
+  D\omega_0(I_*)\,\delta I
+  +
+  \eps\,\partial_I\langle H_1\rangle(I_*)
+  =
+  0.
+\]
+Kolmogorov nondegeneracy is exactly the invertibility needed for this equation.
+If the energy rather than the full frequency is held fixed, one uses the related
+isoenergetic nondegeneracy condition, formulated with the bordered matrix of
+\(D\omega_0\) and \(\omega_0\). This note uses the frequency-labelled
+Kolmogorov version.
+
 The phrase ``quadratically smaller'' has the same algebraic origin as Newton's
 method. In a toy one-mode problem
 \[
@@ -631,6 +673,22 @@ choose \(S_1\) so that
 The order-\(\epsilon\) oscillation has been cancelled; the remaining
 oscillatory part is order \(\epsilon^2\), while the denominator
 \(k\cdot\omega\) is controlled by the Diophantine condition.
+
+In analytic norms the bookkeeping has the following typical form. If
+\(\epsilon_n\) measures the remaining perturbation on a strip of width \(r_n\)
+and one sacrifices \(\rho_n=r_n-r_{n+1}\) of analyticity at the next step, then
+an estimate of the schematic form
+\[
+  \epsilon_{n+1}
+  \le
+  C\,\alpha^{-2}\rho_n^{-2\tau-2}\epsilon_n^2
+\]
+expresses the Newton improvement. The constants and powers depend on the chosen
+norm, but the structure is stable: small divisors cost powers of
+\(\alpha^{-1}\) and \(\rho_n^{-1}\), while the new perturbation is quadratic in
+the old one. Choosing \(\epsilon_0\) sufficiently small relative to \(\alpha\)
+and shrinking the domains by a summable sequence \(\rho_n\) makes the iteration
+converge.
 
 In proof-outline form, the iteration has four repeating moves:
 \[
@@ -670,9 +728,9 @@ torus with conjugate quasiperiodic motion.
     \draw[red!70!black, very thick] (\x-\w,0.15) -- (\x+\w,-0.15);
     \draw[red!70!black, very thick] (\x-\w,-0.15) -- (\x+\w,0.15);
   }
-  \node[blue!70!black, align=center, fill=white, inner sep=2pt] at (2.0,0.85)
+  \node[blue!70!black, align=center, fill=white, inner sep=2pt] at (1.70,0.88)
     {Diophantine\\surviving labels};
-  \node[red!70!black, align=center, fill=white, inner sep=2pt] at (5.30,0.90)
+  \node[red!70!black, align=center, fill=white, inner sep=2pt] at (5.55,0.94)
     {resonant gaps\\and chaotic layers};
   \draw[decorate, decoration={brace, amplitude=4pt}, thick]
     (0.65,-0.58) -- (6.40,-0.58)
@@ -903,6 +961,10 @@ opposite sides of a resonance. Elliptic points become island centers. Hyperbolic
 points have stable and unstable manifolds. If those manifolds coincide, they
 form a separatrix. If they split and intersect transversely, the separatrix is
 replaced by a homoclinic tangle.
+The theorem is therefore the rigid-annulus counterpart of the local pendulum
+normal form: the normal form predicts a resonant island, while
+Poincare-Birkhoff says that an area-preserving twist map must supply alternating
+elliptic and hyperbolic periodic points in that annulus.
 
 This theorem gives the global fixed-point guarantee behind the island-chain
 picture for area-preserving twist maps. The local resonant normal form already
@@ -943,6 +1005,9 @@ with separatrix orbit \(z_0(t)\), is perturbed periodically:
 \[
   H(z,t)=H_{\mathrm{sep}}(z)+\eps H_{\mathrm{pert}}(z,t).
 \]
+The unperturbed stable and unstable branches are assumed to coincide along this
+separatrix, and the Melnikov calculation below is used only when the first-order
+zero is simple.
 The phase \(t_0\) records where the perturbation is in its period when the
 orbit passes near the saddle. The leading signed distance between \(W^u\) and
 \(W^s\) is proportional to
@@ -1082,10 +1147,18 @@ not be read as a proved theorem in the generality of its numerical use.
       plot (\x,{1.05+0.05*sin(240*\x)});
     \draw[blue!70!black, thick, domain=1.58:2.28, samples=40]
       plot (\x,{1.05+0.05*sin(240*\x)});
-    \draw[red!75!black, thick, ->] (0.72,0.70) .. controls (0.83,0.90) .. (0.95,1.04);
-    \draw[red!75!black, thick, ->] (1.42,1.36) .. controls (1.52,1.19) .. (1.64,1.07);
+    \draw[red!75!black, thick, fill=red!10]
+      (0.68,0.72) .. controls (0.86,0.88) and (0.86,1.12) .. (1.05,1.25)
+      .. controls (0.90,1.12) and (0.86,0.93) .. (0.68,0.72);
+    \draw[red!75!black, thick, fill=red!10]
+      (1.42,1.36) .. controls (1.58,1.22) and (1.56,0.96) .. (1.78,0.82)
+      .. controls (1.62,0.96) and (1.58,1.15) .. (1.42,1.36);
+    \draw[red!75!black, thick, ->] (0.76,0.82) .. controls (0.87,0.95) .. (0.98,1.08);
+    \draw[red!75!black, thick, ->] (1.50,1.26) .. controls (1.60,1.12) .. (1.70,0.98);
     \foreach \x/\y in {0.40/0.55,0.75/1.55,1.20/0.75,1.75/1.42,2.25/0.62}
       \fill[black!55] (\x,\y) circle (0.9pt);
+    \foreach \x/\y in {0.72/1.02,1.46/1.08,2.33/1.05}
+      \draw[blue!70!black, fill=white, thick] (\x,\y) circle (1.1pt);
     \node[align=center, text width=2.8cm] at (1.35,-0.70)
       {cantorus leaves gaps and slow turnstiles};
   \end{scope}
@@ -1225,6 +1298,10 @@ This is the local mechanism behind the pictures one sees in the standard map,
 the driven pendulum, and the asteroid-belt resonances: KAM tori survive away
 from strong resonances, while resonant tori break into islands and chaotic
 separatrix webs.
+For the real asteroid belt, this local statement is only the beginning of a
+quantitative model. Resonance widths, eccentricity dependence, secular
+precession, and close encounters require the celestial variables of the
+restricted three-body problem rather than the single-pendulum normal form alone.
 
 \section{The Standard Map As A Minimal Model}
 \label{sec:standard-map}
@@ -1271,9 +1348,17 @@ the kick is placed. If
 \[
   D(\theta,p)=(\theta+p,p),\qquad Kc(\theta,p)=(\theta,p+K\sin\theta),
 \]
-then the map used above is \(D\circ Kc\), while the drift-kick convention is
-\(Kc\circ D=D^{-1}(D\circ Kc)D\) up to the same choice of section along the
-kicked flow. At \(K=0\), the invariant curve
+then the map used above is
+\[
+  D\circ Kc,
+\]
+whereas the drift-kick convention is
+\[
+  Kc\circ D.
+\]
+These differ by where the stroboscopic section is placed along the kicked flow;
+the phase portraits and resonant normal forms are conjugate after this section
+shift. At \(K=0\), the invariant curve
 \[
   C:\quad p=\frac{2\pi}{3}
 \]
@@ -1302,6 +1387,8 @@ To first order in \(K\) and \(\delta\),
   +O(K^2).
 \end{aligned}
 \]
+where \(\theta_3\) denotes the angle component after three iterates of
+\(T_K\).
 The nearby curve \(C'\) on which \(T_K^3\) fixes the angle therefore satisfies
 \[
   \boxed{
@@ -1373,7 +1460,7 @@ structure.
   \addplot[only marks, mark=x, mark size=3.0pt, line width=0.8pt, purple!75!black]
     coordinates {(0.000000,1.888577) (1.888577,1.888577) (4.394609,2.506032)};
   \addlegendentry{hyperbolic points}
-  \node[anchor=west, black!55, fill=white, inner sep=1pt] at (axis cs:5.08,2.34)
+  \node[anchor=west, black!55, fill=white, inner sep=1pt] at (axis cs:5.00,2.53)
     {\(p=2\pi/3\)};
 \end{axis}
 \end{tikzpicture}
@@ -1594,9 +1681,13 @@ visible in a four-dimensional phase space.
     }
     \draw[red!75!black, thick]
       (0,1.75) -- (-1.55,-0.95) -- (1.55,-0.95) -- cycle;
-  \node[red!75!black, align=center, fill=white, inner sep=1pt] at (0.05,-1.68)
-    {three escape\\valleys};
-  \draw[red!75!black, ->] (0.54,-1.48) -- (0.08,-0.98);
+    \foreach \p in {(0,1.75),(-1.55,-0.95),(1.55,-0.95)}
+      \fill[red!75!black] \p circle (1.3pt);
+    \draw[red!75!black, ->] (0,1.75) -- (0,2.10);
+    \draw[red!75!black, ->] (-1.55,-0.95) -- (-1.90,-1.18);
+    \draw[red!75!black, ->] (1.55,-0.95) -- (1.90,-1.18);
+    \node[red!75!black, align=center, fill=white, inner sep=1pt] at (0.00,-1.55)
+      {three escape\\valleys};
     \node[anchor=west, fill=white, inner sep=1pt] at (0.52,2.08)
       {configuration contours};
   \end{scope}
@@ -1612,7 +1703,7 @@ visible in a four-dimensional phase space.
       -1.45/0.25,-0.95/1.25,-0.75/-1.18,-0.15/0.95,0.45/-0.85,0.75/1.12,
       1.38/0.18,1.52/-0.92,-1.55/-0.42}
       \fill[black!55] (\x,\y) circle (0.9pt);
-    \node[anchor=west, fill=white, inner sep=1pt] at (0.42,1.58)
+    \node[anchor=west, fill=white, inner sep=1pt] at (0.22,1.58)
       {Poincare-section sketch};
   \end{scope}
 \end{tikzpicture}
@@ -1631,7 +1722,7 @@ derivation.}
 \begin{enumerate}
 \item In the homological equation
 \(\omega(I)\cdot\partial_\theta S_1=-(H_1-\langle H_1\rangle)\), identify
-exactly where the Diophantine condition is used. What fails if \(\omega\) is
+where the Diophantine condition is used. What fails if \(\omega\) is
 rational?
 \item For a one-degree-of-freedom resonant normal form, draw the phase portrait
 and identify elliptic fixed points, hyperbolic fixed points, separatrices, and

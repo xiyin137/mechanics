@@ -258,6 +258,8 @@ def test_taylor_green_vortex_solves_navier_stokes_analytically() -> None:
     assert demo.taylor_green_energy_density(t=0.3, nu=0.07, wave_number=1.0, speed=1.2) == pytest.approx(
         0.25 * 1.2**2 * np.exp(-4.0 * 0.07 * 0.3)
     )
+    with pytest.raises(ValueError):
+        demo.taylor_green_energy_density(t=0.3, rho=-1.0)
 
 
 def test_linear_elasticity_moduli_round_trip_and_wave_speeds() -> None:
@@ -658,3 +660,15 @@ def test_asteroid_plot_flags_are_mutually_exclusive() -> None:
     )
     assert result.returncode != 0
     assert "not allowed with argument" in result.stderr
+
+
+def test_demo_cli_validation_reports_clean_errors() -> None:
+    cases = [
+        ("demos/python/standard_map_torus_breakdown.py", "--orbits", "0"),
+        ("demos/python/navier_stokes_solutions.py", "--mu", "-1"),
+        ("demos/python/linear_elasticity.py", "--poisson", "0.5"),
+    ]
+    for script, option, value in cases:
+        result = run_python_demo_unchecked(script, option, value)
+        assert result.returncode != 0
+        assert "error:" in result.stderr

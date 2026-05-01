@@ -116,7 +116,7 @@ velocity is \(u\). For a scalar field \(f\), we want the time derivative of
 \]
 There are two sources of change. The value of \(f\) can change along each
 particle path, and the volume element occupied by neighboring particles can
-expand or contract. The Reynolds transport theorem is exactly the formula that
+expand or contract. The Reynolds transport theorem is the formula that
 keeps both effects.
 Reynolds gave the theorem in this systematic continuum-mechanics form in his
 1903 treatise, but the pullback idea is already present in Euler's Lagrangian
@@ -135,8 +135,8 @@ description of fluids.
   \draw[red!75!black, thick, ->] (3.9,1.45) -- (4.5,1.55);
   \draw[red!75!black, thick, ->] (2.95,3.15) -- (3.15,3.75);
   \draw[red!75!black, thick, ->] (0.9,2.4) -- (0.45,2.75);
-  \node[blue!70!black] at (2.45,2.0) {\(V(t)\)};
-  \node[red!75!black, fill=white, inner sep=2pt] at (5.28,3.10)
+  \node[blue!70!black, fill=white, inner sep=1pt] at (2.45,2.0) {\(V(t)\)};
+  \node[red!75!black, fill=white, inner sep=2pt] at (5.14,3.06)
     {boundary velocity \(u\)};
   \draw[red!75!black, ->] (4.75,2.88) -- (3.15,3.50);
   \node[align=center, fill=white, inner sep=2pt] at (5.10,-0.32)
@@ -655,6 +655,15 @@ Taking the curl of the incompressible Navier-Stokes equation gives
   \omega\cdot\nabla u+\nu\Delta\omega.
   }
 \]
+The identity behind this equation is
+\[
+  \nabla\times(u\cdot\nabla u)
+  =
+  u\cdot\nabla\omega-\omega\cdot\nabla u
+  +
+  \omega\,\nabla\cdot u,
+\]
+and the last term vanishes for incompressible flow.
 The term \(\omega\cdot\nabla u\) stretches and tilts vortex lines in three
 dimensions. In two dimensions, vorticity is perpendicular to the plane and the
 stretching term vanishes:
@@ -665,7 +674,9 @@ This contrast is central. Two-dimensional inviscid vorticity is transported
 like a scalar dye, which creates many conserved quantities. Three-dimensional
 vorticity can be stretched by the flow itself, allowing vortex intensification
 and making the analysis of Navier-Stokes much harder.
-For \(\nu=0\), vorticity is transported by the flow.
+For \(\nu=0\), vortex lines are transported by the flow. In two-dimensional
+incompressible Euler flow this reduces to scalar advection of vorticity; in
+three dimensions transport is accompanied by the stretching term.
 
 \begin{proposition}[Kelvin circulation theorem]
 Let \(\gamma(t)\) be a closed material loop moving with an inviscid barotropic
@@ -724,12 +735,16 @@ Apply it to a small loop encircling a vortex tube. By Stokes' theorem,
 \]
 so the vorticity flux through a material cross-section of the tube is constant.
 If a material curve is initially tangent to \(\omega\), then the inviscid
-vorticity equation
+vorticity equation for a barotropic fluid,
 \[
-  \frac{D\omega}{Dt}=\omega\cdot\nabla u-\omega\,\nabla\cdot u
+  \frac{D}{Dt}\left(\frac{\omega}{\rho}\right)
+  =
+  \left(\frac{\omega}{\rho}\right)\cdot\nabla u,
 \]
 has the same stretching form as the evolution equation for an infinitesimal
-material line element per unit mass; hence vortex lines move with the fluid.
+material line element; hence vortex lines move with the fluid. In the
+incompressible case \(\rho\) is constant and this is the usual
+\(D\omega/Dt=\omega\cdot\nabla u\).
 Finally, \(\nabla\cdot\omega=\nabla\cdot(\nabla\times u)=0\), so vortex flux has
 no interior sources or sinks. Vortex lines either close, meet a boundary, or
 continue to infinity.
@@ -981,8 +996,9 @@ Multiply by \(r\) and integrate:
   \qquad
   rV'(r)=-\frac{G}{2\mu}r^2+C_1.
 \]
-Regularity at the centerline requires \(V'(0)\) finite, so \(C_1=0\). A second
-integration gives
+Regularity at the centerline requires \(rV'(r)\to0\) as \(r\to0\). If
+\(C_1\neq0\), then \(V'(r)\sim C_1/r\) and the next integration would produce a
+logarithmic singularity in \(V\). Hence \(C_1=0\). A second integration gives
 \[
   V(r)=-\frac{G}{4\mu}r^2+C_2.
 \]
@@ -1249,7 +1265,8 @@ and the cell-averaged kinetic energy density is
     \node[red!75!black, fill=white, inner sep=1pt] at (1.70,0.36) {\(t_2\)};
     \node[purple!75!black, fill=white, inner sep=1pt] at (2.45,0.31) {\(t_3\)};
   \end{scope}
-  \node[align=center] at (1.8,-0.55) {Stokes first problem:\\viscous penetration grows like \(\sqrt{\nu t}\)};
+  \node[align=center, fill=white, inner sep=1.5pt] at (1.8,-0.55)
+    {Stokes first problem:\\viscous penetration grows like \(\sqrt{\nu t}\)};
 
   \begin{scope}[xshift=6.0cm]
     \draw[->] (-0.2,0) -- (3.2,0) node[right] {\(x\)};
@@ -1260,7 +1277,8 @@ and the cell-averaged kinetic energy density is
       0.5/1.5/-0.55/-0.55, 1.5/1.5/-0.55/0.55, 2.5/1.5/0.55/0.55,
       0.5/2.5/-0.55/0.55, 1.5/2.5/-0.55/-0.55, 2.5/2.5/0.55/-0.55}
       \draw[teal!75!black, thick, ->] (\x,\y) -- ++(\dx,\dy);
-    \node[align=center] at (1.5,-0.55) {Taylor-Green vortex:\\periodic eddies decay as \(e^{-2\nu k^2t}\)};
+    \node[align=center, fill=white, inner sep=1.5pt] at (1.5,-0.55)
+      {Taylor-Green vortex:\\periodic eddies decay as \(e^{-2\nu k^2t}\)};
   \end{scope}
 \end{tikzpicture}
 \caption{Two unsteady exact solutions. Left: an impulsively moved wall creates
@@ -1319,14 +1337,16 @@ from the base flow.
   \foreach \y/\len in {0.65/0.35,1.10/0.62,1.55/0.92,2.00/1.25,2.45/1.55,2.85/1.8}
     \draw[blue!70!black, thick, ->] (0.45,\y) -- ++(\len,0);
   \draw[red!75!black, thick, ->] (2.75,1.15) -- (2.75,2.05);
-  \node[red!75!black, fill=white, inner sep=1pt] at (2.42,2.16) {\(\tilde v\)};
+  \draw[red!75!black, densely dashed] (2.75,1.15) -- (3.42,1.15);
   \draw[red!75!black, thick, ->] (2.75,2.05) -- (3.55,2.05);
-  \draw[purple!75!black, thick, domain=0.3:5.0, samples=120]
-    plot (\x,{1.75+0.22*sin(115*\x)});
+  \node[red!75!black, fill=white, inner sep=1pt] at (2.43,2.18) {\(\tilde v\)};
+  \node[red!75!black, fill=white, inner sep=1pt] at (3.48,1.02) {\(\Delta U\)};
+  \draw[purple!75!black, thick, domain=0.25:5.55, samples=180]
+    plot (\x,{1.75+0.22*sin(210*\x)});
   \draw[red!75!black, <->] (4.20,1.75) -- (4.20,1.97);
   \node[red!75!black, anchor=west, fill=white, inner sep=1pt] at (4.28,1.86)
-    {amp.};
-  \node[blue!70!black] at (4.25,2.75) {base shear \(U(y)e_x\)};
+    {amplitude \(\tilde v\)};
+  \node[blue!70!black, fill=white, inner sep=1pt] at (4.15,2.75) {base shear \(U(y)e_x\)};
   \node[purple!75!black, fill=white, inner sep=1pt] at (4.10,1.16)
     {normal-mode disturbance};
 \end{tikzpicture}
@@ -1354,6 +1374,21 @@ three-dimensional normal mode is unstable at Reynolds number \(\mathrm{Re}\),
 then there is a two-dimensional mode unstable at a no larger effective Reynolds
 number. Thus the least stable linear mode can be found in the two-dimensional
 Orr-Sommerfeld problem.
+The proof idea is a change of wave-vector variables. A three-dimensional
+disturbance proportional to
+\[
+  e^{i(\alpha x+\beta z)+\sigma t}
+\]
+has total horizontal wavenumber \(k=(\alpha^2+\beta^2)^{1/2}\). Squire's
+transformation maps it to a two-dimensional disturbance with streamwise
+wavenumber \(k\), the same phase speed, and effective Reynolds number
+\[
+  \mathrm{Re}_{2D}=\frac{|\alpha|}{k}\,\mathrm{Re}\le \mathrm{Re}.
+\]
+Thus any growing three-dimensional normal mode implies a growing
+two-dimensional mode at no larger Reynolds number. The statement is linear and
+applies to parallel shear flows; it is not a claim about finite-amplitude
+transition.
 Seek normal modes
 \[
   \psi(x,y,t)=\phi(y)e^{i\alpha x+\sigma t}.
@@ -1430,7 +1465,8 @@ satisfies
 The second term is viscous dissipation. The first is production by mean shear.
 If dissipation dominates production for all admissible perturbations, the base
 flow is energy stable. If not, the estimate does not prove instability, but it
-reveals the only possible energy source for perturbation growth.
+reveals the only possible energy source for perturbation growth. This identity
+is the Reynolds-Orr energy equation for perturbations of a shear flow.
 
 \section{Point Vortices As A Hamiltonian Fluid Model}
 \label{sec:point-vortices}
@@ -1440,7 +1476,8 @@ In two dimensions, an idealized vorticity distribution can be written as
   \omega(x,y)=\sum_{i=1}^{N}\Gamma_i\delta(x-x_i,y-y_i),
 \]
 where \(\Gamma_i\) is circulation. Helmholtz introduced point-vortex
-idealizations in his 1858 vortex work, and Kirchhoff gave the Hamiltonian form.
+idealizations in his 1858 vortex work, and Kirchhoff gave the Hamiltonian form
+in his 1876 lectures.
 Here they serve as a finite-dimensional Hamiltonian reduction of ideal-fluid
 motion. The point vortex equations are
 \[
@@ -1477,11 +1514,11 @@ resulting point-vortex bracket as the model.
   \draw[->] (-2.5,0) -- (2.7,0) node[right] {\(x\)};
   \draw[->] (0,-2.2) -- (0,2.4) node[above] {\(y\)};
   \draw[thick] (-0.65,-0.35) circle (0.16);
-  \node at (-0.65,-0.35) {\(+\)};
+  \node[fill=white, inner sep=0.2pt] at (-0.65,-0.35) {\(+\)};
   \node[fill=white, inner sep=1pt] (plusgamma) at (-1.24,-0.76) {\(+\Gamma\)};
   \draw[thin] (plusgamma.north east) -- (-0.77,-0.43);
   \draw[thick] (0.65,0.35) circle (0.16);
-  \node at (0.65,0.35) {\(-\)};
+  \node[fill=white, inner sep=0.2pt] at (0.65,0.35) {\(-\)};
   \node[fill=white, inner sep=1pt] (minusgamma) at (1.58,0.16) {\(-\Gamma\)};
   \draw[thin] (minusgamma.west) -- (0.77,0.43);
   \draw[dashed] (-0.65,-0.35) -- (0.65,0.35);
@@ -1489,7 +1526,7 @@ resulting point-vortex bracket as the model.
     node[midway, below right, fill=white, inner sep=1pt] {fixed separation \(d\)};
   \draw[blue, thick, ->] (-2.02,-1.22) -- (-2.52,-0.28);
   \draw[blue, thick, ->] (2.12,-0.10) -- (1.60,0.86);
-  \node[blue, align=center, fill=white, inner sep=1pt] at (1.72,1.20)
+  \node[blue, align=center, fill=white, inner sep=1pt] at (1.62,1.22)
     {common\\translation};
 \end{tikzpicture}
 \caption{A vortex dipole is the simplest point-vortex motion: the two vortices

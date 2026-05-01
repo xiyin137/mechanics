@@ -28,10 +28,10 @@ each important symbol is tied to a space, a convention, and a physical
 interpretation.
 
 The notes also distinguish three kinds of equality. A definition introduces a
-symbol, as in \(p_i=\partial L/\partial\dot q^i\). An identity holds because of
-previous definitions and conventions: for example, after the canonical
-one-form \(\Theta\) on \(T^*Q\) has been defined and the sign convention for
-the symplectic form has been chosen, \(\omega=-\dd\Theta\) is an identity in
+symbol, as in \(p_i=\partial L/\partial\dot q^i\). A convention fixes a choice
+that could have been made differently: writing \(\omega=-\dd\Theta\) first fixes
+the sign convention for the canonical symplectic form on \(T^*Q\). After that
+choice has been made, the same displayed relation is used as an identity inside
 that convention. An equation of motion holds only along physical trajectories,
 as in \(\dot p_i=-\partial H/\partial q^i\). Many confusions in mechanics come
 from silently moving an equation from one category to another.
@@ -84,7 +84,9 @@ means the matrix
 \]
 is nonsingular. Singular Lagrangians lead to constrained Hamiltonian systems and
 gauge theories. Dirac and Bergmann developed the standard formalism in the
-1950s; it requires a separate treatment.
+late 1940s and 1950s, beginning with Bergmann's constrained-field work and
+Dirac's 1950 Hamiltonian theory of constraints; it requires a separate
+treatment.
 \end{assumption}
 
 \begin{assumption}[Einstein summation]
@@ -122,7 +124,7 @@ instead of finitely many coordinates.
 \node[box] (chaos) at (5.5,-1.25) {Integrability and chaos\\actions, tori, transport};
 \node[box] (cont) at (0,-1.25) {Continuum bodies\\fields, stress, frames};
 \node[smallbox] (examples) at (-2.75,0.42) {Kepler and rigid body\\first exact models};
-\node[smallbox] (demos) at (8.25,0.42) {Demos and diagnostics\\drift, sections, probability};
+\node[smallbox] (demos) at (8.05,0.42) {Demos and diagnostics\\drift, sections, probability};
 \draw[arr] (lag) -- (ham);
 \draw[arr] (ham) -- (chaos);
 \draw[arr] (chaos) -- (cont);
@@ -137,6 +139,10 @@ computational diagnostics: exact models teach the geometry, while numerical
 demos test which structures survive discretization or perturbation.}
 \label{fig:course-loop}
 \end{figure}
+
+The arrows are only a first tour. Terms such as phase space, invariant torus,
+transport, and stress acquire their precise meanings in the chapters where they
+are used; here they mark the order in which the reader will meet them.
 
 \section{Units And Dimensions}
 \label{sec:units-dimensions}
@@ -188,9 +194,9 @@ components, or interpreting a reduced equation as if no reduction had occurred.
 When a derivation contains a local coordinate calculation, the conclusion should
 be read as coordinate-independent only after the geometric object has been
 identified. For example, the symbols \(\Gamma^\ell{}_{ij}\), \(\lambda_a\),
-\(A_A\), and \(\omega^a{}_b\) are coordinate or frame components; the geodesic
-equation, constraint reaction, gauge connection, and torsion are the underlying
-objects.
+\(A_A\), and \(\omega^a{}_b\) are coordinate or frame components. The underlying
+objects are, respectively, a connection, a reaction covector or force, a
+principal connection, and torsion/curvature forms.
 
 A useful test is to cover the displayed equations and summarize the argument in
 sentences. When the prose summary breaks down, return to the model, space,

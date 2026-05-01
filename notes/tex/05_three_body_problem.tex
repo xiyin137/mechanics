@@ -6,12 +6,19 @@ hyperbolas, with collision as a singular limiting case. Three bodies do not
 admit a comparable solution in elementary functions. Sundman gave a convergent
 series solution in 1912, away from triple collision, but that result does not
 restore practical integrability or the Kepler conic picture. Binary collisions
-can be regularized by changing variables and time scale, while triple collision
-is the obstruction left out of Sundman's global statement; in the three-body
-problem it is tied to the exceptional zero-angular-momentum collapse channel.
+can be regularized by changing variables and time scale. In the planar problem,
+the Levi-Civita 1903 change \(z=u^2\), together with a time rescaling
+\(\dd t=|u|^2\,\dd s\), turns the inverse-square collision singularity into a
+regular passage in the \(u\)-plane; Sundman's construction uses this kind of
+regularization together with analytic continuation and a global time
+reparametrization. Sundman announced the key regularization program in 1907 and
+published the convergent-series theorem in 1912. Triple collision is the
+obstruction left out of Sundman's
+global statement; in the three-body problem it is tied to the exceptional
+zero-angular-momentum collapse channel.
 Belorizky already emphasized in 1930 that Sundman's series converges far too
 slowly for practical computation. Adding one more gravitating body preserves
-the exact conservation laws of Newtonian mechanics but destroys generic
+the standard conservation laws of Newtonian mechanics but destroys generic
 integrability. What remains is a rich set of structures:
 rotating-triangle exact solutions, equilibrium points in the rotating frame,
 resonant islands, chaotic scattering, and long-time transport.
@@ -23,10 +30,13 @@ The prize essay was submitted for King Oscar II's 1889 competition and then
 substantially revised after Poincare discovered the error that led him to
 homoclinic intersections; the expanded account appeared in the
 \emph{Methodes nouvelles de la mecanique celeste} (1892--1899).
+Birkhoff's 1915 periodic-orbit work continued this program by making return
+maps and periodic orbits central tools in celestial mechanics.
 Painleve's 1895 singularity theorem clarifies a separate issue: in the
-three-body problem, finite-time singularities require collision. Xia's 1992
-noncollision singularities for five bodies show that this is a special feature
-of low \(N\), not a general safety theorem for Newtonian gravity.
+Newtonian three-body problem, every finite-time singularity is caused by a
+collision. Xia's 1992 noncollision singularities for five bodies show that this
+is a special feature of low \(N\), not a general safety theorem for Newtonian
+gravity.
 
 This chapter connects every phenomenon back to a controlled reduction of
 Newton's law. We first formulate the full Newtonian three-body problem and
@@ -140,8 +150,8 @@ separatrices, homoclinic tangles, chaotic scattering, and transport.
 \subsection{Translation Reduction And Jacobi Coordinates}
 \label{subsec:three-body-jacobi-coordinates}
 
-The center-of-mass degree of freedom is dynamically trivial. Removing it
-explicitly shows exactly which variables remain in the interacting problem. Let
+The center-of-mass degree of freedom is dynamically trivial. Removing it shows
+which variables remain in the interacting problem. Let
 \[
   m_{12}=m_1+m_2,\qquad M=m_{12}+m_3,
 \]
@@ -198,7 +208,7 @@ In the center-of-mass frame \(R=0\), the relative Hamiltonian is therefore
   +\frac{\norm{\pi_2}^2}{2\mu_2}
   -U(\rho_1,\rho_2),
 \]
-where \(\pi_a=\mu_a\dot\rho_a\).  This formula is the cleanest way to see what
+where \(\pi_a=\mu_a\dot\rho_a\).  This formula shows what
 changed from the two-body problem: there are now two coupled relative vectors,
 and each inverse-square attraction depends on a different linear combination of
 them.
@@ -239,7 +249,7 @@ expansion or collapse of the configuration.
 For two bodies, the center-of-mass reduction leaves one relative vector in a
 central potential. Angular momentum reduces the dynamics to a one-dimensional
 radial problem, while the Laplace-Runge-Lenz vector gives the conic orbit
-because the inverse-square potential has an accidental Kepler symmetry. Central
+because the inverse-square potential has a hidden Kepler symmetry. Central
 forces alone do not give that vector; generic central potentials still precess.
 For three bodies there is no single relative radius and no central force after
 reduction. Pairwise forces keep changing the effective center seen by each
@@ -306,6 +316,21 @@ to \(x\) times the distance \(m_1m_2\). Euler's calculation gives the quintic
 \]
 Its unique positive root gives the gap ratio for that ordering; the other two
 collinear configurations come from the other orderings of the masses.
+
+Here is the reduction behind the polynomial. Place the bodies at
+\[
+  q_1=0,\qquad q_2=d,\qquad q_3=d(1+x),
+\]
+and subtract the center-of-mass acceleration, since a central configuration is
+allowed to translate uniformly before the rotating-frame description is chosen.
+The central-configuration equation says that the gravitational acceleration of
+each body differs from the common center-of-mass acceleration by
+\(-\omega^2(q_i-q_{\mathrm{cm}})\). Taking the difference of the equations for
+\((q_2,q_1)\) and for \((q_3,q_2)\) eliminates the center-of-mass acceleration
+and leaves two expressions for the same \(\omega^2\). Equating them, clearing
+the denominators \(d^2\), \(x^2d^2\), and \((1+x)^2d^2\), and collecting powers
+of \(x\) gives the displayed quintic. The algebra is lengthy but has no
+new idea: \(x\) is the only shape variable, while \(d\) sets the overall scale.
 \end{example}
 
 Section~\ref{sec:lab-three-body} turns the equal-mass equilateral solution into
@@ -322,7 +347,7 @@ integrable.
 \section{Circular Restricted Three-Body Problem}
 \label{sec:circular-restricted-three-body-problem}
 
-The circular restricted three-body problem is the cleanest autonomous model
+The circular restricted three-body problem is the standard autonomous model
 behind the Sun-Jupiter-asteroid story. Two massive primaries move on circular
 Kepler orbits about their common center of mass, and a third body has zero
 mass, so it feels the primaries but does not affect them. Historically, this is
@@ -661,6 +686,35 @@ Linearizing about \(L_4\) or \(L_5\) gives stable oscillations when
 \]
 Here is the calculation. Write a perturbation as
 \((\xi,\eta)\) around \(L_4\). At \(L_4\),
+differentiate
+\[
+  \Omega_{\mathrm{eff}}
+  =
+  \frac12(x^2+y^2)
+  +
+  \frac{1-\mu}{r_1}
+  +
+  \frac{\mu}{r_2}
+\]
+twice. If \(X_1=x+\mu\), \(X_2=x-1+\mu\), and
+\(m_1=1-\mu\), \(m_2=\mu\), then
+\[
+\begin{aligned}
+  \Omega_{xx}
+  &=
+  1-\sum_{a=1}^2\frac{m_a}{r_a^3}
+  +3\sum_{a=1}^2\frac{m_aX_a^2}{r_a^5},\\
+  \Omega_{yy}
+  &=
+  1-\sum_{a=1}^2\frac{m_a}{r_a^3}
+  +3\sum_{a=1}^2\frac{m_ay^2}{r_a^5},\\
+  \Omega_{xy}
+  &=
+  3\sum_{a=1}^2\frac{m_aX_ay}{r_a^5}.
+\end{aligned}
+\]
+At \(L_4\), \(r_1=r_2=1\), \(X_1=1/2\),
+\(X_2=-1/2\), and \(y=\sqrt3/2\), so
 \[
   \Omega_{xx}=\frac34,\qquad
   \Omega_{yy}=\frac94,\qquad
@@ -828,12 +882,20 @@ the finite-time ejection probability estimate is
 \]
 \end{definition}
 
-\begin{assumption}[Ejection criterion in the demo]
+\begin{definition}[Ejection criterion in the demo]
 The Python demo counts a particle as ejected if it reaches a large heliocentric
 radius or if its heliocentric two-body energy is positive after it has moved
-outside Jupiter's orbital scale. It separately records close approaches to
-Jupiter and collisions with the inner solar cutoff.
-\end{assumption}
+outside Jupiter's orbital scale. In the default configuration this means
+\[
+  r>20\,\mathrm{AU}
+  \quad\text{or}\quad
+  E_{\odot}>0\ \text{and}\ r>a_J,
+\]
+with \(a_J=5.2044\,\mathrm{AU}\). The same run separately records close
+approaches to Jupiter, using the default threshold \(0.03\,\mathrm{AU}\), and
+collisions with the inner solar cutoff, using the default threshold
+\(0.02\,\mathrm{AU}\).
+\end{definition}
 
 An ejection probability is a finite-time statistic tied to a specified
 experiment. It depends on:
@@ -911,7 +973,7 @@ They are valuable because they organize nearby dynamics and survive as
 Lagrange-point structures in the restricted problem.
 \item The circular restricted three-body problem supplies an autonomous
 rotating-frame model with Lagrange points, zero-velocity curves, a canonical
-Hamiltonian, and the Jacobi constant. These structures are the cleanest
+Hamiltonian, and the Jacobi constant. These structures are the standard
 geometric language for capture and escape channels.
 \item The heliocentric Sun-Jupiter-asteroid model is a periodically forced
 Kepler problem.  Its indirect term is part of the coordinate transformation,
@@ -976,14 +1038,17 @@ The symmetric initial positions are
   \coordinate (r2) at (-0.625,1.083);
   \coordinate (r3) at (-0.625,-1.083);
   \draw[gray!70, thick] (r1) -- (r2) -- (r3) -- cycle;
-  \fill[blue!70!black] (r1) circle (2pt) node[right] {\(r_1\)};
-  \fill[blue!70!black] (r2) circle (2pt) node[above left] {\(r_2\)};
-  \fill[blue!70!black] (r3) circle (2pt) node[below left] {\(r_3\)};
+  \fill[blue!70!black] (r1) circle (2pt)
+    node[right, fill=white, inner sep=1pt] {\(r_1\)};
+  \fill[blue!70!black] (r2) circle (2pt)
+    node[above left, fill=white, inner sep=1pt] {\(r_2\)};
+  \fill[blue!70!black] (r3) circle (2pt)
+    node[below left, fill=white, inner sep=1pt] {\(r_3\)};
   \draw[->, red!75!black, thick] (r1) -- ++(0,0.65);
   \draw[->, red!75!black, thick] (r2) -- ++(-0.56,-0.32);
   \draw[->, red!75!black, thick] (r3) -- ++(0.56,-0.32);
   \draw[dashed] (0,0) circle (1.25);
-  \node[red!75!black, align=center, fill=white, inner sep=1.5pt] at (1.92,1.33)
+  \node[red!75!black, align=center, fill=white, inner sep=1.5pt] at (1.72,1.36)
     {tangent velocities\\for rotating triangle};
   \node[align=center, fill=white, inner sep=1.5pt] at (0,-1.95)
     {the perturbation lab changes the initial velocities\\and monitors

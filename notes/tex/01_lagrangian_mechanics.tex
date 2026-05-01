@@ -70,7 +70,8 @@ of the path.
 Hamilton's principle, in Hamilton's 1834--1835 form, is a critical-point
 principle for the time integral of \(L=T-V\). The historical phrase
 ``principle of least action'' is older and refers to related Maupertuis-Euler
-forms of action at fixed energy. In modern Lagrangian mechanics the action need
+forms of action at fixed energy, especially Maupertuis' 1744 statement and
+Euler's variational development. In modern Lagrangian mechanics the action need
 not be a minimum; it may be a saddle or a maximum for some classes of
 variations. The catenoid soap film is the familiar variational counterexample:
 a stationary surface need not be the minimizing surface once the boundary data
@@ -106,13 +107,14 @@ the Euler-Lagrange equations pointwise in time.
   \draw[densely dotted] (6.5,0) -- (6.5,2.75);
   \draw[thick, blue] plot[smooth] coordinates {(0.5,0.7) (1.8,1.25) (3.2,1.0) (4.7,2.0) (6.5,2.35)};
   \draw[thick, red, dashed] plot[smooth] coordinates {(0.5,0.7) (1.8,1.55) (3.2,1.25) (4.7,1.75) (6.5,2.35)};
-  \draw[->, red] (3.2,1.0) -- (3.2,1.25) node[midway,right] {\(\eta(t)\)};
+  \draw[->, red] (3.2,1.0) -- (3.2,1.25)
+    node[midway,right, fill=white, inner sep=1pt] {\(\eta(t)\)};
   \draw[->, red!70!black] (4.7,2.0) -- (4.7,1.75);
-  \fill (0.5,0.7) circle (2pt) node[below right] {\(q(t_0)\)};
-  \fill (6.5,2.35) circle (2pt) node[above left] {\(q(t_1)\)};
+  \fill (0.5,0.7) circle (2pt) node[below right, fill=white, inner sep=1pt] {\(q(t_0)\)};
+  \fill (6.5,2.35) circle (2pt) node[above left, fill=white, inner sep=1pt] {\(q(t_1)\)};
   \node[below] at (0.5,0) {\(t_0\)};
   \node[below] at (6.5,0) {\(t_1\)};
-  \node[blue] at (2.3,0.6) {\(q(t)\)};
+  \node[blue, fill=white, inner sep=1pt] at (2.3,0.55) {\(q(t)\)};
   \node[red, align=left, fill=white, inner sep=1.5pt] (varlabel) at (4.55,2.65)
     {\(q_\eps(t)=q(t)+\eps\eta(t)\)\\\({}+O(\eps^2)\)};
   \draw[red!70!black, ->] (varlabel.south west) -- (4.55,1.83);
@@ -177,7 +179,10 @@ of every \(\eta^i\) vanishes. Hence
 \end{derivation}
 
 \begin{proof}[Fundamental lemma used above]
-Let \(f(t)\) be continuous on \((t_0,t_1)\), and suppose
+Under the standing smoothness assumptions on \(L\), \(q\), and the variation,
+the bracketed coefficient in the variation formula is continuous. The lemma
+therefore applies with \(f\) equal to that coefficient. Let \(f(t)\) be
+continuous on \((t_0,t_1)\), and suppose
 \[
   \int_{t_0}^{t_1} f(t)\eta(t)\,\dd t=0
 \]
@@ -548,12 +553,15 @@ chapter.
   \fill[blue!6] (0.624,-0.7) rectangle (2.52,-1.15);
   \draw[blue, thick, domain=0.36:6.1, samples=160]
     plot (\x,{1.1/(\x*\x)-2.2/\x});
-  \draw[dashed] (0,-0.7) -- (6.2,-0.7) node[right] {bound \(E<0\)};
-  \draw[dashed] (0,0.45) -- (6.2,0.45) node[right] {scattering \(E>0\)};
+  \draw[dashed] (0,-0.7) -- (6.2,-0.7)
+    node[right, fill=white, inner sep=1pt] {bound \(E<0\)};
+  \draw[dashed] (0,0.45) -- (6.2,0.45)
+    node[right, fill=white, inner sep=1pt] {scattering \(E>0\)};
   \node[blue, fill=white, inner sep=1.5pt] at (4.45,-1.05)
     {\(V_{\mathrm{eff}}(\rho)\)};
   \draw[densely dotted] (1.0,-1.1) -- (1.0,-1.58);
-  \fill (1.0,-1.1) circle (1.4pt) node[above right] {minimum};
+  \fill (1.0,-1.1) circle (1.4pt)
+    node[above right, fill=white, inner sep=1pt] {minimum};
   \fill (0.624,-0.7) circle (1.3pt);
   \fill (2.52,-0.7) circle (1.3pt);
   \draw[<->, blue!70!black] (0.624,-1.58) -- (2.52,-1.58);
@@ -603,9 +611,10 @@ The Kepler problem also has the Laplace-Runge-Lenz vector
 \[
   A=p\times J-\mu k\frac{r}{\norm r},
 \]
-which is conserved and points toward periapse. Its existence is special: it is
-the extra conservation law behind the absence of perihelion precession in the
-ideal inverse-square problem.
+which is conserved and points toward periapse. The conservation is derived in
+Section~\ref{sec:detailed-central-forces}; here it is introduced as the extra
+quantity that explains why the conic orientation does not precess in the ideal
+inverse-square problem.
 
 \begin{remark}[Bertrand's theorem and the Kepler accident]
 Bertrand's theorem (1873) gives the sharp structural statement: among central
@@ -627,6 +636,8 @@ a nonlinear Lie group. At the Lagrangian level, this already forces us to
 distinguish coordinates, frames, angular velocity, and kinetic energy. Later
 chapters return to the same system as a reduced Hamiltonian flow and as an
 integrable model, but the essential geometric data are visible already here.
+Euler's 1758 rigid-body equations are the historical source of the reduced
+equations derived below.
 
 \begin{assumption}[Free rigid body]
 A material point \(X\) in the body frame is located at
@@ -682,7 +693,11 @@ so \(R^T\delta R\in\mathfrak{so}(3)\), which is why
   =
   \widehat{\dot\Sigma}+[\widehat\Omega,\widehat\Sigma],
 \]
-which is the stated formula under the hat isomorphism.
+and the hat map satisfies
+\[
+  [\widehat\Omega,\widehat\Sigma]=\widehat{\Omega\times\Sigma}.
+\]
+This is the stated formula under the hat isomorphism.
 Let \(M=\partial L/\partial\Omega=I\Omega\). Then
 \[
 \begin{aligned}
@@ -738,7 +753,7 @@ Constraints and symmetry are structural ingredients. Holonomic constraints
 replace \(Q\) by a constraint submanifold or introduce multipliers that measure
 constraint forces. Continuous symmetries produce conserved momenta through
 Noether's theorem. The Kepler problem illustrates how rotational symmetry and
-an accidental conserved Runge-Lenz vector organize the conic sections; the
+a hidden conserved Runge-Lenz vector organize the conic sections; the
 rigid body illustrates how a finite-dimensional system can already contain
 nontrivial geometry, body frames, inertia tensors, and reduced equations.
 
@@ -837,11 +852,10 @@ the motion to a plane; polar coordinates in that plane reduce the dynamics to a
 one-dimensional radial equation with an effective potential. The later Kepler
 and precession calculations are refinements of this same reduction.
 
-The lesson is broader than celestial mechanics. Every reduction in these notes
-has the same shape: use a symmetry to find a conserved quantity, use the
-conserved quantity to remove a variable, and then interpret the remaining
-equation on the reduced space. Central forces are the cleanest place to see the
-pattern because the geometry is visible in ordinary Euclidean space.
+The lesson is broader than celestial mechanics. A symmetry gives a conserved
+quantity; the conserved quantity can remove a variable; the reduced equation
+then describes motion on a smaller space. Central forces are a transparent first
+example because the geometry is visible in ordinary Euclidean space.
 
 Let a particle of mass \(m\) move in a central potential \(V(r)\), where
 \[
@@ -1056,6 +1070,10 @@ A useful perturbation of the Kepler potential is
   \qquad
   0<|\epsilon|\ll1.
 \]
+This is a pedagogical proxy for any small correction that breaks the exact
+inverse-square symmetry while remaining central. The Schwarzschild laboratory
+below gives the relativistic source of a closely related leading precession
+effect.
 The radial force is
 \[
   F(r)=-V'(r)=-\frac{k}{r^2}-\frac{3\epsilon}{r^4}.
@@ -1190,8 +1208,8 @@ The transformation has moved damping into a shifted oscillator frequency.
     plot (\x,{1.10*cos(3.25*\x r)});
   \node[blue!70!black, fill=white, inner sep=1.5pt] (qlabel) at (5.35,-0.92) {\(q(t)\)};
   \draw[blue!70!black, ->] (qlabel.north) -- (5.25,-0.18);
-  \node[red!75!black, fill=white, inner sep=1.5pt] at (6.1,1.24) {\(s=e^{\gamma t/2}q\)};
-  \node[align=center] at (4.1,-1.85)
+  \node[red!75!black, fill=white, inner sep=1.5pt] at (5.85,1.24) {\(s=e^{\gamma t/2}q\)};
+  \node[align=center, fill=white, inner sep=1.5pt] at (4.1,-1.78)
     {rescaling absorbs the exponential damping envelope};
 \end{tikzpicture}
 \caption{Damped-oscillator laboratory. In the original coordinate \(q\), the
@@ -1232,12 +1250,12 @@ The Lagrangian is
     \draw[fill=red!70!black] (1.17,-1.17) circle (0.09);
     \draw[thick] (0,0) -- (1.17,-1.17);
     \draw[->] (0,-0.75) arc (-90:-45:0.75);
-    \node at (0.55,-0.95) {\(\theta\)};
+    \node[fill=white, inner sep=1pt] at (0.55,-0.95) {\(\theta\)};
     \draw[->, blue!70!black] (1.17,-1.17) -- (1.95,-1.17)
       node[midway, below=2pt, fill=white, inner sep=1pt]
       {\(a\omega\sin\theta\)};
-    \node[below] at (0,-1.72) {downward vertical};
-    \node at (0,-2.45) {bead on rotating vertical hoop};
+    \node[below, fill=white, inner sep=1pt] at (0,-1.72) {downward vertical};
+    \node[fill=white, inner sep=1pt] at (0,-2.40) {bead on rotating vertical hoop};
   \end{scope}
   \begin{scope}[xshift=5.0cm, xscale=0.58]
     \draw[->] (-3.45,0) -- (3.45,0) node[right] {\(\theta\)};
@@ -1350,21 +1368,27 @@ The hoop leaves the cylinder at \(\theta=\pi/3\) from the top.
 \centering
 \begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
   \draw[thick, fill=gray!8] (0,0) circle (1.4);
-  \draw[thick, fill=blue!7] (1.65,1.65) circle (0.45);
-  \draw[dashed] (0,0) -- (1.65,1.65);
+  \coordinate (cyl) at (0,0);
+  \coordinate (hoop) at (1.65,1.65);
+  \coordinate (contact) at (0.99,0.99);
+  \draw[thick, fill=blue!7] (hoop) circle (0.45);
+  \draw[dashed] (cyl) -- (hoop);
   \draw[dashed] (0,0) -- (0,2.35);
   \draw[->] (0,1.9) arc (90:45:1.9);
   \node[fill=white, inner sep=1pt] at (0.78,2.15) {\(\theta\)};
-  \draw[->, red!75!black, very thick] (1.65,1.65) -- (2.25,2.25);
-  \node[red!75!black, fill=white, inner sep=1pt] at (2.34,2.36) {\(N\)};
-  \draw[->, black!70, thick] (1.65,1.65) -- (1.65,0.75)
+  \fill[black] (contact) circle (1.1pt);
+  \draw[black!60, densely dashed] (0.70,1.28) -- (1.28,0.70)
+    node[below right, fill=white, inner sep=1pt] {tangent};
+  \draw[->, red!75!black, very thick] (hoop) -- (2.25,2.25);
+  \node[red!75!black, fill=white, inner sep=1pt] at (2.42,2.28) {\(N\)};
+  \draw[->, black!70, thick] (hoop) -- (1.65,0.75)
     node[below] {\(mg\)};
   \draw[->, blue!70!black, thick] (2.1,1.65) arc (0:65:0.45);
-  \node[blue!70!black, fill=white, inner sep=1pt] at (2.55,1.92) {\(\dot\phi\)};
+  \node[blue!70!black, fill=white, inner sep=1pt] at (2.48,1.82) {\(\dot\phi\)};
   \node[align=center] at (0,-1.95)
     {loss of contact occurs when the\\normal force reaches \(N=0\)};
-  \node[fill=white, inner sep=1.5pt] at (-1.1,-1.1) {fixed cylinder \(R\)};
-  \node[fill=white, inner sep=1.5pt] at (2.82,2.60) {rolling hoop \(r\)};
+  \node[fill=white, inner sep=1.5pt] at (-1.08,-1.12) {fixed cylinder \(R\)};
+  \node[fill=white, inner sep=1.5pt] at (2.78,2.58) {rolling hoop \(r\)};
 \end{tikzpicture}
 \caption{Rolling-contact laboratory. The radial force balance must be kept
 until the end because the contact force \(N\) is the diagnostic for leaving the
@@ -1419,8 +1443,10 @@ Consider the central Lagrangian
   \qquad r>R.
 \]
 This is the geodesic Lagrangian for the Schwarzschild metric (1916), with
-horizon at \(r=R\), restricted to the equatorial plane and written with an arbitrary
-worldline parameter. We treat it here as a classical central-force model whose
+horizon at \(r=R\), restricted to the equatorial plane, in units \(c=1\). Here
+the parameter is Schwarzschild coordinate time, so this is the reduced
+square-root Lagrangian for spatial motion rather than the reparametrization-
+invariant proper-time action. We treat it here as a classical central-force model whose
 effective-potential analysis already yields the correct innermost stable
 circular-orbit radius.
 Define
@@ -1432,6 +1458,18 @@ The conserved energy and angular momentum are
   E=\frac{mA}{\sqrt B},
   \qquad
   L_z=\frac{mr^2\dot\theta}{\sqrt B}.
+\]
+The angular momentum follows from the cyclic coordinate \(\theta\). The energy
+is the conserved Beltrami quantity because this reduced Lagrangian has no
+explicit time dependence:
+\[
+  \dot r\,\frac{\partial L}{\partial\dot r}
+  +
+  \dot\theta\,\frac{\partial L}{\partial\dot\theta}
+  -
+  L
+  =
+  \frac{mA}{\sqrt B}.
 \]
 Eliminating \(\dot\theta\) and \(B\) gives the radial equation in effective
 potential form:
@@ -1481,8 +1519,8 @@ an effective potential at fixed angular momentum.
   \draw[->] (0,-0.25) -- (0,2.25) node[above] {\(U_{\mathrm{eff}}\)};
   \draw[dashed] (1.0,-0.15) -- (1.0,2.05);
   \draw[dashed] (3.0,-0.15) -- (3.0,2.05);
-  \node[below] at (1.0,-0.15) {\(R\)};
-  \node[below] at (3.0,-0.15) {\(3R\)};
+  \node[below, fill=white, inner sep=1pt] at (1.0,-0.15) {\(R\)};
+  \node[below, fill=white, inner sep=1pt] at (3.0,-0.15) {\(3R\)};
   \draw[red!75!black, thick, domain=1.25:10.0, samples=260]
     plot (\x,{1.50+5.5*(-1/\x+4/(\x*\x)-4/(\x*\x*\x))});
   \fill[red!75!black] (2.0,1.50) circle (1.3pt);
@@ -1493,7 +1531,7 @@ an effective potential at fixed angular momentum.
     {stable circular orbit};
   \draw[blue!70!black, thick, ->] (7.15,0.88) -- (6.12,1.06);
   \draw[red!75!black, thick, ->] (3.25,1.88) -- (2.05,1.52);
-  \node[align=center] at (5.3,-0.58)
+  \node[align=center, fill=white, inner sep=1.5pt] at (5.3,-0.54)
     {stability is the sign of \(U_{\mathrm{eff}}''(r_0)\)\\
      at fixed angular momentum};
 \end{tikzpicture}

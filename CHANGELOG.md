@@ -4,8 +4,8 @@
 
 - Split the former combined chapters into separate Lagrangian, Hamiltonian
   phase-space, perturbation/KAM, three-body, elastic-body, and deforming-body
-  chapters; updated the source tree, notation ledger, and planning documents to
-  match the new architecture.
+  chapters; updated the source tree, notation ledger, and public documentation
+  to match the new architecture.
 - Developed the new three-body chapter with Jacobi coordinates,
   center-of-mass reduction, the Lagrange-Jacobi identity, the CR3BP rotating
   Hamiltonian, and three-body-specific reader questions and demos.
@@ -41,7 +41,7 @@
 - Addressed review cleanup: added Mathematica companions for the new standard
   map, Navier-Stokes, and linear-elasticity demos; added CR3BP and standard-map
   Makefile aliases; documented the CR3BP RK4/Jacobi-drift limitation; and
-  refreshed the planning documents with core versus extended reading routes.
+  refreshed the public reading path with core versus extended routes.
 - Improved note exposition end-to-end with additional reader checkpoints,
   modelling-stage warnings, conceptual bridges around Legendre transforms,
   Liouville tori, KAM, three-body reduction, continuum balance laws,
@@ -49,17 +49,17 @@
 - Audited all Wolfram Language demos, fixed Mathematica-specific issues in
   anomaly conversion, CR3BP figure output, rigid-body integration, and gauge
   plotting, and added a `mathematica-smoke` target using `WolframKernel`.
-- Addressed `claude_review.md`: corrected the Liouville-torus Poisson-bracket
+- Addressed review findings: corrected the Liouville-torus Poisson-bracket
   sign display, replaced the symmetric-top action shortcut by the chamber-wise
   formula, and upgraded pendulum, Stokes-layer, Taylor-Green, and Legendre
   transform figures.
 - Re-audited all 34 TeX figures from rendered PDF pages; corrected the
   Stokes-layer axis scaling and the rotating-hoop potential's \(\theta\)-axis
   geometry.
-- Addressed the latest `claude_review.md` wish list by replacing the remaining
+- Addressed the latest review pass by replacing the remaining
   schematic standard-map island-chain figure with actual \(K=0.65\) iterates
-  read from TeX data tables, and refreshed `PLANNING.md` with the current note
-  title, closure-round status, demo inventory, and `v0.2.0` release posture.
+  read from TeX data tables, then completed a publication-readiness pass over
+  public documentation, ignore rules, derivation gaps, and figure polish.
 
 ## v0.1.0 - 2026-05-01
 

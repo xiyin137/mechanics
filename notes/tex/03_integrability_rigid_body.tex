@@ -8,13 +8,15 @@ The free rigid body is a nearly ideal teaching example. It is nonlinear, it
 lives naturally on the Lie group \(\SO(3)\), it has a reduced Hamiltonian
 description on angular momentum space, and it is completely integrable. At the
 same time, small modifications such as gravity acting on a heavy top lead toward
-nonintegrability and chaos.
+nonintegrability and chaos. The classical integrable exceptions beyond the free
+body include Lagrange's symmetric heavy top and Kovalevskaya's 1888 top; their
+rarity is part of the lesson.
 
 The most vivid symptom is the intermediate-axis flip. Spin a book about its
 longest or shortest principal axis and the rotation is stable; spin it about
 the middle axis and the book turns over. The behavior comes from the geometry
 of two conserved quantities, energy and angular momentum, intersecting on the
-angular-momentum sphere. The rigid body is the first place
+angular-momentum sphere. The rigid body is a place
 where geometric pictures become part of the argument: reduction, stability,
 Poinsot rolling, and invariant tori are all different views of the same motion.
 
@@ -111,8 +113,8 @@ This space/body distinction is one of the main sources of sign errors in rigid
 body mechanics. The vector \(\omega_{\mathrm{space}}\) is expressed in fixed
 space axes, while \(\Omega\) is expressed in the moving body axes. They describe
 the same instantaneous rotation, but derivatives of body components must also
-differentiate the moving frame. Euler's equation is exactly where this
-bookkeeping becomes dynamical.
+differentiate the moving frame. Euler's equation is where this bookkeeping
+becomes dynamical.
 
 \paragraph{Derivative rules for moving frames.}
 If \(A(t)\) is a vector written in body components, then its spatial vector is
@@ -179,14 +181,17 @@ For the Euler-angle convention used below, the body axes are
 \end{pmatrix}.
 \end{aligned}
 \]
-The exact convention is less important than the lesson: Euler angles are a
-coordinate chart, not the space itself. The chart is singular at
+The convention matters for signs in formulas, but the lesson is geometric:
+Euler angles are a coordinate chart, not the space itself. The chart is singular at
 \(\theta=0,\pi\), even though \(\SO(3)\) is a smooth homogeneous space.
 
 A coordinate-independent line element on \(\SO(3)\) is
 \[
   \dd s^2=-\frac12\tr\left(R^{-1}\dd R\right)^2.
 \]
+This is the bi-invariant metric induced by minus the Killing-form normalization
+on \(\mathfrak{so}(3)\); the minus sign makes the square norm positive because
+skew matrices have negative trace square.
 For this standard Euler-angle convention, this becomes
 \[
   \dd s^2
@@ -520,7 +525,7 @@ fixed in space.
     \draw[red!75!black] (\x,\y) circle (0.26);
     \draw[red!75!black, ->] (\x,\y) -- ++(0.26,0.0);
   }
-  \node[red!75!black, align=center, fill=white, inner sep=2pt] at (5.15,2.82)
+  \node[red!75!black, align=center, fill=white, inner sep=2pt] at (5.00,2.82)
     {attitude fiber\\over a reduced state};
   \draw[red!75!black, ->, thick] (2.55,1.75) -- (4.0,2.10);
   \draw[red!75!black, ->, thick] (2.45,1.35) -- (4.0,1.05);
@@ -950,7 +955,7 @@ compact and connected.
 \end{assumption}
 
 The regularity assumption says that \(M_f\) is a smooth \(n\)-dimensional
-submanifold. Its tangent vectors \(v\in T_xM_f\) are exactly those satisfying
+submanifold. Its tangent vectors \(v\in T_xM_f\) are those satisfying
 \[
   \dd F_i(v)=0
   \qquad\text{for all }i.
@@ -996,7 +1001,7 @@ M_f\), flow for times \(s=(s^1,\ldots,s^n)\) along the \(n\) vector fields:
   \exp(s^1X_{F_1})\cdots\exp(s^nX_{F_n})x_0.
 \]
 Because the flows commute, this defines an action of \(\R^n\) on \(M_f\).
-Completeness is used exactly here: without complete flows, this action would
+Completeness is used here: without complete flows, this action would
 only be defined for small flow times, and the period-lattice quotient below
 would have no global meaning. Since \(M_f\) is compact and the vector fields
 are smooth, the flows on \(M_f\) are complete in the cases considered here.
@@ -1047,7 +1052,7 @@ torus one is on.
     node[right, fill=white, inner sep=1.5pt] {identify};
   \draw[gray!70, ->] (2.1,3.0) -- (2.1,3.55)
     node[above, fill=white, inner sep=1.5pt] {identify};
-  \node[align=center] at (2.1,-0.75)
+  \node[align=center, fill=white, inner sep=1.5pt] at (2.1,-0.72)
     {flat model of a two-dimensional invariant torus\\
      \(\mathbb R^2/\Lambda\) with angle coordinates};
   \node[purple!75!black, align=center, fill=white, inner sep=2pt] at (4.85,2.72)
@@ -1120,7 +1125,9 @@ This coordinate proof is local on a chart where the projection of the torus to
 the \(q\)-coordinates has full rank. At caustics or turning sets that
 projection fails, the same Lagrangian conclusion remains true by the
 coordinate-free argument above, but the displayed function \(p(q,F)\) must be
-replaced by another local branch or another canonical chart.
+replaced by another local branch or another canonical chart. The torus itself
+does not become singular at a caustic; only this particular projection to
+configuration coordinates does.
 
 To prove the claim, differentiate the identities \(F_k(p(F,q),q)=F_k\) at
 fixed \(F\):
@@ -1399,7 +1406,7 @@ The phrase ``regular values'' hides the familiar exceptional motions. Principal
 axis rotations and separatrix-level motions are not generic tori: the level set
 can pinch, a cycle can collapse, or the period can diverge. Liouville
 integrability describes the open dense region of phase space where the
-commuting flows are independent and compact; the exceptional sets are exactly
+commuting flows are independent and compact; the exceptional sets are precisely
 where the qualitative changes in rigid-body motion occur.
 
 The geometry can be seen in two stages. First, the body angular momentum
@@ -1583,7 +1590,8 @@ spherical coordinates. It says that \(p_\theta\) is not an independent
 constant; it is determined by \(J\), \(J_z=p_\phi\), \(M_3=p_\psi\), and
 \(\theta\).
 
-For the symmetric top,
+For the symmetric top, whose classical heavy-top version was analyzed by
+Lagrange in the eighteenth century,
 \[
   H
   =
@@ -1647,7 +1655,10 @@ where
 \]
 This integral is the symplectic area on the angular-momentum sphere between
 the two latitude circles \(J_z=a\) and \(M_3=b\), divided by \(2\pi\). The
-allowed annulus has height \(J-\max\{|a|,|b|\}\), so the action is
+Kirillov symplectic form on the radius-\(J\) angular-momentum sphere has the
+property that a cap of height \(h\) has symplectic area \(2\pi h\). The two
+fixed projections remove caps determined by \(|a|\) and \(|b|\); the remaining
+nutation cycle has height \(J-\max\{|a|,|b|\}\). Hence
 \[
   \boxed{
   I_\theta=J-\max\{|J_z|,|M_3|\}.
@@ -1700,11 +1711,15 @@ equations reduce to
   (\Omega_2^2-a^2)(b^2-\Omega_2^2)
 \]
 for constants \(a,b\) determined by \(H\) and \(J^2\). Hence, after choosing
-the origin of time,
+the origin of time and a chamber in which \(a^2\le \Omega_2^2\le b^2\),
 \[
-  \Omega_2(t)=a\,\operatorname{cn}(\nu(t-t_0),k)
+  \Omega_2(t)=b\,\operatorname{dn}(\nu(t-t_0),k),
+  \qquad
+  \nu=b\sqrt{\frac{(I_3-I_2)(I_2-I_1)}{I_1I_3}},
+  \qquad
+  k^2=1-\frac{a^2}{b^2},
 \]
-or an equivalent \(\operatorname{sn}/\operatorname{dn}\) parametrization
+or an equivalent \(\operatorname{sn}/\operatorname{cn}\) parametrization
 depending on the chamber. The elementary symmetric-top formula is therefore a
 degenerate limit of the elliptic-function solution.
 

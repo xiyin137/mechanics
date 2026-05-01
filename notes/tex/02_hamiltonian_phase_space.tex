@@ -85,7 +85,7 @@ this chapter assumes the regular case.}
 In this calculation \(H\) is regarded as a function of \((q,p,t)\). The
 velocity \(\dot q=\dot q(q,p,t)\) is the inverse image of \((q,p)\) under the
 Legendre map, so its differential appears temporarily and then cancels. This is
-exactly where regularity is used.
+where regularity is used.
 Differentiate \(H\):
 \[
 \begin{aligned}
@@ -226,16 +226,20 @@ the Hamiltonian determine a unique vector field. In canonical coordinates
   \end{pmatrix}.
 \]
 Darboux's proof can be sketched as a local induction. Choose a function
-\(q^1\) with nonzero differential. Nondegeneracy gives a Hamiltonian vector
-field transverse to its level sets; integrate that vector field to construct a
-conjugate coordinate \(p_1\) with \(\{q^1,p_1\}=1\). The symplectic orthogonal
-to the span of \(\partial_{q^1},\partial_{p_1}\) carries a closed nondegenerate
-two-form of dimension \(2n-2\), so the construction repeats. The result is a
-coordinate chart in which \(\omega=\dd q^i\wedge\dd p_i\).
+\(q^1\) with nonzero differential and define \(Y_1\) by
+\(\iota_{Y_1}\omega=-\dd q^1\). Nondegeneracy makes \(Y_1\) unique, and
+\(\dd q^1(Y_1)=\omega(Y_1,Y_1)=0\), so \(Y_1\) is tangent to the level sets of
+\(q^1\). Choose a local hypersurface transverse to \(Y_1\), set \(p_1=0\) on it,
+and extend \(p_1\) by requiring \(Y_1p_1=1\) along the \(Y_1\)-flow. Then
+\(\{q^1,p_1\}=1\), with the sign convention below. The common kernel of
+\(\dd q^1\) and \(\dd p_1\), modulo the two directions already constructed,
+carries a closed nondegenerate two-form of dimension \(2n-2\). Repeating the
+construction produces a coordinate chart in which
+\(\omega=\dd q^i\wedge\dd p_i\).
 The Poisson bracket can be expressed intrinsically by the bivector inverse to
 the symplectic form, with the sign convention fixed by Hamilton's equations
-below. Once \(\omega\) is given, the bracket is the corresponding algebraic
-operation on functions.
+below. Once \(\omega\) is given, the bracket is the corresponding Lie operation
+on functions.
 In arbitrary coordinates, let \(\pi^{mn}\) be defined by
 \[
   \pi^{mn}\omega_{nk}=\delta^m{}_k.
@@ -248,6 +252,21 @@ With the convention \(\iota_{X_H}\omega=\dd H\), this gives
 \]
 which reduces to the displayed canonical formula in coordinates
 \((q^i,p_i)\).
+Indeed, for
+\[
+  \omega=
+  \begin{pmatrix}
+  0&I\\ -I&0
+  \end{pmatrix},
+  \qquad
+  \pi=\omega^{-1}=
+  \begin{pmatrix}
+  0&-I\\ I&0
+  \end{pmatrix},
+\]
+the extra minus sign gives
+\(\Poisson{f}{g}=\partial_{q^i}f\,\partial_{p_i}g
+-\partial_{p_i}f\,\partial_{q^i}g\).
 
 The two defining properties of \(\omega\) have different jobs. Nondegeneracy
 lets one solve \(\iota_{X_H}\omega=\dd H\) for a unique vector field, just as a
@@ -321,7 +340,8 @@ Thus \(X_H\) is Hamilton's equation written geometrically.
     {separatrix};
   \node[gray!65!black, fill=white, inner sep=1pt] at (1.25,-2.35)
     {rotation levels};
-  \node at (3.35,-3.18) {Exact level sets of \(H(q,p)=\frac12p^2+1-\cos q\).};
+  \node[fill=white, inner sep=1.5pt] at (3.35,-3.08)
+    {Exact level sets of \(H(q,p)=\frac12p^2+1-\cos q\).};
 \end{tikzpicture}
 \caption{The pendulum phase plane. Libration curves have
 \(0<E<2\), the separatrix has \(E=2\), and rotation curves have \(E>2\).
@@ -427,6 +447,19 @@ type of generating function depends on the new momenta and old positions:
 \[
   F=F(P,q).
 \]
+The starting point is preservation of the canonical two-form:
+\[
+  \dd q^i\wedge\dd p_i=\dd Q^i\wedge\dd P_i.
+\]
+Equivalently, the one-form \(p_i\dd q^i+Q^i\dd P_i\) is locally exact, because
+\[
+  \dd(p_i\dd q^i+Q^i\dd P_i)
+  =
+  -\dd q^i\wedge\dd p_i+\dd Q^i\wedge\dd P_i
+  =
+  0.
+\]
+The type-II generating function is this local potential.
 Impose
 \[
   Q^i=\frac{\partial F}{\partial P_i}\bigg|_q,
@@ -501,8 +534,9 @@ symplectic form or a modified Hamiltonian can matter more than the local order
 of the method. The pendulum, standard map, and asteroid demos are therefore
 experiments in preserving structure.
 This viewpoint is the basis of symplectic integration, developed in modern
-numerical form by Ruth, Channell-Scovel, Sanz-Serna, Yoshida, and others in the
-1980s and 1990s.
+numerical form by Ruth's 1983 explicit symplectic schemes, the work of
+Channell-Scovel and Sanz-Serna, Yoshida's 1990 composition methods, and the
+backward-error viewpoint later systematized by Hairer, Lubich, and Wanner.
 
 The practical lesson is diagnostic. A good mechanics simulation reports not
 only a trajectory but also the quantities that the continuous problem says
@@ -609,9 +643,9 @@ define a Hamiltonian system.
   \draw[dashed, red!75!black] (-0.95,-1.9) -- (-0.95,1.9);
   \draw[dashed, red!75!black] (0.95,-1.9) -- (0.95,1.9);
   \fill[red!75!black] (-0.95,0.57) circle (1.3pt)
-    node[above left] {\(W=0\)};
+    node[above left, fill=white, inner sep=1pt] {\(W=0\)};
   \fill[red!75!black] (0.95,-0.57) circle (1.3pt)
-    node[below right] {\(W=0\)};
+    node[below right, fill=white, inner sep=1pt] {\(W=0\)};
   \draw[decorate, decoration={brace, amplitude=5pt}]
     (1.45,-0.57) -- (1.45,0.57);
   \draw[->, gray!70] (2.52,0.45) -- (1.50,0.28);

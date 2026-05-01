@@ -12,6 +12,9 @@ golden-mean rotation number and reports finite-time momentum spreading.
 
 The diagnostic is deliberately modest.  It is a numerical probe of transport,
 not a proof that a particular invariant curve has broken.
+
+Authors: OpenAI GPT 5.5 under the supervision of Xi Yin; review contributions
+from Anthropic Opus 4.7.
 """
 
 from __future__ import annotations
@@ -239,7 +242,14 @@ def parse_args() -> argparse.Namespace:
         help="half-width of the initial momentum packet",
     )
     parser.add_argument("--plot", type=Path, help="optional output path for a PNG figure")
-    return parser.parse_args()
+    args = parser.parse_args()
+    if args.orbits <= 0:
+        parser.error("--orbits must be > 0")
+    if args.steps < 0:
+        parser.error("--steps must be >= 0")
+    if args.width < 0.0:
+        parser.error("--width must be >= 0")
+    return args
 
 
 def main() -> None:
