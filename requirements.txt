@@ -1,0 +1,6 @@
+# Runtime dependencies match pyproject.toml; keep these two files in sync.
+numpy>=1.24
+matplotlib>=3.7
+
+# Development/test dependency from pyproject.toml's dev extra.
+pytest>=8.0

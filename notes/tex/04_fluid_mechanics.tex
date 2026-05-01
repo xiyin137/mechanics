@@ -1,0 +1,906 @@
+\chapter[Fluid Mechanics]{Fluid Mechanics: Balance Laws, Navier-Stokes, And Stability}
+\label{chap:fluid}
+
+\section{What Is A Fluid?}
+\label{sec:what-is-fluid}
+
+Fluid mechanics is continuum mechanics with a special constitutive idea: the
+material does not resist a static shear deformation. A solid can sit in a
+sheared shape and store elastic energy; a simple fluid responds to shear through
+stress proportional to the rate of deformation. This chapter therefore treats
+fluids on their own terms. Elastic and deforming bodies are separated into the
+next chapter.
+
+The basic fields are functions on physical space:
+\[
+  \rho(x,t),\qquad u(x,t),\qquad p(x,t),
+\]
+where \(\rho\) is mass density, \(u\) is velocity, and \(p\) is pressure. A
+fluid particle can still be labelled by a material coordinate \(X\), with
+\[
+  x=\varphi(X,t),\qquad u(\varphi(X,t),t)=\partial_t\varphi(X,t).
+\]
+The Eulerian view keeps \(x\) fixed and watches fluid pass through; the
+Lagrangian view follows the particle labelled by \(X\).
+
+\begin{table}[htbp]
+\centering
+\caption{Fluid-mechanics notation. The symbol \(p\) denotes pressure in this
+chapter, not canonical momentum.}
+\label{tab:fluid-notation}
+\small
+\begin{tabular}{p{0.18\textwidth}p{0.48\textwidth}p{0.25\textwidth}}
+\toprule
+Symbol & Meaning & Type\\
+\midrule
+\(X\) & material label of a fluid particle & coordinate in reference region\\
+\(\varphi(X,t)\) & flow map & material-to-spatial map\\
+\(F^i{}_A\) & \(\partial\varphi^i/\partial X^A\) & deformation gradient of flow map\\
+\(J\) & \(\det F\) & local volume ratio\\
+\(x\) & Eulerian spatial position & point in physical space\\
+\(\rho(x,t)\) & mass density & scalar field\\
+\(u(x,t)\) & velocity & vector field\\
+\(p(x,t)\) & pressure & scalar field\\
+\(V(t)\) & material volume & moving region in space\\
+\(n\) & outward unit normal to a surface & vector field on boundary\\
+\(b(x,t)\) & body force per unit mass & vector field\\
+\(t(n)\) & surface traction on normal \(n\) & vector field\\
+\(\sigma\) & Cauchy stress tensor & \(3\times3\) tensor field\\
+\(D u/Dt\) & material acceleration & \(\partial_tu+u\cdot\nabla u\)\\
+\(D\) & rate-of-strain tensor & \(\frac12(\nabla u+\nabla u^T)\)\\
+\(W\) & antisymmetric spin tensor & \(\frac12(\nabla u-\nabla u^T)\)\\
+\(\omega\) & vorticity & \(\nabla\times u\)\\
+\(\mu\) & dynamic viscosity & \(ML^{-1}T^{-1}\)\\
+\(\nu\) & kinematic viscosity & \(\mu/\rho\)\\
+\(\lambda\) & second viscosity coefficient & stress coefficient\\
+\(U,L\) & characteristic velocity and length & nondimensionalization scales\\
+\(\mathrm{Re}\) & Reynolds number & \(UL/\nu\)\\
+\(\Omega\) & fixed spatial domain in energy estimates & subset of \(\R^3\)\\
+\(\gamma(t)\) & closed material loop & curve transported by the flow\\
+\(h,\Phi\) & specific enthalpy and conservative body-force potential & Kelvin theorem\\
+\(V(y),G\) & laminar profile and pressure-gradient magnitude & shear-flow sections\\
+\(\alpha,\sigma,\phi(y)\) & wave number, growth rate, normal-mode amplitude & Orr-Sommerfeld section\\
+\(\Gamma_i\) & point-vortex circulation & vortex strength\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{assumption}[Continuum fluid]
+The molecular scale is much smaller than the length scales being modelled, so
+density, velocity, pressure, and stress are treated as smooth fields. Across
+shocks, contact discontinuities, or interfaces, the differential equations must
+be replaced by weak forms and jump conditions.
+\end{assumption}
+
+\paragraph{Roadmap.}
+The derivation is deliberately staged. First we learn how to differentiate
+quantities attached to moving fluid parcels. Then we convert integral balance
+laws into local partial differential equations for mass and momentum. Only
+after those kinematic and balance statements are in place do we introduce the
+Newtonian constitutive law that turns Cauchy's momentum equation into the
+Navier-Stokes equation. The later sections use that equation in three ways:
+exact laminar solutions, stability analysis, and Hamiltonian point-vortex
+reduction.
+
+The staging matters because the Navier-Stokes equation is not a single
+assumption. Its inertial term is kinematics, its pressure and stress terms come
+from momentum balance, and its viscous term comes from the Newtonian
+constitutive law. Separating these ingredients makes it clear which part of the
+model changes when one studies inviscid flow, non-Newtonian fluids, elasticity,
+or low-Reynolds-number swimming.
+
+\paragraph{Derivation audit trail.}
+Every continuum equation below should be read with its conservation statement
+attached. The material derivative comes from following one labelled parcel.
+The Reynolds transport theorem converts derivatives of moving integrals into
+Eulerian fields. Mass conservation comes from conserving mass in every material
+volume. Cauchy's equation comes from momentum balance and the existence of a
+traction stress tensor. Navier-Stokes appears only after the Newtonian stress
+law is imposed. This audit trail is the best protection against treating
+\(\rho Du/Dt=-\nabla p+\mu\Delta u\) as an isolated formula rather than the
+endpoint of several modelling choices.
+
+\section{Material Derivative}
+\label{sec:material-derivative}
+
+If \(f(x,t)\) is a scalar or vector field, its value along a particle path
+\(x(t)=\varphi(X,t)\) changes as
+\[
+  \frac{\dd}{\dd t}f(x(t),t)
+  =
+  \partial_t f(x(t),t)+\dot x(t)\cdot\nabla f(x(t),t).
+\]
+Since \(\dot x=u(x(t),t)\), the material derivative is
+\[
+  \boxed{
+  \frac{D f}{D t}
+  =
+  \partial_t f+u\cdot\nabla f.
+  }
+\]
+For the velocity field itself,
+\[
+  \frac{D u}{D t}
+  =
+  \partial_tu+(u\cdot\nabla)u
+\]
+is the particle acceleration. The nonlinear term is kinematic: it appears even
+before any force law is chosen, because the velocity field is sampled along a
+moving trajectory.
+
+\section{Reynolds Transport Theorem}
+\label{sec:reynolds-transport}
+
+Let \(V(t)\) be a material volume: it moves with the fluid, so its boundary
+velocity is \(u\). For a scalar field \(f\), we want the time derivative of
+\[
+  I(t)=\int_{V(t)} f(x,t)\,\dd^3x.
+\]
+There are two sources of change. The value of \(f\) can change along each
+particle path, and the volume element occupied by neighboring particles can
+expand or contract. The Reynolds transport theorem is exactly the formula that
+keeps both effects.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[->] (-0.4,0) -- (6.8,0) node[right] {\(x^1\)};
+  \draw[->] (0,-0.4) -- (0,4.0) node[above] {\(x^2\)};
+  \draw[blue!70!black, thick, fill=blue!5]
+    (1.0,0.9) .. controls (1.8,0.35) and (3.2,0.55) .. (3.85,1.15)
+    .. controls (4.6,1.85) and (4.15,3.0) .. (3.0,3.2)
+    .. controls (1.75,3.45) and (0.75,2.45) .. (1.0,0.9);
+  \draw[red!75!black, thick, ->] (1.3,1.0) -- (1.75,0.55);
+  \draw[red!75!black, thick, ->] (3.9,1.45) -- (4.5,1.55);
+  \draw[red!75!black, thick, ->] (2.95,3.15) -- (3.15,3.75);
+  \draw[red!75!black, thick, ->] (0.9,2.4) -- (0.45,2.75);
+  \node[blue!70!black] at (2.45,2.0) {\(V(t)\)};
+  \node[red!75!black] at (5.25,2.85) {boundary velocity \(u\)};
+  \draw[red!75!black, ->] (4.75,2.65) -- (3.25,3.45);
+  \node[align=center] at (5.15,0.75)
+    {material points stay\\inside the moving volume};
+\end{tikzpicture}
+\caption{A material volume is carried by the fluid velocity. Its boundary
+velocity is \(u\), so the time derivative of an integral over \(V(t)\) must
+include both the material change of the integrand and the volume change
+measured by \(\nabla\cdot u\).}
+\label{fig:reynolds-material-volume}
+\end{figure}
+
+\begin{derivation}[Transport through a moving volume]
+Write \(V(t)=\varphi(U,t)\) for a fixed material region \(U\). Let
+\[
+  F^i{}_A=\frac{\partial\varphi^i}{\partial X^A},
+  \qquad
+  J=\det F.
+\]
+Changing variables gives
+\[
+  I(t)=\int_U f(\varphi(X,t),t)J(X,t)\,\dd^3X.
+\]
+Differentiate:
+\[
+  \dot I
+  =
+  \int_U
+  \left(
+    \frac{D f}{D t}J+f\dot J
+  \right)\dd^3X.
+\]
+The Jacobian identity is
+\[
+  \dot J=J\nabla\cdot u.
+\]
+One way to see it is Jacobi's formula:
+\[
+  \dot J=J\,\tr(F^{-1}\dot F),
+\]
+and \(\dot F^i{}_A=\partial_Au^i(\varphi,t)\), so
+\(\tr(F^{-1}\dot F)=\partial_i u^i\). Returning to spatial variables,
+\[
+  \boxed{
+  \frac{\dd}{\dd t}\int_{V(t)} f\,\dd^3x
+  =
+  \int_{V(t)}
+  \left(
+    \frac{D f}{D t}+f\nabla\cdot u
+  \right)\dd^3x
+  =
+  \int_{V(t)}
+  \left(
+    \partial_t f+\nabla\cdot(fu)
+  \right)\dd^3x.
+  }
+\]
+\end{derivation}
+
+The theorem separates two effects: the field \(f\) changes along particles, and
+the material volume expands or contracts.
+
+\section{Conservation Of Mass}
+\label{sec:mass-conservation}
+
+Mass in a material volume is constant:
+\[
+  \frac{\dd}{\dd t}\int_{V(t)}\rho\,\dd^3x=0.
+\]
+Using the transport theorem,
+\[
+  \int_{V(t)}
+  \left(
+    \partial_t\rho+\nabla\cdot(\rho u)
+  \right)\dd^3x=0.
+\]
+Because this holds for every material volume,
+\[
+  \boxed{
+  \partial_t\rho+\nabla\cdot(\rho u)=0.
+  }
+\]
+Equivalently,
+\[
+  \frac{D\rho}{Dt}+\rho\nabla\cdot u=0.
+\]
+For constant-density incompressible flow,
+\[
+  \boxed{\nabla\cdot u=0.}
+\]
+
+\section{Cauchy Momentum Balance}
+\label{sec:cauchy-momentum}
+
+Newton's second law for a material volume \(V(t)\) is
+\[
+  \frac{\dd}{\dd t}\int_{V(t)}\rho u\,\dd^3x
+  =
+  \int_{V(t)}\rho b\,\dd^3x
+  +
+  \int_{\partial V(t)} t(n)\,\dd S,
+\]
+where \(b\) is body force per unit mass and \(t(n)\) is surface traction on a
+surface whose outward unit normal is \(n\).
+
+\begin{assumption}[Cauchy stress hypothesis]
+The traction is local and linear in the normal:
+\[
+  t(n)=\sigma n,
+\]
+where \(\sigma_{ij}(x,t)\) is the Cauchy stress tensor. Balance of angular
+momentum, in the absence of couple stresses, implies
+\[
+  \sigma=\sigma^T.
+\]
+\end{assumption}
+
+\begin{derivation}[Local momentum equation]
+Apply the transport theorem to \(f=\rho u\). Using mass conservation, the
+left-hand side becomes
+\[
+\begin{aligned}
+  \frac{\dd}{\dd t}\int_{V(t)}\rho u\,\dd^3x
+  &=
+  \int_{V(t)}
+  \left(
+    \partial_t(\rho u)+\nabla\cdot(\rho u\otimes u)
+  \right)\dd^3x\\
+  &=
+  \int_{V(t)}
+  \rho\left(\partial_tu+u\cdot\nabla u\right)\dd^3x.
+\end{aligned}
+\]
+The traction term is converted by the divergence theorem:
+\[
+  \int_{\partial V(t)}\sigma n\,\dd S
+  =
+  \int_{V(t)}\nabla\cdot\sigma\,\dd^3x.
+\]
+Therefore
+\[
+  \int_{V(t)}
+  \left[
+    \rho\frac{D u}{D t}
+    -
+    \nabla\cdot\sigma
+    -
+    \rho b
+  \right]\dd^3x=0.
+\]
+Since \(V(t)\) is arbitrary,
+\[
+  \boxed{
+  \rho\frac{D u}{D t}=\nabla\cdot\sigma+\rho b.
+  }
+\]
+\end{derivation}
+
+This equation is not yet a closed fluid equation. It is a balance law. Closure
+comes from a constitutive relation for \(\sigma\).
+
+\section{Newtonian Stress And The Navier-Stokes Equation}
+\label{sec:navier-stokes-derivation}
+
+The balance laws so far are universal for continua, but they are not yet a
+closed fluid model: the stress tensor \(\sigma\) is still unknown. A
+constitutive law supplies the missing relation between stress and motion. For a
+simple Newtonian fluid, the stress may depend on the instantaneous rate of
+deformation but not on the accumulated shear history. This is the point at
+which fluids separate from elastic solids.
+
+The stress of a simple Newtonian fluid is assumed to depend locally and
+linearly on the instantaneous rate of deformation, not on the deformation
+itself. The velocity gradient splits into symmetric and antisymmetric parts:
+\[
+  \nabla u=D+W,
+  \qquad
+  D_{ij}=\frac12(\partial_i u_j+\partial_j u_i),
+  \qquad
+  W_{ij}=\frac12(\partial_i u_j-\partial_j u_i).
+\]
+The antisymmetric part \(W\) represents local rigid rotation. It should not
+produce viscous stress in an isotropic simple fluid. This statement is a
+constitutive assumption with three ingredients:
+\[
+\begin{array}{ll}
+\text{locality:} & \sigma(x,t) \text{ depends on } u \text{ through }
+  \nabla u(x,t),\\
+\text{objectivity:} & \text{superposed rigid rotations do not create stress},\\
+\text{isotropy:} & \text{there is no preferred material direction}.
+\end{array}
+\]
+Objectivity removes \(W\). Isotropy says that a linear map from the symmetric
+tensor \(D\) to a symmetric stress can only use the deviatoric part of \(D\)
+and its trace. The most general isotropic linear relation is therefore
+\[
+  \boxed{
+  \sigma=-pI+2\mu D+\lambda(\nabla\cdot u)I.
+  }
+\]
+Here \(p\) is pressure, \(\mu\geq0\) is shear viscosity, and \(\lambda\) is the
+second viscosity coefficient. For constant \(\mu,\lambda\),
+\[
+\begin{aligned}
+  (\nabla\cdot\sigma)_i
+  &=
+  -\partial_i p
+  +
+  \mu\partial_j(\partial_i u_j+\partial_j u_i)
+  +
+  \lambda\partial_i(\partial_k u_k)\\
+  &=
+  -\partial_i p
+  +
+  \mu\Delta u_i
+  +
+  (\lambda+\mu)\partial_i(\nabla\cdot u).
+\end{aligned}
+\]
+Thus the compressible Navier-Stokes momentum equation is
+\[
+  \boxed{
+  \rho
+  \left(
+    \partial_tu+u\cdot\nabla u
+  \right)
+  =
+  -\nabla p+\mu\Delta u+(\lambda+\mu)\nabla(\nabla\cdot u)+\rho b.
+  }
+\]
+Together with mass conservation, an equation of state, and an energy or
+temperature equation when needed, this describes a Newtonian compressible fluid.
+
+For incompressible flow with constant \(\rho\),
+\[
+  \nabla\cdot u=0,
+\]
+and the pressure is best understood as the Lagrange multiplier enforcing this
+constraint. The equations reduce to
+\[
+  \boxed{
+  \begin{aligned}
+  \rho(\partial_tu+u\cdot\nabla u)&=-\nabla p+\mu\Delta u+\rho b,\\
+  \nabla\cdot u&=0.
+  \end{aligned}
+  }
+\]
+
+Read the incompressible equations term by term. The material acceleration
+\(\partial_tu+u\cdot\nabla u\) is the acceleration of a moving fluid particle.
+The pressure gradient enforces the volume-preserving constraint and transmits
+normal stress. The Laplacian \(\nu\Delta u\) diffuses momentum. The body force
+adds external acceleration. This interpretation prevents a common mistake:
+pressure is not specified independently in incompressible flow; it is solved
+simultaneously with \(u\) so that \(\nabla\cdot u=0\) remains true.
+Taking the divergence of the incompressible momentum equation makes this
+constraint role explicit:
+\[
+  -\Delta p
+  =
+  \rho\,\nabla\cdot(u\cdot\nabla u)-\rho\,\nabla\cdot b,
+\]
+with boundary conditions determined by the normal component of the momentum
+equation at the wall. The pressure is therefore a nonlocal field: it adjusts
+instantaneously, within the incompressible model, to project the acceleration
+back onto divergence-free velocity fields.
+
+\section{Nondimensionalization And Reynolds Number}
+\label{sec:reynolds-number}
+
+Let \(U\) be a typical speed, \(L\) a typical length, and define
+\[
+  x=Lx',\qquad
+  t=\frac{L}{U}t',\qquad
+  u=Uu',\qquad
+  p=\rho U^2p'.
+\]
+Dropping primes, the incompressible Navier-Stokes equation without body force
+becomes
+\[
+  \partial_tu+u\cdot\nabla u
+  =
+  -\nabla p+\frac1{\mathrm{Re}}\Delta u,
+  \qquad
+  \nabla\cdot u=0,
+\]
+where
+\[
+  \boxed{\mathrm{Re}=\frac{UL}{\nu}},\qquad \nu=\frac{\mu}{\rho}.
+\]
+The Reynolds number compares inertial transport to viscous diffusion. Small
+\(\mathrm{Re}\) flow is viscously dominated and often reversible in time after
+the velocity is reversed. Large \(\mathrm{Re}\) flow can carry disturbances
+long distances before viscosity damps them.
+
+\section{Energy Identity And Viscous Dissipation}
+\label{sec:fluid-energy-identity}
+
+For a smooth incompressible solution in a fixed domain \(\Omega\), assume either
+periodic boundary conditions or no-slip walls \(u=0\) on \(\partial\Omega\).
+Dot the Navier-Stokes equation with \(u\) and integrate:
+\[
+  \rho\int_\Omega u\cdot\partial_tu\,\dd^3x
+  +
+  \rho\int_\Omega u\cdot(u\cdot\nabla u)\,\dd^3x
+  =
+  -\int_\Omega u\cdot\nabla p\,\dd^3x
+  +
+  \mu\int_\Omega u\cdot\Delta u\,\dd^3x.
+\]
+The nonlinear term is a divergence:
+\[
+  u\cdot(u\cdot\nabla u)=u\cdot\nabla\left(\frac12\norm u^2\right)
+  =
+  \nabla\cdot\left(\frac12\norm u^2u\right),
+\]
+because \(\nabla\cdot u=0\). The pressure term is also a divergence:
+\[
+  u\cdot\nabla p=\nabla\cdot(pu).
+\]
+The boundary conditions remove both boundary fluxes. Integration by parts gives
+\[
+  \int_\Omega u\cdot\Delta u\,\dd^3x
+  =
+  -\int_\Omega |\nabla u|^2\,\dd^3x.
+\]
+Hence
+\[
+  \boxed{
+  \frac{\dd}{\dd t}
+  \int_\Omega \frac12\rho\norm u^2\,\dd^3x
+  =
+  -\mu\int_\Omega |\nabla u|^2\,\dd^3x\leq0.
+  }
+\]
+Viscosity irreversibly converts organized kinetic energy into heat. This
+identity is also the first stability estimate for laminar flows: disturbances
+must draw energy from mean shear fast enough to beat viscous dissipation.
+
+\section{Vorticity And Circulation}
+\label{sec:vorticity-circulation}
+
+The vorticity is
+\[
+  \omega=\nabla\times u.
+\]
+Taking the curl of the incompressible Navier-Stokes equation gives
+\[
+  \boxed{
+  \partial_t\omega+u\cdot\nabla\omega
+  =
+  \omega\cdot\nabla u+\nu\Delta\omega.
+  }
+\]
+The term \(\omega\cdot\nabla u\) stretches and tilts vortex lines in three
+dimensions. In two dimensions, vorticity is perpendicular to the plane and the
+stretching term vanishes:
+\[
+  \partial_t\omega+u\cdot\nabla\omega=\nu\Delta\omega.
+\]
+This contrast is central. Two-dimensional inviscid vorticity is transported
+like a scalar dye, which creates many conserved quantities. Three-dimensional
+vorticity can be stretched by the flow itself, allowing vortex intensification
+and making the analysis of Navier-Stokes much harder.
+For \(\nu=0\), vorticity is transported by the flow.
+
+\begin{proposition}[Kelvin circulation theorem]
+Let \(\gamma(t)\) be a closed material loop moving with an inviscid barotropic
+fluid under conservative body forces. Then
+\[
+  \frac{\dd}{\dd t}\oint_{\gamma(t)}u\cdot \dd x=0.
+\]
+\end{proposition}
+
+\begin{proof}
+Parametrize the loop by \(s\mapsto x(s,t)\), with
+\[
+  \partial_t x(s,t)=u(x(s,t),t).
+\]
+Then
+\[
+  \frac{\dd}{\dd t}\oint u\cdot \partial_sx\,\dd s
+  =
+  \oint
+  \left(
+    \frac{D u}{D t}\cdot \partial_sx
+    +
+    u\cdot\partial_su
+  \right)\dd s.
+\]
+For inviscid barotropic flow with conservative potential \(\Phi\),
+\[
+  \frac{D u}{D t}=-\nabla h-\nabla\Phi,
+\]
+where \(h\) is specific enthalpy. The integrand becomes
+\[
+  \partial_s\left(
+    -h-\Phi+\frac12\norm u^2
+  \right).
+\]
+The integral of a single-valued total derivative around a closed loop is zero.
+\end{proof}
+
+\section{Laminar Flow Solutions}
+\label{sec:laminar-solutions}
+
+Laminar solutions are exact, organized solutions of Navier-Stokes. They are
+important not because all flows are laminar, but because stability theory asks
+which organized solutions persist under disturbance.
+Each solution follows from three choices: geometry, boundary conditions, and
+pressure gradient or wall motion. Changing any one of these choices changes the
+profile and the instability problem.
+
+\subsection{Plane Couette Flow}
+\label{subsec:plane-couette}
+
+Two infinite plates are separated by distance \(h\). The lower plate is fixed;
+the upper plate moves with velocity \(Ue_x\). Seek a steady parallel flow
+\[
+  u=(V(y),0,0),\qquad p=\text{constant}.
+\]
+The incompressibility condition is automatic. The \(x\)-momentum equation is
+\[
+  0=\mu V''(y),
+\]
+with boundary conditions \(V(0)=0\), \(V(h)=U\). Thus
+\[
+  \boxed{V(y)=U\frac{y}{h}.}
+\]
+The shear stress is constant:
+\[
+  \sigma_{xy}=\mu V'(y)=\mu\frac{U}{h}.
+\]
+
+\subsection{Plane Poiseuille Flow}
+\label{subsec:plane-poiseuille}
+
+Now both plates are fixed and a pressure gradient drives the flow. Let
+\[
+  u=(V(y),0,0),
+  \qquad
+  -\frac{\dd p}{\dd x}=G>0,
+  \qquad
+  0<y<h.
+\]
+The steady \(x\)-momentum equation is
+\[
+  0=-\frac{\dd p}{\dd x}+\mu V''(y)=G+\mu V''(y),
+\]
+so
+\[
+  V''(y)=-\frac{G}{\mu}.
+\]
+With no-slip conditions \(V(0)=V(h)=0\),
+\[
+  \boxed{
+  V(y)=\frac{G}{2\mu}y(h-y).
+  }
+\]
+The maximum speed occurs at \(y=h/2\):
+\[
+  V_{\max}=\frac{Gh^2}{8\mu}.
+\]
+The volume flux per unit span is
+\[
+  Q=\int_0^h V(y)\,\dd y
+  =
+  \frac{Gh^3}{12\mu}.
+\]
+
+\subsection{Hagen-Poiseuille Pipe Flow}
+\label{subsec:hagen-poiseuille}
+
+For a circular pipe of radius \(a\), use cylindrical radius \(r\) and seek
+\[
+  u=V(r)e_z,\qquad -\frac{\dd p}{\dd z}=G>0.
+\]
+The axial equation is
+\[
+  0=G+\mu\frac1r\frac{\dd}{\dd r}
+  \left(
+    r\frac{\dd V}{\dd r}
+  \right).
+\]
+Regularity at \(r=0\) and no slip at \(r=a\) give
+\[
+  \boxed{
+  V(r)=\frac{G}{4\mu}(a^2-r^2).
+  }
+\]
+The flux is
+\[
+  Q=2\pi\int_0^a V(r)r\,\dd r
+  =
+  \boxed{\frac{\pi a^4G}{8\mu}}.
+\]
+The fourth power in \(a\) is one of the most important practical consequences
+of viscous laminar flow.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[->] (-0.25,0) -- (-0.25,3.25) node[above] {\(y\)};
+  \draw[->] (-0.25,0) -- (1.2,0) node[right] {\(x\)};
+  \draw[thick] (0,0) -- (3.0,0);
+  \draw[thick] (0,3.0) -- (3.0,3.0);
+  \draw[->, thick, black!70] (2.1,3.18) -- (2.8,3.18) node[right] {wall speed \(U\)};
+  \foreach \y/\len in {0.45/0.25,0.95/0.55,1.45/0.85,1.95/1.15,2.45/1.45}
+    \draw[blue, thick, ->] (0.35,\y) -- ++(\len,0);
+  \node[blue] at (1.5,3.45) {Couette};
+  \node at (1.5,-0.35) {\(V(0)=0,\ V(h)=U\)};
+
+  \begin{scope}[xshift=4.4cm]
+    \draw[thick] (0,0) -- (3.0,0);
+    \draw[thick] (0,3.0) -- (3.0,3.0);
+    \draw[->, thick, black!70] (0.25,3.25) -- (1.35,3.25)
+      node[right] {\(-\partial_xp=G\)};
+    \foreach \y/\len in {0.45/0.45,0.95/1.05,1.50/1.45,2.05/1.05,2.55/0.45}
+      \draw[red!75!black, thick, ->] (0.35,\y) -- ++(\len,0);
+    \node[red!75!black] at (1.5,3.45) {Poiseuille};
+    \node at (1.5,-0.35) {\(V(0)=V(h)=0\)};
+  \end{scope}
+\end{tikzpicture}
+\caption{Couette flow is linear because it is driven by wall motion. Poiseuille
+flow is parabolic because it balances pressure forcing against viscous
+diffusion of momentum. The arrows are spatial velocity vectors, not a graph
+with velocity on the vertical axis.}
+\label{fig:couette-poiseuille-profiles}
+\end{figure}
+
+\section{Linear Stability Of Laminar Shear Flow}
+\label{sec:linear-stability-shear}
+
+Let a steady base flow be
+\[
+  U(y)e_x.
+\]
+Write a small perturbation as
+\[
+  u=U(y)e_x+\tilde u,\qquad
+  p=P(x)+\tilde p,
+\]
+and retain only terms linear in \(\tilde u\). In nondimensional variables,
+\[
+  \boxed{
+  \partial_t\tilde u
+  +
+  U\partial_x\tilde u
+  +
+  \tilde v\,U'(y)e_x
+  =
+  -\nabla\tilde p
+  +
+  \frac1{\mathrm{Re}}\Delta\tilde u,
+  \qquad
+  \nabla\cdot\tilde u=0.
+  }
+\]
+The term \(\tilde v\,U'e_x\) is the mechanism by which cross-stream velocity
+tilts fluid into faster or slower parts of the mean shear and extracts energy
+from the base flow.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[->] (-0.25,0) -- (-0.25,3.4) node[above] {\(y\)};
+  \draw[->] (-0.25,0) -- (5.9,0) node[right] {\(x\)};
+  \draw[thick] (0,0.35) -- (5.3,0.35);
+  \draw[thick] (0,3.05) -- (5.3,3.05);
+  \foreach \y/\len in {0.65/0.35,1.10/0.62,1.55/0.92,2.00/1.25,2.45/1.55,2.85/1.8}
+    \draw[blue!70!black, thick, ->] (0.45,\y) -- ++(\len,0);
+  \draw[red!75!black, thick, ->] (2.75,1.15) -- (2.75,2.05)
+    node[midway,right] {\(\tilde v\)};
+  \draw[red!75!black, thick, ->] (2.75,2.05) -- (3.55,2.05)
+    node[right] {\(\tilde v\,U'(y)e_x\)};
+  \draw[purple!75!black, thick, domain=0.3:5.0, samples=120]
+    plot (\x,{1.75+0.22*sin(115*\x)});
+  \node[blue!70!black] at (4.25,2.75) {base shear \(U(y)e_x\)};
+  \node[purple!75!black] at (4.0,1.25) {normal-mode disturbance};
+\end{tikzpicture}
+\caption{Linear shear-flow stability. A wall-normal perturbation velocity
+\(\tilde v\) moves fluid across the base shear; the term
+\(\tilde v\,U'(y)e_x\) is the linear energy-exchange channel between the base
+flow and the disturbance.}
+\label{fig:shear-stability-mechanism}
+\end{figure}
+
+\subsection{Orr-Sommerfeld Equation}
+\label{subsec:orr-sommerfeld}
+
+For two-dimensional perturbations, introduce a streamfunction
+\[
+  \tilde u=\partial_y\psi,\qquad
+  \tilde v=-\partial_x\psi.
+\]
+Seek normal modes
+\[
+  \psi(x,y,t)=\phi(y)e^{i\alpha x+\sigma t}.
+\]
+Taking the curl of the linearized equation removes pressure and gives the
+linear vorticity equation. Since the perturbation vorticity is
+\[
+  \tilde\omega_z
+  =
+  \partial_x\tilde v-\partial_y\tilde u
+  =
+  -(\partial_y^2-\alpha^2)\phi\,e^{i\alpha x+\sigma t},
+\]
+substitution gives a fourth-order eigenvalue equation for the wall-normal
+shape \(\phi(y)\):
+\[
+  \boxed{
+  (\sigma+i\alpha U)(D^2-\alpha^2)\phi
+  -
+  i\alpha U''\phi
+  =
+  \frac1{\mathrm{Re}}(D^2-\alpha^2)^2\phi,
+  }
+\]
+where \(D=\dd/\dd y\). No-slip and no-penetration at walls give
+\[
+  \phi=0,\qquad D\phi=0
+\]
+at the walls. This fourth-order eigenvalue problem is the
+Orr-Sommerfeld equation. A base flow is linearly unstable if some eigenvalue has
+\[
+  \operatorname{Re}\sigma>0.
+\]
+Many fluid-mechanics texts write the same normal mode as
+\(e^{i\alpha(x-ct)}\). With the convention used here, the complex phase speed
+\(c\) and growth rate \(\sigma\) are related by
+\[
+  \sigma=-i\alpha c,
+\]
+so \(\operatorname{Re}\sigma=\alpha\,\operatorname{Im}c\) for real
+\(\alpha\).
+
+\begin{remark}[Classical facts]
+Plane Poiseuille flow has a linear instability above a critical Reynolds number
+about \(5772\), using centerline speed and half-channel width. Plane Couette
+flow is linearly stable for all Reynolds numbers in the classical
+Orr-Sommerfeld analysis, yet it can transition through finite-amplitude
+disturbances. Stability is therefore not a single concept: linear eigenvalue
+stability, energy stability, transient growth, and nonlinear transition answer
+different questions.
+\end{remark}
+
+\subsection{Energy Stability Estimate}
+\label{subsec:energy-stability}
+
+For perturbations of a parallel flow, the kinetic energy of the disturbance
+satisfies
+\[
+  \frac12\frac{\dd}{\dd t}\int_\Omega |\tilde u|^2\,\dd^3x
+  =
+  -\int_\Omega \tilde u\,\tilde v\,U'(y)\,\dd^3x
+  -
+  \frac1{\mathrm{Re}}
+  \int_\Omega |\nabla\tilde u|^2\,\dd^3x.
+\]
+The second term is viscous dissipation. The first is production by mean shear.
+If dissipation dominates production for all admissible perturbations, the base
+flow is energy stable. If not, the estimate does not prove instability, but it
+reveals the only possible energy source for perturbation growth.
+
+\section{Point Vortices As A Hamiltonian Fluid Model}
+\label{sec:point-vortices}
+
+In two dimensions, an idealized vorticity distribution can be written as
+\[
+  \omega(x,y)=\sum_{i=1}^{N}\Gamma_i\delta(x-x_i,y-y_i),
+\]
+where \(\Gamma_i\) is circulation. The point vortex equations are
+\[
+\begin{aligned}
+  \Gamma_i\dot x_i &= \frac{\partial H}{\partial y_i},\\
+  \Gamma_i\dot y_i &= -\frac{\partial H}{\partial x_i},
+\end{aligned}
+\]
+with Hamiltonian
+\[
+  H
+  =
+  -\frac{1}{4\pi}
+  \sum_{i<j}\Gamma_i\Gamma_j
+  \log\left((x_i-x_j)^2+(y_i-y_j)^2\right).
+\]
+This is Hamiltonian mechanics, but the symplectic form is weighted:
+\[
+  \omega_{\mathrm{vortex}}
+  =
+  \sum_i \Gamma_i\,\dd x_i\wedge\dd y_i.
+\]
+The weight \(\Gamma_i\) is the circulation carried by the \(i\)-th vortex. One
+can derive this finite-dimensional symplectic form by reducing the ideal-fluid
+Hamiltonian bracket to delta-function vorticity; here we take the reduced
+point-vortex bracket as the model.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.05, >=Latex]
+  \draw[->] (-2.5,0) -- (2.7,0) node[right] {\(x\)};
+  \draw[->] (0,-2.2) -- (0,2.4) node[above] {\(y\)};
+  \foreach \x/\y/\g/\lab in {-0.65/-0.35/+/\Gamma,0.65/0.35/-/-\Gamma}
+  {
+    \draw[thick] (\x,\y) circle (0.16);
+    \node at (\x,\y) {\(\g\)};
+    \node[above right] at (\x,\y) {\(\lab\)};
+  }
+  \draw[blue, thick, ->] (-1.7,-0.35) -- (1.45,-0.35);
+  \draw[blue, thick, ->] (-0.4,0.35) -- (2.75,0.35);
+  \draw[dashed] (-0.65,-0.35) -- (0.65,0.35);
+  \draw[<->] (-0.65,-0.62) -- (0.65,0.08) node[midway, below right] {separation};
+  \node at (0,-1.75) {a vortex dipole translates by mutual induction};
+\end{tikzpicture}
+\caption{A vortex dipole is the simplest point-vortex motion: the two vortices
+translate together with fixed separation. More complicated point-vortex
+systems give finite-dimensional Hamiltonian models of ideal-fluid motion.}
+\label{fig:vortex-dipole}
+\end{figure}
+
+\section{What To Take Forward}
+\label{sec:fluid-take-forward}
+
+\begin{itemize}
+\item The material derivative is the bridge between following particles and
+describing fields at fixed spatial points.
+\item Conservation of mass and momentum are balance laws before they are
+differential equations; the local PDEs come from applying the divergence theorem
+to arbitrary moving volumes.
+\item Navier-Stokes is Cauchy momentum balance plus the Newtonian stress law.
+Changing the constitutive law changes the continuum model.
+\item The Reynolds number compares inertial transport with viscous diffusion of
+momentum. It is the organizing scale behind laminar solutions, instabilities,
+and transition.
+\item Point vortices show that Hamiltonian structure survives inside fluid
+mechanics after a strong but explicit reduction.
+\end{itemize}
+
+\section{Associated Demos}
+\label{sec:fluid-associated-demos}
+
+\begin{itemize}
+\item \path{demos/python/fluids_vorticity.py}, a point-vortex Hamiltonian model.
+\item \path{demos/python/hamiltonian_pendulum.py}, useful for comparing
+separatrix geometry with shear-flow stability.
+\item Suggested extension: a numerical Orr-Sommerfeld spectrum for Couette and
+Poiseuille flow.
+\end{itemize}

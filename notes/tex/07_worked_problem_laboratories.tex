@@ -1,0 +1,953 @@
+\chapter{Worked Problem Laboratories}
+\label{chap:worked-problem-labs}
+
+\section{Purpose And Scope}
+\label{sec:worked-problem-labs-purpose}
+
+This chapter collects self-contained lecture-note laboratories. Each laboratory
+has a precise model, a defined notation set, and a derivation that can be read
+from the definitions and assumptions given here. The examples are intentionally
+varied: they show how the abstract machinery in the earlier chapters behaves
+when used on concrete mechanics problems.
+
+\begin{table}[htbp]
+\centering
+\caption{Notation used in the worked problem laboratories. Local definitions in
+each section override this table when stated.}
+\label{tab:worked-lab-notation}
+\small
+\begin{tabular}{p{0.18\textwidth}p{0.48\textwidth}p{0.25\textwidth}}
+\toprule
+Symbol & Meaning & Type\\
+\midrule
+\(s^a\) & new generalized coordinates under a point transformation & coordinates on \(Q\)\\
+\(q^i\) & old generalized coordinates & coordinates on \(Q\)\\
+\(V(x)\) & one-dimensional potential energy & scalar function\\
+\(\gamma\) & damping coefficient in the oscillator example & inverse time\\
+\(\omega\) & imposed angular speed in rotating-hoop example & inverse time\\
+\(a\) & hoop radius or semimajor axis depending on section & locally defined\\
+\(R,r\) & cylinder radii or Schwarzschild length/radius depending on section & locally defined\\
+\(N\) & normal force in rolling-contact examples & force\\
+\(A(r)\) & \(1-R/r\) in the Schwarzschild-type example & dimensionless\\
+\(E,L_z\) & conserved energy and angular momentum in central examples & constants of motion\\
+\(H_{\mathrm{HH}}\) & Henon-Heiles Hamiltonian & Hamiltonian function\\
+\(\lambda_{\mathrm{HH}}\) & Henon-Heiles perturbation strength & small parameter\\
+\(I_i,\theta_i\) & oscillator actions and angles & canonical coordinates\\
+\(r_i,v_i\) & positions and velocities of three equal masses & vectors in \(\R^2\)\\
+\(m,k\) & mass and Newtonian coupling in three-body lab & positive constants\\
+\(\alpha,\beta\) & internal rotor angles in the helicopter lab & shape coordinates\\
+\(\mathcal A_\alpha,\mathcal A_\beta\) & gauge connection components over rotor shape space & \(\mathfrak{so}(3)\)-valued\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{How to use this chapter.}
+Each laboratory is deliberately small, but each one isolates a recurring
+mechanics move: change coordinates, test regularity, encode dissipation with
+time dependence, reduce a constrained rolling problem, test circular-orbit
+stability, expose resonance, or reconstruct motion from a gauge connection.
+The value of the chapter is cumulative. A reader should be able to take the
+workflow of one section and recognize the same workflow in a more complicated
+system later.
+
+Each laboratory should be read with three questions in mind. What is the
+minimal model? What calculation turns the model into a diagnostic quantity?
+What would fail if one of the assumptions were changed? These questions are
+what turn a worked example into a reusable method rather than a solved problem
+to memorize.
+
+\paragraph{How figures function in this chapter.}
+The figures are not decorative summaries after the calculation. Each one is
+attached to a modelling decision: a coordinate choice, a constraint force, an
+effective potential, a phase-space section, an initial-data geometry, or a
+gauge loop. When using these laboratories as exercise problems, the figure
+should be read before the algebra and then checked again after the final boxed
+result. If a student cannot say which equation the figure represents, the
+problem has not yet been understood geometrically.
+
+\section{Form-Invariance Of Lagrange Equations}
+\label{sec:lab-point-transformations}
+
+We begin with the coordinate-independence of the Euler-Lagrange equations. Let
+\[
+  q^i=q^i(s^1,\ldots,s^n,t)
+\]
+be a regular time-dependent point transformation. Regular means that the
+Jacobian \(\partial q^i/\partial s^a\) has rank \(n\). The transformed
+Lagrangian is
+\[
+  L'(s,\dot s,t)=L(q(s,t),\dot q(s,\dot s,t),t),
+\]
+where
+\[
+  \dot q^i
+  =
+  \frac{\partial q^i}{\partial s^a}\dot s^a
+  +
+  \frac{\partial q^i}{\partial t}.
+\]
+Two elementary identities do the work:
+\[
+  \frac{\partial \dot q^i}{\partial \dot s^a}
+  =
+  \frac{\partial q^i}{\partial s^a},
+  \qquad
+  \frac{\dd}{\dd t}
+  \left(
+    \frac{\partial q^i}{\partial s^a}
+  \right)
+  =
+  \frac{\partial \dot q^i}{\partial s^a}.
+\]
+Using the chain rule,
+\[
+  \frac{\partial L'}{\partial \dot s^a}
+  =
+  \frac{\partial L}{\partial \dot q^i}
+  \frac{\partial q^i}{\partial s^a},
+\]
+and
+\[
+  \frac{\partial L'}{\partial s^a}
+  =
+  \frac{\partial L}{\partial q^i}
+  \frac{\partial q^i}{\partial s^a}
+  +
+  \frac{\partial L}{\partial \dot q^i}
+  \frac{\partial \dot q^i}{\partial s^a}.
+\]
+Therefore
+\[
+\begin{aligned}
+  \frac{\dd}{\dd t}\frac{\partial L'}{\partial \dot s^a}
+  -
+  \frac{\partial L'}{\partial s^a}
+  &=
+  \left(
+    \frac{\dd}{\dd t}\frac{\partial L}{\partial\dot q^i}
+    -
+    \frac{\partial L}{\partial q^i}
+  \right)
+  \frac{\partial q^i}{\partial s^a}.
+\end{aligned}
+\]
+If \(q(t)\) satisfies the Euler-Lagrange equations, the right side vanishes;
+if the transformation is regular, the converse holds as well. Thus the
+Euler-Lagrange equation is not tied to a preferred coordinate system.
+
+\section{A Nonstandard Lagrangian And Regularity}
+\label{sec:lab-nonstandard-lagrangian}
+
+This laboratory separates two ideas that are often conflated. A Lagrangian may
+produce a familiar-looking equation of motion and still fail to be globally
+regular. Regularity is a statement about whether velocities can be solved from
+momenta. Without it, the Legendre transform can fold phase space and the
+Hamiltonian description must be handled with care.
+
+Consider the one-dimensional Lagrangian
+\[
+  L(x,\dot x)
+  =
+  \frac{m^2\dot x^4}{12}
+  +
+  m\dot x^2V(x)
+  -
+  V(x)^2.
+\]
+The momentum is
+\[
+  p=\frac{\partial L}{\partial\dot x}
+  =
+  \frac{m^2}{3}\dot x^3+2mV\dot x.
+\]
+The Euler-Lagrange equation gives
+\[
+\begin{aligned}
+  0
+  &=
+  \frac{\dd}{\dd t}
+  \left(
+    \frac{m^2}{3}\dot x^3+2mV\dot x
+  \right)
+  -
+  \left(
+    m\dot x^2V'-2VV'
+  \right)\\
+  &=
+  (m\dot x^2+2V)(m\ddot x+V').
+\end{aligned}
+\]
+There are two branches. The Newtonian branch is
+\[
+  m\ddot x=-V'(x).
+\]
+The second branch,
+\[
+  m\dot x^2+2V(x)=0,
+\]
+is a singular energy-surface condition. The velocity Hessian
+\[
+  \frac{\partial^2L}{\partial\dot x^2}
+  =
+  m(m\dot x^2+2V)
+\]
+vanishes on this second branch. This example is a useful warning: a Lagrangian
+can produce familiar equations on a regular branch while being singular on
+another branch. Regularity is not decorative; it is what lets the Legendre
+transform define a Hamiltonian system.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[->] (-3.0,0) -- (3.15,0) node[right] {\(\dot x\)};
+  \draw[->] (0,-2.2) -- (0,2.25) node[above] {\(p\)};
+  \draw[blue!70!black, thick, domain=-2.55:2.55, samples=180]
+    plot (\x,{0.33*\x*\x*\x-0.9*\x});
+  \draw[dashed, red!75!black] (-0.95,-1.9) -- (-0.95,1.9);
+  \draw[dashed, red!75!black] (0.95,-1.9) -- (0.95,1.9);
+  \fill[red!75!black] (-0.95,0.57) circle (1.3pt)
+    node[above left] {\(W=0\)};
+  \fill[red!75!black] (0.95,-0.57) circle (1.3pt)
+    node[below right] {\(W=0\)};
+  \draw[decorate, decoration={brace, amplitude=5pt}]
+    (-0.95,-1.15) -- (0.95,-1.15)
+    node[midway, below=7pt] {multi-valued velocity branch};
+  \node[blue!70!black, align=center] at (2.05,1.45)
+    {folded\\Legendre map};
+\end{tikzpicture}
+\caption{Nonstandard Lagrangian laboratory. For a representative region with
+\(V<0\), the momentum-velocity map can fold where the velocity Hessian
+\(W=\partial^2L/\partial\dot x^2\) vanishes. At such points the Legendre
+transform is not locally invertible, even though the Euler-Lagrange equation has
+a familiar Newtonian branch.}
+\label{fig:lab-nonstandard-legendre-fold}
+\end{figure}
+\FloatBarrier
+
+\section{Damped Oscillator From A Time-Dependent Lagrangian}
+\label{sec:lab-damped-oscillator}
+
+Let
+\[
+  L(q,\dot q,t)
+  =
+  e^{\gamma t}
+  \left(
+    \frac12m\dot q^2-\frac12kq^2
+  \right).
+\]
+The Euler-Lagrange equation is
+\[
+  \frac{\dd}{\dd t}(e^{\gamma t}m\dot q)+e^{\gamma t}kq=0,
+\]
+or
+\[
+  \boxed{
+  m\ddot q+m\gamma\dot q+kq=0.
+  }
+\]
+Although this is a dissipative equation, it comes from a time-dependent
+Lagrangian. The canonical energy is not conserved because \(L\) depends
+explicitly on time.
+
+Set
+\[
+  s=e^{\gamma t/2}q,
+  \qquad
+  q=e^{-\gamma t/2}s.
+\]
+Then
+\[
+  \dot q=e^{-\gamma t/2}\left(\dot s-\frac{\gamma}{2}s\right).
+\]
+Substituting into the action gives
+\[
+  L
+  =
+  \frac12m\left(\dot s-\frac{\gamma}{2}s\right)^2
+  -
+  \frac12ks^2.
+\]
+The cross term is a total derivative:
+\[
+  -\frac12m\gamma s\dot s
+  =
+  -\frac{\dd}{\dd t}\left(\frac14m\gamma s^2\right).
+\]
+Discarding that total derivative, the equivalent Lagrangian is
+\[
+  L_{\mathrm{eff}}
+  =
+  \frac12m\dot s^2
+  -
+  \frac12m
+  \left(
+    \frac{k}{m}-\frac{\gamma^2}{4}
+  \right)s^2.
+\]
+Thus
+\[
+  \ddot s+\left(\frac{k}{m}-\frac{\gamma^2}{4}\right)s=0.
+\]
+The transformation has moved damping into a shifted oscillator frequency.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[->] (-0.2,0) -- (6.45,0) node[right] {\(t\)};
+  \draw[->] (0,-1.45) -- (0,1.6) node[above] {amplitude};
+  \draw[blue!70!black, dashed, domain=0:6.0, samples=120]
+    plot (\x,{1.10*exp(-0.22*\x)});
+  \draw[blue!70!black, dashed, domain=0:6.0, samples=120]
+    plot (\x,{-1.10*exp(-0.22*\x)});
+  \draw[blue!70!black, thick, domain=0:6.0, samples=180]
+    plot (\x,{1.10*exp(-0.22*\x)*cos(2.7*\x r)});
+  \draw[red!75!black, thick, domain=0:6.0, samples=180]
+    plot (\x,{1.10*cos(2.7*\x r)});
+  \node[blue!70!black] at (4.7,0.43) {\(q(t)\)};
+  \node[red!75!black] at (4.5,1.25) {\(s=e^{\gamma t/2}q\)};
+  \node[align=center] at (3.2,-1.85)
+    {rescaling absorbs the exponential damping envelope};
+\end{tikzpicture}
+\caption{Damped-oscillator laboratory. In the original coordinate \(q\), the
+motion has a decaying envelope. The rescaled coordinate \(s=e^{\gamma t/2}q\)
+obeys an undamped oscillator equation with shifted frequency.}
+\label{fig:lab-damped-oscillator-rescaling}
+\end{figure}
+\FloatBarrier
+
+\section{Rotating Hoop: Effective Potential And Bifurcation}
+\label{sec:lab-rotating-hoop}
+
+A bead of mass \(m\) moves without friction on a hoop of radius \(a\). The hoop
+is vertical and rotates about its vertical diameter with imposed angular speed
+\(\omega\). Let \(\theta\) be the angle of the bead measured from the downward
+vertical. The bead position has speed
+\[
+  v^2=a^2\dot\theta^2+a^2\omega^2\sin^2\theta.
+\]
+The Lagrangian is
+\[
+  L
+  =
+  \frac12ma^2\dot\theta^2
+  +
+  \frac12ma^2\omega^2\sin^2\theta
+  +
+  mga\cos\theta.
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \begin{scope}
+    \draw[->] (0,-2.05) -- (0,2.25) node[above] {rotation axis};
+    \draw[dashed] (0,-1.85) -- (0,1.85);
+    \draw[thick] (0,0) circle (1.65);
+    \draw[fill=red!70!black] (1.17,-1.17) circle (0.09);
+    \draw[thick] (0,0) -- (1.17,-1.17);
+    \draw[->] (0,-0.75) arc (-90:-45:0.75);
+    \node at (0.55,-0.95) {\(\theta\)};
+    \draw[->, blue!70!black] (1.17,-1.17) -- (1.75,-1.17)
+      node[right] {azimuthal speed \(a\omega\sin\theta\)};
+    \node[below] at (0,-1.72) {downward vertical};
+    \node at (0,-2.45) {bead on rotating vertical hoop};
+  \end{scope}
+  \begin{scope}[xshift=5.0cm]
+    \draw[->] (-2.0,0) -- (2.0,0) node[right] {\(\theta\)};
+    \draw[->] (0,-1.5) -- (0,1.55) node[above] {\(V_{\mathrm{eff}}\)};
+    \draw[gray!60] (-1.55,-0.05) -- (-1.55,0.05) node[below=3pt] {\(-\pi\)};
+    \draw[gray!60] (1.55,-0.05) -- (1.55,0.05) node[below=3pt] {\(\pi\)};
+    \draw[blue!70!black, thick, domain=-1.65:1.65, samples=140]
+      plot (\x,{-0.35*sin(2*\x r)*sin(2*\x r)-0.80*cos(2*\x r)});
+    \draw[red!75!black, thick, domain=-1.65:1.65, samples=140]
+      plot (\x,{-0.95*sin(2*\x r)*sin(2*\x r)-0.45*cos(2*\x r)+0.25});
+    \node[blue!70!black, align=center] at (-1.25,1.15)
+      {\(\omega<\omega_c\)\\one minimum};
+    \node[red!75!black, align=center] at (1.2,1.15)
+      {\(\omega>\omega_c\)\\two minima};
+  \end{scope}
+\end{tikzpicture}
+\caption{Rotating-hoop laboratory. The geometry fixes the kinetic term
+\(a^2\omega^2\sin^2\theta\), and the effective potential changes from one
+bottom minimum to two off-bottom minima when \(\omega\) crosses
+\(\omega_c=\sqrt{g/a}\). The potential curves are schematic and emphasize the
+bifurcation, not numerical scale.}
+\label{fig:lab-rotating-hoop}
+\end{figure}
+\FloatBarrier
+
+This is a one-dimensional system with effective potential
+\[
+  V_{\mathrm{eff}}(\theta)
+  =
+  -\frac12ma^2\omega^2\sin^2\theta
+  -
+  mga\cos\theta.
+\]
+Equilibria satisfy
+\[
+  \frac{\dd V_{\mathrm{eff}}}{\dd\theta}
+  =
+  ma\sin\theta(g-a\omega^2\cos\theta)=0.
+\]
+Thus either
+\[
+  \theta=0,\pi,
+\]
+or
+\[
+  \cos\theta=\frac{g}{a\omega^2}.
+\]
+The off-bottom equilibria exist only when
+\[
+  \omega\geq\omega_c=\sqrt{\frac{g}{a}}.
+\]
+At \(\omega=\omega_c\), the bottom equilibrium changes stability and two
+symmetric equilibria appear. This is a concrete mechanics realization of a
+pitchfork bifurcation in an effective potential.
+
+\section{Rolling Contact: Contact Forces As Multipliers}
+\label{sec:lab-rolling-contact}
+
+Rolling examples force one to distinguish coordinates, constraints, and
+reaction forces.
+
+\subsection{Hoop Rolling On A Fixed Cylinder}
+
+A hoop of mass \(m\) and radius \(r\) rolls without slipping on the outside of a
+fixed cylinder of radius \(R\). Let \(\theta\) be the angular position of the
+hoop center measured from the top. The center of mass moves on a circle of
+radius \(R+r\). The rolling condition gives
+\[
+  r\dot\phi=(R+r)\dot\theta,
+\]
+where \(\phi\) is the spin angle of the hoop. Since the hoop has
+\[
+  I_{\mathrm{hoop}}=mr^2,
+\]
+the kinetic energy is
+\[
+  T=
+  \frac12m(R+r)^2\dot\theta^2
+  +
+  \frac12mr^2\dot\phi^2
+  =
+  m(R+r)^2\dot\theta^2.
+\]
+Starting from rest at the top, energy gives
+\[
+  m(R+r)^2\dot\theta^2
+  =
+  mg(R+r)(1-\cos\theta).
+\]
+The radial equation is
+\[
+  mg\cos\theta-N=m(R+r)\dot\theta^2,
+\]
+where \(N\) is the normal force. Loss of contact occurs at \(N=0\). Using the
+energy relation,
+\[
+  \cos\theta=1-\cos\theta,
+\]
+so
+\[
+  \boxed{\cos\theta=\frac12.}
+\]
+The hoop leaves the cylinder at \(\theta=\pi/3\) from the top.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[thick, fill=gray!8] (0,0) circle (1.4);
+  \draw[thick, fill=blue!7] (1.65,1.65) circle (0.45);
+  \draw[dashed] (0,0) -- (1.65,1.65);
+  \draw[dashed] (0,0) -- (0,2.35);
+  \draw[->] (0,1.9) arc (90:45:1.9);
+  \node at (0.85,1.95) {\(\theta\)};
+  \draw[->, red!75!black, thick] (1.65,1.65) -- (2.15,2.15)
+    node[right] {\(N\)};
+  \draw[->, black!70, thick] (1.65,1.65) -- (1.65,0.75)
+    node[below] {\(mg\)};
+  \draw[->, blue!70!black, thick] (2.1,1.65) arc (0:65:0.45)
+    node[right] {\(\dot\phi\)};
+  \node[align=center] at (0,-1.95)
+    {loss of contact occurs when the\\normal force reaches \(N=0\)};
+  \node at (-1.1,-1.1) {fixed cylinder \(R\)};
+  \node at (2.7,2.25) {rolling hoop \(r\)};
+\end{tikzpicture}
+\caption{Rolling-contact laboratory. The radial force balance must be kept
+until the end because the contact force \(N\) is the diagnostic for leaving the
+surface. Eliminating the rolling constraint gives the motion, but \(N=0\)
+decides the loss-of-contact angle.}
+\label{fig:lab-rolling-contact}
+\end{figure}
+\FloatBarrier
+
+\subsection{Solid Cylinder Inside A Hollow Cylinder}
+
+Now consider a solid cylinder of radius \(R\) rolling inside a fixed hollow
+cylinder of radius \(2R\). The center of mass moves on a circle of radius
+\(R\). With rolling imposed, the kinetic energy is
+\[
+  T
+  =
+  \frac12MR^2\dot\theta^2
+  +
+  \frac14MR^2\dot\theta^2,
+\]
+because a solid cylinder has moment of inertia \(I=(1/2)MR^2\). Taking the
+potential as \(V=-MgR\cos\theta\), the Lagrangian is
+\[
+  L=\frac34MR^2\dot\theta^2+MgR\cos\theta.
+\]
+The equation of motion is
+\[
+  \frac32MR^2\ddot\theta+MgR\sin\theta=0,
+\]
+or
+\[
+  \frac32\ddot\theta+\frac{g}{R}\sin\theta=0.
+\]
+For small oscillations,
+\[
+  \boxed{
+  \omega_{\mathrm{small}}=\sqrt{\frac{2g}{3R}}.
+  }
+\]
+
+\section{Schwarzschild-Type Central-Force Stability}
+\label{sec:lab-schwarzschild-stability}
+
+Consider the central Lagrangian
+\[
+  L=-m\sqrt{
+    A(r)-\frac{\dot r^2}{A(r)}-r^2\dot\theta^2
+  },
+  \qquad
+  A(r)=1-\frac{R}{r},
+  \qquad r>R.
+\]
+This model is a relativistic-looking laboratory for circular-orbit stability.
+Define
+\[
+  B=A-\frac{\dot r^2}{A}-r^2\dot\theta^2.
+\]
+The conserved energy and angular momentum are
+\[
+  E=\frac{mA}{\sqrt B},
+  \qquad
+  L_z=\frac{mr^2\dot\theta}{\sqrt B}.
+\]
+Eliminating \(\dot\theta\) and \(B\) gives the radial equation in effective
+potential form:
+\[
+  \dot r^2
+  =
+  \frac{A^2}{E^2}
+  \left[
+    E^2-A\left(m^2+\frac{L_z^2}{r^2}\right)
+  \right].
+\]
+Thus circular orbits are critical points of
+\[
+  U_{\mathrm{eff}}(r)
+  =
+  A(r)\left(m^2+\frac{L_z^2}{r^2}\right)
+\]
+at fixed \(L_z\). The circular-orbit condition \(U_{\mathrm{eff}}'(r_0)=0\)
+gives
+\[
+  L_z^2
+  =
+  \frac{Rm^2r_0^2}{2r_0-3R}.
+\]
+Hence circular orbits require \(r_0>3R/2\). Stability is determined by
+\[
+  U_{\mathrm{eff}}''(r_0)
+  =
+  \frac{2Rm^2(r_0-3R)}
+  {r_0^3(2r_0-3R)}.
+\]
+Therefore
+\[
+  \boxed{
+  r_0>3R \text{ is stable},\qquad
+  \frac32R<r_0<3R \text{ is unstable}.
+  }
+\]
+This is the same structural calculation used in more realistic relativistic
+orbit problems: circular-orbit stability is a second-derivative question for
+an effective potential at fixed angular momentum.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[->] (0,0) -- (6.4,0) node[right] {\(r/R\)};
+  \draw[->] (0,-0.35) -- (0,3.0) node[above] {\(U_{\mathrm{eff}}\)};
+  \draw[dashed] (1.0,-0.2) -- (1.0,2.8) node[above] {\(R\)};
+  \draw[dashed] (3.0,-0.2) -- (3.0,2.8) node[above] {\(3R\)};
+  \draw[red!75!black, thick, domain=1.18:5.9, samples=180]
+    plot (\x,{1.15+1.7*(1-1/\x)*(1+2.9/(\x*\x))-0.33*\x});
+  \fill[red!75!black] (2.02,1.83) circle (1.3pt)
+    node[above right] {unstable circular orbit};
+  \fill[blue!70!black] (4.35,1.54) circle (1.3pt)
+    node[below right] {stable circular orbit};
+  \draw[blue!70!black, thick, ->] (4.05,1.25) -- (4.30,1.48);
+  \draw[red!75!black, thick, ->] (1.8,1.55) -- (2.0,1.78);
+  \node[align=center] at (3.25,-0.75)
+    {stability is the sign of \(U_{\mathrm{eff}}''(r_0)\)\\
+     at fixed angular momentum};
+\end{tikzpicture}
+\caption{Effective-potential picture for the Schwarzschild-type laboratory.
+Circular orbits are critical points; the outer critical point is a minimum
+\((r_0>3R)\), while the inner one is a maximum
+\((3R/2<r_0<3R)\). The curve is schematic.}
+\label{fig:lab-schwarzschild-effective-potential}
+\end{figure}
+\FloatBarrier
+
+\section{Henon-Heiles As The Finite-Dimensional Chaos Bridge}
+\label{sec:lab-henon-heiles}
+
+The Henon-Heiles Hamiltonian is
+\[
+  H_{\mathrm{HH}}
+  =
+  H_0+\lambda_{\mathrm{HH}}H_1,
+\]
+with
+\[
+  H_0=
+  \frac12(p_x^2+p_y^2+x^2+y^2),
+  \qquad
+  H_1=x^2y-\frac13y^3.
+\]
+For the isotropic oscillator, introduce action-angle variables
+\[
+  x=\sqrt{2I_1}\sin\theta_1,
+  \qquad
+  p_x=\sqrt{2I_1}\cos\theta_1,
+\]
+\[
+  y=\sqrt{2I_2}\sin\theta_2,
+  \qquad
+  p_y=\sqrt{2I_2}\cos\theta_2.
+\]
+Then
+\[
+  H_0=I_1+I_2,
+  \qquad
+  \omega_0=(1,1).
+\]
+The first-order homological equation for a generating function \(S_1\) is
+\[
+  \omega_0\cdot\partial_\theta S_1
+  =
+  \langle H_1\rangle-H_1.
+\]
+In Fourier components,
+\[
+  i(k_1+k_2)S_{1k}=-H_{1k}.
+\]
+The denominator vanishes whenever
+\[
+  k_1+k_2=0.
+\]
+At first order the cubic perturbation has no average and the dangerous modes
+can be handled by symmetry, but at second order the canonical transformation
+generates resonant Fourier modes with \(k_1+k_2=0\). Those modes cannot be
+removed by a periodic \(S_2\). This is the small-divisor obstruction in its
+most concrete classroom form: the unperturbed oscillator has equal
+frequencies, so resonant combinations of angles do not average away.
+
+The Henon-Heiles system is therefore the right finite-dimensional bridge from
+integrability to Hamiltonian chaos. At low energy, Poincare sections show
+deformed invariant curves. At higher energy, resonance islands and chaotic
+regions appear. Unlike the asteroid problem, all variables and forces are
+visible in a four-dimensional phase space.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \begin{scope}
+    \draw[->] (-2.1,0) -- (2.1,0) node[right] {\(x\)};
+    \draw[->] (0,-1.9) -- (0,2.2) node[above] {\(y\)};
+    \foreach \s in {0.45,0.75,1.05,1.35}
+    {
+      \draw[blue!70!black, thick, domain=0:360, samples=120, variable=\t]
+        plot ({\s*cos(\t)*(1+0.12*sin(3*\t))},
+              {\s*sin(\t)*(1-0.10*cos(3*\t))});
+    }
+    \draw[red!75!black, thick]
+      (0,1.75) -- (-1.55,-0.95) -- (1.55,-0.95) -- cycle;
+    \node[red!75!black, align=center] at (0,-1.45)
+      {three escape\\valleys};
+    \node at (0,2.55) {configuration contours};
+  \end{scope}
+  \begin{scope}[xshift=5.2cm]
+    \draw[->] (-1.8,0) -- (1.9,0) node[right] {\(x\)};
+    \draw[->] (0,-1.8) -- (0,1.9) node[above] {\(p_x\)};
+    \draw[blue!70!black, thick] (0,0) ellipse (1.2 and 0.65);
+    \draw[blue!70!black, thick] (0,0) ellipse (0.72 and 0.38);
+    \foreach \a in {0,120,240}
+      \draw[red!75!black, thick] ({0.82*cos(\a)},{0.82*sin(\a)})
+        ellipse (0.28 and 0.13);
+    \foreach \x/\y in {-1.3/0.9,-1.1/-0.8,-0.4/1.15,0.25/-1.2,1.0/0.75,1.25/-0.55}
+      \fill[black!55] (\x,\y) circle (0.9pt);
+    \node at (0,2.35) {Poincare-section cartoon};
+  \end{scope}
+\end{tikzpicture}
+\caption{Henon-Heiles laboratory. Configuration-space contours show the
+threefold cubic deformation of the oscillator potential; a Poincare section
+then records the phase-space transition from invariant curves to islands and
+chaotic scatter. Both panels are schematic diagnostics for the derivation.}
+\label{fig:lab-henon-heiles}
+\end{figure}
+\FloatBarrier
+
+\section{Equal-Mass Three-Body Laboratory}
+\label{sec:lab-three-body}
+
+For an equal-mass three-body laboratory, take three masses in the plane with
+pair potential
+\[
+  V=-k\left(\frac1{r_{12}}+\frac1{r_{23}}+\frac1{r_{13}}\right),
+\]
+where
+\[
+  r_{ij}=\norm{r_i-r_j}.
+\]
+The Lagrangian is
+\[
+  L=\sum_{i=1}^3\frac12m\norm{\dot r_i}^2
+  +
+  k\left(\frac1{r_{12}}+\frac1{r_{23}}+\frac1{r_{13}}\right).
+\]
+The equations are
+\[
+  m\ddot r_i
+  =
+  -k\sum_{j\neq i}\frac{r_i-r_j}{\norm{r_i-r_j}^3}.
+\]
+The symmetric initial positions are
+\[
+  r_1(0)=(1,0),
+  \qquad
+  r_2(0)=\left(-\frac12,\frac{\sqrt3}{2}\right),
+  \qquad
+  r_3(0)=\left(-\frac12,-\frac{\sqrt3}{2}\right).
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.15, >=Latex]
+  \draw[->] (-2.0,0) -- (2.2,0) node[right] {\(x\)};
+  \draw[->] (0,-1.7) -- (0,1.9) node[above] {\(y\)};
+  \coordinate (r1) at (1.25,0);
+  \coordinate (r2) at (-0.625,1.083);
+  \coordinate (r3) at (-0.625,-1.083);
+  \draw[gray!70, thick] (r1) -- (r2) -- (r3) -- cycle;
+  \fill[blue!70!black] (r1) circle (2pt) node[right] {\(r_1\)};
+  \fill[blue!70!black] (r2) circle (2pt) node[above left] {\(r_2\)};
+  \fill[blue!70!black] (r3) circle (2pt) node[below left] {\(r_3\)};
+  \draw[->, red!75!black, thick] (r1) -- ++(0,0.65);
+  \draw[->, red!75!black, thick] (r2) -- ++(-0.56,-0.32);
+  \draw[->, red!75!black, thick] (r3) -- ++(0.56,-0.32);
+  \draw[dashed] (0,0) circle (1.25);
+  \node[red!75!black, align=center] at (1.45,1.2)
+    {tangent velocities\\for rotating triangle};
+  \node[align=center] at (0,-1.95)
+    {the perturbation lab changes the initial velocities\\and monitors
+     energy, angular momentum, and separation};
+\end{tikzpicture}
+\caption{Equal-mass three-body laboratory. The unperturbed comparison solution
+starts from an equilateral triangle with tangential velocities; perturbing this
+initial data is a controlled way to watch the loss of symmetric motion.}
+\label{fig:lab-three-body-initial-data}
+\end{figure}
+\FloatBarrier
+
+For the rotating equilateral solution, velocities are tangent to the
+circumcircle. A representative perturbed initial condition uses a speed
+parameter \(v=0.8\) and perturbation \(\epsilon=0.05\), with initial velocities
+such as
+\[
+  \dot x_1(0)=\epsilon,\qquad
+  \dot x_2(0)=-\frac{\sqrt3}{2}v-\epsilon,\qquad
+  \dot x_3(0)=\frac{\sqrt3}{2}v.
+\]
+The important lesson is not the particular number \(0.8\). It is the workflow:
+derive Newton's equations from a Lagrangian, integrate the exact pairwise
+forces, monitor energy and angular momentum, and compare unperturbed symmetric
+motion with perturbed motion. This is the finite-mass cousin of the
+Sun-Jupiter-asteroid ejection simulation.
+
+\section{Helicopter Rotor Model As A Gauge Connection}
+\label{sec:lab-helicopter-gauge}
+
+A toy helicopter model makes the Shapere-Wilczek connection finite-dimensional.
+It is the most compact laboratory version of the inertia-operator connection
+derived in Section~\ref{subsec:explicit-gauge-equation}: the general shape
+coordinate \(s\) is replaced by two rotor angles \((\alpha,\beta)\), and the
+zero-momentum equation can be solved by inspection.
+Let the body have isotropic base inertia
+\[
+  I_{\mathrm{body}}=I_0\mathbf 1.
+\]
+Let one internal rotor spin about the body \(z\)-axis with angle \(\alpha\) and
+inertia \(I_1\), and let a second rotor spin about the body \(y\)-axis with
+angle \(\beta\) and inertia \(I_2\). The internal shape space is the torus
+\[
+  \mathcal S=S^1_\alpha\times S^1_\beta.
+\]
+Let \(\Omega\in\R^3\) be the body angular velocity. In the body frame, the
+rotor angular velocities are
+\[
+  \Omega+\dot\alpha e_z,
+  \qquad
+  \Omega+\dot\beta e_y.
+\]
+Keeping only the rotational kinetic energy relevant for reconstruction,
+\[
+  T=
+  \frac12I_0\norm{\Omega}^2
+  +
+  \frac12I_1(\Omega_z+\dot\alpha)^2
+  +
+  \frac12I_2(\Omega_y+\dot\beta)^2.
+\]
+The body angular momentum conjugate to \(\Omega\) is
+\[
+  \Pi
+  =
+  I_0\Omega
+  +
+  I_1(\Omega_z+\dot\alpha)e_z
+  +
+  I_2(\Omega_y+\dot\beta)e_y.
+\]
+Set total angular momentum to zero. Componentwise,
+\[
+  (I_0+I_1)\Omega_z+I_1\dot\alpha=0,
+\]
+\[
+  (I_0+I_2)\Omega_y+I_2\dot\beta=0,
+\]
+\[
+  I_0\Omega_x=0.
+\]
+Therefore
+\[
+  \Omega
+  =
+  -\frac{I_1}{I_0+I_1}\dot\alpha\,e_z
+  -
+  \frac{I_2}{I_0+I_2}\dot\beta\,e_y.
+\]
+In connection notation,
+\[
+  g^{-1}\dot g
+  =
+  -\mathcal A_\alpha\dot\alpha-\mathcal A_\beta\dot\beta,
+\]
+with
+\[
+  \mathcal A_\alpha=
+  \frac{I_1}{I_0+I_1}e_z,
+  \qquad
+  \mathcal A_\beta=
+  \frac{I_2}{I_0+I_2}e_y.
+\]
+The components are constant, but the structure group is nonabelian:
+\[
+  [e_z,e_y]\neq0.
+\]
+Thus the curvature contains the commutator term
+\[
+  \mathcal F_{\alpha\beta}
+  =
+  [\mathcal A_\alpha,\mathcal A_\beta].
+\]
+A small rectangular cycle in \((\alpha,\beta)\) can therefore produce a net
+body rotation even though each rotor angle returns to its original value. This
+is the finite-dimensional version of falling-cat holonomy.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \begin{scope}
+    \draw[->] (-0.2,0) -- (4.4,0) node[right] {\(\alpha\)};
+    \draw[->] (0,-0.2) -- (0,3.1) node[above] {\(\beta\)};
+    \fill[blue!8] (0.85,0.65) rectangle (3.25,2.35);
+    \draw[blue!70!black, thick, ->] (0.85,0.65) -- (3.25,0.65)
+      node[midway, below] {\(\Delta\alpha\)};
+    \draw[blue!70!black, thick, ->] (3.25,0.65) -- (3.25,2.35)
+      node[midway, right] {\(\Delta\beta\)};
+    \draw[blue!70!black, thick, ->] (3.25,2.35) -- (0.85,2.35);
+    \draw[blue!70!black, thick, ->] (0.85,2.35) -- (0.85,0.65);
+    \node[align=center] at (2.05,3.35) {closed shape loop\\on the rotor torus};
+  \end{scope}
+  \begin{scope}[xshift=5.4cm]
+    \draw[->, thick] (0,0) -- (1.6,0) node[right] {\(e_x\)};
+    \draw[->, thick] (0,0) -- (0,1.6) node[above] {\(e_z\)};
+    \draw[->, thick] (0,0) -- (-1.1,-0.8) node[left] {\(e_y\)};
+    \draw[red!75!black, thick, ->] (0.7,0.55) arc (30:290:0.55);
+    \node[red!75!black, align=center] at (0.85,-1.2)
+      {net body rotation\\from \([\mathcal A_\alpha,\mathcal A_\beta]\)};
+  \end{scope}
+\end{tikzpicture}
+\caption{Helicopter-rotor gauge laboratory. The connection components are
+constant, but they point in noncommuting body directions. A closed rectangle in
+shape space therefore has curvature from the commutator term and can produce a
+net body rotation.}
+\label{fig:lab-helicopter-gauge-loop}
+\end{figure}
+\FloatBarrier
+
+\section{What These Laboratories Practice}
+\label{sec:worked-lab-summary}
+
+\begin{itemize}
+\item Coordinate changes preserve the Euler-Lagrange form when the
+transformation is regular; the same physical path can have many coordinate
+descriptions.
+\item Regularity of the velocity Hessian is what permits a Lagrangian system to
+be rewritten as a Hamiltonian system without losing information.
+\item Constraints and contact forces should be solved together. Eliminating a
+constraint too early can hide the force that decides loss of contact.
+\item Effective potentials turn circular-orbit and bifurcation questions into
+ordinary one-variable stability tests.
+\item The Henon-Heiles, three-body, and rotor examples show how quickly
+integrable intuition must be supplemented by phase-space geometry and
+numerical diagnostics.
+\end{itemize}
+
+\section{Problem-To-Demo Conversion Rules}
+\label{sec:lab-demo-rules}
+
+Every computational laboratory in this repository should record the following
+metadata:
+\[
+  \text{model}+\text{variables}+\text{parameters}
+  +\text{units}+\text{invariants}+\text{numerical method}.
+\]
+For Hamiltonian demos, the minimum checks are:
+\[
+  \Delta H(t),\qquad
+  \Delta J(t) \text{ if angular momentum is conserved},\qquad
+  \text{step-size sensitivity}.
+\]
+For probabilistic demos such as asteroid ejection, the output must also state:
+\[
+  \text{sampling distribution},\quad
+  \text{random seed},\quad
+  \text{time horizon},\quad
+  \text{ejection criterion}.
+\]
+Without these, a numerical picture is not a reproducible mechanics experiment.
+
+The same rule applies in reverse when reading a demo. The code should reveal
+the equations it integrates, the units in which parameters are measured, the
+events it declares, and the invariants it monitors. A plot is the last line of
+the argument, not the first.

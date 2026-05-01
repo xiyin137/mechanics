@@ -1,0 +1,106 @@
+\documentclass[11pt]{book}
+
+\input{preamble}
+
+\title{Mechanics}
+\author{GPT 5.5 and Xi Yin}
+\date{\today}
+
+\begin{document}
+
+\frontmatter
+\maketitle
+\tableofcontents
+
+\chapter*{Preface}
+
+These notes present mechanics as a sequence of structures rather than as a
+catalog of equations. The starting point is the configuration space and the
+action. From there, the notes pass to phase space, symplectic geometry,
+integrability, perturbation, chaos, fluids, elasticity, and gauge kinematics of
+deformation. The examples are not side calculations: Kepler motion, the rigid
+body, the standard map, the restricted Sun-Jupiter-asteroid model, laminar
+flows, point vortices, and deforming bodies are the places where the abstract
+language earns its keep.
+
+The intended reading style is active. At each derivation, identify the space,
+the variables, the assumptions, the conserved quantities, and the geometric
+object being preserved or varied. At each figure, ask which equation or
+reduction the picture is meant to make visible. At each numerical demo, ask
+which continuous structure the discretization respects and which quantities
+must be monitored.
+
+The exposition uses a repeated rhythm. First state the model in words. Then
+name the mathematical space on which the model lives. Then derive the equation
+from a principle or balance law. Only after that should one choose coordinates,
+plot a phase portrait, or run a simulation. This order is deliberate: it keeps
+the reader from mistaking a convenient coordinate formula for the mechanics
+itself.
+
+\paragraph{How the chapters fit together.}
+The notes are meant to be read linearly, but each chapter also has a precise
+role in the overall architecture:
+\[
+\begin{array}{ccl}
+\text{notation and assumptions} &\longrightarrow&
+\text{well-defined models and symbols},\\
+\text{Lagrangian mechanics} &\longrightarrow&
+\text{equations from variation and symmetry},\\
+\text{Hamiltonian mechanics} &\longrightarrow&
+\text{phase space and symplectic structure},\\
+\text{rigid body and tori} &\longrightarrow&
+\text{integrability made concrete},\\
+\text{perturbation and chaos} &\longrightarrow&
+\text{what survives after integrability is broken},\\
+\text{fluids and elastic bodies} &\longrightarrow&
+\text{continuum mechanics and gauge kinematics},\\
+\text{worked laboratories} &\longrightarrow&
+\text{slow examples that test the formalism}.
+\end{array}
+\]
+This dependency map is also a warning about shortcuts. For example, KAM theory
+uses action-angle variables, which require the Liouville-torus construction,
+which in turn rests on the Hamiltonian and symplectic formalism. Similarly, the
+gauge theory of deforming bodies is clearest only after one has separated
+configuration, symmetry, momentum, and connection in the rigid-body chapters.
+
+\mainmatter
+\input{00_notation_assumptions}
+\input{01_geometric_lagrangian_hamiltonian}
+\input{02_integrability_rigid_body}
+\input{03_perturbation_chaos_celestial}
+\input{04_fluid_mechanics}
+\input{05_elastic_deforming_bodies}
+\input{06_hamilton_jacobi_adiabatic}
+\input{07_worked_problem_laboratories}
+\input{08_detailed_worked_derivations}
+
+\backmatter
+\chapter*{Further Directions}
+
+Natural continuations include Dirac constraints and symplectic reduction,
+Delaunay variables for celestial mechanics, resonance normal forms, Arnold
+diffusion, heavy-top dynamics, numerical Poincare-section construction, and
+structure-preserving integrators for fluids and deforming bodies. Each addition
+should follow the same standard used here: state the model, define the symbols,
+derive the equations, draw the geometry, and connect the mathematics to a
+reproducible computation.
+
+\chapter*{Suggested Further Reading}
+
+For Lagrangian and Hamiltonian mechanics, Arnold's \emph{Mathematical Methods
+of Classical Mechanics} and Goldstein, Poole, and Safko's \emph{Classical
+Mechanics} are natural companions. For symplectic geometry, reduction, and
+momentum maps, see Abraham and Marsden's \emph{Foundations of Mechanics} and
+Marsden and Ratiu's \emph{Introduction to Mechanics and Symmetry}. For
+perturbation theory and KAM context, Arnold, Kozlov, and Neishtadt's
+\emph{Mathematical Aspects of Classical and Celestial Mechanics} and Holmes's
+\emph{Introduction to Perturbation Methods} are useful next steps. For fluids
+and elasticity, standard references include Batchelor's \emph{An Introduction
+to Fluid Dynamics}, Drazin and Reid's \emph{Hydrodynamic Stability}, and
+Marsden and Hughes's \emph{Mathematical Foundations of Elasticity}. For
+geometric phases and deforming bodies, read Shapere and Wilczek's original
+gauge-kinematics papers alongside modern discussions of mechanical
+connections.
+
+\end{document}

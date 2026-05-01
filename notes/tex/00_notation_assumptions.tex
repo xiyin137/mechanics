@@ -1,0 +1,334 @@
+\chapter{Notation, Assumptions, And Reading Rules}
+\label{chap:notation}
+
+\section{Purpose Of These Notes}
+\label{sec:notation-purpose}
+
+These notes are written as lecture notes rather than as a compressed reference.
+Each chapter states its assumptions, defines its symbols before use whenever
+possible, and derives the central equations from a clearly named structure:
+action principles, symplectic geometry, symmetry, or continuum balance laws.
+
+The guiding convention is simple: when an equation appears, the reader should
+know what space it lives on, which variables are independent, which assumptions
+make it valid, and what physical information it carries.
+
+The notes are meant to be self-contained at the level of a first serious pass
+through advanced mechanics. When a result is used later, the earlier occurrence
+should have supplied the model, the variables, the assumptions, and the
+derivation strategy. The reader should never have to guess whether an equation
+is a definition, an equation of motion, a constraint, a conservation law, or a
+coordinate representation of a geometric object.
+
+Self-contained does not mean that every calculation starts from elementary
+calculus. It means that every new structure is introduced with enough context
+to be used responsibly. For example, when the notes invoke a symplectic form,
+they state the phase space and the sign convention; when they invoke a stress
+tensor, they state the balance law and the constitutive assumption; when they
+invoke a connection, they say which frame choice is being compared.
+
+The recurring reading questions are:
+\[
+\begin{gathered}
+  \text{What is the configuration or phase space?}\\
+  \text{What structure is being preserved or varied?}\\
+  \text{Which assumptions make the calculation legal?}\\
+  \text{What physical or geometric information survives a change of coordinates?}
+\end{gathered}
+\]
+These questions are deliberately repeated in different contexts. They are the
+thread connecting particles, rigid bodies, celestial mechanics, fluids, and
+deforming continua.
+
+\section{Exposition Standard Used In The Notes}
+\label{sec:exposition-standard}
+
+Each major derivation is written to answer five questions in order:
+\[
+\begin{array}{rcl}
+\text{model} &:& \text{what physical idealization is being made?}\\
+\text{space} &:& \text{where do the variables live?}\\
+\text{principle} &:& \text{what variational, Hamiltonian, or balance statement is used?}\\
+\text{calculation} &:& \text{which algebraic or analytic step produces the equation?}\\
+\text{interpretation} &:& \text{what does the result say invariantly?}
+\end{array}
+\]
+When a derivation feels long, this list is the intended guide. A displayed
+equation should not be read as an isolated fact; it is either part of the
+model, a definition of notation, a consequence of a principle, or an
+interpretation of the result. The surrounding prose is meant to identify which
+role the equation is playing.
+
+The notes also distinguish three kinds of equality. A definition introduces a
+symbol, as in \(p_i=\partial L/\partial\dot q^i\). An identity holds because of
+previous definitions, as in \(\omega=-\dd\Theta\). An equation of motion holds
+only along physical trajectories, as in \(\dot p_i=-\partial H/\partial q^i\).
+Many confusions in mechanics come from silently moving an equation from one
+category to another.
+
+\section{How Notation Is Controlled}
+\label{sec:notation-control}
+
+Notation in mechanics is necessarily overloaded: \(I\) can mean a time
+interval, an inertia tensor, or an action variable; \(\omega\) can mean a
+symplectic form, an angular velocity, a frequency vector, or vorticity. The
+notes therefore use the following discipline.
+
+\begin{enumerate}
+\item A symbol has no permanent meaning unless it appears in the global ledger
+below or in the notation table at the beginning of a chapter.
+\item If a standard symbol is reused with a different meaning, the local
+definition overrides the global convention only inside that section or chapter.
+\item Bold or vector notation indicates Euclidean vectors only when the ambient
+space and metric have been named.
+\item Upper/lower indices in finite-dimensional mechanics indicate coordinate
+indices on a manifold and its cotangent bundle. In continuum chapters, capital
+indices such as \(A,B\) label material coordinates and lower-case indices such
+as \(i,j\) label spatial coordinates.
+\item Every theorem, derivation, example, and demo should be readable together
+with the nearest notation table and the assumptions stated immediately before
+the calculation.
+\end{enumerate}
+
+\section{Standing Mathematical Assumptions}
+\label{sec:standing-assumptions}
+
+\begin{assumption}[Smoothness]
+Unless explicitly stated otherwise, all functions, curves, vector fields, and
+maps are assumed smooth enough for the differentiations and integrations being
+performed. For most finite-dimensional chapters, \(C^2\) regularity is enough.
+For continuum chapters, additional differentiability is assumed locally.
+\end{assumption}
+
+\begin{assumption}[Finite-dimensional mechanics]
+When the configuration space is a finite-dimensional manifold \(Q\), a motion is
+a curve \(q:I\to Q\) on a time interval \(I=[t_0,t_1]\). The velocity
+\(\dot q(t)\) lies in the tangent space \(T_{q(t)}Q\). Local coordinates are
+written \(q^1,\ldots,q^n\).
+\end{assumption}
+
+\begin{assumption}[Endpoint variations]
+For Hamilton's principle in its basic form, variations of the path satisfy
+\(\delta q(t_0)=\delta q(t_1)=0\). Free-endpoint and boundary-force variants are
+important, but they are not the default convention.
+\end{assumption}
+
+\begin{assumption}[Regular Lagrangians]
+The Legendre transform from velocities to momenta is assumed locally invertible
+whenever we pass from \(L(q,\dot q,t)\) to \(H(q,p,t)\). In coordinates this
+means the matrix
+\[
+  \frac{\partial^2L}{\partial \dot q^i\partial \dot q^j}
+\]
+is nonsingular. Singular Lagrangians lead to constraints and gauge theories in
+the Dirac sense; those require a separate treatment.
+\end{assumption}
+
+\begin{assumption}[Einstein summation]
+Repeated upper/lower coordinate indices are summed unless stated otherwise:
+\[
+  p_i\dot q^i=\sum_{i=1}^{n}p_i\dot q^i.
+\]
+In Euclidean vector formulas, dots and cross products use the standard metric
+and orientation.
+\end{assumption}
+
+\section{Global Notation Ledger}
+\label{sec:global-notation-ledger}
+
+This table is a reference ledger, not a replacement for local definitions. The
+``first reference'' column points to the chapter where the symbol family is
+used most systematically.
+
+\small
+\begin{longtable}{p{0.18\textwidth}p{0.52\textwidth}p{0.22\textwidth}}
+\toprule
+Symbol & Meaning and assumptions & First reference\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\(t\) & time variable; dots denote \(\dd/\dd t\) unless a section says otherwise & all chapters\\
+\(I=[t_0,t_1]\) & time interval for a path or field evolution & Chapter~\ref{chap:lag-ham}\\
+\(Q\) & finite-dimensional configuration manifold & Chapter~\ref{chap:lag-ham}\\
+\(q(t)\) & configuration path \(I\to Q\) & Chapter~\ref{chap:lag-ham}\\
+\(q^i\) & local coordinates on \(Q\), \(i=1,\ldots,n\) & Chapter~\ref{chap:lag-ham}\\
+\(\dot q^i\) & generalized velocities \(\dd q^i/\dd t\) & Chapter~\ref{chap:lag-ham}\\
+\(TQ\) & tangent bundle, the space of \((q,\dot q)\) & Chapter~\ref{chap:lag-ham}\\
+\(T^*Q\) & cotangent bundle, the phase space of \((q,p)\) & Chapter~\ref{chap:lag-ham}\\
+\(L\) & Lagrangian, usually \(T-V\) but not assumed to be natural unless stated & Chapter~\ref{chap:lag-ham}\\
+\(S[q]\) & configuration-space action functional \(\int L\,\dd t\) & Chapter~\ref{chap:lag-ham}\\
+\(\eta\) & variation vector field \(\delta q\) along a path & Chapter~\ref{chap:lag-ham}\\
+\(p_i\) & canonical momentum \(\partial L/\partial \dot q^i\) & Chapter~\ref{chap:lag-ham}\\
+\(H\) & Hamiltonian on phase space; in autonomous conservative examples it is energy & Chapter~\ref{chap:lag-ham}\\
+\(\Theta\) & canonical one-form on \(T^*Q\), \(\Theta=p_i\,\dd q^i\) & Chapter~\ref{chap:lag-ham}\\
+\(\omega\) & symplectic form in Hamiltonian chapters; other uses are local and stated & Chapter~\ref{chap:lag-ham}\\
+\(\{f,g\}\) & Poisson bracket of observables \(f,g\) & Chapter~\ref{chap:lag-ham}\\
+\(X_H\) & Hamiltonian vector field determined by \(\iota_{X_H}\omega=\dd H\) & Chapter~\ref{chap:lag-ham}\\
+\(G\) & Lie group in symmetry sections; gravitational constant in celestial sections & Chapters~\ref{chap:lag-ham}, \ref{chap:perturbation-chaos}\\
+\(\mathfrak g\) & Lie algebra of a Lie group \(G\) & Chapters~\ref{chap:lag-ham}, \ref{chap:elastic-gauge}\\
+\(\xi_Q\) & infinitesimal generator on \(Q\) associated with \(\xi\in\mathfrak g\) & Chapter~\ref{chap:lag-ham}\\
+\(J_\xi\) & Noether conserved quantity associated with \(\xi\) & Chapter~\ref{chap:lag-ham}\\
+\(R\) & rotation matrix in rigid-body chapters; radius or gas constant only when locally declared & Chapter~\ref{chap:rigid-integrability}\\
+\(\SO(3)\) & group of orientation-preserving orthogonal \(3\times3\) matrices & Chapter~\ref{chap:rigid-integrability}\\
+\(\Omega\) & body angular velocity vector; not the same as symplectic \(\omega\) & Chapter~\ref{chap:rigid-integrability}\\
+\(\widehat\Omega\) & skew matrix satisfying \(\widehat\Omega v=\Omega\times v\) & Chapter~\ref{chap:rigid-integrability}\\
+\(\omega_{\mathrm{space}}\) & spatial angular velocity when needed to avoid conflict with symplectic \(\omega\) & Chapter~\ref{chap:rigid-integrability}\\
+\(I\) & inertia tensor or action variable depending on context; local table fixes meaning & Chapters~\ref{chap:rigid-integrability}, \ref{chap:perturbation-chaos}\\
+\(M\) & body angular momentum in rigid-body chapters & Chapter~\ref{chap:rigid-integrability}\\
+\(J\) & spatial angular momentum in rigid-body/celestial chapters; Jacobian determinant in continuum chapters & Chapters~\ref{chap:rigid-integrability}, \ref{chap:fluid}\\
+\(F_i\) & commuting first integrals in Liouville theory; deformation gradient \(F^i{}_A\) in continua & Chapters~\ref{chap:rigid-integrability}, \ref{chap:elastic-gauge}\\
+\(\gamma_j\) & homology cycle on an invariant torus; material loop in fluid contexts & Chapters~\ref{chap:rigid-integrability}, \ref{chap:fluid}\\
+\(I_j\) & action variable \((2\pi)^{-1}\oint_{\gamma_j}p_i\,\dd q^i\) & Chapter~\ref{chap:rigid-integrability}\\
+\(\theta^j\) & angle variable conjugate to \(I_j\); ordinary polar/Euler angles are locally defined & Chapters~\ref{chap:rigid-integrability}, \ref{chap:perturbation-chaos}\\
+\(\mathbb T^n\) & \(n\)-torus, usually \((\R/2\pi\Z)^n\) & Chapters~\ref{chap:rigid-integrability}, \ref{chap:perturbation-chaos}\\
+\(\varepsilon\) & small perturbation parameter & Chapter~\ref{chap:perturbation-chaos}\\
+\(H_0,H_1\) & integrable Hamiltonian and perturbing Hamiltonian & Chapter~\ref{chap:perturbation-chaos}\\
+\(\omega(I)\) & frequency vector in action-angle variables & Chapter~\ref{chap:perturbation-chaos}\\
+\(k\) & integer Fourier/resonance vector in KAM sections; spring/gravity constants are locally defined & Chapter~\ref{chap:perturbation-chaos}\\
+\(\alpha,\tau\) & Diophantine constants; \(\alpha\) also appears as a wave number in stability sections only locally & Chapter~\ref{chap:perturbation-chaos}\\
+\(K\) & standard-map kick strength & Chapter~\ref{chap:perturbation-chaos}\\
+\(\rho\) & mass density in fluids and continua; radial coordinate only when locally stated & Chapters~\ref{chap:fluid}, \ref{chap:elastic-gauge}\\
+\(u(x,t)\) & Eulerian fluid velocity field & Chapter~\ref{chap:fluid}\\
+\(p(x,t)\) & fluid pressure in fluid chapters; canonical momentum elsewhere & Chapter~\ref{chap:fluid}\\
+\(\sigma\) & Cauchy stress tensor in continuum chapters & Chapters~\ref{chap:fluid}, \ref{chap:elastic-gauge}\\
+\(\mu,\nu\) & dynamic and kinematic viscosity in fluids; reduced mass \(\mu\) in Kepler sections & Chapters~\ref{chap:fluid}, \ref{chap:perturbation-chaos}\\
+\(\mathrm{Re}\) & Reynolds number \(UL/\nu\) & Chapter~\ref{chap:fluid}\\
+\(B\) & reference body/material domain in elasticity; bending stiffness in rod sections when locally defined & Chapter~\ref{chap:elastic-gauge}\\
+\(X^A\) & material coordinates on \(B\) & Chapter~\ref{chap:elastic-gauge}\\
+\(x^i\) & spatial coordinates in \(\R^3\) & Chapter~\ref{chap:elastic-gauge}\\
+\(\varphi(X,t)\) & deformation map from reference body to space & Chapters~\ref{chap:fluid}, \ref{chap:elastic-gauge}\\
+\(F^i{}_A\) & deformation gradient \(\partial_A\varphi^i\) & Chapter~\ref{chap:elastic-gauge}\\
+\(C_{AB},E_{AB}\) & right Cauchy-Green tensor and Green strain & Chapter~\ref{chap:elastic-gauge}\\
+\(P^A{}_i\) & first Piola-Kirchhoff stress & Chapter~\ref{chap:elastic-gauge}\\
+\(\mathcal S\) & shape space for deforming bodies & Chapter~\ref{chap:elastic-gauge}\\
+\(\mathcal A\) & mechanical/gauge connection on shape space & Chapter~\ref{chap:elastic-gauge}\\
+\(\mathcal F\) & curvature of the connection \(\mathcal A\) & Chapter~\ref{chap:elastic-gauge}\\
+\end{longtable}
+\normalsize
+
+\section{Common Overloads And How To Read Them}
+\label{sec:overloaded-symbols}
+
+\begin{center}
+\begin{tabular}{p{0.16\textwidth}p{0.76\textwidth}}
+\toprule
+Symbol & Reading rule\\
+\midrule
+\(\omega\) & In symplectic sections it is the symplectic form. In rigid body
+sections the spatial angular velocity is written in prose as spatial angular
+velocity or \(\omega_{\mathrm{space}}\) when ambiguity matters. In fluids it is
+vorticity. In KAM sections \(\omega(I)\) is a frequency vector.\\
+\(I\) & In Chapter~\ref{chap:notation} and Chapter~\ref{chap:lag-ham}, \(I\)
+may be a time interval. In rigid body mechanics \(I\) is an inertia tensor or
+principal moment. In action-angle theory \(I_j\) is an action variable.\\
+\(J\) & In mechanics \(J\) is usually angular momentum or a momentum map. In
+continuum mechanics \(J=\det F\) is the deformation Jacobian.\\
+\(p\) & In Hamiltonian mechanics \(p_i\) is canonical momentum. In fluid
+mechanics \(p(x,t)\) is pressure.\\
+\(F\) & In integrability \(F_i\) are first integrals. In elasticity
+\(F^i{}_A\) is the deformation gradient.\\
+\(A\) & In Kepler theory \(A\) may denote the Laplace-Runge-Lenz vector. In
+gauge theory \(A\) or \(\mathcal A\) denotes a connection.\\
+\(\lambda\) & A Lagrange multiplier in constrained mechanics, a second
+viscosity coefficient in fluids, or a Lame modulus in elasticity; the section
+defines which one.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{A Map Of The Course}
+\label{sec:course-map}
+
+The course moves through four enlargements of the same idea. The diagram is not
+a dependency graph; it is a loop that the notes revisit at increasing levels of
+structure. A variational principle produces equations, Hamiltonian geometry
+organizes their phase space, perturbation theory tests the stability of that
+organization, and continuum mechanics returns to the same questions with
+fields instead of finitely many coordinates.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=1.1cm and 1.35cm,
+  box/.style={draw, rounded corners=2pt, align=center, minimum width=3.3cm,
+  minimum height=0.92cm, fill=blue!4},
+  smallbox/.style={draw, rounded corners=2pt, align=center, minimum width=2.8cm,
+  minimum height=0.75cm, fill=gray!8},
+  arr/.style={-{Latex[length=2.5mm]}, thick},
+  softarr/.style={-{Latex[length=2.2mm]}, thick, gray!70}
+]
+\node[box] (lag) {Lagrangian mechanics\\configuration, action, variation};
+\node[box, right=of lag] (ham) {Hamiltonian mechanics\\phase space, symplectic form};
+\node[box, below=of ham] (chaos) {Integrability and chaos\\tori, resonances, transport};
+\node[box, left=of chaos] (cont) {Fluids and elasticity\\fields, stress, frames};
+\node[smallbox, below=of lag, xshift=-0.35cm] (examples) {Kepler and rigid body\\first exact models};
+\node[smallbox, above=of ham, xshift=0.35cm] (demos) {Demos and diagnostics\\drift, sections, probability};
+\draw[arr] (lag) -- (ham);
+\draw[arr] (ham) -- (chaos);
+\draw[arr] (chaos) -- (cont);
+\draw[arr] (cont) -- (lag);
+\draw[softarr] (examples) -- (lag);
+\draw[softarr] (examples) -- (chaos);
+\draw[softarr] (demos) -- (ham);
+\draw[softarr] (demos) -- (chaos);
+\end{tikzpicture}
+\caption{The course loop. The central theories are connected by examples and
+computational diagnostics: exact models teach the geometry, while numerical
+demos test which structures survive discretization or perturbation.}
+\label{fig:course-loop}
+\end{figure}
+
+\section{Units And Dimensions}
+\label{sec:units-dimensions}
+
+Dimensional consistency is treated as a mathematical constraint. In celestial
+mechanics demos we often use astronomical units, years, and solar masses, so
+\[
+  G = 4\pi^2
+\]
+when the central mass is measured in solar masses. In rigid body mechanics,
+moments of inertia have dimensions \(ML^2\), angular velocity has dimension
+\(T^{-1}\), angular momentum has dimension \(ML^2T^{-1}\), and kinetic energy
+has dimension \(ML^2T^{-2}\).
+
+\section{How To Read The Figures}
+\label{sec:read-figures}
+
+Figures in the notes are schematic unless explicitly generated from a numerical
+demo. Their purpose is to identify variables, spaces, and geometric relations.
+For quantitative plots, the corresponding Python or Mathematica script should be
+treated as part of the figure caption: the model assumptions and numerical
+parameters matter.
+
+\section{How To Read Long Derivations}
+\label{sec:read-long-derivations}
+
+Long derivations in mechanics usually have two layers. The first layer is
+formal: differentiate an action, apply a balance law, invert a Legendre
+transform, or change coordinates. The second layer is structural: identify the
+conserved quantity, the reduced phase space, the constraint force, or the
+connection hidden in the algebra. The notes spell out both layers whenever the
+second layer is easy to miss.
+
+A useful way to read each derivation is to keep a small ledger:
+\[
+\begin{array}{c|c}
+\text{input} & \text{output}\\
+\hline
+\text{model assumptions} & \text{equation of motion or constraint}\\
+\text{symmetry} & \text{conserved quantity or reduced variable}\\
+\text{constitutive law} & \text{closed continuum PDE}\\
+\text{choice of frame} & \text{connection and curvature}
+\end{array}
+\]
+Most mistakes in mechanics are ledger mistakes: using an equation outside the
+assumptions that produced it, changing a frame without transforming the
+components, or interpreting a reduced equation as if no reduction had occurred.
+
+When a derivation contains a local coordinate calculation, the conclusion should
+be read as coordinate-independent only after the geometric object has been
+identified. For example, the symbols \(\Gamma^\ell{}_{ij}\), \(\lambda_a\),
+\(A_A\), and \(\omega^a{}_b\) are coordinate or frame components; the geodesic
+equation, constraint reaction, gauge connection, and torsion are the underlying
+objects.

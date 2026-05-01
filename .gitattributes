@@ -1,0 +1,10 @@
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.gif binary
+
+*.tex linguist-language=TeX
+*.wl linguist-language=Mathematica

@@ -1,0 +1,66 @@
+\usepackage[T1]{fontenc}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{longtable,array}
+\usepackage{enumitem}
+\usepackage{placeins}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,calc,decorations.markings,decorations.pathreplacing,patterns,positioning}
+
+\hypersetup{
+  pdftitle={Mechanics},
+  pdfauthor={GPT 5.5 and Xi Yin},
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{example}{Example}[chapter]
+\newtheorem{remark}{Remark}[chapter]
+\newtheorem{assumption}{Assumption}[chapter]
+\newtheorem{derivation}{Derivation}[chapter]
+
+\setlist[itemize]{itemsep=0.25em, topsep=0.35em}
+\setlist[enumerate]{itemsep=0.25em, topsep=0.35em}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\D}{\mathrm{D}}
+\newcommand{\pd}{\partial}
+\newcommand{\TQ}{TQ}
+\newcommand{\TstarQ}{T^{*}Q}
+\newcommand{\Lie}{\mathcal{L}}
+\newcommand{\Ham}{H}
+\newcommand{\Lag}{L}
+\newcommand{\action}{\mathcal{S}}
+\newcommand{\om}{\omega}
+\newcommand{\J}{\mathcal{J}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\vect}[1]{\bm{#1}}
+\newcommand{\inner}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\Poisson}[2]{\left\{#1,#2\right\}}
+\DeclareMathOperator{\Ad}{Ad}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\SO}{SO}
+\DeclareMathOperator{\SE}{SE}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\divergence}{div}
+
+\newcommand{\symbolentry}[3]{#1 & #2 & #3\\}

@@ -1,0 +1,39 @@
+Mechanics Through Phase Space uses a split teaching-code license.
+
+Code license: MIT
+Applies to source code, scripts, tests, build files, and machine-readable
+configuration in this repository, including demos/, tests/, Makefile,
+pyproject.toml, and requirements.txt.
+
+MIT License
+
+Copyright (c) 2026 Mechanics Through Phase Space contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+the code and associated documentation files covered by the code license (the
+"Software"), to deal in the Software without restriction, including without
+limitation the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, and to permit persons to whom
+the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Teaching-material license: Creative Commons Attribution-ShareAlike 4.0
+International (CC BY-SA 4.0)
+Applies to notes, prose, syllabi, pedagogical figures, and planning documents
+in this repository, including notes/, syllabus/, PLANNING.md, README.md, and
+human-facing figure assets unless a file states otherwise.
+
+You may share and adapt the teaching material for any purpose, including
+classroom use, provided that you give appropriate credit, indicate whether
+changes were made, and distribute adaptations under the same license.
+
+Third-party references and source materials are not relicensed by this file.

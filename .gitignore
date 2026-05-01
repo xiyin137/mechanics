@@ -1,0 +1,88 @@
+# macOS / editor noise
+.DS_Store
+._*
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+ENV/
+
+# Python caches, packaging, and test outputs
+__pycache__/
+*.py[cod]
+*$py.class
+.pycache-build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Matplotlib / local render caches
+.matplotlib-cache/
+.tmp_pdf_pages/
+
+# TeX build products
+*.acn
+*.acr
+*.alg
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.ist
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.ps
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xdv
+_minted-*/
+notes/tex/main.pdf
+
+# Wolfram / Mathematica generated binaries and autosaves
+*.mx
+*.wxf
+*.wdx
+*.nbp
+*.wl~
+
+# Generated figures and data. Keep documentation and explicitly curated assets.
+figures/*
+!figures/README.md
+!figures/canonical/
+!figures/canonical/**
+data/*
+!data/README.md
+!data/canonical/
+!data/canonical/**
+
+# Local review scratch files
+claude_review.md

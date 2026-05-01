@@ -1,0 +1,976 @@
+\chapter{Geometric Lagrangian And Hamiltonian Mechanics}
+\label{chap:lag-ham}
+
+\section{Mechanical Data}
+\label{sec:lag-ham-mechanical-data}
+
+The first question in any mechanics problem is not ``what is the force?'' but
+``what is the space of possible configurations?'' Once that space is named, the
+rest of the theory becomes coordinate-independent.
+
+\begin{definition}[Finite-dimensional mechanical system]
+A regular finite-dimensional Lagrangian mechanical system consists of:
+\begin{enumerate}
+\item a smooth \(n\)-dimensional configuration manifold \(Q\);
+\item a time interval \(I=[t_0,t_1]\);
+\item a Lagrangian \(L:TQ\times I\to \R\);
+\item a class of admissible curves \(q:I\to Q\), possibly satisfying constraints.
+\end{enumerate}
+The action of an admissible curve is
+\[
+  S[q]=\int_{t_0}^{t_1} L(q(t),\dot q(t),t)\,\dd t.
+\]
+\end{definition}
+
+\begin{assumption}[Coordinate patch for derivations]
+Derivations in this chapter are written in one coordinate chart
+\((q^1,\ldots,q^n)\). The equations obtained are tensorial or intrinsic when
+the objects used to build them are intrinsic. Coordinates are a calculation
+device, not an additional physical structure.
+\end{assumption}
+
+\begin{table}[htbp]
+\centering
+\caption{Core notation for Chapter~\ref{chap:lag-ham}. Global conventions and
+overloaded symbols are listed in Chapter~\ref{chap:notation}.}
+\label{tab:lag-ham-notation}
+\small
+\begin{tabular}{p{0.18\textwidth}p{0.45\textwidth}p{0.28\textwidth}}
+\toprule
+Symbol & Definition & Interpretation or first use\\
+\midrule
+\(Q\) & smooth configuration manifold & space of positions\\
+\(I=[t_0,t_1]\) & time interval & domain of a path\\
+\(q:I\to Q\) & configuration path & physical motion candidate\\
+\(q^i(t)\) & local coordinates of \(q(t)\) & generalized positions\\
+\(\dot q^i(t)\) & \(\dd q^i/\dd t\) & generalized velocities\\
+\(\eta^i(t)\) & \(\delta q^i(t)\) & infinitesimal virtual displacement\\
+\(L:TQ\times I\to\R\) & Lagrangian & input to Hamilton's principle\\
+\(S[q]\) & \(\int L\,\dd t\) & action functional\\
+\(p_i\) & \(\partial L/\partial \dot q^i\) & canonical momentum\\
+\(E_L\) & \(p_i\dot q^i-L\) & Lagrangian energy\\
+\(g_{ij}\) & mass metric & natural Lagrangian \(T-V\)\\
+\(\Gamma^\ell{}_{jk}\) & Christoffel symbols of \(g\) & inertial terms in coordinates\\
+\(\Phi^a(q,t)\) & holonomic constraints & admissible submanifold\\
+\(\lambda_a\) & constraint multipliers & reaction forces\\
+\(G,\mathfrak g\) & symmetry group and Lie algebra & Noether theorem\\
+\(\xi_Q\) & infinitesimal generator & vector field on \(Q\)\\
+\(J_\xi\) & \(p_i\xi_Q^i\) & Noether charge\\
+\(r,\rho,\theta\) & Kepler vector, radius, polar angle & central-force example\\
+\(\ell\) & \(\mu\rho^2\dot\theta\) & angular momentum magnitude\\
+\(R\) & attitude matrix & rigid-body example\\
+\(\Omega,M\) & body angular velocity and body angular momentum & \(M=I\Omega\)\\
+\(H\) & \(p_i\dot q^i-L\) after Legendre transform & Hamiltonian\\
+\(\Theta\) & \(p_i\,\dd q^i\) & canonical one-form\\
+\(\omega\) & \(-\dd\Theta=\dd q^i\wedge\dd p_i\) & symplectic form\\
+\(X_H\) & \(\iota_{X_H}\omega=\dd H\) & Hamiltonian vector field\\
+\(\Phi_H^t\) & Hamiltonian flow map & phase-space evolution\\
+\(\Psi_{\Delta t}\) & numerical one-step map & integrator output\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Roadmap.}
+The chapter has three jobs. First it derives the Euler-Lagrange equations from
+Hamilton's principle, including boundary terms, constraints, and Noether
+charges. Second it treats Kepler motion and the rigid body as the first serious
+examples of the formalism. Third it passes through the Legendre transform to
+Hamiltonian mechanics, where phase space, symplectic form, Poisson brackets,
+and canonical transformations become the basic language. The point is not to
+replace Newton's law by harder notation; it is to make clear which parts of
+mechanics are coordinate choices and which parts are geometric structure.
+
+The chapter should be read as a change in viewpoint. In the Lagrangian picture,
+the primitive object is a path in configuration space and the variational
+principle selects the physical path. In the Hamiltonian picture, the primitive
+object is a point in phase space and the symplectic form turns the Hamiltonian
+function into a vector field. The two pictures are equivalent only under the
+regularity assumption stated in Chapter~\ref{chap:notation}; this is why the
+Legendre transform is a theorem-sized step, not a change of notation.
+
+\paragraph{Derivation checkpoints.}
+Whenever this chapter differentiates an action, check three things before
+following the algebra: which variables are varied, which endpoint conditions
+are imposed, and which boundary terms survive. Whenever it changes from
+\((q,\dot q)\) to \((q,p)\), check the velocity Hessian. Whenever it invokes a
+symmetry, check whether the symmetry acts on configuration space, phase space,
+or both. These checks are small, but they prevent the most common mistakes:
+using an inadmissible virtual displacement, assuming a singular Legendre map is
+invertible, or calling a quantity conserved before verifying the symmetry
+hypothesis.
+
+\section{Variations And The Euler-Lagrange Equations}
+\label{sec:euler-lagrange}
+
+Let \(q_\eps(t)\) be a smooth one-parameter family of curves with
+\(q_0(t)=q(t)\). The variation vector field along \(q\) is
+\[
+  \eta(t)=\left.\frac{\partial q_\eps(t)}{\partial \eps}\right|_{\eps=0},
+  \qquad
+  \eta^i(t)=\left.\frac{\partial q_\eps^i(t)}{\partial \eps}\right|_{\eps=0}.
+\]
+For fixed-endpoint variations we impose
+\[
+  \eta(t_0)=0,\qquad \eta(t_1)=0.
+\]
+The variational calculation below has one essential idea. The path \(q(t)\) is
+a critical point of the action when every infinitesimal deformation of the path
+changes the action only at second order. Differentiating the action produces a
+term proportional to \(\dot\eta\); integration by parts moves the derivative
+onto the momentum, and the endpoint condition kills the boundary term. What is
+left must vanish for every interior virtual displacement \(\eta\), which forces
+the Euler-Lagrange equations pointwise in time.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[->] (-0.3,0) -- (7.2,0) node[right] {\(t\)};
+  \draw[->] (0,-0.2) -- (0,3.0) node[above] {configuration coordinate};
+  \draw[densely dotted] (0.5,0) -- (0.5,2.75);
+  \draw[densely dotted] (6.5,0) -- (6.5,2.75);
+  \draw[thick, blue] plot[smooth] coordinates {(0.5,0.7) (1.8,1.25) (3.2,1.0) (4.7,2.0) (6.5,2.35)};
+  \draw[thick, red, dashed] plot[smooth] coordinates {(0.5,0.7) (1.8,1.55) (3.2,1.25) (4.7,1.75) (6.5,2.35)};
+  \draw[->, red] (3.2,1.0) -- (3.2,1.25) node[midway,right] {\(\eta(t)\)};
+  \draw[->, red!70!black] (4.7,2.0) -- (4.7,1.75);
+  \fill (0.5,0.7) circle (2pt) node[below right] {\(q(t_0)\)};
+  \fill (6.5,2.35) circle (2pt) node[above left] {\(q(t_1)\)};
+  \node[below] at (0.5,0) {\(t_0\)};
+  \node[below] at (6.5,0) {\(t_1\)};
+  \node[blue] at (2.3,0.6) {\(q(t)\)};
+  \node[red] at (4.25,1.35) {\(q_\eps(t)=q(t)+\eps\eta(t)+O(\eps^2)\)};
+\end{tikzpicture}
+\caption{A fixed-endpoint variation changes the path in the interior while
+holding the initial and final configurations fixed. The infinitesimal change is
+the vector field \(\eta(t)=\delta q(t)\) along the path.}
+\label{fig:fixed-endpoint-variation}
+\end{figure}
+
+\begin{derivation}[Euler-Lagrange equations]
+The first variation of the action is
+\[
+\begin{aligned}
+  \delta S
+  &=
+  \left.\frac{\dd}{\dd\eps}\right|_{\eps=0}
+  \int_{t_0}^{t_1}L(q_\eps,\dot q_\eps,t)\,\dd t\\
+  &=
+  \int_{t_0}^{t_1}
+  \left(
+    \frac{\partial L}{\partial q^i}\eta^i
+    +
+    \frac{\partial L}{\partial \dot q^i}\dot\eta^i
+  \right)\dd t.
+\end{aligned}
+\]
+Integrate the second term by parts:
+\[
+  \int_{t_0}^{t_1}
+  \frac{\partial L}{\partial \dot q^i}\dot\eta^i\,\dd t
+  =
+  \left[
+    \frac{\partial L}{\partial \dot q^i}\eta^i
+  \right]_{t_0}^{t_1}
+  -
+  \int_{t_0}^{t_1}
+  \frac{\dd}{\dd t}\left(\frac{\partial L}{\partial \dot q^i}\right)\eta^i
+  \,\dd t.
+\]
+The boundary term vanishes because \(\eta(t_0)=\eta(t_1)=0\). Therefore
+\[
+  \delta S
+  =
+  \int_{t_0}^{t_1}
+  \left[
+    \frac{\partial L}{\partial q^i}
+    -
+    \frac{\dd}{\dd t}\left(\frac{\partial L}{\partial \dot q^i}\right)
+  \right]\eta^i\,\dd t.
+\]
+The fundamental lemma of the calculus of variations says that if this integral
+vanishes for all compactly supported variations \(\eta\), then the coefficient
+of every \(\eta^i\) vanishes. Hence
+\[
+  \boxed{
+  \frac{\dd}{\dd t}\left(\frac{\partial L}{\partial \dot q^i}\right)
+  -
+  \frac{\partial L}{\partial q^i}=0
+  }.
+\]
+\end{derivation}
+
+The boxed equation is local in time because the variations are arbitrary in the
+interior of the interval. This is the conceptual content of the fundamental
+lemma: a single global statement, \(\delta S=0\), becomes a pointwise
+differential equation only because the virtual displacement \(\eta(t)\) can be
+chosen independently near each time. Boundary conditions and endpoint terms are
+therefore not afterthoughts; they decide which variations are admissible and
+which physical quantities appear at the endpoints.
+
+\section{Boundary Terms And Forces}
+\label{sec:boundary-forces}
+
+The integration-by-parts calculation also explains momenta. Without imposing
+fixed endpoints, the boundary contribution is
+\[
+  \left[p_i\eta^i\right]_{t_0}^{t_1},
+  \qquad
+  p_i=\frac{\partial L}{\partial \dot q^i}.
+\]
+Thus \(p_i\) is the coefficient of endpoint displacement in the first variation
+of the action. This is a sharper definition than ``mass times velocity'', which
+is only true in special coordinates for special Lagrangians.
+
+If nonconservative generalized forces \(Q_i(q,\dot q,t)\) are present, the
+Lagrange-d'Alembert principle is
+\[
+  \delta S+\int_{t_0}^{t_1}Q_i\eta^i\,\dd t=0,
+\]
+which gives
+\[
+  \frac{\dd}{\dd t}\left(\frac{\partial L}{\partial \dot q^i}\right)
+  -
+  \frac{\partial L}{\partial q^i}
+  =
+  Q_i.
+\]
+The present course focuses mainly on conservative and Hamiltonian systems, but
+this formula is useful when comparing with fluids and continua.
+
+\section{Natural Lagrangians And The Metric Form}
+\label{sec:natural-lagrangians}
+
+Many mechanical systems have a Lagrangian of the form
+\[
+  L(q,\dot q)=T(q,\dot q)-V(q)
+  =
+  \frac{1}{2}g_{ij}(q)\dot q^i\dot q^j - V(q),
+\]
+where \(g_{ij}\) is a positive-definite mass metric on \(Q\), and \(V\) is
+potential energy.
+
+\begin{derivation}[Geodesic-plus-force equation]
+For the natural Lagrangian,
+\[
+  \frac{\partial L}{\partial \dot q^i}=g_{ij}\dot q^j,
+\]
+so
+\[
+  \frac{\dd}{\dd t}\frac{\partial L}{\partial \dot q^i}
+  =
+  g_{ij}\ddot q^j
+  +
+  \frac{\partial g_{ij}}{\partial q^k}\dot q^k\dot q^j.
+\]
+Also
+\[
+  \frac{\partial L}{\partial q^i}
+  =
+  \frac{1}{2}\frac{\partial g_{jk}}{\partial q^i}\dot q^j\dot q^k
+  -
+  \frac{\partial V}{\partial q^i}.
+\]
+The Euler-Lagrange equation becomes
+\[
+  g_{ij}\ddot q^j
+  +
+  \left(
+    \frac{\partial g_{ij}}{\partial q^k}
+    -
+    \frac{1}{2}\frac{\partial g_{jk}}{\partial q^i}
+  \right)\dot q^k\dot q^j
+  =
+  -\frac{\partial V}{\partial q^i}.
+\]
+After symmetrizing the velocity terms and raising an index with \(g^{\ell i}\),
+\[
+  \boxed{
+  \ddot q^\ell+\Gamma^\ell_{jk}\dot q^j\dot q^k
+  =
+  -g^{\ell i}\frac{\partial V}{\partial q^i}
+  },
+\]
+where
+\[
+  \Gamma^\ell_{jk}
+  =
+  \frac{1}{2}g^{\ell i}
+  \left(
+    \frac{\partial g_{ij}}{\partial q^k}
+    +
+    \frac{\partial g_{ik}}{\partial q^j}
+    -
+    \frac{\partial g_{jk}}{\partial q^i}
+  \right)
+\]
+are the Christoffel symbols of the mass metric.
+\end{derivation}
+
+Thus even ``force-free'' motion on a curved configuration space need not look
+like \(\ddot q=0\) in coordinates. The Christoffel terms are inertial terms
+created by the geometry of \(Q\) and the chosen coordinates.
+
+\section{Holonomic Constraints}
+\label{sec:holonomic-constraints}
+
+A holonomic constraint is a condition
+\[
+  \Phi^a(q,t)=0,\qquad a=1,\ldots,k,
+\]
+that cuts out an admissible submanifold of configuration space. If one works in
+the ambient coordinates \(q^i\), the constrained equations take the multiplier
+form
+\[
+  \frac{\dd}{\dd t}\frac{\partial L}{\partial \dot q^i}
+  -
+  \frac{\partial L}{\partial q^i}
+  =
+  \lambda_a\frac{\partial \Phi^a}{\partial q^i}.
+\]
+The multipliers \(\lambda_a\) are not arbitrary forces. They are whatever
+constraint reactions are needed to keep the motion on \(\Phi^a=0\). If instead
+one parametrizes the constraint surface directly, the \(\lambda_a\) disappear
+and the same physics is expressed with fewer coordinates.
+
+\section{Symmetry And Noether's Theorem}
+\label{sec:noether}
+
+Noether's theorem is the first place where the variational viewpoint pays a
+large dividend. A symmetry is not merely a visual invariance of a picture; it
+is a transformation of the configuration space that leaves the Lagrangian, and
+therefore the action, unchanged. The infinitesimal version of that
+transformation is a vector field \(\xi_Q\) along which the action has zero
+first variation. The conserved quantity is the momentum paired with that vector
+field.
+
+\begin{definition}[Infinitesimal generator]
+Let a Lie group \(G\) act on \(Q\). For \(\xi\in\mathfrak g\), the infinitesimal
+generator is the vector field
+\[
+  \xi_Q(q)=\left.\frac{\dd}{\dd s}\right|_{s=0}\exp(s\xi)\cdot q.
+\]
+In coordinates, write \(\xi_Q=\xi_Q^i(q)\partial/\partial q^i\).
+\end{definition}
+
+\begin{assumption}[Lagrangian symmetry]
+The action of \(G\) is a symmetry if
+\[
+  L(g\cdot q,\,T_qg\cdot \dot q,\,t)=L(q,\dot q,t)
+\]
+for all \(g\in G\), \(q\in Q\), and \(\dot q\in T_qQ\).
+\end{assumption}
+
+\begin{proposition}[Noether theorem]
+For every \(\xi\in\mathfrak g\), the quantity
+\[
+  J_\xi(q,\dot q)
+  =
+  \frac{\partial L}{\partial \dot q^i}\xi_Q^i(q)
+  =
+  p_i\xi_Q^i(q)
+\]
+is conserved along solutions of the Euler-Lagrange equations.
+\end{proposition}
+
+\begin{proof}
+Differentiate the symmetry condition along \(g=\exp(s\xi)\) at \(s=0\):
+\[
+  0=
+  \frac{\partial L}{\partial q^i}\xi_Q^i
+  +
+  \frac{\partial L}{\partial \dot q^i}
+  \frac{\dd}{\dd t}\xi_Q^i(q(t)).
+\]
+Along an Euler-Lagrange solution,
+\[
+  \frac{\partial L}{\partial q^i}
+  =
+  \frac{\dd}{\dd t}\frac{\partial L}{\partial \dot q^i}.
+\]
+Substitute this into the previous equation:
+\[
+  0=
+  \frac{\dd}{\dd t}\left(\frac{\partial L}{\partial \dot q^i}\right)\xi_Q^i
+  +
+  \frac{\partial L}{\partial \dot q^i}
+  \frac{\dd}{\dd t}\xi_Q^i
+  =
+  \frac{\dd}{\dd t}
+  \left(
+    \frac{\partial L}{\partial \dot q^i}\xi_Q^i
+  \right).
+\]
+\end{proof}
+
+\begin{example}[Translation and rotation]
+For a particle in \(\R^3\) with \(L=\frac12m\norm{\dot x}^2-V(x)\), translation
+symmetry in direction \(a\) gives \(J_a=m\dot x\cdot a\). If \(V\) is invariant
+under all translations, linear momentum is conserved. Rotational symmetry about
+axis \(a\) gives
+\[
+  J_a=(x\times m\dot x)\cdot a,
+\]
+so angular momentum is conserved when \(V\) is rotationally invariant.
+\end{example}
+
+\section{Basic Example: The Kepler Problem}
+\label{sec:kepler-lagrangian}
+
+The Kepler problem should appear immediately after the Lagrangian formalism,
+because it is the simplest serious payoff of cyclic coordinates, Noether's
+theorem, and reduction by symmetry.
+
+\begin{assumption}[Kepler model]
+We study a particle of reduced mass \(\mu\) moving in \(\R^3\setminus\{0\}\)
+under an attractive inverse-square central potential. The Lagrangian is
+\[
+  L(r,\dot r)
+  =
+  \frac12\mu\norm{\dot r}^2+\frac{k}{\norm r},
+  \qquad
+  k=Gm_1m_2>0.
+\]
+The coordinate \(r=x_1-x_2\) is the relative separation of the two bodies.
+\end{assumption}
+
+Rotational invariance gives conservation of angular momentum
+\[
+  J=r\times p=\mu r\times\dot r.
+\]
+Since \(J\cdot r=0\) and \(J\cdot \dot r=0\), the motion stays in the plane
+perpendicular to \(J\). In polar coordinates \((\rho,\theta)\) in that plane,
+\[
+  L=\frac12\mu(\dot\rho^2+\rho^2\dot\theta^2)+\frac{k}{\rho}.
+\]
+The angle \(\theta\) is cyclic, hence
+\[
+  \ell=\frac{\partial L}{\partial\dot\theta}=\mu\rho^2\dot\theta
+\]
+is conserved. The energy is
+\[
+  E=\frac12\mu\dot\rho^2+\frac{\ell^2}{2\mu\rho^2}-\frac{k}{\rho}.
+\]
+Thus the radial motion is one-dimensional motion in the effective potential
+\[
+  V_{\mathrm{eff}}(\rho)=\frac{\ell^2}{2\mu\rho^2}-\frac{k}{\rho}.
+\]
+In this subsection \(\ell\) is the ordinary, massful angular momentum of the
+relative two-body problem. In Chapter~\ref{chap:perturbation-chaos}, where
+asteroid motion is written per unit asteroid mass, the same orbit equation is
+often written using the specific angular momentum
+\(\ell_{\mathrm{spec}}=\ell/\mu=\rho^2\dot\theta\). The detailed central-force
+derivation in Section~\ref{subsec:detailed-binet} keeps an arbitrary particle
+mass \(m\), making the conversion between the two conventions explicit.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[->] (0,0) -- (6.5,0) node[right] {\(\rho\)};
+  \draw[->] (0,-1.7) -- (0,3.1) node[above] {\(V_{\mathrm{eff}}\)};
+  \fill[blue!8] (0.624,-0.7) rectangle (2.52,0);
+  \draw[blue, thick, domain=0.36:6.1, samples=160]
+    plot (\x,{1.1/(\x*\x)-2.2/\x});
+  \draw[dashed] (0,-0.7) -- (6.2,-0.7) node[right] {bound \(E<0\)};
+  \draw[dashed] (0,0.45) -- (6.2,0.45) node[right] {scattering \(E>0\)};
+  \node[blue] at (4.45,-1.22) {\(V_{\mathrm{eff}}\)};
+  \fill (1.0,-1.1) circle (1.4pt) node[below] {minimum};
+  \fill (0.624,-0.7) circle (1.3pt);
+  \fill (2.52,-0.7) circle (1.3pt);
+  \draw[<->, blue!70!black] (0.624,-1.42) -- (2.52,-1.42)
+    node[midway, below] {allowed radial interval};
+  \node[align=center] at (2.55,2.05) {centrifugal barrier\\near \(\rho=0\)};
+\end{tikzpicture}
+\caption{The Kepler problem reduces to one-dimensional radial motion in an
+effective potential. For a fixed negative energy, the radial coordinate is
+trapped between two turning points; for positive energy there is only a closest
+approach before scattering.}
+\label{fig:kepler-effective-potential}
+\end{figure}
+
+\begin{derivation}[Orbit equation]
+Set \(u=1/\rho\). Since \(\ell=\mu\rho^2\dot\theta\),
+\[
+  \frac{\dd}{\dd t}=\dot\theta\frac{\dd}{\dd\theta}
+  =
+  \frac{\ell}{\mu}\,u^2\frac{\dd}{\dd\theta}.
+\]
+The radial Euler-Lagrange equation is
+\[
+  \mu(\ddot\rho-\rho\dot\theta^2)=-\frac{k}{\rho^2}.
+\]
+In terms of \(u(\theta)\) this becomes
+\[
+  \frac{\dd^2u}{\dd\theta^2}+u=\frac{\mu k}{\ell^2}.
+\]
+Therefore
+\[
+  u(\theta)=\frac{\mu k}{\ell^2}\left[1+e\cos(\theta-\theta_0)\right],
+\]
+or
+\[
+  \boxed{
+  \rho(\theta)=
+  \frac{\ell^2/(\mu k)}{1+e\cos(\theta-\theta_0)}
+  }.
+\]
+The parameter \(e\) is the eccentricity. The conic is an ellipse, parabola, or
+hyperbola according as \(e<1\), \(e=1\), or \(e>1\).
+\end{derivation}
+
+The Kepler problem also has the Laplace-Runge-Lenz vector
+\[
+  A=p\times J-\mu k\frac{r}{\norm r},
+\]
+which is conserved and points toward periapse. Its existence is special: it is
+the extra conservation law behind the absence of perihelion precession in the
+ideal inverse-square problem.
+
+\section{Basic Example: Rigid Body As A Lagrangian System}
+\label{sec:rigid-body-lagrangian}
+
+The second basic example is the rigid body. It is best introduced directly after
+Lagrangian mechanics, before using it later as a reduced Hamiltonian and
+integrable system.
+
+\begin{assumption}[Free rigid body]
+A material point \(X\) in the body frame is located at
+\[
+  x(t)=R(t)X,
+  \qquad R(t)\in\SO(3),
+\]
+with the center of mass fixed at the origin. The body is rigid, so all dynamics
+is in the attitude \(R(t)\). No external torque acts.
+\end{assumption}
+
+The body angular velocity is defined by
+\[
+  R^{-1}\dot R=\widehat\Omega,
+  \qquad
+  \widehat\Omega v=\Omega\times v.
+\]
+The kinetic energy is
+\[
+  L(R,\dot R)=T
+  =
+  \frac12\Omega^TI\Omega,
+\]
+where \(I\) is the inertia tensor in the body frame. In principal axes,
+\[
+  I=\diag(I_1,I_2,I_3),
+  \qquad
+  L=\frac12(I_1\Omega_1^2+I_2\Omega_2^2+I_3\Omega_3^2).
+\]
+
+\begin{derivation}[Euler equation from constrained variations]
+A variation inside \(\SO(3)\) has the form
+\[
+  \delta R=R\widehat\Sigma,
+\]
+where \(\Sigma(t_0)=\Sigma(t_1)=0\). This implies
+\[
+  \delta\Omega=\dot\Sigma+\Omega\times\Sigma.
+\]
+Let \(M=\partial L/\partial\Omega=I\Omega\). Then
+\[
+\begin{aligned}
+  \delta S
+  &=
+  \int M\cdot(\dot\Sigma+\Omega\times\Sigma)\,\dd t\\
+  &=
+  \int(-\dot M+M\times\Omega)\cdot\Sigma\,\dd t.
+\end{aligned}
+\]
+Stationarity gives
+\[
+  \dot M=M\times\Omega,
+\]
+or, with the hat convention \(\widehat\Omega v=\Omega\times v\) used
+throughout,
+\[
+  \dot M+\Omega\times M=0.
+\]
+In principal axes this is
+\[
+\begin{aligned}
+  I_1\dot\Omega_1 &= (I_2-I_3)\Omega_2\Omega_3,\\
+  I_2\dot\Omega_2 &= (I_3-I_1)\Omega_3\Omega_1,\\
+  I_3\dot\Omega_3 &= (I_1-I_2)\Omega_1\Omega_2.
+\end{aligned}
+\]
+\end{derivation}
+
+This derivation is deliberately placed here: the rigid body is not first of all
+an abstract Lie-Poisson system. It is a Lagrangian system on \(\SO(3)\), and the
+Lie-Poisson picture is what appears after symmetry reduction.
+
+\section{Legendre Transform And Hamiltonian}
+\label{sec:legendre-hamiltonian}
+
+The Legendre transform sends \((q,\dot q)\in TQ\) to \((q,p)\in T^*Q\) by
+\[
+  p_i=\frac{\partial L}{\partial \dot q^i}.
+\]
+For a regular Lagrangian this can be inverted to express \(\dot q^i\) as a
+function of \((q,p,t)\). Concretely, regularity means that the velocity Hessian
+\[
+  W_{ij}(q,\dot q,t)=
+  \frac{\partial^2L}{\partial\dot q^i\partial\dot q^j}
+\]
+is nonsingular. The inverse function theorem then says that, locally in phase
+space, the equations \(p_i=\partial L/\partial\dot q^i\) can be solved for
+\(\dot q^i=\dot q^i(q,p,t)\).
+The Hamiltonian is
+\[
+  H(q,p,t)=p_i\dot q^i(q,p,t)-L(q,\dot q(q,p,t),t).
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \node[draw, rounded corners=2pt, minimum width=2.9cm, minimum height=0.9cm,
+    fill=blue!5] (tq) at (0,0) {\(TQ:\ (q,\dot q)\)};
+  \node[draw, rounded corners=2pt, minimum width=2.9cm, minimum height=0.9cm,
+    fill=red!5] (tsq) at (5.0,0) {\(T^*Q:\ (q,p)\)};
+  \draw[->, thick] (tq) -- node[above]
+    {\(\mathbb F L:\ p_i=\partial L/\partial\dot q^i\)} (tsq);
+  \draw[->, thick, bend left=18] (tsq.north west) to node[above]
+    {regular inverse} (tq.north east);
+  \node[align=center, text width=0.82\textwidth] at (2.5,-1.25)
+    {The Legendre map preserves \(q\) but replaces velocity by the endpoint
+    covector \(p\).\\It is a coordinate change only when the velocity Hessian is
+    nonsingular.};
+\end{tikzpicture}
+\caption{The Legendre transform from tangent-bundle data to cotangent-bundle
+data. Singular Lagrangians require constraints; the Hamiltonian construction in
+this chapter assumes the regular case.}
+\label{fig:legendre-transform}
+\end{figure}
+
+\begin{derivation}[Hamilton's equations from the Legendre transform]
+Differentiate \(H\):
+\[
+\begin{aligned}
+  \dd H
+  &=
+  \dot q^i\,\dd p_i
+  +
+  p_i\,\dd \dot q^i
+  -
+  \frac{\partial L}{\partial q^i}\dd q^i
+  -
+  \frac{\partial L}{\partial \dot q^i}\dd \dot q^i
+  -
+  \frac{\partial L}{\partial t}\dd t\\
+  &=
+  \dot q^i\,\dd p_i
+  -
+  \frac{\partial L}{\partial q^i}\dd q^i
+  -
+  \frac{\partial L}{\partial t}\dd t,
+\end{aligned}
+\]
+because \(p_i=\partial L/\partial \dot q^i\). Thus
+\[
+  \frac{\partial H}{\partial p_i}=\dot q^i,
+  \qquad
+  \frac{\partial H}{\partial q^i}=-\frac{\partial L}{\partial q^i}.
+\]
+Using the Euler-Lagrange equation \(\dot p_i=\partial L/\partial q^i\), we get
+\[
+  \boxed{
+    \dot q^i=\frac{\partial H}{\partial p_i},
+    \qquad
+    \dot p_i=-\frac{\partial H}{\partial q^i}
+  }.
+\]
+\end{derivation}
+
+The Legendre transform changes the bookkeeping of initial data. A Lagrangian
+state \((q,\dot q)\) records a position and a velocity; a Hamiltonian state
+\((q,p)\) records a position and the covector that measures how the action
+changes under endpoint displacement. The symplectic form below is built from
+that endpoint one-form, so Hamiltonian mechanics remembers the variational
+origin of the momentum rather than merely renaming velocity.
+
+\section{Phase Space As The Space Of Solutions}
+\label{sec:phase-space-solutions}
+
+A useful slogan is that, for a deterministic Hamiltonian system, phase space is
+the same thing as the space of solutions.
+More precisely, if \(H\) is smooth and the Hamiltonian vector field is complete
+on the time interval under study, then every point
+\[
+  z_0=(q_0,p_0)\in T^*Q
+\]
+determines a unique trajectory \(z(t)=\Phi^t_H(z_0)\), and every trajectory is
+obtained this way from its value at any one time. Thus phase space is the set
+of all possible instantaneous states, but it is also a coordinate system on the
+family of all classical histories. The caveat is that this identification uses
+existence and uniqueness of the equations of motion; singular potentials,
+collisions, constraints, or finite-time blowup can invalidate the global
+statement even when the local Hamiltonian equations make sense.
+
+\section{The Symplectic Form}
+\label{sec:symplectic-form}
+
+The cotangent bundle \(T^*Q\) carries a canonical one-form
+\[
+  \Theta=p_i\,\dd q^i.
+\]
+The canonical symplectic form is
+\[
+  \omega=-\dd\Theta=\dd q^i\wedge\dd p_i.
+\]
+In arbitrary local phase-space coordinates
+\[
+  x^m,\qquad m=1,\ldots,2n,
+\]
+one can write
+\[
+  \omega=\frac12\omega_{mn}(x)\,\dd x^m\wedge\dd x^n,
+\]
+where \(\omega_{mn}=-\omega_{nm}\), \(\det(\omega_{mn})\neq0\), and
+\[
+  \dd\omega=0.
+\]
+The closedness condition is what makes \(\omega\) locally equivalent to the
+canonical form, while nondegeneracy is what lets the Hamiltonian determine a
+unique vector field. In canonical coordinates \(x=(q,p)\),
+\[
+  (\omega_{mn})=
+  \begin{pmatrix}
+  0 & I_n\\
+  -I_n & 0
+  \end{pmatrix}.
+\]
+The Poisson bracket can be expressed intrinsically by the bivector inverse to
+the symplectic form, with the sign convention fixed by Hamilton's equations
+below. The point is that the bracket is not extra structure once \(\omega\) is
+given.
+
+The two defining properties of \(\omega\) have different jobs. Nondegeneracy
+lets one solve \(\iota_{X_H}\omega=\dd H\) for a unique vector field, just as a
+mass matrix lets one solve force equals mass times acceleration. Closedness is
+the integrability condition behind canonical coordinates, Stokes-type
+arguments, and the preservation of symplectic area. Hamiltonian mechanics needs
+both.
+
+The Hamiltonian vector field \(X_H\) is defined by
+\[
+  \iota_{X_H}\omega=\dd H.
+\]
+Here \(\iota_X\) denotes interior contraction: if \(\omega\) is a two-form, then
+\((\iota_X\omega)(Y)=\omega(X,Y)\) for every vector field \(Y\).
+If
+\[
+  X_H=A^i\frac{\partial}{\partial q^i}
+  +
+  B_i\frac{\partial}{\partial p_i},
+\]
+then
+\[
+  \iota_{X_H}\omega=A^i\,\dd p_i-B_i\,\dd q^i.
+\]
+Equating this with
+\[
+  \dd H=\frac{\partial H}{\partial q^i}\dd q^i
+  +
+  \frac{\partial H}{\partial p_i}\dd p_i
+\]
+gives
+\[
+  A^i=\frac{\partial H}{\partial p_i},
+  \qquad
+  B_i=-\frac{\partial H}{\partial q^i}.
+\]
+Thus \(X_H\) is Hamilton's equation written geometrically.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[->] (-0.25,0) -- (6.9,0) node[right] {\(q\)};
+  \draw[->] (3.35,-2.35) -- (3.35,2.35) node[above] {\(p\)};
+  \node[below] at (0.25,0) {\(-\pi\)};
+  \node[below] at (3.35,0) {\(0\)};
+  \node[below] at (6.45,0) {\(\pi\)};
+  \draw[blue!70!black, thick] (3.35,0) ellipse (0.85 and 0.55);
+  \draw[blue!70!black, thick] (3.35,0) ellipse (1.45 and 0.95);
+  \draw[blue!70!black, thick] (3.35,0) ellipse (2.05 and 1.35);
+  \draw[red!70!black, thick, domain=-3.12:3.12, samples=180]
+    plot ({\x+3.35},{1.62*cos(0.5*\x r)});
+  \draw[red!70!black, thick, domain=-3.12:3.12, samples=180]
+    plot ({\x+3.35},{-1.62*cos(0.5*\x r)});
+  \draw[gray!65, thick, domain=0.45:6.25, samples=160]
+    plot (\x,{1.9+0.18*cos(120*\x)});
+  \draw[gray!65, thick, domain=0.45:6.25, samples=160]
+    plot (\x,{-1.9+0.18*cos(120*\x)});
+  \draw[->, thick] (4.15,0.78) -- (4.45,0.62) node[right] {\(X_H\)};
+  \node[blue!70!black] at (1.45,1.75) {libration levels};
+  \node[red!70!black] at (5.15,-1.9) {separatrix};
+  \node[gray!65!black] at (1.15,-1.9) {rotation levels};
+  \node at (3.35,-2.75) {Pendulum level sets: \(H(q,p)=\frac12p^2+1-\cos q\).};
+\end{tikzpicture}
+\caption{A schematic phase plane using the pendulum Hamiltonian. The
+Hamiltonian vector field is tangent to energy level sets because
+\(\dot H=\{H,H\}=0\).}
+\label{fig:pendulum-phase-plane}
+\end{figure}
+
+\section{Poisson Brackets And Time Evolution}
+\label{sec:poisson-time-evolution}
+
+For \(f,g\in C^\infty(T^*Q)\), define
+\[
+  \Poisson{f}{g}
+  =
+  \frac{\partial f}{\partial q^i}
+  \frac{\partial g}{\partial p_i}
+  -
+  \frac{\partial f}{\partial p_i}
+  \frac{\partial g}{\partial q^i}.
+\]
+If \(z(t)=(q(t),p(t))\) follows Hamilton's equation, then
+\[
+  \frac{\dd}{\dd t}f(q(t),p(t),t)
+  =
+  \frac{\partial f}{\partial t}+\Poisson{f}{H}.
+\]
+A time-independent observable \(f\) is conserved exactly when
+\[
+  \Poisson{f}{H}=0.
+\]
+
+\begin{proposition}[Liouville volume preservation]
+Hamiltonian flow preserves the phase-space volume form
+\[
+  \Omega=\frac{1}{n!}\omega^n.
+\]
+\end{proposition}
+
+\begin{proof}
+Cartan's formula gives
+\[
+  \Lie_{X_H}\omega=\dd(\iota_{X_H}\omega)+\iota_{X_H}\dd\omega.
+\]
+Since \(\iota_{X_H}\omega=\dd H\) and \(\dd\omega=0\),
+\[
+  \Lie_{X_H}\omega=\dd\dd H=0.
+\]
+Therefore \(\Lie_{X_H}\omega^n=0\), so the associated volume form is preserved.
+\end{proof}
+
+\section{Phase-Space Action}
+\label{sec:phase-space-action}
+
+Hamilton's equations can also be derived from the phase-space action
+\[
+  S_H[q,p]=\int_{t_0}^{t_1}\left(p_i\dot q^i-H(q,p,t)\right)\dd t.
+\]
+Varying \(q\) and \(p\) independently, with \(\delta q(t_0)=\delta q(t_1)=0\),
+gives
+\[
+  \delta S_H
+  =
+  \int_{t_0}^{t_1}
+  \left[
+    \left(\dot q^i-\frac{\partial H}{\partial p_i}\right)\delta p_i
+    -
+    \left(\dot p_i+\frac{\partial H}{\partial q^i}\right)\delta q^i
+  \right]\dd t.
+\]
+Since \(\delta q\) and \(\delta p\) are arbitrary in the interior, the
+stationary curves are exactly Hamiltonian trajectories.
+
+\section{Canonical Transformations}
+\label{sec:canonical-transformations}
+
+A diffeomorphism \(\Phi:T^*Q\to T^*Q\) is canonical, or symplectic, if
+\[
+  \Phi^*\omega=\omega.
+\]
+Canonical transformations preserve Poisson brackets:
+\[
+  \Poisson{f\circ\Phi}{g\circ\Phi}
+  =
+  \Poisson{f}{g}\circ\Phi.
+\]
+This is why canonical coordinates may change but Hamiltonian mechanics keeps
+the same form. Later, action-angle variables will be canonical coordinates
+adapted to integrable motion.
+
+\begin{derivation}[Generating function for a canonical transformation]
+Let \((q,p)\) be old canonical coordinates and \((Q,P)\) new ones. A convenient
+type of generating function depends on the new momenta and old positions:
+\[
+  F=F(P,q).
+\]
+Impose
+\[
+  Q_i=\frac{\partial F}{\partial P_i}\bigg|_q,
+  \qquad
+  p_i=\frac{\partial F}{\partial q^i}\bigg|_P.
+\]
+Then
+\[
+  \dd F=Q_i\,\dd P_i+p_i\,\dd q^i.
+\]
+Taking another exterior derivative gives
+\[
+  0=\dd Q_i\wedge\dd P_i+\dd p_i\wedge\dd q^i.
+\]
+Therefore
+\[
+  \dd Q_i\wedge\dd P_i
+  =
+  \dd q^i\wedge\dd p_i.
+\]
+The canonical symplectic form is preserved, so the transformation is canonical.
+In coordinates this is the same cancellation one sees by expanding
+\[
+  \dd P_i\wedge\dd Q_i
+  =
+  \dd P_i\wedge
+  \left(
+    \frac{\partial^2F}{\partial P_i\partial q^j}\dd q^j
+    +
+    \frac{\partial^2F}{\partial P_i\partial P_j}\dd P_j
+  \right),
+\]
+where the pure \(\dd P_i\wedge\dd P_j\) term vanishes because second
+derivatives are symmetric while the wedge product is antisymmetric.
+\end{derivation}
+
+\section{Numerical Lesson}
+\label{sec:numerical-lesson}
+
+The equations in this chapter are exact statements about smooth systems. A
+numerical integrator creates a discrete map
+\[
+  z_{n+1}=\Psi_{\Delta t}(z_n).
+\]
+For long-time Hamiltonian problems, whether \(\Psi_{\Delta t}\) preserves a
+symplectic form or a modified Hamiltonian can matter more than the local order
+of the method. This is why the pendulum, standard map, and asteroid demos are
+not merely programming exercises; they are experiments in preserving structure.
+
+The practical lesson is diagnostic. A good mechanics simulation reports not
+only a trajectory but also the quantities that the continuous problem says
+should be preserved or nearly preserved. Energy drift, angular-momentum drift,
+phase-space area, and event criteria are part of the model audit trail. Without
+them, a numerical plot can look convincing while solving the wrong mechanical
+problem.
+
+\section{What To Take Forward}
+\label{sec:lag-ham-take-forward}
+
+The rest of the notes repeatedly reuse four lessons from this chapter.
+\begin{itemize}
+\item The configuration space \(Q\) is part of the model. Choosing bad
+coordinates can obscure a simple system, but it cannot change the system.
+\item Boundary terms are information, not clutter. They identify canonical
+momenta, forces, and conserved quantities.
+\item Symmetry produces conserved quantities through Noether's theorem, and
+those quantities are often the coordinates of a reduced problem.
+\item Hamiltonian mechanics is geometry on \(T^*Q\): the symplectic form
+determines Hamilton's equations, volume preservation, Poisson brackets, and the
+meaning of a canonical numerical method.
+\end{itemize}
