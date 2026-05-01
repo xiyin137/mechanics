@@ -8,10 +8,13 @@
    does not classify solar collisions, close Jupiter encounters, or write CSV.
 
    Run with:
-     wolframscript -file demos/mathematica/AsteroidEjectionProbability.wl
+     /Applications/Wolfram.app/Contents/MacOS/WolframKernel -script demos/mathematica/AsteroidEjectionProbability.wl
+     /Applications/Wolfram.app/Contents/MacOS/WolframKernel -script demos/mathematica/AsteroidEjectionProbability.wl --plot
 *)
 
 ClearAll["Global`*"];
+
+makeFigures = MemberQ[$ScriptCommandLine, "--plot"];
 
 g = 4 Pi^2;
 mSun = 1.0;
@@ -42,7 +45,7 @@ sampleInitialCondition[] := Module[
   mean = RandomReal[{0.0, 2 Pi}];
   peri = RandomReal[{0.0, 2 Pi}];
   ecc = FixedPoint[# - (# - e Sin[#] - mean)/(1 - e Cos[#]) &, mean, 8];
-  f = 2 ArcTan[Sqrt[1 + e] Sin[ecc/2], Sqrt[1 - e] Cos[ecc/2]];
+  f = 2 ArcTan[Sqrt[1 - e] Cos[ecc/2], Sqrt[1 + e] Sin[ecc/2]];
   p = a (1 - e^2);
   rr = p/(1 + e Cos[f]);
   root = Sqrt[g mSun/p];
@@ -85,14 +88,15 @@ Print["tmax=", tmax];
 Print["ejected=", ejected];
 Print["ejection_probability=", probability];
 
-ejectionHistogram = Histogram[
-  Pick[ensemble[[All, "a0"]], ensemble[[All, "status"]], "ejected"],
-  {2.05, 3.75, 0.1},
-  AxesLabel -> {"initial semimajor axis", "ejected count"},
-  PlotLabel -> "Ejected particles by initial semimajor axis"
+If[makeFigures,
+  ejectionHistogram = Histogram[
+    Pick[ensemble[[All, "a0"]], ensemble[[All, "status"]], "ejected"],
+    {2.05, 3.75, 0.1},
+    AxesLabel -> {"initial semimajor axis", "ejected count"},
+    PlotLabel -> "Ejected particles by initial semimajor axis"
+  ];
+  If[!DirectoryQ["figures"], CreateDirectory["figures", CreateIntermediateDirectories -> True]];
+  Export["figures/asteroid_ejection_probability_mathematica.png", ejectionHistogram];
+  Print["wrote_plot=figures/asteroid_ejection_probability_mathematica.png"],
+  Print["plot_skipped=pass --plot to write figures/asteroid_ejection_probability_mathematica.png"]
 ];
-
-Print[ejectionHistogram];
-If[!DirectoryQ["figures"], CreateDirectory["figures", CreateIntermediateDirectories -> True]];
-Export["figures/asteroid_ejection_probability_mathematica.png", ejectionHistogram];
-Print["wrote_plot=figures/asteroid_ejection_probability_mathematica.png"];

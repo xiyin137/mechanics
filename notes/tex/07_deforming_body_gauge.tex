@@ -1,0 +1,1066 @@
+\chapter{Gauge Theory Of Deforming Bodies}
+\label{chap:deforming-body}
+
+Rigid-body mechanics separates orientation from shape because a rigid body has
+no internal shape variables.  A deforming body has both.  Frank Wilczek's
+gauge-theoretic viewpoint, developed with Shapere in the context of swimming
+and self-propulsion,\footnote{A. Shapere and F. Wilczek, ``Gauge kinematics of
+deformable bodies,'' \emph{American Journal of Physics} 57, 514--518 (1989),
+\href{https://doi.org/10.1119/1.15986}{doi:10.1119/1.15986}. Their closely
+related low-Reynolds-number swimming formulation appears in
+\href{https://doi.org/10.1017/S002211208900025X}{doi:10.1017/S002211208900025X}.}
+treats the decomposition into overall rigid motion and internal deformation as
+a choice of gauge.  The physically meaningful object is not the instantaneous
+frame itself, but the connection that tells us which rigid motion accompanies an
+infinitesimal change of shape under a specified momentum constraint.
+
+The central phenomenon is geometric phase.  A body can execute a closed loop in
+shape space and return to the same internal shape while acquiring a net rotation
+or translation in physical space.  This is the mechanical analogue of parallel
+transport in a gauge field.  The curvature of the connection measures the
+leading displacement produced by small loops, while the full holonomy records
+the finite motion produced by large cycles.
+
+\paragraph{Roadmap.}
+The chapter starts with the finite-dimensional Shapere-Wilczek split between
+rigid placement \(g\) and shape \(s\). It then derives the mechanical
+connection from zero momentum and explains how this connection transforms under
+changes of body frame. The two-rotor model is a minimal laboratory for
+noncommuting connection components. The last third returns to continuum
+mechanics: local frames, Cosserat rods, curvature, torsion, and defects show
+how the same gauge language becomes a field theory over a material body.
+
+\paragraph{Reading rule.}
+There are two meanings of ``gauge'' in this chapter. One is finite-dimensional:
+choosing body axes over shape space. The other is local and continuum: choosing
+a frame at each material point. Both are frame choices, and both have
+curvatures, but they live over different base spaces. Whenever a symbol
+\(\mathcal A\), \(A\), \(\omega\), or \(R\) appears, first identify whether the
+base variable is shape \(s\), time \(t\), or material position \(X\).
+
+\section{Gauge Kinematics Of Deformable Bodies}
+\label{sec:gauge-kinematics-deformable-bodies}
+
+The preceding chapter described how an elastic body deforms relative to a
+reference body. Gauge kinematics asks a different but compatible question: if
+the body changes shape internally, how much of its observed motion is a genuine
+rigid displacement, and how much is a convention for choosing body axes at each
+shape? This is the same distinction that appears in gauge theory: local
+descriptions depend on a frame choice, while holonomy around a closed loop is
+observable.
+
+The Wilczek-Shapere point of view begins with a finite deformable body moving in
+space. Separate its configuration into:
+\[
+  g\in G,\qquad s\in\mathcal S,
+\]
+where \(G\) is the rigid-motion group, usually \(\SE(3)\) or \(\SO(3)\), and
+\(\mathcal S\) is shape space. A point of the full configuration space is a
+rigid placement \(g\) together with an internal shape \(s\).
+
+The subtlety is that the split into \(g\) and \(s\) is not unique. To say what
+the body's orientation is at a given shape, one must choose body axes for that
+shape. A shape-dependent change of axes
+\[
+  h:\mathcal S\to G
+\]
+changes the representative \(g\). This is exactly a gauge choice.
+
+Geometrically, the full configuration space is locally a product
+\[
+  Q_{\mathrm{full}}\simeq G\times\mathcal S,
+\]
+but no preferred product splitting is supplied by physics. The projection
+\[
+  Q_{\mathrm{full}}\to\mathcal S
+\]
+forgets the rigid placement and remembers only shape. A connection is a rule
+for deciding which infinitesimal motions in \(Q_{\mathrm{full}}\) count as
+``pure shape change'' and which contain rigid motion. In mechanics this rule is
+not arbitrary: the mechanical connection is selected by the kinetic energy and
+the momentum constraint.
+
+The observable content is therefore not the connection coefficient by itself.
+A different convention for body axes changes the coefficient, just as a
+different electromagnetic gauge changes the vector potential. What survives is
+the reconstructed rigid motion, especially the holonomy around a closed shape
+cycle and the curvature that controls small cycles. This is the sense in which
+the Shapere-Wilczek description is a gauge theory of deforming bodies.
+
+\subsection{Principal-Bundle Form Of The Split}
+\label{subsec:deforming-body-principal-bundle}
+
+The clean mathematical model is a principal bundle.  Let \(Q_{\mathrm{full}}\)
+be the full configuration space of the deforming body, after any constraints
+such as fixed center of mass have been imposed.  The rigid-motion group \(G\)
+acts on \(Q_{\mathrm{full}}\) by changing the overall placement of the same
+internal shape.  The shape space is the quotient
+\[
+  \mathcal S=Q_{\mathrm{full}}/G,
+  \qquad
+  \pi:Q_{\mathrm{full}}\to\mathcal S .
+\]
+The point \(s=\pi(q)\) remembers the shape and forgets the rigid placement.
+
+\begin{assumption}[Regular shape bundle]
+In this chapter the \(G\)-action is assumed to be free and proper on the
+configurations under discussion, so that \(\mathcal S\) is a smooth manifold
+and \(Q_{\mathrm{full}}\to\mathcal S\) is locally a product.  Shapes with
+extra symmetry, such as a perfectly spherical body, have stabilizers and require
+minor orbifold or stratified-space modifications.  The formulas below describe
+the generic regular stratum.
+\end{assumption}
+
+A local choice of body frame is a local section
+\[
+  \sigma:\mathcal U\subset\mathcal S\to Q_{\mathrm{full}}.
+\]
+Every nearby configuration can then be written as
+\[
+  q=g\,\sigma(s),
+  \qquad g\in G,\quad s\in\mathcal U.
+\]
+This expression is not unique because the section is not unique.  If the
+internal representative is changed by a shape-dependent rigid motion
+\[
+  \sigma'(s)=h(s)^{-1}\sigma(s),
+  \qquad h:\mathcal U\to G,
+\]
+then the same physical configuration is represented by
+\[
+  q=g\,\sigma(s)=g'\sigma'(s),
+  \qquad
+  g'=g\,h(s).
+\]
+Thus a change of section changes the coordinate \(g\) even though the physical
+configuration \(q\) has not changed.  This is the precise analogue of a gauge
+transformation.
+
+A connection is a \(G\)-equivariant rule that splits a tangent vector
+\(\dot q\in T_qQ_{\mathrm{full}}\) into a vertical rigid part and a horizontal
+shape-changing part.  In the local coordinates \((g,s)\), write the body-frame
+group velocity as
+\[
+  \xi=g^{-1}\dot g\in\mathfrak g .
+\]
+The horizontal condition has the form
+\[
+  \xi+\mathcal A_\alpha(s)\dot s^\alpha=0.
+\]
+Therefore a horizontal lift of a shape path obeys the reconstruction equation
+\[
+  g^{-1}\dot g=-\mathcal A_\alpha(s)\dot s^\alpha .
+\]
+The local coefficient \(\mathcal A=\mathcal A_\alpha ds^\alpha\) is the gauge
+potential.  Under the change of section above it transforms as
+\[
+  \mathcal A'
+  =
+  \Ad_{h^{-1}}\mathcal A-h^{-1}\dd h,
+\]
+which is exactly the inhomogeneous transformation law expected of a connection.
+The curvature and holonomy are developed below; the important point here is
+that the connection is the mathematical object that makes the phrase ``pure
+shape change'' meaningful.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \draw[->] (-0.2,0) -- (6.5,0) node[right] {\(s^1\)};
+  \draw[->] (0,-0.2) -- (0,4.1) node[above] {\(s^2\)};
+  \draw[thick, blue, ->] (1.2,1.2) .. controls (2.8,3.4) and (5.0,3.1) .. (5.0,1.4);
+  \draw[thick, blue, ->] (5.0,1.4) .. controls (3.9,0.4) and (2.2,0.3) .. (1.2,1.2);
+  \node[blue, fill=white, inner sep=2pt] at (3.25,3.58) {shape cycle};
+  \begin{scope}[shift={(1.2,1.2)}, scale=0.28]
+    \draw[fill=gray!20, thick] (-0.8,0) ellipse (0.45 and 0.25);
+    \draw[fill=gray!20, thick] (0.8,0) ellipse (0.45 and 0.25);
+    \draw[thick] (-0.35,0) -- (0.35,0);
+  \end{scope}
+  \begin{scope}[shift={(5.0,1.4)}, scale=0.28, rotate=-20]
+    \draw[fill=gray!20, thick] (-1.0,0) ellipse (0.55 and 0.18);
+    \draw[fill=gray!20, thick] (1.0,0) ellipse (0.55 and 0.18);
+    \draw[thick] (-0.45,0) -- (0.45,0);
+  \end{scope}
+  \begin{scope}[shift={(5.35,3.05)}, scale=0.28, rotate=45]
+    \draw[fill=gray!20, thick] (-0.8,0) ellipse (0.45 and 0.25);
+    \draw[fill=gray!20, thick] (0.8,0) ellipse (0.45 and 0.25);
+    \draw[thick] (-0.35,0) -- (0.35,0);
+    \draw[red!80!black, thick, ->] (0.0,0.65) arc (90:300:0.45);
+  \end{scope}
+  \draw[red!80!black, thick, ->] (4.85,2.72) -- (5.18,2.92);
+  \node[align=center, fill=white, inner sep=2pt] at (2.55,0.62)
+    {closed shape loop\\can have nonzero holonomy};
+  \node[red!80!black, align=center, fill=white, inner sep=2pt] at (5.75,2.35)
+    {net rigid\\rotation};
+\end{tikzpicture}
+\caption{Gauge kinematics: a closed loop in shape space can produce a net rigid
+motion. The start and end shape can be the same while the rigid placement has
+changed; the effect is the holonomy of a connection.}
+\label{fig:gauge-shape-cycle-holonomy}
+\end{figure}
+
+\subsection{Mechanical Connection From Zero Momentum}
+\label{subsec:mechanical-connection-zero-momentum}
+
+The mechanical connection is obtained by solving a constraint, not by adding a
+new force law. If the body has no total rigid momentum, then any internal shape
+velocity that would otherwise create angular or linear momentum must be
+cancelled by an accompanying rigid velocity. The connection is the linear rule
+that performs this cancellation at each shape.
+
+The zero-momentum assumption is a modelling choice, not a mathematical
+necessity. It is appropriate for problems such as a freely falling cat or an
+isolated rotor device initialized with no angular momentum. With nonzero
+momentum, the same kinetic metric still defines a connection, but the
+reconstruction equation contains an additional momentum-driven drift. The
+zero-momentum case is the cleanest place to see geometric phase because the
+entire rigid motion is produced by shape change.
+
+Let the body velocity in the moving frame be
+\[
+  \xi=g^{-1}\dot g\in\mathfrak g,
+\]
+where \(\mathfrak g\) is the Lie algebra of \(G\). Suppose the kinetic energy
+has the block form
+\[
+  T
+  =
+  \frac12
+  \begin{pmatrix}
+  \xi\\ \dot s
+  \end{pmatrix}^T
+  \begin{pmatrix}
+  M(s) & A(s)\\
+  A(s)^T & m(s)
+  \end{pmatrix}
+  \begin{pmatrix}
+  \xi\\ \dot s
+  \end{pmatrix}.
+\]
+This is not an additional assumption about linearity of the equations of
+motion; it is simply the quadratic form of kinetic energy written in the
+variables \((\xi,\dot s)\).  The block \(M(s)\) is the locked inertia operator:
+it measures the rigid momentum produced by a rigid velocity when the shape is
+held fixed.  The block \(m(s)\) is the shape-space metric for pure deformation
+in the chosen frame.  The off-diagonal block \(A(s)\) is the crucial one: it
+measures the rigid momentum generated by changing shape while the chosen body
+frame is held fixed.
+
+\begin{assumption}[Regular locked inertia]
+The zero-momentum reconstruction formula below assumes that \(M(s)\) is
+invertible on the rigid motions being reconstructed.  If a shape has an exact
+symmetry that makes some rigid velocity physically invisible, then \(M(s)\)
+has a null direction and the regular principal-bundle description must be
+restricted or quotient further.
+\end{assumption}
+
+The momentum conjugate to rigid motion is
+\[
+  \Pi=\frac{\partial T}{\partial \xi}=M(s)\xi+A(s)\dot s.
+\]
+The symbol \(\Pi\) is the total rigid-motion momentum written in body
+variables: for \(G=\SE(3)\) it packages total linear and angular momentum.
+If the total angular and linear momentum vanish,
+\[
+  \Pi=0,
+\]
+as they do for an isolated body prepared with zero net external impulse, then
+\(\Pi\) remains zero by conservation and
+\[
+  \xi=-M(s)^{-1}A(s)\dot s.
+\]
+Writing \(\dot s=\dot s^\alpha\partial_\alpha\), define the connection
+\[
+  \boxed{
+  \mathcal A_\alpha(s)=M(s)^{-1}A_\alpha(s).
+  }
+\]
+The rigid velocity is then
+\[
+  \boxed{
+  g^{-1}\dot g=-\mathcal A_\alpha(s)\dot s^\alpha.
+  }
+\]
+This is the cleanest derivation of the gauge field: it is the rule that tells a
+zero-momentum deforming body how much rigid motion is forced by an infinitesimal
+shape change.
+
+The minus sign is part of the reconstruction convention. A positive connection
+component means that the chosen shape change would create rigid momentum in the
+body frame; the actual zero-momentum motion supplies the opposite rigid
+velocity to cancel it. This is the mechanical meaning behind the gauge-theory
+formula.
+
+\subsection{Explicit Inertia-Operator Form}
+\label{subsec:explicit-gauge-equation}
+
+A concrete \(\SO(3)\) version of the same construction is useful because it
+turns the abstract mechanical connection into a linear algebra problem. Let
+\[
+  A=R^{-1}\dot R\in\mathfrak{so}(3)
+\]
+be the angular velocity matrix of the body frame. Let \(Q=Q^T\) encode the
+instantaneous shape through the second moment tensor
+\[
+  Q_{ij}=\int_B\rho(X)X_iX_j\,\dd^3X
+\]
+in the chosen internal frame. The corresponding inertia tensor is
+\[
+  \widetilde I_{ij}
+  =
+  \delta_{ij}\sum_{k=1}^3Q_{kk}-Q_{ij}.
+\]
+Let \(Y(X,s(t))\) be the position of a material point in the chosen internal
+frame, with the center of mass at the origin. The spatial position is
+\(x=RY\). In the body frame,
+\[
+  R^{-1}\dot x=A Y+\dot Y.
+\]
+The first term is the rigid velocity required by the frame motion; the second
+term is internal deformation. The body angular momentum is therefore
+\[
+  M_{\mathrm{tot}}
+  =
+  \int_B\rho\,Y\times(AY+\dot Y)\,\dd^3X.
+\]
+With the hat convention used for the rigid body,
+\(\widehat v\,w=v\times w\), or
+\[
+  (\widehat v)_{ij}=-\epsilon_{ijk}v_k,
+\]
+the rigid part obeys the matrix identity
+\[
+  \widehat{\widetilde I\Omega}=AQ+QA,
+  \qquad A=\widehat\Omega.
+\]
+The internal part is
+\[
+  J_{\mathrm{int}}
+  =
+  \int_B\rho\,Y\times\dot Y\,\dd^3X.
+\]
+For zero total angular momentum,
+\[
+  \widetilde I\Omega+J_{\mathrm{int}}=0.
+\]
+Define the deformation-generated momentum that the rigid motion must cancel by
+\[
+  \widetilde J=-J_{\mathrm{int}}.
+\]
+Then the zero-momentum condition takes the linear matrix form
+\[
+  \boxed{
+  AQ+QA=\widehat{\widetilde J}.
+  }
+\]
+Solving this equation is the explicit finite-dimensional gauge connection:
+the angular velocity \(A\) is determined by the shape velocity through
+\(\widetilde J\).
+
+\begin{derivation}[Solving the finite-dimensional gauge equation]
+Write
+\[
+  A=\widehat\Omega,\qquad A_{ij}=-\epsilon_{ijk}\Omega_k.
+\]
+To verify the identity \(AQ+QA=\widehat{\widetilde I\Omega}\), diagonalize the
+symmetric tensor \(Q\) at the instant under consideration:
+\[
+  Q=\diag(q_1,q_2,q_3).
+\]
+Then
+\[
+  (AQ+QA)_{12}=-(q_1+q_2)\Omega_3,\quad
+  (AQ+QA)_{23}=-(q_2+q_3)\Omega_1,\quad
+  (AQ+QA)_{31}=-(q_3+q_1)\Omega_2.
+\]
+But the inertia tensor has principal moments
+\[
+  \widetilde I_1=q_2+q_3,\qquad
+  \widetilde I_2=q_3+q_1,\qquad
+  \widetilde I_3=q_1+q_2,
+\]
+so these entries are exactly those of
+\(\widehat{\widetilde I\Omega}\). Since both sides transform tensorially under
+orthogonal changes of the internal frame, the identity holds in any frame.
+At zero total angular momentum, the rigid angular momentum must equal
+\(\widetilde J\), the negative of the internal contribution. The linear map
+from angular velocity \(\Omega\) to rigid angular momentum is precisely the
+inertia tensor:
+\[
+  \widetilde J_i=\widetilde I_{ij}\Omega_j.
+\]
+Equivalently,
+\[
+  \Omega_i=(\widetilde I^{-1})_{ij}\widetilde J_j.
+\]
+Therefore
+\[
+  \boxed{
+  A_{ij}
+  =
+  -\epsilon_{ijk}
+  (\widetilde I^{-1})_{k\ell}\widetilde J_\ell.
+  }
+\]
+This is the concrete \(\SO(3)\) deforming-body gauge formula. In the abstract
+notation above, \(M(s)\) is the inertia operator
+\(\widetilde I(s)\), while the cross term \(A(s)\dot s\) is the internally
+generated angular momentum \(\widetilde J(s,\dot s)\). The helicopter rotor
+laboratory in Section~\ref{sec:lab-helicopter-gauge} is the finite-dimensional
+special case where the shape variables are two rotor angles and this abstract
+inertia-operator equation reduces to a pair of scalar connection components.
+\end{derivation}
+
+\subsection{Gauge Transformation And Holonomy}
+\label{subsec:gauge-holonomy}
+
+Under a shape-dependent change of body frame \(h(s)\), the connection transforms
+as
+\[
+  \boxed{
+  \mathcal A'
+  =
+  \Ad_{h^{-1}}\mathcal A-h^{-1}\dd h.
+  }
+\]
+The sign of the inhomogeneous term follows from the reconstruction convention
+\(g^{-1}\dot g=-\mathcal A(\dot s)\). With the opposite convention, the same
+geometric connection is written with the more familiar plus sign. The base space
+is shape space and the structure group is the group of rigid motions.
+
+For a path \(s(t)\), the rigid motion is obtained by integrating
+\[
+  g^{-1}\dot g=-\mathcal A_\alpha(s)\dot s^\alpha.
+\]
+For a closed shape cycle \(\Gamma\), the net displacement is
+\[
+  g(T)
+  =
+  g(0)\,
+  \mathcal P\exp\left(
+    -\oint_\Gamma \mathcal A
+  \right),
+\]
+where \(\mathcal P\) denotes path ordering. The result can be nontrivial even
+though the shape returns to its starting point.
+
+The curvature of the connection is
+\[
+  \boxed{
+  \mathcal F
+  =
+  \dd\mathcal A+\mathcal A\wedge\mathcal A,
+  }
+\]
+or in components,
+\[
+  \mathcal F_{\alpha\beta}
+  =
+  \partial_\alpha\mathcal A_\beta
+  -
+  \partial_\beta\mathcal A_\alpha
+  +
+  [\mathcal A_\alpha,\mathcal A_\beta].
+\]
+
+\begin{derivation}[Small-loop holonomy]
+Take shape coordinates \((s^1,s^2)\) and traverse a tiny rectangle based at
+\(s_0\): first \(+\Delta s^1\), then \(+\Delta s^2\), then
+\(-\Delta s^1\), then \(-\Delta s^2\). Along each side the reconstruction
+equation
+\[
+  g^{-1}\dot g=-\mathcal A_\alpha\dot s^\alpha
+\]
+produces an infinitesimal group exponential. If \(\mathcal A\) were constant,
+the product would be the group commutator
+\[
+  e^{-\mathcal A_2\Delta s^2}
+  e^{-\mathcal A_1\Delta s^1}
+  e^{\mathcal A_2\Delta s^2}
+  e^{\mathcal A_1\Delta s^1}
+  =
+  \exp\left(
+    -[\mathcal A_1,\mathcal A_2]\Delta s^1\Delta s^2
+    +O(|\Delta s|^3)
+  \right),
+\]
+with the sign following the reconstruction convention. If \(\mathcal A\) varies
+over the rectangle, the two \(s^1\)-edges differ by
+\(\partial_2\mathcal A_1\Delta s^2\), and the two \(s^2\)-edges differ by
+\(\partial_1\mathcal A_2\Delta s^1\). Combining the derivative terms with the
+commutator gives
+\[
+  g_{\mathrm{loop}}
+  =
+  \exp\left(
+    -\mathcal F_{12}\Delta s^1\Delta s^2
+    +O(|\Delta s|^3)
+  \right).
+\]
+This is the finite-dimensional version of the usual curvature-as-holonomy
+calculation for a gauge connection.
+\end{derivation}
+
+For a small loop enclosing area element
+\(\Delta S^{\alpha\beta}\),
+\[
+  \Delta g
+  \approx
+  \exp\left(
+    -\mathcal F_{\alpha\beta}\Delta S^{\alpha\beta}
+  \right).
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \draw[->] (-0.2,0) -- (6.9,0) node[right] {\(s^1\)};
+  \draw[->] (0,-0.2) -- (0,3.75) node[above] {\(s^2\)};
+  \coordinate (a) at (1.35,1.25);
+  \coordinate (b) at (3.65,1.25);
+  \coordinate (c) at (3.65,2.55);
+  \coordinate (d) at (1.35,2.55);
+  \fill[blue!10] (a) -- (b) -- (c) -- (d) -- cycle;
+  \draw[blue!70!black, thick, ->] (a) -- node[below] {\(\delta s^1\)} (b);
+  \draw[blue!70!black, thick, ->] (b) -- node[right] {\(\delta s^2\)} (c);
+  \draw[blue!70!black, thick, ->] (c) -- (d);
+  \draw[blue!70!black, thick, ->] (d) -- (a);
+  \draw[red!75!black, thick, ->] (2.35,2.15) arc (210:-80:0.42);
+  \draw[red!75!black, ->] (4.45,2.55) -- (2.95,2.22);
+  \node[red!75!black, align=left, fill=white, inner sep=2pt] at (5.65,2.78)
+    {net rigid motion\\\(-\mathcal F_{12}\delta s^1\delta s^2\)};
+  \node[align=center, fill=white, inner sep=2pt] at (2.5,0.50)
+    {same infinitesimal shape loop,\\different final placement};
+\end{tikzpicture}
+\caption{Curvature is the local density of holonomy. Traversing a small
+rectangle in shape space returns to the same shape but can leave a residual
+rigid displacement proportional to the curvature through the enclosed area.}
+\label{fig:gauge-curvature-small-loop}
+\end{figure}
+
+Thus curvature is the local density of geometric phase. This is the same
+mathematical idea as Hannay angle, Berry phase, and the rigid-body falling-cat
+effect, now written for deforming bodies.
+
+Flat connections can still produce frame changes along open paths, but a small
+closed loop detects curvature. This is why the curvature, rather than the
+connection coefficients themselves, is the local observable of the gauge
+description. Different choices of body frame change \(\mathcal A\), while the
+holonomy around a loop changes by conjugation and therefore represents the same
+physical displacement.
+
+\section{A Two-Rotor Deforming-Body Model}
+\label{sec:two-rotor-deforming-body-model}
+
+A minimal finite-dimensional example is a rigid carrier with two internal
+rotors. The rotor angles are shape variables
+\[
+  s=(\alpha,\beta)\in S^1\times S^1.
+\]
+This is the compact version of the helicopter-rotor laboratory in
+Section~\ref{sec:lab-helicopter-gauge}: here we strip the device down to its
+two noncommuting shape directions so the curvature calculation can be seen in
+one page.
+Let the carrier have isotropic inertia \(I_0\mathbf 1\). Let one rotor spin
+about the body \(z\)-axis with inertia \(I_1\), and another spin about the
+body \(y\)-axis with inertia \(I_2\). If \(\Omega\) is the carrier's body
+angular velocity, the rotational kinetic energy is
+\[
+  T=
+  \frac12I_0\norm{\Omega}^2
+  +
+  \frac12I_1(\Omega_z+\dot\alpha)^2
+  +
+  \frac12I_2(\Omega_y+\dot\beta)^2.
+\]
+The body angular momentum conjugate to \(\Omega\) is
+\[
+  \Pi
+  =
+  I_0\Omega
+  +
+  I_1(\Omega_z+\dot\alpha)e_z
+  +
+  I_2(\Omega_y+\dot\beta)e_y.
+\]
+Imposing zero total angular momentum gives
+\[
+  \Omega
+  =
+  -a\,\dot\alpha\,e_z
+  -
+  b\,\dot\beta\,e_y,
+  \qquad
+  a=\frac{I_1}{I_0+I_1},
+  \qquad
+  b=\frac{I_2}{I_0+I_2}.
+\]
+Thus
+\[
+  \mathcal A_\alpha=a\,e_z,
+  \qquad
+  \mathcal A_\beta=b\,e_y.
+\]
+The connection coefficients are constant, so the derivative part of curvature
+vanishes. But \(\SO(3)\) is nonabelian:
+\[
+  [e_z,e_y]=e_z\times e_y=-e_x.
+\]
+Therefore
+\[
+  \mathcal F_{\alpha\beta}
+  =
+  [\mathcal A_\alpha,\mathcal A_\beta]
+  =
+  -ab\,e_x.
+\]
+A small rectangular stroke with sides \(\Delta\alpha,\Delta\beta\) produces a
+body rotation whose leading rotation vector is proportional to
+\[
+  ab\,\Delta\alpha\,\Delta\beta\,e_x
+\]
+up to the sign convention set by the direction of traversal and by
+\(g^{-1}\dot g=-\mathcal A(\dot s)\). The point is not the sign. The point is
+that a closed loop in internal shape variables produces a rigid rotation even
+though the rotors return to their starting angles. This is the same
+geometric-phase mechanism as the falling cat, written as a connection over
+shape space.
+
+\section{Swimming At Low Reynolds Number}
+\label{sec:low-reynolds-swimming}
+
+Shapere and Wilczek's low-Reynolds-number swimming problem gives a particularly
+physical gauge theory. At very small Reynolds number, inertia drops out of
+Navier-Stokes and the surrounding fluid satisfies Stokes equations:
+\[
+  -\nabla p+\mu\Delta u=0,\qquad \nabla\cdot u=0.
+\]
+Boundary velocity is prescribed by the swimmer's rigid motion plus deformation
+rate. Because the Stokes problem is linear, the force and torque on the body
+depend linearly on:
+\[
+  \xi=g^{-1}\dot g
+  \qquad\text{and}\qquad
+  \dot s.
+\]
+A freely swimming body has zero net force and torque, so the same algebra as
+above gives
+\[
+  \xi=-\mathcal A_\alpha(s)\dot s^\alpha.
+\]
+The connection is now computed from a hydrodynamic boundary-value problem
+rather than from an inertia tensor. A reciprocal one-parameter stroke encloses
+no area in shape space and produces no net motion: this is Purcell's scallop
+theorem in gauge language. A two-parameter stroke can enclose area and swim by
+curvature.
+
+\section{Local Frames In Elastic Continua}
+\label{sec:local-frames-elastic-continua}
+
+The finite-dimensional gauge picture becomes a field theory when every material
+point carries a local frame. A Cosserat body has, in addition to
+\(\varphi(X,t)\), a rotation field
+\[
+  R(X,t)\in\SO(3).
+\]
+The directors are
+\[
+  d_a(X,t)=R(X,t)E_a,
+\]
+where \(E_a\) is a fixed reference basis. The rotational connection is
+\[
+  A_A=R^{-1}\partial_A R\in\mathfrak{so}(3),
+  \qquad
+  A_t=R^{-1}\partial_t R.
+\]
+The translational strain measured in the local frame is
+\[
+  \Gamma_A=R^{-1}\partial_A\varphi.
+\]
+For a rigid body, \(R\) depends only on time. For a Cosserat continuum, \(R\)
+depends on \(X\), so neighboring material points can rotate relative to one
+another.
+
+This is the field-theoretic version of the rigid-body frame issue. In the
+rigid body there is one moving frame; in a Cosserat body there is a moving frame
+at every material point. The connection \(A_A\) compares nearby frames, while
+\(A_t\) records how a given local frame evolves in time.
+
+\begin{definition}[Local frame gauge transformation]
+Let \(G(X,t)\in\SO(3)\) be a change of local material frame:
+\[
+  R'(X,t)=R(X,t)G(X,t).
+\]
+Then
+\[
+  A'_A=G^{-1}A_AG+G^{-1}\partial_A G,
+  \qquad
+  \Gamma'_A=G^{-1}\Gamma_A.
+\]
+Thus \(A_A\) is a gauge connection and \(\Gamma_A\) is a vector-valued
+matter field in the local frame.
+\end{definition}
+
+The simplest elastic energy for a Cosserat continuum penalizes deviations of
+these gauge-covariant strains from preferred values:
+\[
+  W_{\mathrm{Cosserat}}
+  =
+  \frac12 C^{AB}_{ab}
+  \left(\Gamma_A^a-\Gamma_{0A}^a\right)
+  \left(\Gamma_B^b-\Gamma_{0B}^b\right)
+  +
+  \frac12 D^{AB}_{ab}
+  \left(K_A^a-K_{0A}^a\right)
+  \left(K_B^b-K_{0B}^b\right).
+\]
+Here \(K_A\in\R^3\) is the axial-vector form of the skew matrix \(A_A\):
+\[
+  (A_A)^a{}_b=-\epsilon^a{}_{bc}K_A^c.
+\]
+The tensors \(C\) and \(D\) encode stretching/shearing and bending/twisting
+stiffnesses. The preferred fields \(\Gamma_0,K_0\) represent intrinsic strain
+and intrinsic curvature. This formula is schematic but important: it shows how
+ordinary elastic energy becomes an energy on translational strain and gauge
+connection data.
+
+\begin{remark}[Rigid body as the zero-gradient special case]
+If \(R(X,t)=R(t)\) and
+\[
+  \varphi(X,t)=r(t)+R(t)X,
+\]
+then
+\[
+  A_A=R^{-1}\partial_A R=0,
+  \qquad
+  \Gamma_A=R^{-1}\partial_A\varphi=E_A.
+\]
+Thus a rigid body is the special Cosserat field with no spatial frame
+connection and no translational strain beyond the reference directors. A
+deformable Cosserat body is obtained by allowing \(R\) and \(\Gamma_A\) to vary
+with \(X\).
+\end{remark}
+
+\section{Curvature, Torsion, And Defects}
+\label{sec:curvature-torsion-defects}
+
+If a connection is globally of the form
+\[
+  A_A=R^{-1}\partial_A R,
+\]
+then it is pure gauge and satisfies the Maurer-Cartan identity:
+\[
+  F_{AB}
+  =
+  \partial_AA_B-\partial_BA_A+[A_A,A_B]
+  =
+  0.
+\]
+Nonzero curvature means that local frames cannot be integrated into a single
+smooth orientation field without singularities or defects. In defect theory,
+curvature is associated with disclinations, or rotational defects.
+
+To describe translational defects, introduce a local coframe \(\theta^a\), which
+measures material line elements in a local frame. The connection one-forms
+\(\omega^a{}_b\) are the components of the same \(\mathfrak{so}(3)\)-valued
+connection written above: if the matrix entries of \(A_A\) are
+\((A_A)^a{}_b\), then
+\[
+  \omega^a{}_b=(A_A)^a{}_b\,\dd X^A.
+\]
+With this notation, the torsion two-form is
+\[
+  T^a=\dd\theta^a+\omega^a{}_b\wedge\theta^b.
+\]
+Torsion measures closure failure of infinitesimal parallelograms and is
+associated with dislocation density. In this language:
+\[
+\begin{aligned}
+  \text{curvature} &\longleftrightarrow \text{rotational mismatch},\\
+  \text{torsion} &\longleftrightarrow \text{translational mismatch},\\
+  \text{incompatible strain} &\longleftrightarrow \text{nonintegrable local data}.
+\end{aligned}
+\]
+The compatibility identities are the differential bookkeeping rules for these
+defect densities. With covariant exterior derivative \(D\),
+\[
+  D F=0,
+  \qquad
+  D T^a=F^a{}_b\wedge\theta^b.
+\]
+The first identity says that disclination density satisfies a Bianchi identity.
+The second says that dislocation density is not independent of rotational
+curvature when the local frame itself has curvature. These identities are the
+continuum-defect analogue of \(\nabla\cdot(\nabla\times A)=0\): they tell which
+defect fields can be prescribed consistently.
+
+The gauge theory is not decorative terminology. It records which descriptions
+depend on arbitrary local choices of frame and which quantities are invariant.
+
+\section{Cosserat Rod As A One-Dimensional Gauge Theory}
+\label{sec:cosserat-rod}
+
+A planar rod has material coordinate \(s\), centerline \(r(s)\in\R^2\), and
+orientation angle \(\theta(s)\). Its director is
+\[
+  d_1=(\cos\theta,\sin\theta).
+\]
+For an inextensible unshearable rod,
+\[
+  r'(s)=d_1(s).
+\]
+The connection is the scalar curvature
+\[
+  \kappa(s)=\theta'(s).
+\]
+Given \(\kappa\),
+\[
+  \theta(s)=\theta(0)+\int_0^s\kappa(\sigma)\,\dd\sigma,
+\]
+and
+\[
+  r(s)=r(0)+\int_0^s
+  (\cos\theta(\sigma),\sin\theta(\sigma))\,\dd\sigma.
+\]
+This is the reconstruction problem: a gauge field \(\kappa\,\dd s\) determines
+shape after choosing initial position and frame.
+
+The bending energy
+\[
+  E_{\mathrm{bend}}
+  =
+  \frac12\int_0^L B(\kappa-\kappa_0)^2\,\dd s
+\]
+compares actual curvature with preferred curvature. Here \(B\) is bending
+stiffness and \(\kappa_0\) is intrinsic curvature. In gauge language, the
+energy penalizes mismatch between a connection and a preferred connection.
+
+\section{What To Take Forward}
+\label{sec:deforming-body-take-forward}
+
+The progression from rigid body to the gauge theory of deforming bodies is:
+\[
+\begin{aligned}
+  \text{rigid body:}&\quad R(t),\quad R^{-1}\dot R,\\
+  \text{elastic body:}&\quad \varphi(X,t),\quad F=\partial_X\varphi,\quad W(F),\\
+  \text{deformable body:}&\quad g(t),\ s(t),\quad g^{-1}\dot g=-\mathcal A(s)\dot s,\\
+  \text{Cosserat continuum:}&\quad R(X,t),\quad R^{-1}\partial_A R,\\
+  \text{defect theory:}&\quad A,\quad F=\dd A+A\wedge A,\quad T=\dd\theta+\omega\wedge\theta.
+\end{aligned}
+\]
+The first line is ordinary rigid-body mechanics. The second is
+classical elasticity: deformation gradients, stored energy, stress, and elastic
+waves. The third is Shapere-Wilczek gauge kinematics over shape space. The
+fourth attaches a local rigid body to every material point. The fifth allows
+the local frame and
+translation data to be incompatible, producing curvature and torsion as physical
+defect densities.
+
+
+\section{Chapter-End Laboratories And Exercises}
+\label{sec:deforming-body-chapter-end-labs}
+
+These laboratories make the gauge language operational: a small shape loop
+measures curvature, and a finite-dimensional rotor model shows how
+noncommuting connection components produce body rotation.
+
+\subsection{Mechanical Connection: Curvature From A Small Shape Loop}
+\label{sec:detailed-connection-curvature}
+
+Let \(s^1,s^2\) be two shape coordinates and let the zero-momentum
+reconstruction equation be
+\[
+  g^{-1}\dot g
+  =
+  -\mathcal A_\alpha(s)\dot s^\alpha.
+\]
+For a tiny rectangular loop based at \(s_0\), first move by
+\(\Delta s^1\), then \(\Delta s^2\), then back by \(-\Delta s^1\), then back
+by \(-\Delta s^2\). To second order in the side lengths, the net group element
+is
+\[
+  g_{\mathrm{loop}}
+  =
+  \exp(-\mathcal A_2\Delta s^2)
+  \exp(-\mathcal A_1\Delta s^1)
+  \exp(\mathcal A_2\Delta s^2)
+  \exp(\mathcal A_1\Delta s^1)
+\]
+plus the correction from the variation of \(\mathcal A_\alpha(s)\) across the
+loop. The Baker-Campbell-Hausdorff formula gives the commutator contribution,
+while the spatial variation gives derivative terms. The result is
+\[
+  g_{\mathrm{loop}}
+  =
+  \exp\left(
+    -\mathcal F_{12}\Delta s^1\Delta s^2
+    +
+    O(|\Delta s|^3)
+  \right),
+\]
+where
+\[
+  \boxed{
+  \mathcal F_{12}
+  =
+  \partial_1\mathcal A_2-\partial_2\mathcal A_1
+  +
+  [\mathcal A_1,\mathcal A_2].
+  }
+\]
+This is why curvature is the local density of geometric phase. Even if the
+connection components are constant, a nonabelian structure group can give
+nonzero holonomy through the commutator term. The helicopter rotor laboratory
+later in this chapter is exactly of this type.
+
+\subsection{Helicopter Rotor Model As A Gauge Connection}
+\label{sec:lab-helicopter-gauge}
+
+A toy helicopter model makes the Shapere-Wilczek connection finite-dimensional.
+It is the most compact laboratory version of the inertia-operator connection
+derived in Section~\ref{subsec:explicit-gauge-equation}: the general shape
+coordinate \(s\) is replaced by two rotor angles \((\alpha,\beta)\), and the
+zero-momentum equation can be solved by inspection. The same calculation is
+presented in its stripped-down conceptual form in
+Section~\ref{sec:two-rotor-deforming-body-model}; the laboratory here is the
+worked-problem version, with the kinetic energy and boundary of the shape
+cycle written out explicitly.
+
+The calculation has one main checkpoint. The rotor angles return to their
+initial values after a closed stroke, so any final rotation of the body cannot
+be attributed to a changed shape. It must come from the noncommuting
+connection components. This is the finite-dimensional version of geometric
+phase.
+
+Let the body have isotropic base inertia
+\[
+  I_{\mathrm{body}}=I_0\mathbf 1.
+\]
+Let one internal rotor spin about the body \(z\)-axis with angle \(\alpha\) and
+inertia \(I_1\), and let a second rotor spin about the body \(y\)-axis with
+angle \(\beta\) and inertia \(I_2\). The internal shape space is the torus
+\[
+  \mathcal S=S^1_\alpha\times S^1_\beta.
+\]
+Let \(\Omega\in\R^3\) be the body angular velocity. In the body frame, the
+rotor angular velocities are
+\[
+  \Omega+\dot\alpha e_z,
+  \qquad
+  \Omega+\dot\beta e_y.
+\]
+Keeping only the rotational kinetic energy relevant for reconstruction,
+\[
+  T=
+  \frac12I_0\norm{\Omega}^2
+  +
+  \frac12I_1(\Omega_z+\dot\alpha)^2
+  +
+  \frac12I_2(\Omega_y+\dot\beta)^2.
+\]
+The body angular momentum conjugate to \(\Omega\) is
+\[
+  \Pi
+  =
+  I_0\Omega
+  +
+  I_1(\Omega_z+\dot\alpha)e_z
+  +
+  I_2(\Omega_y+\dot\beta)e_y.
+\]
+Set total angular momentum to zero. Componentwise,
+\[
+  (I_0+I_1)\Omega_z+I_1\dot\alpha=0,
+\]
+\[
+  (I_0+I_2)\Omega_y+I_2\dot\beta=0,
+\]
+\[
+  I_0\Omega_x=0.
+\]
+Therefore
+\[
+  \Omega
+  =
+  -\frac{I_1}{I_0+I_1}\dot\alpha\,e_z
+  -
+  \frac{I_2}{I_0+I_2}\dot\beta\,e_y.
+\]
+In connection notation,
+\[
+  g^{-1}\dot g
+  =
+  -\mathcal A_\alpha\dot\alpha-\mathcal A_\beta\dot\beta,
+\]
+with
+\[
+  \mathcal A_\alpha=
+  \frac{I_1}{I_0+I_1}e_z,
+  \qquad
+  \mathcal A_\beta=
+  \frac{I_2}{I_0+I_2}e_y.
+\]
+The components are constant, but the structure group is nonabelian:
+\[
+  [e_z,e_y]\neq0.
+\]
+Thus the curvature contains the commutator term
+\[
+  \mathcal F_{\alpha\beta}
+  =
+  [\mathcal A_\alpha,\mathcal A_\beta].
+\]
+A small rectangular cycle in \((\alpha,\beta)\) can therefore produce a net
+body rotation even though each rotor angle returns to its original value. This
+is the finite-dimensional version of falling-cat holonomy.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \begin{scope}
+    \draw[->] (-0.2,0) -- (4.4,0) node[right] {\(\alpha\)};
+    \draw[->] (0,-0.2) -- (0,3.1) node[above] {\(\beta\)};
+    \fill[blue!8] (0.85,0.65) rectangle (3.25,2.35);
+    \draw[blue!70!black, very thick, -{Latex[length=3mm]}] (0.85,0.65) -- (3.25,0.65)
+      node[midway, below] {\(\Delta\alpha\)};
+    \draw[blue!70!black, very thick, -{Latex[length=3mm]}] (3.25,0.65) -- (3.25,2.35)
+      node[midway, right] {\(\Delta\beta\)};
+    \draw[blue!70!black, very thick, -{Latex[length=3mm]}] (3.25,2.35) -- (0.85,2.35)
+      node[midway, above] {\(-\Delta\alpha\)};
+    \draw[blue!70!black, very thick, -{Latex[length=3mm]}] (0.85,2.35) -- (0.85,0.65)
+      node[midway, left] {\(-\Delta\beta\)};
+    \node[align=center] at (2.05,3.35) {closed shape loop\\on the rotor torus};
+  \end{scope}
+  \begin{scope}[xshift=5.4cm]
+    \draw[->, thick] (0,0) -- (1.6,0) node[right] {\(e_x\)};
+    \draw[->, thick] (0,0) -- (0,1.6) node[above] {\(e_z\)};
+    \draw[->, thick] (0,0) -- (-1.1,-0.8) node[left] {\(e_y\)};
+    \draw[red!75!black, thick, ->] (0.95,0.48)
+      arc[start angle=90, end angle=-230, x radius=0.22, y radius=0.48];
+    \node[red!75!black, fill=white, inner sep=1pt] at (1.48,0.48)
+      {about \(e_x\)};
+  \node[red!75!black, align=center, fill=white, inner sep=1.5pt] at (0.85,-1.2)
+      {net body rotation\\from \([\mathcal A_\alpha,\mathcal A_\beta]\)};
+  \end{scope}
+\end{tikzpicture}
+\caption{Helicopter-rotor gauge laboratory. The connection components are
+constant, but they point in noncommuting body directions. A closed rectangle in
+shape space therefore has curvature from the commutator term and can produce a
+net body rotation.}
+\label{fig:lab-helicopter-gauge-loop}
+\end{figure}
+\FloatBarrier
+
+\section{Associated Demos}
+\label{sec:deforming-body-demos}
+
+\begin{itemize}
+\item \path{demos/python/cosserat_rod_demo.py}, a planar frame reconstruction
+from curvature.
+\item \path{demos/python/deforming_body_gauge.py}: finite-dimensional
+two-rotor gauge holonomy.
+\item \path{demos/mathematica/GaugeDeformingBody.wl}, a finite-dimensional
+gauge-connection toy model.
+\item Suggested extension: a low-Reynolds swimmer whose connection is computed
+from a Stokes boundary-value problem.
+\end{itemize}

@@ -1,0 +1,950 @@
+\chapter{The Three-Body Problem}
+\label{chap:three-body-problem}
+
+The three-body problem is the first Newtonian gravitational system in which all
+of the themes of these notes meet: variational mechanics, Hamiltonian phase
+space, symmetry reduction, integrable limits, resonances, and chaos. The
+two-body problem is exactly solvable because its symmetries and hidden
+conserved quantities reduce the motion to conic sections. Adding one more
+gravitating body preserves the obvious conservation laws but destroys generic
+integrability. The resulting system contains special exact solutions, stable
+and unstable relative equilibria, resonant islands, chaotic scattering, and
+long-time transport.
+
+This chapter is written as a self-contained bridge between the Kepler problem
+and the asteroid-belt simulations in the demos. We first formulate the full
+Newtonian problem and reduce translations. We then describe Jacobi coordinates,
+angular momentum, and the special central configurations. The circular
+restricted three-body problem is derived as a controlled limit in which two
+massive primaries move on circular Kepler orbits and the third body is a test
+particle. Finally we connect that model to Sun-Jupiter-asteroid dynamics and to
+numerical estimates of ejection probability.
+
+\paragraph{Roadmap.}
+The chapter deliberately moves through three models rather than jumping
+straight to a simulation. The full three-body problem supplies the Hamiltonian,
+the conserved quantities, and the reason generic integrability fails. The
+circular restricted three-body problem supplies the rotating frame, Jacobi
+constant, zero-velocity curves, and Lagrange points. The heliocentric
+Sun-Jupiter-asteroid model supplies the finite-time ensemble experiment. Each
+model keeps part of the previous one and discards part of it; the text names
+those decisions so that numerical ejection is not mistaken for an intrinsic
+property of an unspecified ``three-body problem.''
+
+\paragraph{Model hierarchy.}
+The reader should keep four levels separate:
+\[
+\begin{array}{rcl}
+\text{two-body Kepler} &:& \text{integrable reference problem},\\
+\text{full three-body} &:& \text{Newtonian Hamiltonian with all masses active},\\
+\text{CR3BP} &:& \text{two primaries prescribed, one massless test body},\\
+\text{asteroid ensemble} &:& \text{finite-time numerical statistic}.
+\end{array}
+\]
+The later levels are not replacements for the earlier ones. They are controlled
+reductions chosen to isolate transport, escape channels, and resonance-driven
+loss in a teachable setting.
+
+\section{The Newtonian Three-Body Problem}
+\label{sec:newtonian-three-body-problem}
+
+Before specializing to a massless asteroid, it is useful to state the full
+three-body problem. This prevents a common misunderstanding: the restricted
+problem is not a different force law, but a controlled limit and coordinate
+choice inside the same Newtonian interaction. The full problem also explains
+why the two-body Kepler miracle is exceptional. Translation, rotation, and
+energy still give conserved quantities, but they no longer reduce the dynamics
+to a one-dimensional radial equation.
+
+Let \(q_i(t)\in\R^3\) be the inertial position of mass
+\(m_i>0\), and write
+\[
+  r_{ij}=q_i-q_j,\qquad r_{ij}=\norm{q_i-q_j}.
+\]
+The Lagrangian is
+\[
+  L(q,\dot q)
+  =
+  \sum_{i=1}^3 \frac12 m_i\norm{\dot q_i}^2
+  +
+  \sum_{1\leq i<j\leq 3}\frac{Gm_im_j}{r_{ij}},
+\]
+because \(L=T-V\) and the Newtonian potential energy is negative:
+\[
+  V(q)=-\sum_{i<j}\frac{Gm_im_j}{r_{ij}}.
+\]
+The Euler-Lagrange equation for \(q_i\) gives
+\[
+  m_i\ddot q_i
+  =
+  \sum_{j\neq i}
+  Gm_im_j\frac{q_j-q_i}{\norm{q_j-q_i}^3}.
+\]
+After dividing by \(m_i\),
+\[
+  \boxed{
+  \ddot q_i
+  =
+  \sum_{j\neq i}
+  Gm_j\frac{q_j-q_i}{\norm{q_j-q_i}^3}.
+  }
+\]
+This is a closed Hamiltonian system with canonical momenta \(p_i=m_i\dot q_i\)
+and Hamiltonian
+\[
+  H(q,p)
+  =
+  \sum_{i=1}^3\frac{\norm{p_i}^2}{2m_i}
+  -
+  \sum_{i<j}\frac{Gm_im_j}{r_{ij}}.
+\]
+
+The center of mass
+\[
+  R_{\mathrm{cm}}=\frac{1}{M}\sum_i m_iq_i,
+  \qquad
+  M=m_1+m_2+m_3,
+\]
+moves uniformly because the internal gravitational forces cancel in pairs.
+The total momentum, angular momentum, and energy are
+\[
+  P=\sum_i p_i,
+  \qquad
+  J=\sum_i q_i\times p_i,
+  \qquad
+  H=\text{constant}.
+\]
+These conserved quantities are essential, but they do not make the generic
+three-body problem integrable. After removing center-of-mass motion, the
+planar problem has four configuration degrees of freedom and an
+eight-dimensional phase space.  Fixing angular momentum and quotienting the
+remaining planar rotation removes two phase dimensions; a fixed-energy reduced
+space is still five-dimensional.  This is vastly richer than the one-degree
+radial problem left by the two-body reduction, leaving enough room for
+separatrices, homoclinic tangles, chaotic scattering, and transport.
+
+\subsection{Translation Reduction And Jacobi Coordinates}
+\label{subsec:three-body-jacobi-coordinates}
+
+The center-of-mass degree of freedom is dynamically trivial, and it is worth
+removing it explicitly rather than merely saying ``work in the center-of-mass
+frame.''  Let
+\[
+  m_{12}=m_1+m_2,\qquad M=m_{12}+m_3,
+\]
+and define Jacobi coordinates
+\[
+  R=\frac{m_1q_1+m_2q_2+m_3q_3}{M},
+  \qquad
+  \rho_1=q_2-q_1,
+  \qquad
+  \rho_2=q_3-\frac{m_1q_1+m_2q_2}{m_{12}}.
+\]
+Here \(\rho_1\) is the relative vector inside the pair \((1,2)\), while
+\(\rho_2\) points from the center of mass of that pair to the third body.  The
+inverse transformation is
+\[
+\begin{aligned}
+  q_1&=R-\frac{m_2}{m_{12}}\rho_1-\frac{m_3}{M}\rho_2,\\
+  q_2&=R+\frac{m_1}{m_{12}}\rho_1-\frac{m_3}{M}\rho_2,\\
+  q_3&=R+\frac{m_{12}}{M}\rho_2 .
+\end{aligned}
+\]
+Substituting these expressions into the kinetic energy and collecting terms
+gives the diagonal form
+\[
+  T=
+  \frac12 M\norm{\dot R}^2
+  +\frac12\mu_1\norm{\dot\rho_1}^2
+  +\frac12\mu_2\norm{\dot\rho_2}^2,
+  \qquad
+  \mu_1=\frac{m_1m_2}{m_{12}},
+  \qquad
+  \mu_2=\frac{m_3m_{12}}{M}.
+\]
+The absence of cross terms is the point of Jacobi coordinates: the mass metric
+has been diagonalized after translations are separated.
+
+The attraction potential \(U=-V\) becomes
+\[
+\begin{aligned}
+  U(\rho_1,\rho_2)
+  &=
+  \frac{Gm_1m_2}{\norm{\rho_1}}
+  +\frac{Gm_1m_3}
+  {\norm{\rho_2+\frac{m_2}{m_{12}}\rho_1}}
+  +\frac{Gm_2m_3}
+  {\norm{\rho_2-\frac{m_1}{m_{12}}\rho_1}} .
+\end{aligned}
+\]
+In the center-of-mass frame \(R=0\), the relative Hamiltonian is therefore
+\[
+  H_{\mathrm{rel}}
+  =
+  \frac{\norm{\pi_1}^2}{2\mu_1}
+  +\frac{\norm{\pi_2}^2}{2\mu_2}
+  -U(\rho_1,\rho_2),
+\]
+where \(\pi_a=\mu_a\dot\rho_a\).  This formula is the cleanest way to see what
+changed from the two-body problem: there are now two coupled relative vectors,
+and each inverse-square attraction depends on a different linear combination of
+them.
+
+\begin{derivation}[Lagrange-Jacobi identity]
+In the center-of-mass frame define the moment of inertia
+\[
+  I_{\mathrm{cm}}
+  =
+  \sum_{i=1}^3 m_i\norm{q_i}^2
+  =
+  \mu_1\norm{\rho_1}^2+\mu_2\norm{\rho_2}^2 .
+\]
+Differentiate twice:
+\[
+  \ddot I_{\mathrm{cm}}
+  =
+  4T+2\sum_i q_i\cdot m_i\ddot q_i .
+\]
+Since \(m_i\ddot q_i=\partial U/\partial q_i\) and \(U\) is homogeneous of
+degree \(-1\), Euler's theorem gives
+\[
+  \sum_i q_i\cdot\frac{\partial U}{\partial q_i}=-U.
+\]
+With \(H=T-U\), we obtain
+\[
+  \boxed{\ddot I_{\mathrm{cm}}=4H+2U.}
+\]
+This identity is not a solution formula, but it is a powerful diagnostic.  For
+a bounded noncollisional motion, the long-time average of \(\ddot I_{\mathrm{cm}}\)
+vanishes and one obtains the virial relation \(2\langle T\rangle=\langle U\rangle\).
+For escape or near-collision, \(I_{\mathrm{cm}}\) instead records the large-scale
+expansion or collapse of the configuration.
+\end{derivation}
+
+\begin{remark}[Why the two-body miracle fails]
+For two bodies, the center-of-mass reduction leaves one relative vector in a
+central potential. Angular momentum reduces the dynamics to a one-dimensional
+radial problem, and the Laplace-Runge-Lenz vector gives the conic orbit. For
+three bodies there is no single relative radius and no central force after
+reduction. Pairwise forces keep changing the effective center seen by each
+body, so the Kepler constants are no longer constants of the full motion.
+\end{remark}
+
+\subsection{Central Configurations And Special Solutions}
+\label{subsec:central-configurations}
+
+Some exact motions survive this complexity. A configuration
+\(a_1,a_2,a_3\), with center of mass at the origin, is a central configuration
+if there is a scalar \(\lambda\) such that
+\[
+  \sum_{j\neq i}
+  Gm_j\frac{a_j-a_i}{\norm{a_j-a_i}^3}
+  =
+  -\lambda a_i
+  \qquad
+  (i=1,2,3).
+\]
+Then the ansatz
+\[
+  q_i(t)=R(\omega t)a_i
+\]
+solves the equations in a plane provided \(\omega^2=\lambda\). The shape
+rotates rigidly even though the force law is gravitational.
+
+\begin{example}[Lagrange equilateral solution]
+Place three bodies at the vertices of an equilateral triangle and choose the
+center of mass as origin. The gravitational force on each body points toward
+the center of mass, so the central-configuration equation holds. For three
+equal masses \(m\) and side length \(s\), the force on one mass has magnitude
+\[
+  2\frac{Gm^2}{s^2}\cos\frac{\pi}{6}
+  =
+  \sqrt3\,\frac{Gm^2}{s^2}.
+\]
+The distance from a vertex to the centroid is \(s/\sqrt3\). Equating this to
+the centripetal force \(m\omega^2s/\sqrt3\) gives
+\[
+  \omega^2=\frac{3Gm}{s^3}.
+\]
+This is a genuine three-body orbit with fixed shape.
+\end{example}
+
+\begin{example}[Euler collinear solutions]
+There are also central configurations with the three bodies on one line. The
+relative separations are fixed in a rotating frame, and the line rotates
+uniformly. Unlike the equilateral case, the ratios of the two gaps depend on
+the three masses and are determined by an algebraic equation. These collinear
+solutions are the ancestors of \(L_1,L_2,L_3\) in the restricted problem.
+\end{example}
+
+Section~\ref{sec:lab-three-body} turns the equal-mass equilateral solution into
+a numerical laboratory. There the exact rotating triangle is used as the
+comparison orbit, and small perturbations of the initial velocities show how a
+central configuration can organize nearby motion without making the full
+three-body problem integrable.
+
+\section{Circular Restricted Three-Body Problem}
+\label{sec:circular-restricted-three-body-problem}
+
+The circular restricted three-body problem is the cleanest autonomous model
+behind the Sun-Jupiter-asteroid story. Two massive primaries move on circular
+Kepler orbits about their common center of mass, and a third body has zero
+mass, so it feels the primaries but does not affect them. After choosing units
+in which
+\[
+  G(m_1+m_2)=1,\qquad
+  \text{primary separation}=1,\qquad
+  \text{angular speed}=1,
+\]
+define the mass parameter
+\[
+  \mu_{\mathrm{CR3BP}}=\frac{m_2}{m_1+m_2},
+  \qquad
+  0<\mu_{\mathrm{CR3BP}}\leq \frac12.
+\]
+In the uniformly rotating barycentric frame the primaries are fixed at
+\[
+  P_1=(-\mu_{\mathrm{CR3BP}},0),
+  \qquad
+  P_2=(1-\mu_{\mathrm{CR3BP}},0).
+\]
+For compactness in this section write \(\mu=\mu_{\mathrm{CR3BP}}\). If the
+test particle has rotating-frame position \(r=(x,y)\), set
+\[
+  r_1=\sqrt{(x+\mu)^2+y^2},
+  \qquad
+  r_2=\sqrt{(x-1+\mu)^2+y^2}.
+\]
+The effective potential is
+\[
+  \boxed{
+  \Omega_{\mathrm{eff}}(x,y)
+  =
+  \frac12(x^2+y^2)
+  +
+  \frac{1-\mu}{r_1}
+  +
+  \frac{\mu}{r_2}.
+  }
+\]
+The first term is the centrifugal potential; the last two are the gravitational
+potentials of the fixed primaries.
+
+\begin{derivation}[Rotating-frame equations]
+Let \(\rho(t)=R(t)r(t)\) be the inertial position, where \(R(t)\) rotates with
+angular velocity \(\hat z\). Differentiating twice gives
+\[
+  \ddot\rho
+  =
+  R(t)\left(
+    \ddot r+2\hat z\times\dot r+\hat z\times(\hat z\times r)
+  \right).
+\]
+In the plane, \(\hat z\times(\hat z\times r)=-r\). The inertial gravitational
+acceleration, expressed in the rotating frame, is
+\[
+  - (1-\mu)\frac{r-P_1}{r_1^3}
+  - \mu\frac{r-P_2}{r_2^3}
+  =
+  \nabla\left(\frac{1-\mu}{r_1}+\frac{\mu}{r_2}\right).
+\]
+Therefore
+\[
+  \ddot r+2\hat z\times\dot r-r
+  =
+  \nabla\left(\frac{1-\mu}{r_1}+\frac{\mu}{r_2}\right),
+\]
+or
+\[
+  \boxed{
+  \ddot r+2\hat z\times\dot r=\nabla\Omega_{\mathrm{eff}}(r).
+  }
+\]
+In components,
+\[
+  \boxed{
+  \ddot x-2\dot y=\Omega_x,
+  \qquad
+  \ddot y+2\dot x=\Omega_y.
+  }
+\]
+The Coriolis force is velocity dependent but does no work; it bends trajectories
+on the energy surface without changing the Jacobi constant below.
+\end{derivation}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.25, >=Latex]
+  \draw[->] (-2.25,0) -- (2.45,0) node[right] {\(x\)};
+  \draw[->] (0,-1.72) -- (0,1.74) node[above] {\(y\)};
+  \coordinate (pone) at (-0.55,0);
+  \coordinate (ptwo) at (1.05,0);
+  \coordinate (lone) at (0.55,0);
+  \coordinate (ltwo) at (1.52,0);
+  \coordinate (lthree) at (-1.62,0);
+  \coordinate (lfour) at (0.25,1.386);
+  \coordinate (lfive) at (0.25,-1.386);
+  \fill[yellow!80!black] (pone) circle (3.5pt);
+  \node[yellow!45!black, below left=2pt] at (pone) {\(P_1\)};
+  \fill[orange!80!black] (ptwo) circle (2.6pt);
+  \node[orange!80!black, below right=2pt] at (ptwo) {\(P_2\)};
+  \foreach \pt/\lab/\anchor in {lone/L_1/above left,ltwo/L_2/above,lthree/L_3/above}
+  {
+    \draw[red!75!black, thick] (\pt) ++(0,-0.08) -- ++(0,0.16);
+    \node[red!75!black, \anchor=3pt] at (\pt) {\(\lab\)};
+  }
+  \foreach \pt/\lab/\anchor in {lfour/L_4/above right,lfive/L_5/below right}
+  {
+    \draw[red!75!black, thick] (\pt) ++(-0.08,-0.08) -- ++(0.16,0.16);
+    \draw[red!75!black, thick] (\pt) ++(-0.08,0.08) -- ++(0.16,-0.16);
+    \node[red!75!black, \anchor=3pt] at (\pt) {\(\lab\)};
+  }
+  \draw[blue!60!black, ->] (1.55,1.00) arc (28:78:0.78);
+  \node[blue!60!black, fill=white, inner sep=1pt] at (1.95,1.48) {rotating frame};
+\end{tikzpicture}
+\caption{Circular restricted three-body geometry in rotating barycentric
+coordinates. The primaries are fixed, while the test particle moves under
+gravity, centrifugal force, and Coriolis deflection.}
+\label{fig:cr3bp-rotating-frame}
+\end{figure}
+
+\begin{derivation}[Jacobi integral]
+Dot the rotating-frame equation with \(\dot r\):
+\[
+  \dot r\cdot\ddot r
+  +
+  2\dot r\cdot(\hat z\times\dot r)
+  =
+  \dot r\cdot\nabla\Omega_{\mathrm{eff}}.
+\]
+The Coriolis term vanishes because \(\dot r\cdot(\hat z\times\dot r)=0\). Hence
+\[
+  \frac{\dd}{\dd t}\left(\frac12\norm{\dot r}^2\right)
+  =
+  \frac{\dd}{\dd t}\Omega_{\mathrm{eff}}(r(t)).
+\]
+Therefore
+\[
+  \frac12\norm{\dot r}^2-\Omega_{\mathrm{eff}}=\text{constant}.
+\]
+It is customary to multiply by \(-2\) and define the Jacobi constant
+\[
+  \boxed{
+  C_J=2\Omega_{\mathrm{eff}}(x,y)-(\dot x^2+\dot y^2).
+  }
+\]
+This is the energy integral of the autonomous rotating-frame problem.
+\end{derivation}
+
+\begin{derivation}[Canonical Hamiltonian in the rotating frame]
+The rotating-frame equations also come from a genuine autonomous Hamiltonian,
+but the canonical momenta are not the velocity components.  The Lagrangian per
+unit test-particle mass is
+\[
+  L_{\mathrm{rot}}
+  =
+  \frac12(\dot x^2+\dot y^2)
+  +x\dot y-y\dot x
+  +\Omega_{\mathrm{eff}}(x,y).
+\]
+The linear velocity term is the Coriolis term in variational form.  Hence
+\[
+  p_x=\frac{\partial L_{\mathrm{rot}}}{\partial\dot x}=\dot x-y,
+  \qquad
+  p_y=\frac{\partial L_{\mathrm{rot}}}{\partial\dot y}=\dot y+x.
+\]
+Solving for velocity gives \(\dot x=p_x+y\) and \(\dot y=p_y-x\).  The
+Legendre transform gives
+\[
+\begin{aligned}
+  H_{\mathrm{rot}}
+  &=
+  p_x\dot x+p_y\dot y-L_{\mathrm{rot}}\\
+  &=
+  \frac12(p_x^2+p_y^2)+yp_x-xp_y
+  -\frac{1-\mu}{r_1}-\frac{\mu}{r_2}.
+\end{aligned}
+\]
+Equivalently,
+\[
+  H_{\mathrm{rot}}
+  =
+  \frac12\big((p_x+y)^2+(p_y-x)^2\big)
+  -\Omega_{\mathrm{eff}}(x,y).
+\]
+Along solutions
+\[
+  C_J=-2H_{\mathrm{rot}}.
+\]
+This equality is often the safest way to translate between the geometric
+zero-velocity picture and the canonical phase-space picture: velocities are
+natural for drawing allowed regions, while \((x,y,p_x,p_y)\) are natural for
+Hamiltonian perturbation theory and Poincare maps.
+\end{derivation}
+
+The Jacobi constant gives an immediate geometric constraint. Since the squared
+speed is nonnegative,
+\[
+  \dot x^2+\dot y^2
+  =
+  2\Omega_{\mathrm{eff}}(x,y)-C_J
+  \geq0.
+\]
+Thus the allowed region in the rotating plane is
+\[
+  2\Omega_{\mathrm{eff}}(x,y)\geq C_J,
+\]
+and curves satisfying
+\[
+  2\Omega_{\mathrm{eff}}(x,y)=C_J
+\]
+are zero-velocity curves. They are not physical walls; they are projections of
+the energy surface to configuration space. A test particle cannot cross a
+forbidden region because that would require imaginary speed. When the
+zero-velocity neck near \(L_1\) or \(L_2\) opens, transport between regions
+becomes possible. This is the rotating-frame picture behind many capture,
+escape, and ejection mechanisms.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \begin{scope}
+    \fill[gray!15] (-2.0,-1.15) rectangle (2.0,1.15);
+    \draw[->] (-2.0,0) -- (2.25,0) node[right] {\(x\)};
+    \draw[->] (0,-1.25) -- (0,1.25) node[above] {\(y\)};
+    \draw[blue!70!black, thick] (-0.75,0) ellipse (0.62 and 0.45);
+    \draw[blue!70!black, thick] (0.88,0) ellipse (0.34 and 0.27);
+    \fill[white] (-0.75,0) ellipse (0.60 and 0.43);
+    \fill[white] (0.88,0) ellipse (0.32 and 0.25);
+    \fill[yellow!80!black] (-0.75,0) circle (2.8pt);
+    \fill[orange!80!black] (0.88,0) circle (2.2pt);
+    \draw[red!75!black, thick] (0.2,-0.08) -- (0.2,0.08);
+    \node[red!75!black, above] at (0.2,0.08) {\(L_1\)};
+    \node[align=center] at (0,-1.65) {neck closed\\separate allowed lobes};
+  \end{scope}
+  \begin{scope}[xshift=5.6cm]
+    \fill[gray!15] (-2.0,-1.15) rectangle (2.0,1.15);
+    \draw[->] (-2.0,0) -- (2.25,0) node[right] {\(x\)};
+    \draw[->] (0,-1.25) -- (0,1.25) node[above] {\(y\)};
+    \draw[blue!70!black, thick]
+      (-1.35,0) .. controls (-1.20,0.70) and (-0.30,0.78) .. (0.20,0.20)
+      .. controls (0.70,0.60) and (1.25,0.45) .. (1.35,0)
+      .. controls (1.25,-0.45) and (0.70,-0.60) .. (0.20,-0.20)
+      .. controls (-0.30,-0.78) and (-1.20,-0.70) .. (-1.35,0);
+    \fill[white]
+      (-1.22,0) .. controls (-1.08,0.58) and (-0.30,0.62) .. (0.20,0.10)
+      .. controls (0.64,0.48) and (1.08,0.36) .. (1.18,0)
+      .. controls (1.08,-0.36) and (0.64,-0.48) .. (0.20,-0.10)
+      .. controls (-0.30,-0.62) and (-1.08,-0.58) .. (-1.22,0);
+    \fill[yellow!80!black] (-0.75,0) circle (2.8pt);
+    \fill[orange!80!black] (0.88,0) circle (2.2pt);
+    \draw[red!75!black, thick] (0.2,-0.08) -- (0.2,0.08);
+    \node[red!75!black, above] at (0.2,0.08) {\(L_1\)};
+    \draw[red!75!black, ->] (0.2,-0.52) -- (0.2,-0.14);
+    \node[align=center] at (0,-1.65) {neck open\\transport channel};
+  \end{scope}
+\end{tikzpicture}
+\caption{Schematic zero-velocity curves in the rotating CR3BP plane. Gray
+regions are forbidden by \(2\Omega_{\mathrm{eff}}<C_J\); white regions are
+allowed projections of the energy surface. Changing \(C_J\) can open a neck
+near \(L_1\), creating a channel between previously separated regions.}
+\label{fig:cr3bp-zero-velocity-neck}
+\end{figure}
+
+\subsection{Lagrange Points}
+\label{subsec:lagrange-points}
+
+Equilibria in the rotating frame satisfy
+\[
+  \dot x=\dot y=\ddot x=\ddot y=0,
+  \qquad
+  \nabla\Omega_{\mathrm{eff}}(x,y)=0.
+\]
+There are five such points. The collinear points \(L_1,L_2,L_3\) lie on the
+\(x\)-axis and solve the scalar equation
+\[
+  x
+  -
+  (1-\mu)\frac{x+\mu}{|x+\mu|^3}
+  -
+  \mu\frac{x-1+\mu}{|x-1+\mu|^3}
+  =
+  0.
+\]
+The absolute values encode which side of each primary the point lies on. There
+is one solution between the primaries, one to the right of \(P_2\), and one to
+the left of \(P_1\).
+
+The triangular points are explicit:
+\[
+  \boxed{
+  L_4=\left(\frac12-\mu,\frac{\sqrt3}{2}\right),
+  \qquad
+  L_5=\left(\frac12-\mu,-\frac{\sqrt3}{2}\right).
+  }
+\]
+At either point \(r_1=r_2=1\). Substituting \(L_4\), for example, gives
+\[
+\begin{aligned}
+  \Omega_x
+  &=
+  x-(1-\mu)(x+\mu)-\mu(x-1+\mu)\\
+  &=
+  \left(\frac12-\mu\right)
+  -(1-\mu)\frac12
+  -\mu\left(-\frac12\right)
+  =
+  0,
+\end{aligned}
+\]
+and similarly \(\Omega_y=0\). The gravitational and centrifugal forces balance
+in the rotating frame.
+
+\begin{remark}[Linear stability of \(L_4,L_5\)]
+Linearizing about \(L_4\) or \(L_5\) gives stable oscillations when
+\[
+  \mu(1-\mu)<\frac{1}{27}.
+\]
+Equivalently, for \(\mu\leq 1/2\),
+\[
+  \mu<\mu_R
+  =
+  \frac12\left(1-\sqrt{\frac{23}{27}}\right)
+  \approx 0.03852.
+\]
+The Sun-Jupiter value is about \(9.53\times10^{-4}\), far below this threshold.
+This is why Trojan motion near the triangular points is a natural classroom
+example of stable motion in a nontrivial three-body setting.
+\end{remark}
+
+\subsection{Connection To The Asteroid-Belt Model}
+\label{subsec:cr3bp-to-asteroid-belt}
+
+The CR3BP is autonomous in the rotating barycentric frame and has the Jacobi
+constant. The ejection-probability demo uses a closely related heliocentric
+form in which Jupiter is prescribed on a circular orbit and the asteroid is
+integrated in Sun-centered coordinates. The two descriptions are related by a
+time-dependent rotation and translation, but they emphasize different things:
+\begin{itemize}
+\item rotating barycentric CR3BP: Jacobi constant, zero-velocity curves, and
+Lagrange points;
+\item heliocentric asteroid ensemble: Kepler elements, resonance bins, and
+finite-time ejection statistics.
+\end{itemize}
+Both are useful. The first gives the clean phase-space geometry of escape
+channels. The second makes direct contact with semimajor axes, mean-motion
+resonances, and the asteroid-belt simulations.
+
+The CR3BP companion script computes \(L_1,\ldots,L_5\), plots representative
+zero-velocity curves, and prints the drift of the Jacobi constant along the
+numerical trajectory. Its time stepper is classical fourth-order Runge-Kutta:
+this is transparent for a first classroom calculation, but it is not
+symplectic and it does not preserve the Jacobi integral exactly. Long-time
+transport claims should therefore be checked against the printed Jacobi drift
+and, in research calculations, against a structure-aware integrator.
+
+\section{Heliocentric Sun-Jupiter-Asteroid Equations}
+\label{sec:restricted-sun-jupiter-asteroid}
+
+Let \(r\in\R^2\) be the asteroid position relative to the Sun. Jupiter is
+prescribed by
+\[
+  r_J(t)=a_J(\cos n_Jt,\sin n_Jt),
+  \qquad
+  n_J^2=\frac{G(M_\odot+M_J)}{a_J^3}.
+\]
+In a heliocentric non-inertial frame, the asteroid acceleration is
+\[
+  \boxed{
+  \ddot r
+  =
+  -\frac{GM_\odot r}{\norm r^3}
+  -
+  GM_J
+  \left(
+    \frac{r-r_J}{\norm{r-r_J}^3}
+    +
+    \frac{r_J}{\norm{r_J}^3}
+  \right)
+  }.
+\]
+The first term is solar gravity. The first part of the Jupiter term is direct
+gravitational attraction to Jupiter. The final term is the indirect term caused
+by the acceleration of the heliocentric frame.
+
+Equivalently, the asteroid obeys the explicitly time-dependent Hamiltonian
+\[
+  H_{\mathrm{hel}}(r,p,t)
+  =
+  \frac12\norm p^2
+  -
+  \frac{GM_\odot}{\norm r}
+  -
+  \frac{GM_J}{\norm{r-r_J(t)}}
+  +
+  GM_J\frac{r\cdot r_J(t)}{\norm{r_J(t)}^3}.
+\]
+The last term is the potential whose gradient gives the indirect acceleration.
+Because \(r_J(t)\) is periodic, this is a periodically forced one-particle
+Hamiltonian. It can be made autonomous by adjoining the forcing phase
+\(\phi=n_Jt\) and its conjugate action, but the resulting system has more than
+one degree of freedom and can exhibit resonance and chaotic transport.
+
+\begin{derivation}[Indirect term]
+Let \(x\) be the asteroid position in an inertial frame and \(x_\odot\) the Sun
+position. The heliocentric vector is \(r=x-x_\odot\). Then
+\[
+  \ddot r=\ddot x-\ddot x_\odot.
+\]
+The direct Jupiter acceleration of the asteroid is
+\[
+  -GM_J\frac{x-x_J}{\norm{x-x_J}^3}.
+\]
+The acceleration of the Sun due to Jupiter is
+\[
+  \ddot x_\odot=
+  GM_J\frac{x_J-x_\odot}{\norm{x_J-x_\odot}^3}
+  =
+  GM_J\frac{r_J}{\norm{r_J}^3}.
+\]
+Subtracting \(\ddot x_\odot\) produces the indirect term
+\[
+  -GM_J\frac{r_J}{\norm{r_J}^3}.
+\]
+\end{derivation}
+
+\begin{remark}[Why the indirect term matters]
+Omitting the indirect term corresponds to holding the Sun fixed while Jupiter
+pulls on the asteroid. That is sometimes useful as a simplified classroom
+model, but it is not the heliocentric form of the restricted three-body
+problem. Including the indirect term ensures that the coordinate origin
+accelerates exactly as the Sun does in the prescribed Sun-Jupiter motion.
+\end{remark}
+
+\section{Numerical Ejection Probability}
+\label{sec:numerical-ejection-probability}
+
+The highlighted simulation samples \(N\) test particles with initial semimajor
+axes \(a_0\in[a_{\min},a_{\max}]\), small eccentricities, random orbital phases,
+and random periapse directions. Let \(T\) be the integration horizon.
+
+\begin{definition}[Finite-time ejection probability]
+For a specified model, sampling distribution, time step, and ejection criterion,
+the finite-time ejection probability estimate is
+\[
+  \widehat P_{\mathrm{ej}}(T)
+  =
+  \frac{1}{N}
+  \sum_{i=1}^{N}\mathbf 1\{\text{particle \(i\) is ejected before time \(T\)}\}.
+\]
+\end{definition}
+
+\begin{assumption}[Ejection criterion in the demo]
+The Python demo counts a particle as ejected if it reaches a large heliocentric
+radius or if its heliocentric two-body energy is positive after it has moved
+outside Jupiter's orbital scale. It separately records close approaches to
+Jupiter and collisions with the inner solar cutoff.
+\end{assumption}
+
+This probability is not an intrinsic number attached to nature. It depends on:
+\[
+  \text{model}+\text{initial ensemble}+\text{time horizon}
+  +\text{numerical method}+\text{loss criterion}.
+\]
+That dependence should be reported, not hidden.
+
+The demo also labels each semimajor-axis bin by its nearest low-order interior
+mean-motion resonance with Jupiter. The nominal resonance locations are
+\[
+  a_{p:q}=a_J\left(\frac{q}{p}\right)^{2/3},
+  \qquad
+  (p:q)\in\{3:1,5:2,7:3,2:1\}.
+\]
+These labels should not be overinterpreted: a bin is not a resonance island,
+and the real resonance width depends on eccentricity and perturbation strength.
+They are a diagnostic overlay, useful for asking whether large loss fractions
+cluster near the same places where perturbation theory predicts slow resonant
+angles.
+
+For a bin containing \(n_b\) sampled particles and \(e_b\) ejections, the
+reported fraction is
+\[
+  \widehat p_b=\frac{e_b}{n_b}.
+\]
+If the particles in that bin are treated as independent Bernoulli trials, a
+rough sampling uncertainty is
+\[
+  \operatorname{SE}(\widehat p_b)
+  \approx
+  \sqrt{\frac{\widehat p_b(1-\widehat p_b)}{n_b}}.
+\]
+This is only a Monte Carlo error bar for the chosen numerical experiment. It
+does not measure modeling error, timestep error, or the long-time instability
+of the idealized Hamiltonian system.
+
+\section{Integrator Used In The Demo}
+\label{sec:asteroid-integrator}
+
+The demo uses a kick-drift-kick style update. If \(a(r,t)\) is the acceleration,
+then
+\[
+\begin{aligned}
+  v_{n+1/2} &= v_n+\frac{\Delta t}{2}a(r_n,t_n),\\
+  r_{n+1} &= r_n+\Delta t\,v_{n+1/2},\\
+  v_{n+1} &= v_{n+1/2}+\frac{\Delta t}{2}a(r_{n+1},t_{n+1}).
+\end{aligned}
+\]
+Because Jupiter's position is explicitly time-dependent in the prescribed
+circular model, the method is not exactly the same as a symplectic map for an
+autonomous finite-dimensional Hamiltonian. It is still much better pedagogically
+than an opaque black-box integrator because every force evaluation is visible.
+
+\section{What To Take Forward}
+\label{sec:three-body-take-forward}
+
+\begin{itemize}
+\item The full three-body problem is Newtonian and Hamiltonian, but its
+translation and rotation symmetries do not reduce it to a one-degree-of-freedom
+radial equation.  The failure is structural, not a lack of clever coordinates.
+\item Jacobi coordinates remove center-of-mass motion and diagonalize the mass
+metric.  They reveal two coupled relative vectors, which is the simplest
+coordinate-level reason the two-body Kepler solution does not generalize.
+\item Central configurations are exact special motions, not generic solutions.
+They are valuable because they organize nearby dynamics and survive as
+Lagrange-point structures in the restricted problem.
+\item The circular restricted three-body problem supplies an autonomous
+rotating-frame model with Lagrange points, zero-velocity curves, a canonical
+Hamiltonian, and the Jacobi constant. These structures are the cleanest
+geometric language for capture and escape channels.
+\item The heliocentric Sun-Jupiter-asteroid model is a periodically forced
+Kepler problem.  Its indirect term is part of the coordinate transformation,
+not an optional correction.
+\item Numerical ejection probabilities are finite-time, model-dependent
+observables. They become meaningful only when the ensemble, integration time,
+timestep, invariants, and loss criterion are stated.
+\end{itemize}
+
+
+\section{Chapter-End Laboratories And Exercises}
+\label{sec:three-body-chapter-end-labs}
+
+This laboratory is the finite-mass counterpart of the restricted
+Sun-Jupiter-asteroid simulations: derive Newton's equations, choose controlled
+initial data, and monitor invariants before interpreting instability.
+
+\subsection{Equal-Mass Three-Body Laboratory}
+\label{sec:lab-three-body}
+
+For an equal-mass three-body laboratory, take three masses in the plane with
+pair potential
+\[
+  V=-k\left(\frac1{r_{12}}+\frac1{r_{23}}+\frac1{r_{13}}\right),
+\]
+where
+\[
+  r_{ij}=\norm{r_i-r_j}.
+\]
+The Lagrangian is
+\[
+  L=\sum_{i=1}^3\frac12m\norm{\dot r_i}^2
+  +
+  k\left(\frac1{r_{12}}+\frac1{r_{23}}+\frac1{r_{13}}\right).
+\]
+The equations are
+\[
+  m\ddot r_i
+  =
+  -k\sum_{j\neq i}\frac{r_i-r_j}{\norm{r_i-r_j}^3}.
+\]
+The symmetric initial positions are
+\[
+  r_1(0)=(1,0),
+  \qquad
+  r_2(0)=\left(-\frac12,\frac{\sqrt3}{2}\right),
+  \qquad
+  r_3(0)=\left(-\frac12,-\frac{\sqrt3}{2}\right).
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.15, >=Latex, font=\small]
+  \draw[->] (-2.0,0) -- (2.2,0) node[right] {\(x\)};
+  \draw[->] (0,-1.7) -- (0,1.9) node[above] {\(y\)};
+  \coordinate (r1) at (1.25,0);
+  \coordinate (r2) at (-0.625,1.083);
+  \coordinate (r3) at (-0.625,-1.083);
+  \draw[gray!70, thick] (r1) -- (r2) -- (r3) -- cycle;
+  \fill[blue!70!black] (r1) circle (2pt) node[right] {\(r_1\)};
+  \fill[blue!70!black] (r2) circle (2pt) node[above left] {\(r_2\)};
+  \fill[blue!70!black] (r3) circle (2pt) node[below left] {\(r_3\)};
+  \draw[->, red!75!black, thick] (r1) -- ++(0,0.65);
+  \draw[->, red!75!black, thick] (r2) -- ++(-0.56,-0.32);
+  \draw[->, red!75!black, thick] (r3) -- ++(0.56,-0.32);
+  \draw[dashed] (0,0) circle (1.25);
+  \node[red!75!black, align=center, fill=white, inner sep=1.5pt] at (1.65,1.24)
+    {tangent velocities\\for rotating triangle};
+  \node[align=center, fill=white, inner sep=1.5pt] at (0,-1.95)
+    {the perturbation lab changes the initial velocities\\and monitors
+     energy, angular momentum, and separation};
+\end{tikzpicture}
+\caption{Equal-mass three-body laboratory. The unperturbed comparison solution
+starts from an equilateral triangle with tangential velocities; perturbing this
+initial data is a controlled way to watch the loss of symmetric motion.}
+\label{fig:lab-three-body-initial-data}
+\end{figure}
+\FloatBarrier
+
+For the rotating equilateral solution, velocities are tangent to the
+circumcircle. A representative perturbed initial condition uses a speed
+parameter \(v=0.8\) and perturbation \(\epsilon=0.05\), with initial velocities
+such as
+\[
+  \dot x_1(0)=\epsilon,\qquad
+  \dot x_2(0)=-\frac{\sqrt3}{2}v-\epsilon,\qquad
+  \dot x_3(0)=\frac{\sqrt3}{2}v.
+\]
+The important lesson is not the particular number \(0.8\). It is the workflow:
+derive Newton's equations from a Lagrangian, integrate the exact pairwise
+forces, monitor energy and angular momentum, and compare unperturbed symmetric
+motion with perturbed motion. This is the finite-mass cousin of the
+Sun-Jupiter-asteroid ejection simulation.
+
+\section{Questions For The Reader}
+\label{sec:three-body-questions}
+
+\begin{enumerate}
+\item Starting from the inertial three-body Lagrangian, derive the
+center-of-mass equation and explain why internal gravitational forces cancel in
+pairs.
+\item Verify the Jacobi-coordinate kinetic energy formula by substituting the
+inverse transformation for \(q_1,q_2,q_3\). Which mass factors would be wrong
+if the center of mass of bodies \(1\) and \(2\) were not used in \(\rho_2\)?
+\item Use the homogeneity of \(U\) to rederive the Lagrange-Jacobi identity.
+What does it imply for a bounded noncollisional orbit?
+\item For the Sun-Jupiter value of \(\mu_{\mathrm{CR3BP}}\), where are
+\(L_1,L_2,L_3\) relative to Jupiter?
+\item For a chosen Jacobi constant, which zero-velocity necks are open?
+\item Show explicitly that \(C_J=-2H_{\mathrm{rot}}\) after converting
+canonical momenta to rotating-frame velocities.
+\item How does \(\widehat P_{\mathrm{ej}}(T)\) change with \(T\)?
+\item Which semimajor-axis bins have the largest ejection fractions?
+\item What changes when \(M_J\) is scaled upward?
+\item Which losses are close encounters rather than clean ejections?
+\item How sensitive are the results to \(\Delta t\)?
+\item Are apparent resonance structures stable under a different random seed?
+\end{enumerate}
+
+\section{Associated Demos}
+\label{sec:three-body-demos}
+
+\begin{itemize}
+\item \path{demos/python/circular_restricted_three_body.py}
+\item \path{demos/python/asteroid_ejection_probability.py}
+\item \path{demos/mathematica/CircularRestrictedThreeBody.wl}
+\item \path{demos/mathematica/AsteroidEjectionProbability.wl}
+\end{itemize}
+Use the CR3BP demo first: it checks the Jacobi constant and draws the
+zero-velocity geometry. Use the ejection-probability demo second: it turns the
+same dynamical ideas into an ensemble statistic, so the meaningful outputs are
+not only trajectories but also loss criteria, timestep sensitivity, resonance
+bins, and finite-time uncertainty.

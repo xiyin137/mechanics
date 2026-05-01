@@ -1,9 +1,8 @@
-# Mechanics Through Phase Space
+# Notes on Classical Mechanics
 
 This repository is a teaching project for advanced mechanics centered on
 Lagrangian mechanics, Hamiltonian mechanics, phase space, integrability, chaos,
-rigid bodies, celestial mechanics, fluids, and the gauge theory of deforming
-bodies.
+rigid bodies, celestial mechanics, elastic and deforming bodies, and fluids.
 
 The organizing idea is that mechanics is geometry made computational: motion is
 described by variational principles, conserved quantities come from symmetry,
@@ -13,7 +12,7 @@ can be studied through the same geometric language.
 ## Current Contents
 
 - `PLANNING.md`: comprehensive course and repository plan.
-- `notes/tex`: TeX source for the first course notes.
+- `notes/tex`: TeX source for the integrated course notes.
 - `demos/python`: runnable Python simulations and numerical experiments.
 - `demos/mathematica`: Wolfram Language scripts for symbolic and numerical demos.
 - `syllabus`: course map and module sequence.
@@ -29,12 +28,32 @@ can be studied through the same geometric language.
 2. **Sun-Jupiter-asteroid restricted problem**
    - Kepler problem as an integrable baseline
    - Jupiter as a perturbation
-   - resonances, chaotic transport, and numerical ejection probabilities
+   - circular restricted three-body problem, Lagrange points, and Jacobi integral
+   - full three-body reduction, central configurations, and Jacobi coordinates
+   - resonances, chaotic transport, resonance-labelled ejection probabilities
 
-3. **Fluids and deforming bodies**
+3. **Elastic and deforming bodies**
+   - finite strain, linear elasticity, elastic waves, bars, shafts, and beams
+   - gauge theory of deforming bodies in the Shapere-Wilczek style
+   - shape space, mechanical connection, curvature, holonomy, and local frames
+   - Cosserat media and defect fields as bridges from rigid bodies to continua
+
+4. **Fluid mechanics**
+   - Navier-Stokes derivation from balance laws and Newtonian stress
+   - exact Couette, Poiseuille, Stokes-layer, and Taylor-Green solutions
    - vorticity, circulation, and Hamiltonian point vortices
-   - deformation maps, local frames, connections, and defect fields
-   - Cosserat media as a bridge from rigid bodies to continua
+
+## Reading Path
+
+The notes are written as a full reference, but they can be taught in two
+passes. The core pass covers notation, variational mechanics, Hamiltonian phase
+space, Liouville tori, Kepler motion, the Euler top, resonant perturbation
+theory, KAM survival and torus breakdown, CR3BP/Jacobi geometry, finite strain,
+linear elasticity, the first gauge-theory examples, Navier-Stokes derivation,
+and exact laminar solutions. The extended pass adds the longer KAM discussion,
+cantori and turnstiles, the full three-body reduction, asteroid ejection
+statistics, detailed elastic boundary-value formulas, Shapere-Wilczek holonomy,
+Cosserat media, defect geometry, Orr-Sommerfeld stability, and point vortices.
 
 ## Quick Start
 
@@ -50,6 +69,43 @@ Run the highlighted asteroid ejection probability demo:
 
 ```sh
 python demos/python/asteroid_ejection_probability.py --n 256 --years 200 --dt 0.02 --seed 7 --plot figures/ejection_demo.png
+```
+
+Run the circular restricted three-body demo with Jacobi-drift diagnostics and
+zero-velocity curves:
+
+```sh
+python demos/python/circular_restricted_three_body.py --periods 3 --dt 0.0025 --plot figures/cr3bp_zero_velocity.png
+```
+
+The Makefile alias for this figure is:
+
+```sh
+make cr3bp-zerovel-demo
+```
+
+Run the invariant-torus breakdown diagnostic for the standard map:
+
+```sh
+python demos/python/standard_map_torus_breakdown.py --K 1.1 --steps 1500 --orbits 128 --plot figures/standard_map_torus_breakdown.png
+```
+
+The Makefile alias for this figure is:
+
+```sh
+make standard-map-breakdown-demo
+```
+
+Run the exact Navier-Stokes solution demo:
+
+```sh
+python demos/python/navier_stokes_solutions.py --plot figures/navier_stokes_solutions.png
+```
+
+Run the linear elasticity formula demo:
+
+```sh
+python demos/python/linear_elasticity.py --plot figures/linear_elasticity.png
 ```
 
 For a short classroom run that visibly ejects particles, use a scaled Jupiter
@@ -69,6 +125,19 @@ Run all smoke tests:
 
 ```sh
 python -m pytest
+```
+
+Run the Wolfram Language companion diagnostics without figure export:
+
+```sh
+make mathematica-smoke
+```
+
+To request a figure from an individual Wolfram script, pass `--plot` to
+`WolframKernel -script`, for example:
+
+```sh
+/Applications/Wolfram.app/Contents/MacOS/WolframKernel -script demos/mathematica/LinearElasticity.wl --plot
 ```
 
 Build the TeX notes from `notes/tex` with a local TeX installation:

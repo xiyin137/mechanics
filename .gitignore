@@ -1,6 +1,9 @@
 # macOS / editor noise
 .DS_Store
 ._*
+.Spotlight-V100/
+.Trashes/
+Thumbs.db
 .idea/
 .vscode/
 *.swp
@@ -23,6 +26,7 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.ipynb_checkpoints/
 .coverage
 .coverage.*
 htmlcov/
@@ -52,15 +56,22 @@ dist/
 *.ilg
 *.ind
 *.ist
+*.lol
 *.lof
 *.log
+*.lox
 *.lot
 *.nav
 *.out
+*.pdfsync
 *.ps
 *.run.xml
 *.snm
+*.synctex
 *.synctex.gz
+*.synctex.gz(busy)
+*.synctex(busy)
+*.tdo
 *.toc
 *.vrb
 *.xdv
@@ -72,6 +83,7 @@ notes/tex/main.pdf
 *.wxf
 *.wdx
 *.nbp
+*.nb~
 *.wl~
 
 # Generated figures and data. Keep documentation and explicitly curated assets.

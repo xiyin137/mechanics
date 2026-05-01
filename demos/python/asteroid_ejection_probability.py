@@ -33,6 +33,13 @@ M_SUN = 1.0
 M_JUPITER = 9.543e-4
 A_JUPITER = 5.2044
 
+RESONANCE_RATIOS = {
+    "3:1": (3, 1),
+    "5:2": (5, 2),
+    "7:3": (7, 3),
+    "2:1": (2, 1),
+}
+
 ALIVE = 0
 EJECTED = 1
 SUN_COLLISION = 2
@@ -114,6 +121,20 @@ def jupiter_position(t: float, cfg: Config) -> np.ndarray:
     n_jupiter = math.sqrt(G * (cfg.m_sun + cfg.m_jupiter) / cfg.a_jupiter**3)
     theta = n_jupiter * t
     return cfg.a_jupiter * np.array([math.cos(theta), math.sin(theta)])
+
+
+def resonance_locations(a_jupiter: float) -> dict[str, float]:
+    """Return nominal interior mean-motion resonance locations."""
+    return {
+        label: a_jupiter * (q / p) ** (2.0 / 3.0)
+        for label, (p, q) in RESONANCE_RATIOS.items()
+    }
+
+
+def nearest_resonance(a: float, a_jupiter: float) -> tuple[str, float]:
+    locations = resonance_locations(a_jupiter)
+    label, location = min(locations.items(), key=lambda item: abs(a - item[1]))
+    return label, abs(a - location)
 
 
 def acceleration(t: float, pos: np.ndarray, cfg: Config) -> np.ndarray:
@@ -206,7 +227,7 @@ def summarize(
     alive = int(np.count_nonzero(status == ALIVE))
 
     edges = np.linspace(cfg.a_min, cfg.a_max, cfg.bins + 1)
-    rows: list[dict[str, float | int]] = []
+    rows: list[dict[str, float | int | str]] = []
     for bin_index, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
         if bin_index == cfg.bins - 1:
             in_bin = (a0 >= lo) & (a0 <= hi)
@@ -223,6 +244,8 @@ def summarize(
             loss = 0
             frac = float("nan")
             loss_frac = float("nan")
+        center = 0.5 * (lo + hi)
+        nearest_label, resonance_distance = nearest_resonance(center, cfg.a_jupiter)
         rows.append(
             {
                 "a_low": float(lo),
@@ -232,6 +255,8 @@ def summarize(
                 "lost": loss,
                 "ejection_fraction": frac,
                 "loss_fraction": loss_frac,
+                "nearest_resonance": nearest_label,
+                "resonance_distance": resonance_distance,
             }
         )
 
@@ -248,7 +273,7 @@ def summarize(
     }
 
 
-def write_csv(path: Path, rows: list[dict[str, float | int]]) -> None:
+def write_csv(path: Path, rows: list[dict[str, float | int | str]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))
@@ -256,7 +281,11 @@ def write_csv(path: Path, rows: list[dict[str, float | int]]) -> None:
         writer.writerows(rows)
 
 
-def save_plot(path: Path, rows: list[dict[str, float | int]]) -> None:
+def save_plot(path: Path, rows: list[dict[str, float | int | str]]) -> None:
+    import os
+
+    os.environ.setdefault("MPLCONFIGDIR", str(Path(".matplotlib-cache")))
+
     import matplotlib
 
     matplotlib.use("Agg")
@@ -277,13 +306,7 @@ def save_plot(path: Path, rows: list[dict[str, float | int]]) -> None:
     ax.set_title("Restricted Sun-Jupiter asteroid ejection estimate")
     ax.set_ylim(0.0, 1.0)
 
-    resonances = {
-        "3:1": A_JUPITER * (1.0 / 3.0) ** (2.0 / 3.0),
-        "5:2": A_JUPITER * (2.0 / 5.0) ** (2.0 / 3.0),
-        "7:3": A_JUPITER * (3.0 / 7.0) ** (2.0 / 3.0),
-        "2:1": A_JUPITER * (1.0 / 2.0) ** (2.0 / 3.0),
-    }
-    for label, a_res in resonances.items():
+    for label, a_res in resonance_locations(A_JUPITER).items():
         ax.axvline(a_res, color="tab:red", alpha=0.35, linewidth=1.0)
         ax.text(a_res, 0.98, label, rotation=90, va="top", ha="right")
 
@@ -302,12 +325,13 @@ def print_summary(summary: dict[str, object]) -> None:
     print(f"ejection_probability={summary['ejection_probability']:.6f}")
     print(f"loss_probability={summary['loss_probability']:.6f}")
     print()
-    print("a_low,a_high,count,ejected,lost,ejection_fraction,loss_fraction")
+    print("a_low,a_high,count,ejected,lost,ejection_fraction,loss_fraction,nearest_resonance,resonance_distance")
     for row in summary["bin_rows"]:
         print(
             f"{row['a_low']:.4f},{row['a_high']:.4f},{row['count']},"
             f"{row['ejected']},{row['lost']},"
-            f"{row['ejection_fraction']:.6f},{row['loss_fraction']:.6f}"
+            f"{row['ejection_fraction']:.6f},{row['loss_fraction']:.6f},"
+            f"{row['nearest_resonance']},{row['resonance_distance']:.6f}"
         )
 
 

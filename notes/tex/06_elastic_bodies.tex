@@ -1,0 +1,1020 @@
+\chapter{Elastic Bodies}
+\label{chap:elastic-body}
+
+\section{Why Elastic Bodies Come Before Fluids}
+\label{sec:elastic-vs-fluid}
+
+Elastic bodies and fluids share continuum balance laws, but the elastic case is
+the clearer first continuum model because every material point keeps a
+persistent label.  This lets us carry the configuration-space logic of the
+finite-dimensional chapters almost unchanged into field theory.  A fluid has no
+preferred static shear shape: its deviatoric stress is tied to the rate of
+deformation.  An elastic body stores energy in deformation itself.  This chapter
+therefore begins with the material map
+\[
+  \varphi:B\times I\to\R^3,
+  \qquad
+  x=\varphi(X,t),
+\]
+and treats \(X\in B\) as a persistent label of a material point.  The central
+questions are local and material: how the deformation gradient measures stretch,
+which strain fields can come from a single-valued displacement, how stored
+energy produces stress, and how boundary-value problems reduce the field
+equations to measurable stiffness laws.  The gauge theory of shape-changing
+bodies is separated into Chapter~\ref{chap:deforming-body}, where overall rigid
+motion and internal deformation become distinct variables.  Fluid mechanics is
+then treated after these material-body ideas are in place, so the reader can see
+exactly what changes when the persistent reference shape is no longer the main
+organizing structure.
+
+\paragraph{Roadmap.}
+The chapter has one main narrative.  Deformation gradients measure local
+stretching, compatibility distinguishes true displacement fields from
+incompatible strain data, and a hyperelastic action gives elastodynamic
+equations and stress.  The finite-strain theory is kept first because it makes
+objectivity and stress measures unambiguous; the linear theory is then obtained
+as a controlled small-displacement limit.
+
+The guiding distinction is between intrinsic deformation and frame description.
+Quantities such as \(C=F^TF\) and the Green strain do not change under a rigid
+rotation of the observer. Stress measures such as \(P\) and \(\sigma\) live in
+different configurations and are related by the deformation gradient.  The
+goal is not to memorize several names for stress and strain; it is to know
+which space each tensor acts on and which boundary term defines it.
+
+\begin{assumption}[Regular deformation map]
+Unless stated otherwise, \(\varphi(\cdot,t)\) is a smooth orientation-preserving
+embedding of the reference body into space:
+\[
+  J(X,t)=\det F(X,t)>0.
+\]
+The inequality \(J>0\) rules out local interpenetration and orientation
+reversal. Global injectivity is a stronger condition than \(J>0\); it is assumed
+when contact or self-intersection would otherwise matter, but most local stress
+derivations only require \(F\) to be nonsingular.
+\end{assumption}
+
+\begin{assumption}[Reference versus spatial densities]
+The reference density \(\rho_0(X)\) is mass per reference volume. The spatial
+density \(\rho(x,t)\) is mass per current volume. Conservation of mass for a
+material volume gives
+\[
+  \rho(\varphi(X,t),t)J(X,t)=\rho_0(X).
+\]
+Thus \(J\) converts volume elements and \(\rho_0\) converts kinetic energy,
+momentum balance, and stress work back to the fixed material domain \(B\).
+\end{assumption}
+
+\section{Deformation Gradient And Strain}
+\label{sec:deformation-gradient-strain}
+
+Elasticity begins by comparing nearby material points before and after
+deformation. The object that does this comparison is not the displacement
+itself but its derivative: two deformations that differ by a rigid translation
+have the same local strain. This is why the deformation gradient \(F\), and the
+metric-like tensor \(C=F^TF\), are the natural first objects.
+
+The deformation gradient is the local linearization of the deformation map:
+\[
+  F^i{}_A=\frac{\partial \varphi^i}{\partial X^A}.
+\]
+If \(\delta X\) is a small material vector, then its spatial image is
+\[
+  \delta x^i=F^i{}_A\delta X^A.
+\]
+The right Cauchy-Green tensor measures squared lengths after deformation:
+\[
+  |\delta x|^2
+  =
+  C_{AB}\delta X^A\delta X^B,
+  \qquad
+  C_{AB}=F^i{}_AF^i{}_B.
+\]
+The Green strain is
+\[
+  E_{AB}=\frac12(C_{AB}-\delta_{AB}).
+\]
+It vanishes for every rigid motion
+\[
+  \varphi(X)=a+QX,\qquad Q\in\SO(3),
+\]
+because \(F=Q\) and \(Q^TQ=I\). This invariance is why \(E\), not \(F-I\), is a
+geometric strain measure for finite deformations.
+
+For small displacement
+\[
+  \varphi(X,t)=X+\xi(X,t),
+\]
+one has
+\[
+  F^i{}_A=\delta^i_A+\partial_A\xi^i.
+\]
+Keeping only first-order displacement gradients,
+\[
+  E_{AB}
+  =
+  \frac12(\partial_A\xi_B+\partial_B\xi_A)
+  +
+  O(|\nabla\xi|^2).
+\]
+The infinitesimal strain is therefore
+\[
+  \boxed{
+  e_{AB}=\frac12(\partial_A\xi_B+\partial_B\xi_A).
+  }
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \begin{scope}
+    \draw[->] (-0.2,0) -- (3.6,0) node[right] {\(X^1\)};
+    \draw[->] (0,-0.2) -- (0,2.7) node[above] {\(X^2\)};
+    \draw[fill=blue!7, thick]
+      (0.55,0.45) .. controls (1.0,0.2) and (2.3,0.35) .. (2.85,0.75)
+      .. controls (3.15,1.35) and (2.45,2.0) .. (1.65,2.15)
+      .. controls (0.75,2.0) and (0.35,1.25) .. (0.55,0.45);
+    \coordinate (X) at (1.4,1.15);
+    \draw[black, fill=black] (X) circle (1.6pt) node[below left] {\(X\)};
+    \draw[red!75!black, thick, ->] (X) -- ++(0.9,0.38)
+      node[midway, above] {\(\delta X\)};
+    \node at (1.75,-0.55) {reference body \(B\)};
+  \end{scope}
+  \draw[thick, ->] (3.8,1.35) -- node[above] {\(\varphi\)} (5.3,1.35);
+  \begin{scope}[xshift=5.7cm]
+    \draw[->] (-0.2,0) -- (3.7,0) node[right] {\(x^1\)};
+    \draw[->] (0,-0.2) -- (0,2.7) node[above] {\(x^2\)};
+    \draw[fill=green!7, thick]
+      (0.55,0.55) .. controls (1.25,0.1) and (2.85,0.45) .. (3.05,1.0)
+      .. controls (3.25,1.7) and (2.35,2.45) .. (1.25,2.18)
+      .. controls (0.45,1.95) and (0.25,1.05) .. (0.55,0.55);
+    \coordinate (x) at (1.55,1.15);
+    \draw[black, fill=black] (x) circle (1.6pt) node[below left] {\(x=\varphi(X)\)};
+    \draw[red!75!black, thick, ->] (x) -- ++(1.05,0.62)
+      node[midway, below right, fill=white, inner sep=1pt] {\(\delta x=F\delta X\)};
+    \node at (1.8,-0.55) {current placement};
+  \end{scope}
+\end{tikzpicture}
+\caption{The deformation gradient \(F=T_X\varphi\) is the tangent map of the
+deformation. It sends an infinitesimal material vector \(\delta X\) to the
+spatial vector \(\delta x=F\delta X\). Strain is obtained by comparing the
+lengths and angles of these vectors, not by comparing absolute positions.}
+\label{fig:deformation-gradient-tangent-map}
+\end{figure}
+
+\section{Polar Decomposition And Objectivity}
+\label{sec:polar-decomposition-objectivity}
+
+The deformation gradient contains both rigid rotation and intrinsic stretch.
+For \(J=\det F>0\), polar decomposition gives
+\[
+  \boxed{
+  F=R_{\mathrm p}U=VR_{\mathrm p},
+  }
+\]
+where \(R_{\mathrm p}\in\SO(3)\), and \(U,V\) are symmetric positive-definite
+stretch tensors. The right stretch \(U\) acts on material vectors before the
+polar rotation; the left stretch \(V\) acts on spatial vectors after the
+rotation. The right Cauchy-Green tensor removes the rigid rotation:
+\[
+  C=F^TF=U^2.
+\]
+Similarly,
+\[
+  B=FF^T=V^2.
+\]
+
+\begin{derivation}[Constructing the polar factors]
+Since \(F\) is nonsingular, \(C=F^TF\) is symmetric positive definite. It has a
+unique symmetric positive square root
+\[
+  U=C^{1/2}.
+\]
+Define
+\[
+  R_{\mathrm p}=FU^{-1}.
+\]
+Then
+\[
+  R_{\mathrm p}^TR_{\mathrm p}
+  =
+  U^{-1}F^TFU^{-1}
+  =
+  U^{-1}U^2U^{-1}
+  =
+  I.
+\]
+Because \(\det F>0\) and \(\det U>0\), \(\det R_{\mathrm p}=1\). Thus
+\(R_{\mathrm p}\in\SO(3)\). Finally, setting
+\[
+  V=R_{\mathrm p}UR_{\mathrm p}^T
+\]
+gives \(F=R_{\mathrm p}U=VR_{\mathrm p}\).
+\end{derivation}
+
+The eigenvalues of \(U\) are the principal stretches. They are intrinsic
+measurements of local length change: a unit material vector in a principal
+direction is stretched by \(\lambda_i>0\) before the rigid rotation
+\(R_{\mathrm p}\) is applied. The polar rotation is not the same thing as
+material spin; it is the rotation factor in the instantaneous deformation
+gradient.
+
+This distinction is the doorway to objectivity. A constitutive law for an
+ordinary elastic solid may depend on stretch invariants such as those of
+\(C\), but it may not change merely because an observer superposes a rigid
+rotation on the whole experiment. Polar decomposition makes the separation
+visible: \(R_{\mathrm p}\) tells how the local material frame is carried into
+space, while \(U\) and \(C\) record the intrinsic stretching that can store
+elastic energy.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \begin{scope}
+    \draw[->] (-1.25,0) -- (1.45,0) node[right] {\(E_1\)};
+    \draw[->] (0,-1.15) -- (0,1.35) node[above] {\(E_2\)};
+    \draw[blue!70!black, thick] (0,0) circle (0.82);
+    \draw[blue!70!black, ->] (0,0) -- (0.82,0);
+    \draw[blue!70!black, ->] (0,0) -- (0,0.82);
+    \node[align=center] at (0,-1.55) {material unit circle};
+  \end{scope}
+  \draw[->, thick] (1.65,0.2) -- node[above] {\(U\)} (2.65,0.2);
+  \begin{scope}[xshift=4.2cm]
+    \draw[->] (-1.35,0) -- (1.55,0) node[right] {\(E_1\)};
+    \draw[->] (0,-1.15) -- (0,1.35) node[above] {\(E_2\)};
+    \draw[green!50!black, thick] (0,0) ellipse (1.12 and 0.55);
+    \draw[green!50!black, ->] (0,0) -- (1.12,0)
+      node[midway, below] {\(\lambda_1\)};
+    \draw[green!50!black, ->] (0,0) -- (0,0.55)
+      node[midway, left] {\(\lambda_2\)};
+    \node[align=center] at (0,-1.55) {stretch ellipse};
+  \end{scope}
+  \draw[->, thick] (5.85,0.2) -- node[above] {\(R_{\mathrm p}\)} (6.9,0.2);
+  \begin{scope}[xshift=8.6cm, rotate=28]
+    \draw[green!50!black, thick] (0,0) ellipse (1.12 and 0.55);
+    \draw[green!50!black, ->] (0,0) -- (1.12,0);
+    \draw[green!50!black, ->] (0,0) -- (0,0.55);
+  \end{scope}
+  \begin{scope}[xshift=8.6cm]
+    \draw[->] (-1.35,0) -- (1.55,0) node[right] {\(e_1\)};
+    \draw[->] (0,-1.15) -- (0,1.35) node[above] {\(e_2\)};
+    \draw[red!70!black, ->] (0.65,0.0) arc (0:28:0.65);
+    \node[red!70!black] at (0.95,0.25) {\(R_{\mathrm p}\)};
+    \node[align=center] at (0,-1.55) {image under \(F=R_{\mathrm p}U\)};
+  \end{scope}
+\end{tikzpicture}
+\caption{Polar decomposition separates stretch from rigid rotation. In a
+principal two-dimensional slice, \(U\) sends the material unit circle to an
+ellipse with semiaxes equal to principal stretches; \(R_{\mathrm p}\) then
+rotates that stretched figure without changing its lengths.}
+\label{fig:polar-decomposition-stretch-rotation}
+\end{figure}
+
+This decomposition clarifies frame indifference. If an observer superposes a
+rigid rotation \(Q\in\SO(3)\), the deformation gradient becomes \(QF\), but
+\[
+  (QF)^T(QF)=F^TF=C.
+\]
+Thus a frame-indifferent stored energy can be written as
+\[
+  W(F,X)=\widehat W(C,X).
+\]
+For an isotropic material, the material has no preferred direction in the
+reference body, so \(\widehat W\) may depend on \(C\) only through its principal
+invariants:
+\[
+  I_1=\tr C,\qquad
+  I_2=\frac12\left((\tr C)^2-\tr(C^2)\right),\qquad
+  I_3=\det C=J^2.
+\]
+The distinction is important. Frame indifference is invariance under rotations
+of the spatial observer. Isotropy is invariance under rotations of the
+material reference frame. A crystal can be frame indifferent but not isotropic.
+
+\begin{example}[Simple shear is not a rigid rotation]
+For the simple shear
+\[
+  \varphi(X^1,X^2,X^3)=(X^1+\gamma X^2,X^2,X^3),
+\]
+the deformation gradient is
+\[
+  F=
+  \begin{pmatrix}
+  1&\gamma&0\\
+  0&1&0\\
+  0&0&1
+  \end{pmatrix}.
+\]
+Although \(\det F=1\), the body is not undeformed:
+\[
+  C=F^TF=
+  \begin{pmatrix}
+  1&\gamma&0\\
+  \gamma&1+\gamma^2&0\\
+  0&0&1
+  \end{pmatrix},
+  \qquad
+  E_{12}=\frac{\gamma}{2}.
+\]
+The volume is preserved, but right angles in the reference square are changed.
+This is the basic solid-mechanics distinction between volume change and shear
+strain.
+\end{example}
+
+\section{Compatibility}
+\label{sec:elastic-compatibility}
+
+Not every matrix field is a deformation gradient. If
+\[
+  F^i{}_A=\partial_A\varphi^i
+\]
+for a smooth deformation, then mixed partial derivatives commute:
+\[
+  \boxed{
+  \partial_AF^i{}_B-\partial_BF^i{}_A=0.
+  }
+\]
+On a simply connected body, this curl-free condition is also enough to recover
+\(\varphi\) from \(F\), up to a rigid translation.
+
+For small strain, the compatibility question is subtler because \(e\) is only
+the symmetric part of \(\nabla\xi\). Given a symmetric tensor field \(e_{ij}\),
+we ask whether there exists a displacement \(\xi\) such that
+\[
+  e_{ij}=\frac12(\partial_i\xi_j+\partial_j\xi_i).
+\]
+The answer is controlled by the Saint-Venant tensor:
+\[
+  \boxed{
+  \epsilon_{ik\ell}\epsilon_{jmn}
+  \partial_k\partial_m e_{\ell n}=0.
+  }
+\]
+This is often written
+\[
+  \operatorname{curl}\operatorname{curl} e=0.
+\]
+When the condition fails, the local strain field cannot be assembled into a
+single-valued displacement without cuts, defects, residual stress, or a
+non-Euclidean reference geometry.
+
+\begin{remark}[Geometric meaning]
+The compatibility equations are the linearized version of flatness. A strain
+field defines a metric \(g_{ij}=\delta_{ij}+2e_{ij}\). If this metric is the
+pullback of the Euclidean metric by an embedding, its Riemann curvature must
+vanish. Linearizing that curvature gives Saint-Venant compatibility.
+\end{remark}
+
+\section{Hyperelastic Action And Piola Stress}
+\label{sec:hyperelastic-action}
+
+A hyperelastic material has stored energy density \(W(F,X)\) per reference
+volume. Let \(\rho_0(X)\) be reference mass density. The action is
+\[
+  S[\varphi]
+  =
+  \int_{t_0}^{t_1}\int_B
+  \left(
+    \frac12\rho_0|\partial_t\varphi|^2-W(F,X)
+  \right)\dd^3X\,\dd t.
+\]
+
+\begin{assumption}[Hyperelasticity]
+The stress is derived from stored energy:
+\[
+  P^A{}_i=\frac{\partial W}{\partial F^i{}_A}.
+\]
+This excludes plasticity, viscosity, fracture, and history dependence. Those
+effects require additional internal variables or dissipation laws.
+\end{assumption}
+
+\begin{derivation}[Elastodynamic equation]
+Let \(\delta\varphi=\eta\), with \(\eta=0\) at the time endpoints. Since
+\[
+  \delta F^i{}_A=\partial_A\eta^i,
+\]
+the first variation is
+\[
+\begin{aligned}
+  \delta S
+  &=
+  \int_{t_0}^{t_1}\int_B
+  \left(
+    \rho_0\dot\varphi_i\dot\eta_i
+    -
+    P^A{}_i\partial_A\eta^i
+  \right)\dd^3X\,\dd t\\
+  &=
+  \int_{t_0}^{t_1}\int_B
+  \left(
+    -\rho_0\ddot\varphi_i
+    +
+    \partial_A P^A{}_i
+  \right)\eta^i\dd^3X\,\dd t
+  -
+  \int_{t_0}^{t_1}\int_{\partial B}
+  P^A{}_iN_A\eta^i\,\dd S\,\dd t.
+\end{aligned}
+\]
+For arbitrary interior variations,
+\[
+  \boxed{
+  \rho_0\ddot\varphi_i=\partial_A P^A{}_i.
+  }
+\]
+This is the material form of momentum balance with no body force. A body force
+per unit mass \(b_i\) would add \(+\rho_0b_i\) to the right-hand side. If an
+external boundary traction \(t_i\) per reference area is included through
+virtual work, the natural boundary condition is
+\[
+  P^A{}_iN_A=t_i.
+\]
+\end{derivation}
+
+The derivation also explains why \(P\), not \(\sigma\), is the stress that
+appears naturally in a reference-domain action: variations are differentiated
+with respect to material coordinates \(X^A\), so the boundary term is a force
+per reference area.
+
+\section{Spatial Stress And Frame Indifference}
+\label{sec:spatial-stress-frame-indifference}
+
+The first Piola-Kirchhoff stress \(P\) measures force per reference area. The
+Cauchy stress \(\sigma\) measures force per current spatial area. The two
+stress tensors represent the same physical traction, but on different surface
+elements.
+
+\begin{derivation}[Piola transform from traction balance]
+Let a material surface element have reference unit normal \(N\) and reference
+area \(\dd S\). Its spatial image has unit normal \(n\) and area \(\dd a\).
+Nanson's formula states
+\[
+  n_i\,\dd a
+  =
+  J(F^{-T})_{Ai}N_A\,\dd S.
+\]
+The force across the same cut can be written in material variables as
+\[
+  \dd f_i=P^A{}_iN_A\,\dd S
+\]
+or in spatial variables as
+\[
+  \dd f_i=\sigma_{ij}n_j\,\dd a.
+\]
+Substituting Nanson's formula gives
+\[
+  P^A{}_iN_A\,\dd S
+  =
+  \sigma_{ij}J(F^{-T})_{Aj}N_A\,\dd S.
+\]
+Since \(N_A\) is arbitrary,
+\[
+  P^A{}_i
+  =
+  J\sigma_{ij}(F^{-T})_{Aj}.
+\]
+Multiplying by \(F^k{}_A\) and using
+\[
+  (F^{-T})_{Aj}F^k{}_A=\delta^k{}_j
+\]
+gives
+\[
+  \boxed{
+  \sigma_{ij}
+  =
+  \frac1J P^A{}_iF^j{}_A.
+  }
+\]
+\end{derivation}
+
+A stored energy is frame indifferent if a superposed rigid rotation does not
+change it:
+\[
+  W(QF,X)=W(F,X)\qquad\text{for all }Q\in\SO(3).
+\]
+Let \(Q(\eps)=I+\eps A+O(\eps^2)\), with \(A^T=-A\). Differentiating
+frame indifference at \(\eps=0\) gives
+\[
+  0=
+  P^A{}_iA^i{}_jF^j{}_A.
+\]
+Since \(A\) is any skew matrix, the tensor \(PF^T\) must be symmetric:
+\[
+  P^A{}_iF^j{}_A=P^A{}_jF^i{}_A.
+\]
+Therefore \(\sigma=\sigma^T\). Thus symmetry of stress follows from rotational
+invariance of stored energy, matching angular-momentum balance.
+
+When \(W(F,X)=\widehat W(C,X)\), this symmetry can also be seen directly. Since
+\[
+  \delta C=F^T\delta F+\delta F^TF,
+\]
+one obtains
+\[
+  P=2F\frac{\partial \widehat W}{\partial C}.
+\]
+Because \(\partial\widehat W/\partial C\) is symmetric,
+\[
+  PF^T=2F\frac{\partial\widehat W}{\partial C}F^T
+\]
+is symmetric, and therefore so is \(\sigma=J^{-1}PF^T\).
+
+\section{Linear Isotropic Elasticity}
+\label{sec:linear-isotropic-elasticity}
+
+For small strain in an isotropic homogeneous solid, the quadratic energy density
+is
+\[
+  W(e)=\frac{\lambda}{2}(\tr e)^2+\mu e_{ij}e_{ij},
+\]
+where \(\lambda,\mu\) are Lame moduli. The stress is
+\[
+  \sigma_{ij}
+  =
+  \frac{\partial W}{\partial e_{ij}}
+  =
+  \lambda(\tr e)\delta_{ij}+2\mu e_{ij}.
+\]
+The linearized equation of motion is
+\[
+  \rho_0\partial_t^2\xi_i=\partial_j\sigma_{ij}+\rho_0 b_i.
+\]
+Substituting the stress-strain relation,
+\[
+\begin{aligned}
+  \partial_j\sigma_{ij}
+  &=
+  \lambda\partial_i(\partial_k\xi_k)
+  +
+  \mu\partial_j(\partial_i\xi_j+\partial_j\xi_i)\\
+  &=
+  (\lambda+\mu)\partial_i(\nabla\cdot\xi)
+  +
+  \mu\Delta\xi_i.
+\end{aligned}
+\]
+Hence
+\[
+  \boxed{
+  \rho_0\partial_t^2\xi
+  =
+  (\lambda+\mu)\nabla(\nabla\cdot\xi)
+  +
+  \mu\Delta\xi
+  +
+  \rho_0 b.
+  }
+\]
+Using
+\[
+  \Delta\xi=\nabla(\nabla\cdot\xi)-\nabla\times\nabla\times\xi,
+\]
+one sees two wave families:
+\[
+  c_P=\sqrt{\frac{\lambda+2\mu}{\rho_0}},
+  \qquad
+  c_S=\sqrt{\frac{\mu}{\rho_0}}.
+\]
+Longitudinal waves change volume; shear waves change shape at nearly fixed
+volume.
+
+\begin{derivation}[Plane-wave split into \(P\) and \(S\) modes]
+Set \(b=0\) and try a plane wave
+\[
+  \xi(X,t)=a\,e^{i(k\cdot X-\omega t)},
+\]
+where \(a\) is a constant polarization vector and \(k\) is the wave vector.
+Then
+\[
+  \nabla(\nabla\cdot\xi)=-k(k\cdot a)e^{i(k\cdot X-\omega t)},
+  \qquad
+  \Delta\xi=-|k|^2a\,e^{i(k\cdot X-\omega t)}.
+\]
+Substituting into the linear elastodynamic equation gives
+\[
+  \rho_0\omega^2 a
+  =
+  (\lambda+\mu)k(k\cdot a)+\mu |k|^2a.
+\]
+If \(a\parallel k\), then \(k(k\cdot a)=|k|^2a\), so
+\[
+  \omega^2=c_P^2|k|^2,
+  \qquad
+  c_P^2=\frac{\lambda+2\mu}{\rho_0}.
+\]
+If \(a\perp k\), then \(k\cdot a=0\), so
+\[
+  \omega^2=c_S^2|k|^2,
+  \qquad
+  c_S^2=\frac{\mu}{\rho_0}.
+\]
+Thus the eigenvectors of the acoustic tensor split into one longitudinal
+polarization and two transverse polarizations in an isotropic solid.
+\end{derivation}
+
+The calculation is also a useful diagnostic for elastic constants. Stability
+requires \(c_P^2>0\) and \(c_S^2>0\), while the energy argument below gives the
+slightly sharper conditions \(\mu>0\) and
+\(K_{\mathrm{bulk}}=\lambda+2\mu/3>0\). The two statements are consistent:
+positive shear stiffness gives shear waves, and positive bulk stiffness gives a
+real longitudinal wave speed.
+
+\section{Elastic Constants And Classical Boundary-Value Problems}
+\label{sec:elastic-constants-boundary-problems}
+
+The linear isotropic equations become physically useful only after the elastic
+constants and boundary conditions are tied to measurable experiments. This
+section collects the standard reductions that turn the tensor equation into
+one-dimensional laboratory formulas. They are not separate theories; they are
+controlled approximations of the same elastic body model. This section is also
+a notation checkpoint: \(E_{\mathrm Y}\), \(\nu_{\mathrm P}\), \(\lambda\),
+\(\mu\), and \(K_{\mathrm{bulk}}\) are not interchangeable names for stiffness.
+They measure different responses, and the boundary-value problems below show
+which modulus an experiment actually sees.
+
+\subsection{Moduli, Positivity, And Nearly Incompressible Solids}
+\label{subsec:elastic-moduli-positivity}
+
+The quadratic energy
+\[
+  W(e)=\frac{\lambda}{2}(\tr e)^2+\mu e:e
+\]
+is best understood by splitting strain into volume-changing and shape-changing
+parts. Define
+\[
+  e_0=e-\frac13(\tr e)I,
+  \qquad
+  K_{\mathrm{bulk}}=\lambda+\frac23\mu .
+\]
+Since
+\[
+  e:e=e_0:e_0+\frac13(\tr e)^2,
+\]
+the energy becomes
+\[
+  \boxed{
+  W(e)=\mu\,e_0:e_0+\frac12K_{\mathrm{bulk}}(\tr e)^2.
+  }
+\]
+The shear modulus \(\mu\) penalizes distortion at fixed volume. The bulk
+modulus \(K_{\mathrm{bulk}}\) penalizes volume change. For a stable isotropic
+linear elastic solid one requires
+\[
+  \mu>0,
+  \qquad
+  K_{\mathrm{bulk}}>0.
+\]
+
+Engineers often use Young's modulus \(E_{\mathrm Y}\) and Poisson's ratio
+\(\nu_{\mathrm P}\) instead of \(\lambda,\mu\). The conversion is
+\[
+  \boxed{
+  E_{\mathrm Y}
+  =
+  \mu\frac{3\lambda+2\mu}{\lambda+\mu},
+  \qquad
+  \nu_{\mathrm P}
+  =
+  \frac{\lambda}{2(\lambda+\mu)}.
+  }
+\]
+Equivalently,
+\[
+  \boxed{
+  \mu=\frac{E_{\mathrm Y}}{2(1+\nu_{\mathrm P})},
+  \qquad
+  \lambda=
+  \frac{E_{\mathrm Y}\nu_{\mathrm P}}
+  {(1+\nu_{\mathrm P})(1-2\nu_{\mathrm P})},
+  \qquad
+  K_{\mathrm{bulk}}=
+  \frac{E_{\mathrm Y}}{3(1-2\nu_{\mathrm P})}.
+  }
+\]
+Positive energy is equivalent to
+\[
+  E_{\mathrm Y}>0,
+  \qquad
+  -1<\nu_{\mathrm P}<\frac12.
+\]
+Most ordinary solids have \(0<\nu_{\mathrm P}<1/2\): they contract laterally
+when stretched. The limit \(\nu_{\mathrm P}\to1/2\) is the nearly
+incompressible limit. In that limit \(\lambda\) and \(K_{\mathrm{bulk}}\) grow
+large while \(\mu\) can remain finite, and the equations begin to resemble
+incompressible fluid mechanics: pressure-like stresses enforce a volume
+constraint.
+
+\subsection{Static Navier-Cauchy Equation And Boundary Data}
+\label{subsec:static-navier-cauchy}
+
+In static linear elasticity, inertia is absent and the displacement
+\(\xi(X)\) satisfies
+\[
+  \boxed{
+  (\lambda+\mu)\nabla(\nabla\cdot\xi)+\mu\Delta\xi+\rho_0 b=0.
+  }
+\]
+Equivalently,
+\[
+  \partial_j\sigma_{ij}+\rho_0b_i=0,
+  \qquad
+  \sigma_{ij}=\lambda(\partial_k\xi_k)\delta_{ij}
+  +\mu(\partial_i\xi_j+\partial_j\xi_i).
+\]
+Boundary conditions are part of the problem statement. On a displacement
+boundary \(\partial B_D\), one prescribes
+\[
+  \xi=\xi_D.
+\]
+On a traction boundary \(\partial B_N\), one prescribes
+\[
+  \sigma n=t_N,
+\]
+where \(n\) is the outward unit normal to the reference boundary, to linear
+order. The pure traction problem determines displacement only up to rigid
+translations and rotations; these rigid modes must be fixed by constraints or
+by imposing zero mean displacement and zero mean rotation.
+
+The weak form follows from virtual work. For any test displacement \(\eta\)
+vanishing on \(\partial B_D\),
+\[
+  \int_B \sigma(\xi):e(\eta)\,\dd^3X
+  =
+  \int_B \rho_0 b\cdot\eta\,\dd^3X
+  +
+  \int_{\partial B_N} t_N\cdot\eta\,\dd S.
+\]
+This is the elastic analogue of deriving Cauchy's equation from balance laws:
+internal stress work equals external virtual work.
+
+\subsection{Uniaxial Extension}
+\label{subsec:uniaxial-extension}
+
+Consider a slender bar of length \(L\), cross-sectional area \(A_{\mathrm{cs}}\),
+and Young modulus \(E_{\mathrm Y}\). A tensile force \(F_{\mathrm{end}}\) is
+applied at the end, and lateral surfaces are traction-free. The axial stress is
+\[
+  \sigma_{11}=\frac{F_{\mathrm{end}}}{A_{\mathrm{cs}}},
+  \qquad
+  \sigma_{22}=\sigma_{33}=0.
+\]
+Hooke's law in the \(E_{\mathrm Y},\nu_{\mathrm P}\) form gives
+\[
+  e_{11}=\frac{\sigma_{11}}{E_{\mathrm Y}},
+  \qquad
+  e_{22}=e_{33}=-\nu_{\mathrm P}\frac{\sigma_{11}}{E_{\mathrm Y}}.
+\]
+Thus the axial elongation is
+\[
+  \boxed{
+  \Delta L
+  =
+  \frac{F_{\mathrm{end}}L}{E_{\mathrm Y}A_{\mathrm{cs}}}.
+  }
+\]
+The negative lateral strain is the definition of Poisson's ratio:
+\[
+  \nu_{\mathrm P}
+  =
+  -\frac{\text{lateral strain}}{\text{axial strain}}.
+\]
+This simple formula is often the cleanest way to remember what Young's modulus
+measures: it is stress divided by axial strain in a uniaxial test with free
+lateral contraction.
+
+\subsection{Torsion Of A Circular Shaft}
+\label{subsec:circular-shaft-torsion}
+
+Let a circular shaft of radius \(a\) and length \(L\) be twisted by torque
+\(T_{\mathrm{end}}\). In the Saint-Venant torsion solution, cross-sections
+rotate by an angle \(\Theta(z)\) about the shaft axis. For a circular cross
+section, there is no warping correction, and the twist per length is constant:
+\[
+  \Theta'(z)=\frac{T_{\mathrm{end}}}{\mu J_{\mathrm{polar}}},
+  \qquad
+  J_{\mathrm{polar}}=\frac{\pi a^4}{2}.
+\]
+The total twist angle is
+\[
+  \boxed{
+  \Theta(L)-\Theta(0)=
+  \frac{T_{\mathrm{end}}L}{\mu J_{\mathrm{polar}}}.
+  }
+\]
+The shear stress grows linearly with radius:
+\[
+  \tau(r)=\frac{T_{\mathrm{end}}r}{J_{\mathrm{polar}}},
+  \qquad
+  0\leq r\leq a.
+\]
+The maximum shear stress occurs at the boundary \(r=a\). This is the torsional
+counterpart of the axial bar formula: stiffness is the elastic modulus times a
+geometric moment of the cross-section.
+
+\subsection{Euler-Bernoulli Beam Bending}
+\label{subsec:euler-bernoulli-beam}
+
+For a slender beam, let \(x\in[0,L]\) be arclength along the undeformed neutral
+axis and let \(w(x)\) be a small transverse deflection. The Euler-Bernoulli
+assumptions are:
+\begin{enumerate}
+\item slopes are small, so curvature is \(w''(x)\) to leading order;
+\item plane cross-sections remain plane and normal to the neutral axis;
+\item shear deformation and rotary inertia are neglected.
+\end{enumerate}
+The bending energy is
+\[
+  U_{\mathrm{bend}}
+  =
+  \frac12\int_0^L E_{\mathrm Y}I_{\mathrm{area}}(w'')^2\,\dd x,
+\]
+where \(I_{\mathrm{area}}\) is the second moment of area of the cross-section.
+With transverse distributed load \(q(x)\), the potential energy is
+\[
+  \Pi[w]
+  =
+  \frac12\int_0^L E_{\mathrm Y}I_{\mathrm{area}}(w'')^2\,\dd x
+  -
+  \int_0^L q(x)w(x)\,\dd x.
+\]
+Varying \(w\) gives
+\[
+\begin{aligned}
+  \delta\Pi
+  &=
+  \int_0^L E_{\mathrm Y}I_{\mathrm{area}}w''\eta''\,\dd x
+  -
+  \int_0^L q\eta\,\dd x\\
+  &=
+  \int_0^L
+  \left(E_{\mathrm Y}I_{\mathrm{area}}w''''-q\right)\eta\,\dd x
+  +
+  \left[
+    E_{\mathrm Y}I_{\mathrm{area}}w''\eta'
+    -
+    E_{\mathrm Y}I_{\mathrm{area}}w'''\eta
+  \right]_{0}^{L}.
+\end{aligned}
+\]
+The beam equation is therefore
+\[
+  \boxed{
+  E_{\mathrm Y}I_{\mathrm{area}}w''''=q.
+  }
+\]
+The natural boundary quantities are the bending moment
+\[
+  M=E_{\mathrm Y}I_{\mathrm{area}}w''
+\]
+and shear force
+\[
+  V_{\mathrm{shear}}=-E_{\mathrm Y}I_{\mathrm{area}}w'''.
+\]
+
+For a cantilever clamped at \(x=0\) and loaded by a downward end force
+\(P_{\mathrm{end}}\) at \(x=L\), the boundary conditions are
+\[
+  w(0)=0,\qquad w'(0)=0,\qquad
+  M(L)=0,\qquad V_{\mathrm{shear}}(L)=P_{\mathrm{end}}.
+\]
+With \(q=0\) in the interior, the solution is
+\[
+  \boxed{
+  w(x)=
+  \frac{P_{\mathrm{end}}x^2(3L-x)}
+  {6E_{\mathrm Y}I_{\mathrm{area}}}.
+  }
+\]
+The tip deflection is
+\[
+  \boxed{
+  w(L)=\frac{P_{\mathrm{end}}L^3}
+  {3E_{\mathrm Y}I_{\mathrm{area}}}.
+  }
+\]
+For a simply supported beam under uniform load \(q_0\), the deflection is
+\[
+  \boxed{
+  w(x)=
+  \frac{q_0 x(L^3-2Lx^2+x^3)}
+  {24E_{\mathrm Y}I_{\mathrm{area}}}.
+  }
+\]
+It satisfies \(w(0)=w(L)=0\), zero bending moment at both supports, and
+\(E_{\mathrm Y}I_{\mathrm{area}}w''''=q_0\).
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \begin{scope}
+    \draw[fill=blue!8, thick] (0,0.65) rectangle (3.5,1.15);
+    \draw[thick] (0,0.55) -- (0,1.25);
+    \draw[thick, ->] (3.5,0.9) -- (4.3,0.9) node[right] {\(F_{\mathrm{end}}\)};
+    \draw[<->] (0,0.25) -- node[below] {\(L\)} (3.5,0.25);
+    \node[align=center, fill=white, inner sep=1.5pt] at (1.75,1.72)
+      {uniaxial bar\\\(\Delta L=F_{\mathrm{end}}L/(E_{\mathrm Y}A_{\mathrm{cs}})\)};
+  \end{scope}
+  \begin{scope}[xshift=5.7cm]
+    \draw[thick] (0,1.2) -- (0,0.25);
+    \foreach \y in {0.32,0.52,0.72,0.92,1.12}
+      \draw[thick] (-0.18,\y-0.12) -- (0,\y);
+    \draw[blue!70!black, thick, domain=0:3.6, samples=100]
+      plot (\x,{1.05-0.055*\x*\x*(3.6-\x/3)});
+    \draw[red!75!black, thick, ->] (3.85,0.62) -- (3.85,-0.10)
+      node[below right=1pt] {\(P_{\mathrm{end}}\)};
+    \draw[<->] (0,0.02) -- node[below] {\(L\)} (3.6,0.02);
+    \node[align=center, fill=white, inner sep=1.5pt] at (1.85,1.72)
+      {cantilever beam\\\(w(L)=P_{\mathrm{end}}L^3/(3E_{\mathrm Y}I_{\mathrm{area}})\)};
+  \end{scope}
+\end{tikzpicture}
+\caption{Two classical reductions of three-dimensional linear elasticity. A
+slender bar under axial load measures Young's modulus. A slender beam under
+transverse load converts elastic energy in curvature into the fourth-order
+Euler-Bernoulli equation.}
+\label{fig:bar-and-beam-elasticity}
+\end{figure}
+
+\section{What To Take Forward}
+\label{sec:elastic-body-take-forward}
+
+An elastic body is described by a deformation map \(\varphi(X,t)\) from a
+material reference body \(B\) into physical space. The deformation gradient
+\(F^i{}_A=\partial\varphi^i/\partial X^A\) measures local stretch and rotation,
+while objective strain tensors remove the arbitrary rigid rotation.
+Compatibility says that not every field of strain is the strain of a
+single-valued displacement; it must arise from a deformation with commuting
+mixed derivatives, or equivalently satisfy the Saint-Venant conditions in the
+linear theory.
+
+The variational derivation is parallel to finite-dimensional Lagrangian
+mechanics but with fields. A hyperelastic stored energy \(W(F,X)\) defines the
+first Piola-Kirchhoff stress \(P^i{}_A=\partial W/\partial F^i{}_A\), and
+stationarity of the action gives material momentum balance
+\(\rho_0\ddot\varphi^i=\partial_A P^i{}_A+\rho_0 b^i\) together with the
+correct traction boundary term. Frame indifference forces the stored energy to
+depend on deformation through rotationally invariant combinations such as
+\(C=F^T F\), and it implies symmetry of the spatial Cauchy stress.
+
+Linear isotropic elasticity is the small-strain limit. Its two Lam\'e constants
+encode the quadratic energy, the Navier-Cauchy equation describes displacement
+waves and static equilibrium, and the classical bar, torsion, and beam problems
+show how continuum equations reduce to experimentally measurable stiffness
+laws. The next chapter uses this elastic language as the material side of a
+gauge theory of deforming bodies.
+
+
+\section{Chapter-End Laboratories And Exercises}
+\label{sec:elastic-body-chapter-end-labs}
+\label{sec:elastic-body-questions}
+
+The chapter-end work is organized as an audit of the elastic modelling chain:
+objectivity, variational stress, linearization, and classical reductions. The
+questions are short, but each one points to a place where continuum mechanics
+often becomes confusing if one forgets which configuration a tensor belongs to.
+
+\begin{enumerate}
+\item Starting from \(C=F^TF\), show explicitly that superposing a rigid spatial
+rotation on \(\varphi\) leaves \(C\) unchanged. Which strain tensors would fail
+this objectivity test?
+\item In the hyperelastic action, identify the boundary term whose coefficient
+is the first Piola-Kirchhoff traction. How does that term transform into a
+spatial Cauchy traction?
+\item Derive the Navier-Cauchy equation from the quadratic isotropic energy and
+identify where the two Lame constants enter longitudinal and transverse waves.
+\item For the cantilever beam formula, check the four boundary conditions at the
+clamped and loaded ends. Which condition represents the applied point load?
+\item Compare the bar and beam reductions in Figure~\ref{fig:bar-and-beam-elasticity}.
+Which geometric small parameter justifies replacing a three-dimensional elastic
+body by a one-dimensional model?
+\end{enumerate}
+
+\subsection{Boundary-Value Laboratory: Bar Versus Beam}
+\label{sec:elastic-bar-beam-lab}
+
+Use Figure~\ref{fig:bar-and-beam-elasticity} as a modelling checklist. The bar
+problem assumes that the dominant strain is axial and approximately uniform
+over each cross-section, giving the stiffness law \(F=EA\,\Delta L/L\). The
+beam problem assumes that cross-sections remain approximately plane and that
+curvature, not axial stretch, carries the leading elastic energy, giving
+\[
+  EI\,w''''(x)=q(x).
+\]
+Both are one-dimensional reductions of the same three-dimensional elastic
+theory. The useful comparison is therefore not ``bar formula versus beam
+formula,'' but which geometric small parameter justifies throwing away the
+other strain components. A good solution should state the slenderness
+assumption, the boundary data, the stress or moment being measured, and the
+energy term that survives the reduction.
+
+\section{Associated Demos}
+\label{sec:elastic-body-demos}
+
+The associated elastic-boundary-value demos are:
+\begin{itemize}
+\item \path{demos/python/linear_elasticity.py}
+\item \path{demos/mathematica/LinearElasticity.wl}
+\end{itemize}
+They solve elementary elastic boundary-value problems and visualize
+displacement, strain, and stress fields. They are designed to be read beside
+this chapter's derivations of the Piola stress, Cauchy stress, and linear
+elastic equations.

@@ -6,13 +6,19 @@ Build the notes from this directory:
 latexmk -pdf main.tex
 ```
 
-The current files form a first integrated draft:
+The current files form an integrated draft:
 
-- `01_geometric_lagrangian_hamiltonian.tex`
-- `02_integrability_rigid_body.tex`
-- `03_perturbation_chaos_celestial.tex`
-- `04_fluid_mechanics.tex`
-- `05_elastic_deforming_bodies.tex`
+- `00_notation_assumptions.tex`
+- `01_lagrangian_mechanics.tex`
+- `02_hamiltonian_phase_space.tex`
+- `03_integrability_rigid_body.tex`
+- `04_perturbation_kam_torus_breakdown.tex`
+- `05_three_body_problem.tex`
+- `06_elastic_bodies.tex`
+- `07_deforming_body_gauge.tex`
+- `08_fluid_mechanics.tex`
 
-The notes intentionally track the demo scripts. Equations should eventually be
+The notes intentionally track the demo scripts. Worked derivations, exercises,
+and simulation pointers are placed at the ends of the chapters they support,
+rather than in standalone back-matter chapters. Equations should eventually be
 paired with figures generated from `demos/python`.

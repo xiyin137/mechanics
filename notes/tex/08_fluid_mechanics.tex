@@ -7,9 +7,18 @@
 Fluid mechanics is continuum mechanics with a special constitutive idea: the
 material does not resist a static shear deformation. A solid can sit in a
 sheared shape and store elastic energy; a simple fluid responds to shear through
-stress proportional to the rate of deformation. This chapter therefore treats
-fluids on their own terms. Elastic and deforming bodies are separated into the
-next chapter.
+stress proportional to the rate of deformation. The preceding elastic and
+deforming-body chapters kept the material reference description in the
+foreground. This chapter now shifts the emphasis to Eulerian fields and treats
+fluids on their own terms.
+
+A fluid has largely forgotten its reference shape. Push a finger through honey:
+the displaced material moves, stretches, and eventually fills in behind the
+finger, but no permanent shear strain is stored as an elastic memory of that
+particular shape. This is why the Eulerian description is natural. We watch
+velocity, density, pressure, and stress at points in space, and we reinsert the
+moving-particle viewpoint only through the material derivative and transport
+theorems.
 
 The basic fields are functions on physical space:
 \[
@@ -22,48 +31,6 @@ fluid particle can still be labelled by a material coordinate \(X\), with
 \]
 The Eulerian view keeps \(x\) fixed and watches fluid pass through; the
 Lagrangian view follows the particle labelled by \(X\).
-
-\begin{table}[htbp]
-\centering
-\caption{Fluid-mechanics notation. The symbol \(p\) denotes pressure in this
-chapter, not canonical momentum.}
-\label{tab:fluid-notation}
-\small
-\begin{tabular}{p{0.18\textwidth}p{0.48\textwidth}p{0.25\textwidth}}
-\toprule
-Symbol & Meaning & Type\\
-\midrule
-\(X\) & material label of a fluid particle & coordinate in reference region\\
-\(\varphi(X,t)\) & flow map & material-to-spatial map\\
-\(F^i{}_A\) & \(\partial\varphi^i/\partial X^A\) & deformation gradient of flow map\\
-\(J\) & \(\det F\) & local volume ratio\\
-\(x\) & Eulerian spatial position & point in physical space\\
-\(\rho(x,t)\) & mass density & scalar field\\
-\(u(x,t)\) & velocity & vector field\\
-\(p(x,t)\) & pressure & scalar field\\
-\(V(t)\) & material volume & moving region in space\\
-\(n\) & outward unit normal to a surface & vector field on boundary\\
-\(b(x,t)\) & body force per unit mass & vector field\\
-\(t(n)\) & surface traction on normal \(n\) & vector field\\
-\(\sigma\) & Cauchy stress tensor & \(3\times3\) tensor field\\
-\(D u/Dt\) & material acceleration & \(\partial_tu+u\cdot\nabla u\)\\
-\(D\) & rate-of-strain tensor & \(\frac12(\nabla u+\nabla u^T)\)\\
-\(W\) & antisymmetric spin tensor & \(\frac12(\nabla u-\nabla u^T)\)\\
-\(\omega\) & vorticity & \(\nabla\times u\)\\
-\(\mu\) & dynamic viscosity & \(ML^{-1}T^{-1}\)\\
-\(\nu\) & kinematic viscosity & \(\mu/\rho\)\\
-\(\lambda\) & second viscosity coefficient & stress coefficient\\
-\(U,L\) & characteristic velocity and length & nondimensionalization scales\\
-\(\mathrm{Re}\) & Reynolds number & \(UL/\nu\)\\
-\(\Omega\) & fixed spatial domain in energy estimates & subset of \(\R^3\)\\
-\(\gamma(t)\) & closed material loop & curve transported by the flow\\
-\(h,\Phi\) & specific enthalpy and conservative body-force potential & Kelvin theorem\\
-\(V(y),G\) & laminar profile and pressure-gradient magnitude & shear-flow sections\\
-\(\alpha,\sigma,\phi(y)\) & wave number, growth rate, normal-mode amplitude & Orr-Sommerfeld section\\
-\(\Gamma_i\) & point-vortex circulation & vortex strength\\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \begin{assumption}[Continuum fluid]
 The molecular scale is much smaller than the length scales being modelled, so
@@ -81,6 +48,13 @@ Newtonian constitutive law that turns Cauchy's momentum equation into the
 Navier-Stokes equation. The later sections use that equation in three ways:
 exact laminar solutions, stability analysis, and Hamiltonian point-vortex
 reduction.
+
+This placement at the end of the notes is intentional.  Elastic bodies show how
+configuration-space mechanics becomes a material field theory.  Deforming bodies
+show how frame choices and connections enter when internal shape is separated
+from rigid placement.  Fluid mechanics then asks what remains when material
+labels are still allowed in derivations but no longer provide the most useful
+state variables.
 
 The staging matters because the Navier-Stokes equation is not a single
 assumption. Its inertial term is kinematics, its pressure and stress terms come
@@ -143,7 +117,7 @@ keeps both effects.
 
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[scale=1.0, >=Latex]
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
   \draw[->] (-0.4,0) -- (6.8,0) node[right] {\(x^1\)};
   \draw[->] (0,-0.4) -- (0,4.0) node[above] {\(x^2\)};
   \draw[blue!70!black, thick, fill=blue!5]
@@ -155,10 +129,12 @@ keeps both effects.
   \draw[red!75!black, thick, ->] (2.95,3.15) -- (3.15,3.75);
   \draw[red!75!black, thick, ->] (0.9,2.4) -- (0.45,2.75);
   \node[blue!70!black] at (2.45,2.0) {\(V(t)\)};
-  \node[red!75!black] at (5.25,2.85) {boundary velocity \(u\)};
-  \draw[red!75!black, ->] (4.75,2.65) -- (3.25,3.45);
-  \node[align=center] at (5.15,0.75)
+  \node[red!75!black, fill=white, inner sep=2pt] at (5.28,3.10)
+    {boundary velocity \(u\)};
+  \draw[red!75!black, ->] (4.75,2.88) -- (3.15,3.50);
+  \node[align=center, fill=white, inner sep=2pt] at (5.15,0.72)
     {material points stay\\inside the moving volume};
+  \draw[black!55, ->] (4.55,0.95) -- (3.55,1.20);
 \end{tikzpicture}
 \caption{A material volume is carried by the fluid velocity. Its boundary
 velocity is \(u\), so the time derivative of an integral over \(V(t)\) must
@@ -246,6 +222,13 @@ For constant-density incompressible flow,
   \boxed{\nabla\cdot u=0.}
 \]
 
+Two statements are being separated here. Incompressibility means that material
+volumes are preserved, so \(\nabla\cdot u=0\). Constant density is then
+consistent with mass conservation, but it is not a separate equation of
+motion. This distinction matters in stratified or variable-density flows, where
+the velocity may be divergence-free in an approximation while density remains
+an advected scalar.
+
 \section{Cauchy Momentum Balance}
 \label{sec:cauchy-momentum}
 
@@ -313,8 +296,17 @@ Since \(V(t)\) is arbitrary,
 \]
 \end{derivation}
 
-This equation is not yet a closed fluid equation. It is a balance law. Closure
-comes from a constitutive relation for \(\sigma\).
+The localization step is the continuum analogue of the fundamental lemma of
+the calculus of variations: if the integral of a smooth density vanishes for
+every sufficiently small material volume, then the density itself must vanish
+pointwise. This equation is not yet a closed fluid equation. It is a balance
+law. Closure comes from a constitutive relation for \(\sigma\).
+
+The same balance law will reappear in the elasticity chapter with a different
+constitutive relation and a different choice of variables. That repetition is
+intentional. Momentum balance is universal; the material model enters when one
+decides how stress depends on deformation, rate of deformation, pressure,
+temperature, or internal variables.
 
 \section{Newtonian Stress And The Navier-Stokes Equation}
 \label{sec:navier-stokes-derivation}
@@ -387,6 +379,11 @@ Thus the compressible Navier-Stokes momentum equation is
 \]
 Together with mass conservation, an equation of state, and an energy or
 temperature equation when needed, this describes a Newtonian compressible fluid.
+The displayed equation should be read as the composition of three independent
+ingredients: Cauchy momentum balance, the Newtonian stress law, and the
+constant-viscosity simplification. If viscosity varies with temperature or
+composition, the divergence of \(2\mu D+\lambda(\nabla\cdot u)I\) must be kept
+in product-rule form.
 
 For incompressible flow with constant \(\rho\),
 \[
@@ -421,6 +418,75 @@ with boundary conditions determined by the normal component of the momentum
 equation at the wall. The pressure is therefore a nonlocal field: it adjusts
 instantaneously, within the incompressible model, to project the acceleration
 back onto divergence-free velocity fields.
+
+\section{Initial And Boundary Data For Navier-Stokes}
+\label{sec:navier-stokes-data}
+
+A Navier-Stokes problem is not specified by the differential equation alone.
+One must also state the initial velocity, the domain, and the boundary
+conditions. For incompressible flow in a fixed domain \(\Omega\), a typical
+initial condition is
+\[
+  u(x,0)=u_0(x),
+  \qquad
+  \nabla\cdot u_0=0.
+\]
+The divergence-free condition is not optional: it is the compatibility
+condition required by incompressibility. Boundary data must also be compatible
+with mass conservation. If \(\partial\Omega\) is an impermeable wall moving
+with velocity \(U_{\mathrm{wall}}\), then the normal velocity must satisfy
+\[
+  u\cdot n=U_{\mathrm{wall}}\cdot n.
+\]
+
+The most common viscous wall condition is no slip:
+\[
+  \boxed{u=U_{\mathrm{wall}}\quad\text{on }\partial\Omega.}
+\]
+It says that the fluid velocity equals the velocity of the solid boundary, both
+normal and tangential components included. No slip is a molecular-scale
+constitutive fact about many ordinary fluids at ordinary solid walls; it is not
+implied by incompressibility alone. By contrast, inviscid Euler flow usually
+uses only no penetration,
+\[
+  u\cdot n=U_{\mathrm{wall}}\cdot n,
+\]
+because tangential slip is not controlled by a viscous boundary layer in the
+ideal equation.
+
+Other boundary conditions model different physical surfaces. A free-slip or
+stress-free boundary has
+\[
+  u\cdot n=0,
+  \qquad
+  (I-n\otimes n)\sigma n=0,
+\]
+meaning there is no normal flow and no tangential viscous traction. Periodic
+boundary conditions identify opposite faces of a box and are useful for
+studying homogeneous turbulence and exact periodic solutions such as the
+Taylor-Green vortex below.
+
+Pressure boundary conditions deserve special care. For incompressible flow,
+pressure is not prescribed independently at a no-slip wall. Instead, taking the
+normal component of
+\[
+  \rho(\partial_tu+u\cdot\nabla u)
+  =
+  -\nabla p+\mu\Delta u+\rho b
+\]
+gives the wall relation
+\[
+  \partial_n p
+  =
+  n\cdot
+  \left(
+    \mu\Delta u+\rho b-\rho(\partial_tu+u\cdot\nabla u)
+  \right).
+\]
+Together with the pressure Poisson equation, this determines pressure up to an
+additive constant in a closed incompressible domain. This is why numerical
+projection methods first advance a tentative velocity and then solve a Poisson
+problem for the pressure correction that restores \(\nabla\cdot u=0\).
 
 \section{Nondimensionalization And Reynolds Number}
 \label{sec:reynolds-number}
@@ -558,6 +624,49 @@ where \(h\) is specific enthalpy. The integrand becomes
 The integral of a single-valued total derivative around a closed loop is zero.
 \end{proof}
 
+\section{How Exact Navier-Stokes Solutions Are Found}
+\label{sec:exact-ns-solution-strategy}
+
+The full Navier-Stokes equation is nonlinear because of \(u\cdot\nabla u\).
+Exact solutions are possible when symmetry, dimensional reduction, or a special
+pressure field makes that nonlinearity vanish or become a pure gradient. The
+examples below are not disconnected tricks; they illustrate three reusable
+mechanisms.
+
+\begin{enumerate}
+\item \emph{Unidirectional shear flow.} If
+\[
+  u=(V(y,t),0,0),
+\]
+then \(\nabla\cdot u=0\) and
+\[
+  u\cdot\nabla u=V(y,t)\partial_x(V(y,t),0,0)=0.
+\]
+The nonlinear term vanishes because the velocity points in the \(x\)-direction
+but varies only in the transverse \(y\)-direction.
+
+\item \emph{Fully developed pipe or channel flow.} If the velocity is axial and
+depends only on the transverse coordinates, the same cancellation occurs. The
+Navier-Stokes equation reduces to an ordinary differential equation in the
+cross-section for steady flow, or to a heat equation for unsteady flow.
+
+\item \emph{Nonlinearity absorbed into pressure.} In some periodic flows,
+\((u\cdot\nabla)u\) is the gradient of a scalar. Since incompressible pressure
+is a Lagrange multiplier, that gradient can be absorbed into \(p\). The
+Taylor-Green vortex is the standard example.
+\end{enumerate}
+
+For a unidirectional channel flow \(u=(V(y,t),0,0)\) with pressure
+\(p=p(x,t)\), incompressible Navier-Stokes becomes
+\[
+  \rho\partial_t V
+  =
+  -\partial_xp+\mu\partial_y^2V.
+\]
+This single equation is the parent of Couette flow, Poiseuille flow, Stokes'
+first problem, and the oscillatory Stokes layer. The boundary conditions decide
+which solution it represents.
+
 \section{Laminar Flow Solutions}
 \label{sec:laminar-solutions}
 
@@ -567,6 +676,76 @@ which organized solutions persist under disturbance.
 Each solution follows from three choices: geometry, boundary conditions, and
 pressure gradient or wall motion. Changing any one of these choices changes the
 profile and the instability problem.
+
+\subsection{The Couette-Poiseuille Family}
+\label{subsec:couette-poiseuille-family}
+
+Consider two infinite plates at \(y=0\) and \(y=h\). The lower plate moves with
+speed \(U_0\) in the \(x\)-direction, the upper plate moves with speed \(U_h\),
+and a constant pressure gradient
+\[
+  -\frac{\dd p}{\dd x}=G
+\]
+is imposed. We seek a steady parallel solution
+\[
+  u=(V(y),0,0),
+  \qquad
+  p(x)=p_0-Gx.
+\]
+The ansatz satisfies incompressibility. It also kills the nonlinear term:
+\[
+  (u\cdot\nabla)u=V(y)\partial_x(V(y),0,0)=0.
+\]
+The \(y\)- and \(z\)-momentum equations say that \(p\) is independent of
+\(y,z\). The \(x\)-momentum equation is
+\[
+  0=-\frac{\dd p}{\dd x}+\mu V''(y)
+  =
+  G+\mu V''(y).
+\]
+Thus
+\[
+  V''(y)=-\frac{G}{\mu}.
+\]
+Integrating twice gives
+\[
+  V(y)=-\frac{G}{2\mu}y^2+C_1y+C_0.
+\]
+No slip gives
+\[
+  V(0)=U_0,\qquad V(h)=U_h.
+\]
+Solving for \(C_0,C_1\) yields the whole Couette-Poiseuille family:
+\[
+  \boxed{
+  V(y)
+  =
+  U_0+\frac{U_h-U_0}{h}y
+  +
+  \frac{G}{2\mu}y(h-y).
+  }
+\]
+The first two terms are wall-driven shear. The last term is pressure-driven
+flow. The volume flux per unit span is
+\[
+  Q
+  =
+  \int_0^h V(y)\,\dd y
+  =
+  \frac{h}{2}(U_0+U_h)+\frac{Gh^3}{12\mu}.
+  \]
+The wall shear stresses are
+\[
+  \tau(0)=\mu V'(0)
+  =
+  \mu\frac{U_h-U_0}{h}+\frac{Gh}{2},
+  \qquad
+  \tau(h)=\mu V'(h)
+  =
+  \mu\frac{U_h-U_0}{h}-\frac{Gh}{2}.
+\]
+These formulas are often the easiest way to check signs: pressure forcing
+increases shear at one wall and decreases it at the other.
 
 \subsection{Plane Couette Flow}
 \label{subsec:plane-couette}
@@ -583,6 +762,10 @@ The incompressibility condition is automatic. The \(x\)-momentum equation is
 with boundary conditions \(V(0)=0\), \(V(h)=U\). Thus
 \[
   \boxed{V(y)=U\frac{y}{h}.}
+\]
+This is the special case of the Couette-Poiseuille family with
+\[
+  U_0=0,\qquad U_h=U,\qquad G=0.
 \]
 The shear stress is constant:
 \[
@@ -614,6 +797,7 @@ With no-slip conditions \(V(0)=V(h)=0\),
   V(y)=\frac{G}{2\mu}y(h-y).
   }
 \]
+This is the special case \(U_0=U_h=0\) of the Couette-Poiseuille family.
 The maximum speed occurs at \(y=h/2\):
 \[
   V_{\max}=\frac{Gh^2}{8\mu}.
@@ -639,7 +823,20 @@ The axial equation is
     r\frac{\dd V}{\dd r}
   \right).
 \]
-Regularity at \(r=0\) and no slip at \(r=a\) give
+Multiply by \(r\) and integrate:
+\[
+  \frac{\dd}{\dd r}\left(rV'(r)\right)
+  =
+  -\frac{G}{\mu}r,
+  \qquad
+  rV'(r)=-\frac{G}{2\mu}r^2+C_1.
+\]
+Regularity at the centerline requires \(V'(0)\) finite, so \(C_1=0\). A second
+integration gives
+\[
+  V(r)=-\frac{G}{4\mu}r^2+C_2.
+\]
+No slip at \(r=a\) fixes \(C_2=Ga^2/(4\mu)\). Therefore
 \[
   \boxed{
   V(r)=\frac{G}{4\mu}(a^2-r^2).
@@ -656,25 +853,26 @@ of viscous laminar flow.
 
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[scale=1.0, >=Latex]
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
   \draw[->] (-0.25,0) -- (-0.25,3.25) node[above] {\(y\)};
   \draw[->] (-0.25,0) -- (1.2,0) node[right] {\(x\)};
   \draw[thick] (0,0) -- (3.0,0);
   \draw[thick] (0,3.0) -- (3.0,3.0);
-  \draw[->, thick, black!70] (2.1,3.18) -- (2.8,3.18) node[right] {wall speed \(U\)};
+  \draw[->, thick, black!70] (2.02,3.22) -- (2.80,3.22)
+    node[midway, above, fill=white, inner sep=1.5pt] {wall speed \(U\)};
   \foreach \y/\len in {0.45/0.25,0.95/0.55,1.45/0.85,1.95/1.15,2.45/1.45}
     \draw[blue, thick, ->] (0.35,\y) -- ++(\len,0);
-  \node[blue] at (1.5,3.45) {Couette};
+  \node[blue, anchor=west, fill=white, inner sep=1.5pt] at (-0.02,3.50) {Couette};
   \node at (1.5,-0.35) {\(V(0)=0,\ V(h)=U\)};
 
-  \begin{scope}[xshift=4.4cm]
+  \begin{scope}[xshift=5.2cm]
     \draw[thick] (0,0) -- (3.0,0);
     \draw[thick] (0,3.0) -- (3.0,3.0);
-    \draw[->, thick, black!70] (0.25,3.25) -- (1.35,3.25)
-      node[right] {\(-\partial_xp=G\)};
+    \draw[->, thick, black!70] (0.28,3.25) -- (1.16,3.25)
+      node[midway, above, fill=white, inner sep=1.5pt] {\(-\partial_xp=G\)};
     \foreach \y/\len in {0.45/0.45,0.95/1.05,1.50/1.45,2.05/1.05,2.55/0.45}
       \draw[red!75!black, thick, ->] (0.35,\y) -- ++(\len,0);
-    \node[red!75!black] at (1.5,3.45) {Poiseuille};
+    \node[red!75!black, fill=white, inner sep=1.5pt] at (2.35,3.45) {Poiseuille};
     \node at (1.5,-0.35) {\(V(0)=V(h)=0\)};
   \end{scope}
 \end{tikzpicture}
@@ -685,8 +883,250 @@ with velocity on the vertical axis.}
 \label{fig:couette-poiseuille-profiles}
 \end{figure}
 
+\section{Unsteady Exact Solutions}
+\label{sec:unsteady-exact-ns-solutions}
+
+Steady laminar solutions show how pressure and wall motion balance viscosity.
+Unsteady exact solutions answer a different physical question: how fast does a
+boundary or vortex imprint its motion on the surrounding fluid? The answer is
+not a sound-crossing time in the incompressible model. It is the diffusive
+viscous time \(y^2/\nu\), and the associated length scale is
+\(\sqrt{\nu t}\). The examples below are therefore more than formulae. They
+show how momentum diffuses, how oscillatory forcing produces a penetration
+depth, and why exact solutions are useful tests for numerical codes that claim
+to solve the full Navier-Stokes equation.
+
+\subsection{Stokes' First Problem}
+\label{subsec:stokes-first-problem}
+
+Let a viscous incompressible fluid occupy the half-space \(y>0\). For
+\(t<0\), both fluid and wall are at rest. At \(t=0\), the wall at \(y=0\) is
+instantaneously set into motion with velocity \(Ue_x\). Seek
+\[
+  u=(V(y,t),0,0),
+  \qquad
+  p=\text{constant}.
+\]
+As before, incompressibility is automatic and \(u\cdot\nabla u=0\). The
+Navier-Stokes equation reduces to the heat equation
+\[
+  \partial_t V=\nu\,\partial_y^2V.
+\]
+The data are
+\[
+  V(y,0)=0\quad(y>0),
+  \qquad
+  V(0,t)=U,
+  \qquad
+  V(y,t)\to0\quad(y\to\infty).
+\]
+The only length scale that can be made from \(\nu\) and \(t\) is
+\(\sqrt{\nu t}\), so introduce
+\[
+  \eta=\frac{y}{2\sqrt{\nu t}},
+  \qquad
+  V(y,t)=U F(\eta).
+\]
+Using
+\[
+  \partial_t\eta=-\frac{\eta}{2t},
+  \qquad
+  \partial_y\eta=\frac{1}{2\sqrt{\nu t}},
+\]
+the heat equation becomes
+\[
+  -\frac{U\eta}{2t}F'(\eta)
+  =
+  \nu U\frac{1}{4\nu t}F''(\eta),
+  \qquad
+  F''+2\eta F'=0.
+\]
+The boundary conditions are \(F(0)=1\) and \(F(\infty)=0\). Hence
+\[
+  \boxed{
+  V(y,t)=U\,\operatorname{erfc}\left(\frac{y}{2\sqrt{\nu t}}\right).
+  }
+\]
+The thickness of the region significantly affected by the wall grows like
+\(\sqrt{\nu t}\). The wall shear stress has magnitude
+\[
+  |\tau_w(t)|
+  =
+  \mu\left|\partial_yV(0,t)\right|
+  =
+  \mu\frac{U}{\sqrt{\pi\nu t}},
+\]
+which is singular at \(t=0^+\) because the idealized wall velocity jumps
+instantaneously.
+
+\subsection{Oscillatory Stokes Layer}
+\label{subsec:oscillatory-stokes-layer}
+
+Now let the wall at \(y=0\) oscillate tangentially:
+\[
+  V(0,t)=U\cos(\Omega_s t),
+  \qquad
+  V(y,t)\to0\quad(y\to\infty).
+\]
+Again \(V\) solves \(\partial_tV=\nu V_{yy}\). Use a complex solution and take
+the real part at the end:
+\[
+  V(y,t)=\operatorname{Re}\left\{U e^{i\Omega_s t-\lambda y}\right\}.
+\]
+Substitution gives
+\[
+  i\Omega_s=\nu\lambda^2.
+\]
+The root with positive real part is
+\[
+  \lambda=\frac{1+i}{\delta_s},
+  \qquad
+  \delta_s=\sqrt{\frac{2\nu}{\Omega_s}}.
+\]
+Therefore
+\[
+  \boxed{
+  V(y,t)=U e^{-y/\delta_s}
+  \cos\left(\Omega_s t-\frac{y}{\delta_s}\right).
+  }
+\]
+The length \(\delta_s\) is the oscillatory Stokes-layer thickness. Faster
+oscillation gives a thinner layer; larger viscosity gives a thicker layer. The
+phase lag \(y/\delta_s\) records the time delay caused by viscous diffusion of
+momentum away from the moving wall.
+
+\subsection{Taylor-Green Vortex}
+\label{subsec:taylor-green-vortex}
+
+The Taylor-Green vortex is an exact periodic solution of the two-dimensional
+incompressible Navier-Stokes equation. On a periodic square, set
+\[
+\begin{aligned}
+  u_x(x,y,t)&=A(t)\sin(kx)\cos(ky),\\
+  u_y(x,y,t)&=-A(t)\cos(kx)\sin(ky),\\
+  A(t)&=U_0e^{-2\nu k^2t}.
+\end{aligned}
+\]
+The divergence vanishes because
+\[
+  \partial_xu_x+\partial_yu_y
+  =
+  A k\cos(kx)\cos(ky)
+  -
+  A k\cos(kx)\cos(ky)=0.
+\]
+The Laplacian satisfies
+\[
+  \Delta u=-2k^2u,
+\]
+so \(\partial_tu=\nu\Delta u\). The remaining nonlinear term is not zero, but
+it is a gradient:
+\[
+  (u\cdot\nabla)u
+  =
+  \frac{A(t)^2k}{2}
+  \left(\sin(2kx),\,\sin(2ky)\right).
+\]
+It is cancelled by the pressure
+\[
+  \boxed{
+  p(x,y,t)=p_0+\frac{\rho A(t)^2}{4}
+  \left(\cos(2kx)+\cos(2ky)\right).
+  }
+\]
+Indeed,
+\[
+  -\frac1\rho\nabla p
+  =
+  \frac{A(t)^2k}{2}
+  \left(\sin(2kx),\,\sin(2ky)\right)
+  =
+  (u\cdot\nabla)u.
+\]
+Thus the full nonlinear equation
+\[
+  \partial_tu+u\cdot\nabla u
+  =
+  -\frac1\rho\nabla p+\nu\Delta u
+\]
+is satisfied exactly. The vorticity is
+\[
+  \omega_z
+  =
+  \partial_xu_y-\partial_yu_x
+  =
+  2kA(t)\sin(kx)\sin(ky),
+\]
+and the cell-averaged kinetic energy density is
+\[
+  \left\langle \frac12\rho |u|^2\right\rangle
+  =
+  \frac14\rho A(t)^2
+  =
+  \frac14\rho U_0^2e^{-4\nu k^2t}.
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \begin{scope}[yscale=2.0]
+    \draw[->] (-0.3,0) -- (3.6,0) node[right] {\(y\)};
+    \draw[->] (0,-0.12) -- (0,1.22) node[above] {\(V/U\)};
+    \draw[thick] (0,0) -- (0,1.0);
+    \node[left] at (0,1.0) {moving wall};
+    \draw[blue!70!black, thick] plot[smooth] coordinates {
+      (0.0,1.000) (0.2,0.778) (0.4,0.572) (0.6,0.396)
+      (0.8,0.258) (1.0,0.158) (1.2,0.089) (1.4,0.048)
+      (1.6,0.024) (1.8,0.011) (2.0,0.005) (2.2,0.002)
+      (2.4,0.001) (2.6,0.000) (2.8,0.000) (3.0,0.000) (3.2,0.000)
+    };
+    \draw[red!75!black, thick] plot[smooth] coordinates {
+      (0.0,1.000) (0.2,0.871) (0.4,0.744) (0.6,0.624)
+      (0.8,0.514) (1.0,0.414) (1.2,0.327) (1.4,0.253)
+      (1.6,0.192) (1.8,0.142) (2.0,0.102) (2.2,0.072)
+      (2.4,0.050) (2.6,0.034) (2.8,0.022) (3.0,0.014) (3.2,0.009)
+    };
+    \draw[purple!75!black, thick] plot[smooth] coordinates {
+      (0.0,1.000) (0.2,0.903) (0.4,0.808) (0.6,0.715)
+      (0.8,0.627) (1.0,0.543) (1.2,0.465) (1.4,0.394)
+      (1.6,0.330) (1.8,0.274) (2.0,0.224) (2.2,0.180)
+      (2.4,0.144) (2.6,0.114) (2.8,0.089) (3.0,0.068) (3.2,0.052)
+    };
+    \node[blue!70!black] at (3.15,0.10) {\(t_1\)};
+    \node[red!75!black] at (3.15,0.21) {\(t_2\)};
+    \node[purple!75!black] at (3.15,0.32) {\(t_3\)};
+  \end{scope}
+  \node[align=center] at (1.8,-0.55) {Stokes first problem:\\viscous penetration grows like \(\sqrt{\nu t}\)};
+
+  \begin{scope}[xshift=6.0cm]
+    \draw[->] (-0.2,0) -- (3.2,0) node[right] {\(x\)};
+    \draw[->] (0,-0.2) -- (0,3.2) node[above] {\(y\)};
+    \draw[step=1.0, gray!35, thin] (0,0) grid (3,3);
+    \foreach \x/\y/\dx/\dy in {
+      0.5/0.5/0.55/-0.55, 1.5/0.5/0.55/0.55, 2.5/0.5/-0.55/0.55,
+      0.5/1.5/-0.55/-0.55, 1.5/1.5/-0.55/0.55, 2.5/1.5/0.55/0.55,
+      0.5/2.5/-0.55/0.55, 1.5/2.5/-0.55/-0.55, 2.5/2.5/0.55/-0.55}
+      \draw[teal!75!black, thick, ->] (\x,\y) -- ++(\dx,\dy);
+    \node[align=center] at (1.5,-0.55) {Taylor-Green vortex:\\periodic eddies decay as \(e^{-2\nu k^2t}\)};
+  \end{scope}
+\end{tikzpicture}
+\caption{Two unsteady exact solutions. Left: an impulsively moved wall creates
+the profile \(V/U=\operatorname{erfc}(y/(2\sqrt{\nu t}))\), sampled at
+three times. Right: the arrows sample the Taylor-Green velocity
+\((A\sin kx\cos ky,-A\cos kx\sin ky)\); advection is absorbed by pressure
+while viscosity damps the amplitude.}
+\label{fig:unsteady-ns-exact-solutions}
+\end{figure}
+
 \section{Linear Stability Of Laminar Shear Flow}
 \label{sec:linear-stability-shear}
+
+Exact laminar solutions are useful only if we also ask what happens to nearby
+motions. Stability analysis supplies this local question. We do not try to
+solve the full nonlinear transition-to-turbulence problem here. Instead we
+linearize Navier-Stokes around a known base flow and ask whether infinitesimal
+disturbances grow or decay. This gives a mathematically controlled diagnostic
+that can be compared with experiments and simulations.
 
 Let a steady base flow be
 \[
@@ -719,7 +1159,7 @@ from the base flow.
 
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[scale=1.0, >=Latex]
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
   \draw[->] (-0.25,0) -- (-0.25,3.4) node[above] {\(y\)};
   \draw[->] (-0.25,0) -- (5.9,0) node[right] {\(x\)};
   \draw[thick] (0,0.35) -- (5.3,0.35);
@@ -855,20 +1295,22 @@ point-vortex bracket as the model.
 
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[scale=1.05, >=Latex]
+\begin{tikzpicture}[scale=1.05, >=Latex, font=\small]
   \draw[->] (-2.5,0) -- (2.7,0) node[right] {\(x\)};
   \draw[->] (0,-2.2) -- (0,2.4) node[above] {\(y\)};
-  \foreach \x/\y/\g/\lab in {-0.65/-0.35/+/\Gamma,0.65/0.35/-/-\Gamma}
+  \foreach \x/\y/\g/\lab/\anch in {-0.65/-0.35/+/{+\Gamma}/below left,0.65/0.35/-/{-\Gamma}/above right}
   {
     \draw[thick] (\x,\y) circle (0.16);
     \node at (\x,\y) {\(\g\)};
-    \node[above right] at (\x,\y) {\(\lab\)};
+    \node[\anch=3pt, fill=white, inner sep=1pt] at (\x,\y) {\(\lab\)};
   }
-  \draw[blue, thick, ->] (-1.7,-0.35) -- (1.45,-0.35);
-  \draw[blue, thick, ->] (-0.4,0.35) -- (2.75,0.35);
   \draw[dashed] (-0.65,-0.35) -- (0.65,0.35);
-  \draw[<->] (-0.65,-0.62) -- (0.65,0.08) node[midway, below right] {separation};
-  \node at (0,-1.75) {a vortex dipole translates by mutual induction};
+  \draw[<->] (-0.65,-0.70) -- (0.65,0.00)
+    node[midway, below right, fill=white, inner sep=1pt] {fixed separation \(d\)};
+  \draw[blue, thick, ->] (-1.74,-0.98) -- (-2.24,-0.05);
+  \draw[blue, thick, ->] (2.00,-0.08) -- (1.50,0.85);
+  \node[blue, align=center, fill=white, inner sep=1pt] at (1.72,1.20)
+    {common\\translation};
 \end{tikzpicture}
 \caption{A vortex dipole is the simplest point-vortex motion: the two vortices
 translate together with fixed separation. More complicated point-vortex
@@ -887,6 +1329,9 @@ differential equations; the local PDEs come from applying the divergence theorem
 to arbitrary moving volumes.
 \item Navier-Stokes is Cauchy momentum balance plus the Newtonian stress law.
 Changing the constitutive law changes the continuum model.
+\item Exact Navier-Stokes solutions become tractable when symmetry removes the
+nonlinear term, when the flow is fully developed, or when advection can be
+absorbed into pressure.
 \item The Reynolds number compares inertial transport with viscous diffusion of
 momentum. It is the organizing scale behind laminar solutions, instabilities,
 and transition.
@@ -894,10 +1339,138 @@ and transition.
 mechanics after a strong but explicit reduction.
 \end{itemize}
 
+
+\section{Chapter-End Laboratories And Exercises}
+\label{sec:fluid-chapter-end-labs}
+
+The following derivations isolate two recurring fluid-mechanics diagnostics:
+pressure as the multiplier that enforces incompressibility, and the
+Orr-Sommerfeld eigenvalue problem as the linear stability test for parallel
+shear flows.
+
+\subsection{Pressure As A Lagrange Multiplier In Incompressible Flow}
+\label{sec:detailed-pressure-multiplier}
+
+For incompressible Navier-Stokes,
+\[
+  \partial_tu+u\cdot\nabla u
+  =
+  -\frac1\rho\nabla p+\nu\Delta u,
+  \qquad
+  \nabla\cdot u=0.
+\]
+The pressure is not determined by a separate thermodynamic equation in the
+incompressible model. It is the Lagrange multiplier enforcing
+\(\nabla\cdot u=0\).
+
+Take the divergence of the momentum equation. Since
+\[
+  \nabla\cdot\partial_tu=\partial_t(\nabla\cdot u)=0
+  \quad\text{and}\quad
+  \nabla\cdot\Delta u=\Delta(\nabla\cdot u)=0,
+\]
+we obtain the pressure Poisson equation
+\[
+  \boxed{
+  -\frac1\rho\Delta p
+  =
+  \nabla\cdot(u\cdot\nabla u)
+  =
+  \partial_i u_j\,\partial_j u_i.
+  }
+\]
+The last equality follows by expanding:
+\[
+  \partial_i(u_j\partial_j u_i)
+  =
+  (\partial_i u_j)(\partial_j u_i)
+  +
+  u_j\partial_j(\partial_i u_i),
+\]
+and the second term vanishes by incompressibility. Thus \(p\) is whatever
+spatial field is needed to project the nonlinear acceleration back onto the
+space of divergence-free vector fields.
+
+\subsection{Orr-Sommerfeld Equation With Boundary Conditions}
+\label{sec:detailed-orr-sommerfeld}
+
+For a parallel base flow
+\[
+  U(y)e_x,
+\]
+linearized incompressible perturbations satisfy
+\[
+  \partial_t\tilde u
+  +
+  U\partial_x\tilde u
+  +
+  \tilde v U'e_x
+  =
+  -\nabla\tilde p+\frac1{\mathrm{Re}}\Delta\tilde u,
+  \qquad
+  \nabla\cdot\tilde u=0.
+\]
+For two-dimensional perturbations, introduce a streamfunction
+\[
+  \tilde u=\partial_y\psi,
+  \qquad
+  \tilde v=-\partial_x\psi.
+\]
+The perturbation vorticity is
+\[
+  \tilde\omega_z
+  =
+  \partial_x\tilde v-\partial_y\tilde u
+  =
+  -\Delta\psi.
+\]
+Taking the curl of the linearized momentum equation gives
+\[
+  \left(\partial_t+U\partial_x\right)\Delta\psi
+  -
+  U''\partial_x\psi
+  =
+  \frac1{\mathrm{Re}}\Delta^2\psi.
+\]
+Insert the normal mode
+\[
+  \psi(x,y,t)=\phi(y)e^{i\alpha x+\sigma t}.
+\]
+Then
+\[
+  \Delta\psi=(D^2-\alpha^2)\phi\,e^{i\alpha x+\sigma t},
+\]
+and the eigenvalue equation becomes
+\[
+  \boxed{
+  (\sigma+i\alpha U)(D^2-\alpha^2)\phi
+  -
+  i\alpha U''\phi
+  =
+  \frac1{\mathrm{Re}}(D^2-\alpha^2)^2\phi.
+  }
+\]
+No penetration means
+\[
+  \tilde v=-\partial_x\psi=0
+  \quad\Rightarrow\quad
+  \phi=0
+\]
+at a wall. No slip also requires
+\[
+  \tilde u=\partial_y\psi=0
+  \quad\Rightarrow\quad
+  D\phi=0.
+\]
+Thus the Orr-Sommerfeld equation is fourth order and needs the four wall
+conditions \(\phi=D\phi=0\) at the two boundaries.
+
 \section{Associated Demos}
 \label{sec:fluid-associated-demos}
 
 \begin{itemize}
+\item \path{demos/python/navier_stokes_solutions.py}.
+Exact Couette-Poiseuille, pipe, Stokes-layer, and Taylor-Green solutions.
 \item \path{demos/python/fluids_vorticity.py}, a point-vortex Hamiltonian model.
 \item \path{demos/python/hamiltonian_pendulum.py}, useful for comparing
 separatrix geometry with shear-flow stability.

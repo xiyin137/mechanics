@@ -20,6 +20,33 @@ class RigidBody:
     I3: float
 
 
+def inertia_vector(body: RigidBody) -> np.ndarray:
+    return np.array([body.I1, body.I2, body.I3], dtype=float)
+
+
+def hat(vector: np.ndarray) -> np.ndarray:
+    x, y, z = vector
+    return np.array(
+        [
+            [0.0, -z, y],
+            [z, 0.0, -x],
+            [-y, x, 0.0],
+        ]
+    )
+
+
+def rotation_from_rotvec(rotvec: np.ndarray) -> np.ndarray:
+    angle = float(np.linalg.norm(rotvec))
+    K = hat(rotvec)
+    if angle < 1.0e-12:
+        return np.eye(3) + K + 0.5 * (K @ K)
+    return (
+        np.eye(3)
+        + (np.sin(angle) / angle) * K
+        + ((1.0 - np.cos(angle)) / (angle * angle)) * (K @ K)
+    )
+
+
 def rhs(omega: np.ndarray, body: RigidBody) -> np.ndarray:
     w1, w2, w3 = omega
     return np.array(
@@ -40,7 +67,7 @@ def rk4_step(omega: np.ndarray, dt: float, body: RigidBody) -> np.ndarray:
 
 
 def invariants(omega: np.ndarray, body: RigidBody) -> tuple[np.ndarray, np.ndarray]:
-    I = np.array([body.I1, body.I2, body.I3])
+    I = inertia_vector(body)
     momentum = I * omega
     energy = 0.5 * np.sum(I * omega * omega, axis=-1)
     momentum_sq = np.sum(momentum * momentum, axis=-1)
@@ -64,7 +91,52 @@ def simulate(body: RigidBody, omega0: np.ndarray, dt: float, steps: int) -> tupl
     return time, omega
 
 
-def save_plot(path: Path, time: np.ndarray, omega: np.ndarray, body: RigidBody) -> None:
+def simulate_attitude(
+    body: RigidBody,
+    omega0: np.ndarray,
+    dt: float,
+    steps: int,
+    attitude0: np.ndarray | None = None,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    time, omega = simulate(body, omega0, dt, steps)
+    attitude = np.empty((steps + 1, 3, 3))
+    if attitude0 is None:
+        attitude[0] = np.eye(3)
+    else:
+        if attitude0.shape != (3, 3):
+            raise ValueError("attitude0 must have shape (3, 3)")
+        attitude[0] = attitude0
+
+    for i in range(steps):
+        # Rdot = R Omega_hat.  The midpoint angular velocity gives a
+        # second-order reconstruction while the matrix exponential keeps R in SO(3).
+        omega_mid = 0.5 * (omega[i] + omega[i + 1])
+        attitude[i + 1] = attitude[i] @ rotation_from_rotvec(dt * omega_mid)
+    return time, omega, attitude
+
+
+def spatial_momentum(omega: np.ndarray, attitude: np.ndarray, body: RigidBody) -> np.ndarray:
+    body_momentum = inertia_vector(body) * omega
+    return np.einsum("...ij,...j->...i", attitude, body_momentum)
+
+
+def attitude_errors(attitude: np.ndarray) -> tuple[float, float]:
+    identity = np.eye(3)
+    orthogonality = np.linalg.norm(
+        np.einsum("...ji,...jk->...ik", attitude, attitude) - identity,
+        axis=(-2, -1),
+    )
+    determinant = np.linalg.det(attitude)
+    return float(np.max(orthogonality)), float(np.max(np.abs(determinant - 1.0)))
+
+
+def save_plot(
+    path: Path,
+    time: np.ndarray,
+    omega: np.ndarray,
+    body: RigidBody,
+    attitude: np.ndarray | None = None,
+) -> None:
     import matplotlib
 
     matplotlib.use("Agg")
@@ -73,7 +145,8 @@ def save_plot(path: Path, time: np.ndarray, omega: np.ndarray, body: RigidBody) 
     path.parent.mkdir(parents=True, exist_ok=True)
     energy, momentum_sq = invariants(omega, body)
 
-    fig, axes = plt.subplots(2, 1, figsize=(9, 6), sharex=True)
+    nrows = 3 if attitude is not None else 2
+    fig, axes = plt.subplots(nrows, 1, figsize=(9, 7.5 if attitude is not None else 6), sharex=True)
     axes[0].plot(time, omega[:, 0], label="omega_1")
     axes[0].plot(time, omega[:, 1], label="omega_2")
     axes[0].plot(time, omega[:, 2], label="omega_3")
@@ -85,6 +158,13 @@ def save_plot(path: Path, time: np.ndarray, omega: np.ndarray, body: RigidBody) 
     axes[1].set_xlabel("time")
     axes[1].set_ylabel("invariant drift")
     axes[1].legend(loc="best")
+
+    if attitude is not None:
+        J = spatial_momentum(omega, attitude, body)
+        axes[2].plot(time, np.linalg.norm(J - J[0], axis=1), label="|J(t)-J(0)|")
+        axes[2].set_xlabel("time")
+        axes[2].set_ylabel("spatial momentum drift")
+        axes[2].legend(loc="best")
 
     fig.tight_layout()
     fig.savefig(path, dpi=160)
@@ -113,8 +193,12 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     body = RigidBody(args.I1, args.I2, args.I3)
-    time, omega = simulate(body, np.array(args.omega0, dtype=float), args.dt, args.steps)
+    time, omega, attitude = simulate_attitude(
+        body, np.array(args.omega0, dtype=float), args.dt, args.steps
+    )
     energy, momentum_sq = invariants(omega, body)
+    J = spatial_momentum(omega, attitude, body)
+    orthogonality_error, determinant_error = attitude_errors(attitude)
     print(f"steps={args.steps}")
     print(f"energy_initial={energy[0]:.12g}")
     print(f"energy_final={energy[-1]:.12g}")
@@ -122,8 +206,11 @@ def main() -> None:
     print(f"momentum_sq_initial={momentum_sq[0]:.12g}")
     print(f"momentum_sq_final={momentum_sq[-1]:.12g}")
     print(f"momentum_sq_drift={momentum_sq[-1] - momentum_sq[0]:.6e}")
+    print(f"spatial_momentum_max_drift={np.max(np.linalg.norm(J - J[0], axis=1)):.6e}")
+    print(f"attitude_orthogonality_error={orthogonality_error:.6e}")
+    print(f"attitude_determinant_error={determinant_error:.6e}")
     if args.plot is not None:
-        save_plot(args.plot, time, omega, body)
+        save_plot(args.plot, time, omega, body, attitude)
         print(f"wrote_plot={args.plot}")
 
 

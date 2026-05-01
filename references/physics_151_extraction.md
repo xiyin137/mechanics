@@ -637,7 +637,7 @@ Assumptions to state:
   `A_ij=-epsilon_ijk Omega_k`.
 
 Repo use: this formula is already folded into
-`notes/tex/05_elastic_deforming_bodies.tex`, and should remain a central
+`notes/tex/07_deforming_body_gauge.tex`, and should remain a central
 computational result in the Shapere-Wilczek section.
 
 ### PS2 Problem 6: Helicopter Model As An SO(3) Gauge System
@@ -1993,9 +1993,9 @@ Use:
 
 Physics 151 material already integrated into the repo:
 
-- `notes/tex/03_perturbation_chaos_celestial.tex` includes the period-three
+- `notes/tex/04_perturbation_kam_torus_breakdown.tex` includes the period-three
   standard-map calculation near `p=2pi/3`, following Problem Set 6.
-- `notes/tex/05_elastic_deforming_bodies.tex` includes the deforming-body
+- `notes/tex/07_deforming_body_gauge.tex` includes the deforming-body
   gauge equation `A Q + Q A = 2 Jhat` and the inertia-tensor solution from
   Problem Set 2.
 - `PLANNING.md` references Physics 151 as a source for exercises, demos, and

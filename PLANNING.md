@@ -1,12 +1,14 @@
-# Comprehensive Plan: Mechanics Through Phase Space
+# Comprehensive Plan: Notes on Classical Mechanics
 
 ## 1. Project Thesis
 
-This repository teaches mechanics as a unified geometric and computational
-subject. The course starts with Lagrangian and Hamiltonian mechanics, develops
-phase-space geometry, moves through integrability and chaos, and then extends
-the same language to continua, fluids, and gauge-theoretic descriptions of
-deforming bodies.
+This repository supports *Notes on Classical Mechanics*, a unified geometric
+and computational treatment of mechanics. The notes start from configuration
+space and the action principle, pass through Hamiltonian phase space and
+symplectic structure, build integrability from concrete examples, study the
+breakdown of invariant tori under perturbation, and then carry the same
+structural language into elastic bodies, gauge-theoretic descriptions of
+deforming bodies, and finally fluids.
 
 The central message is:
 
@@ -18,6 +20,23 @@ The course should be useful for advanced undergraduates, beginning graduate
 students, and self-directed readers who know vector calculus, ordinary
 differential equations, and basic linear algebra. Differential geometry is
 introduced as needed.
+
+Current snapshot, May 1, 2026:
+
+- The TeX notes compile to a roughly 150-page PDF with the title-page
+  architectural abstract requested for the public-facing version.
+- The formerly separate Hamilton-Jacobi/adiabatic material has been removed or
+  absorbed where it is actually used, so canonical perturbation theory now lives
+  with the integrability-and-breakdown arc.
+- The notes contain 34 figures; the standard-map island-chain figure is now
+  data-backed by actual iterates rather than drawn schematically.
+- Worked derivations, exercises, and demo pointers now live at the ends of the
+  chapters they support, rather than in standalone concluding chapters.
+- The Python laboratory contains 11 scripts; the seven substantial demos have
+  Wolfram Language counterparts and a `mathematica-smoke` Makefile target.
+- The smoke-test suite currently covers the demos, including the helicopter
+  rotor wrappers and the newer CR3BP, torus-breakdown, fluid, and elasticity
+  examples.
 
 ## 2. Audience And Prerequisites
 
@@ -92,23 +111,41 @@ mechanics/
     tex/
       main.tex
       preamble.tex
-      01_geometric_lagrangian_hamiltonian.tex
-      02_integrability_rigid_body.tex
-      03_perturbation_chaos_celestial.tex
-      04_fluid_mechanics.tex
-      05_elastic_deforming_bodies.tex
+      data/
+        standard_map_kam_K065.dat
+        standard_map_period3_islands_K065.dat
+        standard_map_period3_layer_K065.dat
+        standard_map_period3_points_K065.dat
+      00_notation_assumptions.tex
+      01_lagrangian_mechanics.tex
+      02_hamiltonian_phase_space.tex
+      03_integrability_rigid_body.tex
+      04_perturbation_kam_torus_breakdown.tex
+      05_three_body_problem.tex
+      06_elastic_bodies.tex
+      07_deforming_body_gauge.tex
+      08_fluid_mechanics.tex
   demos/
     python/
       asteroid_ejection_probability.py
+      circular_restricted_three_body.py
       rigid_body_euler_top.py
       standard_map.py
+      standard_map_torus_breakdown.py
       hamiltonian_pendulum.py
       fluids_vorticity.py
+      navier_stokes_solutions.py
+      linear_elasticity.py
       cosserat_rod_demo.py
+      deforming_body_gauge.py
     mathematica/
       RigidBodyEulerTop.wl
+      CircularRestrictedThreeBody.wl
       AsteroidEjectionProbability.wl
       GaugeDeformingBody.wl
+      LinearElasticity.wl
+      NavierStokesSolutions.wl
+      StandardMapTorusBreakdown.wl
   tests/
     test_demo_smoke.py
   figures/
@@ -146,7 +183,7 @@ The second arc moves to phase space:
 - Hamilton's equations
 - Poisson brackets
 - canonical transformations
-- Hamilton-Jacobi theory
+- canonical transformations and generating functions
 - geometric meaning of Liouville's theorem
 
 This arc establishes the language needed for integrability and chaos.
@@ -160,6 +197,7 @@ The third arc asks when mechanics is solvable:
 - Liouville integrability
 - invariant tori
 - action-angle variables
+- action integrals and angle variables
 - Euler top
 - heavy top as a bridge to nonintegrability
 
@@ -174,29 +212,59 @@ The fourth arc studies what happens when integrability is broken:
 - resonances
 - secular perturbation theory
 - standard map
+- Poincare-Birkhoff island chains
+- Chirikov resonance overlap
+- cantori and partial transport barriers
 - separatrix splitting
 - Poincare sections
 - KAM intuition
 - chaotic transport
 
-The flagship example is the Sun-Jupiter-asteroid restricted problem. The Kepler
-problem is the integrable baseline. Jupiter is the perturbation. The asteroid
-belt gives a natural laboratory for resonance, long-time instability, and
-ejection probabilities.
+The compact model is the standard map, supported by the Sun-Jupiter-asteroid
+problem as physical motivation. The Kepler problem is the integrable baseline,
+and Jupiter is the perturbation, but the detailed celestial reduction now lives
+in its own three-body chapter.
 
-### Arc E: Continua, Fluids, And Gauge Theory
+The standard-map figures and demos are the compact model for this arc. They
+serve three roles: deriving island chains from resonant tori, visualizing
+finite-time transport on the cylinder, and giving a low-cost numerical check on
+KAM, cantori, and resonance-overlap language before the reader meets the
+three-body problem.
 
-The fifth arc expands mechanics from finitely many degrees of freedom to fields:
+### Arc E: Three-Body Dynamics
+
+The fifth arc develops celestial mechanics as its own subject rather than as a
+subsection of perturbation theory:
+
+- full Newtonian three-body equations
+- center-of-mass reduction and Jacobi coordinates
+- Lagrange-Jacobi identity
+- central configurations and special rotating solutions
+- circular restricted three-body problem
+- rotating-frame Hamiltonian, Jacobi constant, and zero-velocity curves
+- Lagrange points and their stability criteria
+- heliocentric Sun-Jupiter-asteroid equations and indirect term
+- finite-time ejection probability and numerical diagnostics
+
+This arc is the bridge from abstract torus breakdown to a concrete
+gravitational system with escape channels, resonances, and observable loss
+statistics.
+
+### Arc F: Continua, Elasticity, Gauge Theory, And Fluids
+
+The sixth arc expands mechanics from finitely many degrees of freedom to fields:
 
 - deformation maps
-- material and spatial descriptions
-- Eulerian and Lagrangian variables
 - strain and compatibility
-- vorticity and circulation
-- ideal fluid Hamiltonian structure
+- elastic stress, wave speeds, and boundary-value reductions
 - local frames and gauge freedom
+- Shapere-Wilczek mechanical connection and holonomy
 - Cosserat media
 - dislocations, disclinations, torsion, and curvature
+- material and spatial descriptions
+- Eulerian and Lagrangian variables
+- vorticity and circulation
+- ideal fluid Hamiltonian structure
 
 This arc shows that rigid body mechanics generalizes in two directions: one
 orientation in time becomes an orientation field over a body, and point-particle
@@ -229,6 +297,8 @@ The celestial mechanics case study introduces:
 
 - Kepler motion as an integrable Hamiltonian system.
 - Delaunay/action-angle variables as a future extension.
+- the circular restricted three-body problem, including the Jacobi integral,
+  zero-velocity curves, and Lagrange points.
 - Jupiter as a perturbing body.
 - mean-motion resonances.
 - chaotic layers and transport.
@@ -236,12 +306,16 @@ The celestial mechanics case study introduces:
 
 Initial numerical model:
 
+- dimensionless circular restricted three-body demo in rotating barycentric
+  coordinates, with Lagrange point computation and Jacobi-drift diagnostics.
 - planar Sun-centered restricted problem.
 - Sun fixed at origin with Jupiter on a circular prescribed orbit.
 - massless test particles sampled across an asteroid-belt annulus.
 - symplectic-style kick-drift-kick integration for particles.
 - ejection declared when a particle reaches a large heliocentric radius or has
   positive heliocentric energy outside the inner system.
+- resonance labels attached to semimajor-axis bins for comparison with the
+  nominal \(3:1,5:2,7:3,2:1\) resonances.
 
 This model is intentionally teachable. Later versions can upgrade to:
 
@@ -252,27 +326,17 @@ This model is intentionally teachable. Later versions can upgrade to:
 - MEGNO or finite-time Lyapunov indicators.
 - resonance-specific ensembles.
 
-### 6.3 Fluids
+### 6.3 Elastic And Deforming Bodies
 
-The fluids thread introduces:
-
-- flow maps.
-- Eulerian velocity fields.
-- vorticity.
-- Kelvin circulation theorem.
-- point vortex Hamiltonian systems.
-- instability and mixing.
-- infinite-dimensional Poisson brackets as an advanced endpoint.
-
-The initial Python demo uses point vortices because they are simple, visual, and
-Hamiltonian.
-
-### 6.4 Gauge Theory Of Deforming Bodies
-
-The deforming-body thread introduces:
+The elastic and deforming-body thread introduces:
 
 - body manifold and ambient space.
 - deformation map.
+- finite strain, polar decomposition, and frame indifference.
+- stress and stored elastic energy.
+- linear isotropic elasticity, elastic moduli, and wave speeds.
+- classical elastic reductions: axial bars, circular-shaft torsion, and
+  Euler-Bernoulli beams.
 - material frames and spatial frames.
 - local rotations as gauge freedom.
 - connection coefficients as local comparison rules.
@@ -280,9 +344,34 @@ The deforming-body thread introduces:
 - Cosserat rods and media.
 - dislocations and disclinations.
 
-The initial demo reconstructs a planar Cosserat rod from a curvature field. It
-is deliberately modest, but it gives a computational foothold for the idea that
-a local frame field carries a connection.
+The linear-elasticity demo evaluates exact formulas for elastic constants,
+bars, shafts, beams, and bar vibration modes. The Cosserat rod demo reconstructs
+a planar rod from a curvature field; it is deliberately modest, but it gives a
+computational foothold for the idea that a local frame field carries a
+connection.
+The finite-dimensional deforming-body gauge demo complements it by computing
+the nonabelian holonomy of a closed two-rotor shape loop, with explicit helper
+functions for the helicopter-rotor laboratory interpretation.
+
+### 6.4 Fluids
+
+The fluids thread introduces:
+
+- flow maps.
+- Eulerian velocity fields.
+- Cauchy momentum balance and Newtonian stress.
+- incompressible Navier-Stokes as a constrained balance law.
+- exact laminar and unsteady Navier-Stokes solutions.
+- vorticity.
+- Kelvin circulation theorem.
+- point vortex Hamiltonian systems.
+- instability and mixing.
+- infinite-dimensional Poisson brackets as an advanced endpoint.
+
+The exact-solution Python demo evaluates Couette-Poiseuille flow,
+Hagen-Poiseuille pipe flow, Stokes' first problem, the oscillatory Stokes
+layer, and the Taylor-Green vortex. The point-vortex demo complements this by
+showing a finite-dimensional Hamiltonian reduction of ideal-fluid motion.
 
 ## 7. Pedagogical Pattern For Each Module
 
@@ -323,6 +412,11 @@ The first highlight simulation estimates the probability that massless
 asteroids are ejected from an asteroid-belt-like annulus under solar gravity and
 Jupiter's perturbation.
 
+The companion circular restricted three-body demo supplies the autonomous
+rotating-frame geometry: \(L_1,\ldots,L_5\), the Jacobi constant, and
+zero-velocity curves. The ejection experiment then translates this geometry
+into a heliocentric ensemble calculation with resonance-labelled bins.
+
 The initial experiment reports:
 
 - number of particles.
@@ -332,6 +426,7 @@ The initial experiment reports:
 - collision/loss fraction.
 - survival fraction.
 - ejection fraction binned by initial semimajor axis.
+- nearest nominal resonance and distance from that resonance for each bin.
 
 Teaching questions:
 
@@ -343,30 +438,89 @@ Teaching questions:
 
 Future version:
 
-- identify 3:1, 5:2, 7:3, and 2:1 resonant neighborhoods.
+- refine the current 3:1, 5:2, 7:3, and 2:1 resonance labels into finite-width
+  resonant neighborhoods.
 - compare ejection probability inside and outside resonant windows.
 - compute resonance angles.
 - estimate finite-time Lyapunov exponents.
 - generate publication-quality figures for lecture.
 
-## 10. Notes Roadmap
+## 10. Notes Status And Core/Extended Pass
 
-Current TeX notes are a first integrated draft:
+The TeX notes are now an integrated mechanics draft rather than a skeleton.
+They are organized so that an instructor can teach a core route without asking
+students to read every advanced subsection on the first pass.
 
-- `01_geometric_lagrangian_hamiltonian.tex`
-- `02_integrability_rigid_body.tex`
-- `03_perturbation_chaos_celestial.tex`
-- `04_fluid_mechanics.tex`
-- `05_elastic_deforming_bodies.tex`
+Current source files:
+
+- `00_notation_assumptions.tex`: global notation, assumptions, and symbol
+  conventions.
+- `01_lagrangian_mechanics.tex`: Lagrangian mechanics, variational
+  principles, constraints, Noether theorem, Kepler motion, and the rigid body
+  as a configuration-space example.
+- `02_hamiltonian_phase_space.tex`: Legendre transform, Hamiltonian mechanics,
+  symplectic form, Poisson brackets, phase-space action, canonical
+  transformations, and structure-preserving numerics.
+- `03_integrability_rigid_body.tex`: Liouville integrability, invariant tori,
+  action-angle variables, Kepler problem, Euler top, Lie-Poisson reduction, and
+  rigid-body stability.
+- `04_perturbation_kam_torus_breakdown.tex`: near-integrable systems, resonances,
+  KAM proof sketch, invariant-torus breakdown, standard map, cantori, and
+  transport barriers.
+- `05_three_body_problem.tex`: Newtonian three-body dynamics, Jacobi
+  coordinates, central configurations, CR3BP, rotating-frame Hamiltonian,
+  Lagrange points, heliocentric asteroid equations, and ejection statistics.
+- `06_elastic_bodies.tex`: finite strain, frame indifference, linear
+  elasticity, elastic waves, and classical boundary-value formulas.
+- `07_deforming_body_gauge.tex`: Shapere-Wilczek gauge theory of deforming
+  bodies, shape space, mechanical connection, holonomy, Cosserat media, and
+  defect geometry.
+- `08_fluid_mechanics.tex`: material and spatial descriptions, balance laws,
+  Navier-Stokes derivation, exact laminar and unsteady solutions, stability,
+  vorticity, circulation, and point vortices.
+
+Worked derivations, exercises, and demo pointers are placed at the ends of the
+chapters they support, rather than in standalone back-matter chapters.
+
+Core classroom pass:
+
+1. Reading rules and standing assumptions.
+2. Lagrangian mechanics through constraints, Noether theorem, Kepler motion,
+   and the rigid body as a Lagrangian system.
+3. Hamiltonian mechanics through Hamilton's equations, Poisson brackets,
+   canonical transformations, and symplectic numerics.
+4. Integrability through Liouville tori, action-angle variables, and the Euler
+   top.
+5. Perturbation and chaos through resonant normal forms, KAM survival,
+   invariant-torus breakdown, and standard-map diagnostics.
+6. Three-body dynamics through Jacobi coordinates, central configurations,
+   CR3BP/Jacobi geometry, and asteroid ejection statistics.
+7. Elastic bodies through finite strain, linear elasticity, elastic waves, and
+   classical bars/shafts/beams.
+8. Deforming bodies through Shapere-Wilczek gauge kinematics, holonomy,
+   Cosserat rods, and defects.
+9. Fluids through the Navier-Stokes derivation and canonical exact laminar
+   solutions.
+10. Selected worked laboratories.
+
+Extended/project pass:
+
+- detailed KAM iteration and small-divisor estimates.
+- Chirikov overlap, cantori, turnstiles, and finite-time transport diagnostics.
+- full three-body and asteroid-belt ejection statistics.
+- Orr-Sommerfeld stability, Rayleigh inflection criterion, and point-vortex
+  Hamiltonian mechanics.
+- expanded beam/torsion formula catalog and elastic-mode problems.
+- Shapere-Wilczek gauge curvature, two-rotor/helicopter holonomy, Cosserat
+  media, and defect geometry.
+- the longer derivations in Chapter 8.
 
 Next additions:
 
-- dedicated chapter on constraints and reduction.
-- dedicated chapter on symplectic geometry.
-- dedicated chapter on Hamilton-Jacobi and action-angle variables.
-- problem sets with solutions.
-- lecture slides or short blackboard plans.
-- rendered figures from the demos.
+- problem sets with solutions keyed to the core route.
+- rendered demo figures committed for lecture use.
+- an instructor guide with suggested pacing and blackboard plans.
+- a compact bibliography with reading paths.
 
 ## 11. Assessment Ideas
 
@@ -377,6 +531,8 @@ Problem-set themes:
 - prove conservation of the symplectic form under Hamiltonian flow.
 - analyze Euler top stability.
 - construct a Poincare section for the driven pendulum or standard map.
+- estimate the resonance-overlap threshold for loss of invariant-curve
+  confinement in the standard map.
 - estimate ejection probabilities and explain uncertainty.
 - derive Kelvin circulation theorem.
 - derive Navier-Stokes from mass balance, Cauchy momentum balance, and
@@ -389,7 +545,8 @@ Project themes:
 
 - compare integrators for the asteroid-belt model.
 - build a rigid-body attitude visualization.
-- study resonance overlap in the standard map.
+- study resonance overlap, cantori, and finite-time transport in the standard
+  map.
 - convert the Physics 151 Henon-Heiles, double-pendulum, and standard-map
   Mathematica demos into reproducible Python demos.
 - simulate vortex dynamics.
@@ -398,7 +555,7 @@ Project themes:
 
 ## 12. Implementation Milestones
 
-### Milestone 1: Working Skeleton
+### Milestone 1: Working Skeleton — complete
 
 - Repo initialized.
 - Planning document written.
@@ -407,34 +564,43 @@ Project themes:
 - Mathematica scripts added.
 - Smoke tests pass.
 
-### Milestone 2: First Teaching Unit
+### Milestone 2: Core Notes And Laboratories — complete draft
 
-- Complete polished rigid-body chapter.
-- Add problem set and solutions.
-- Add rendered figures from rigid-body demo.
-- Add Mathematica notebook export.
+- Lagrangian, Hamiltonian, rigid-body, integrability, perturbation, three-body,
+  fluid, elastic-body, and deforming-body chapters are integrated in one PDF.
+- Core Python demos and Wolfram Language counterparts are present.
+- Smoke tests cover the main computational contracts.
+- Remaining work: add problem sets with selected solutions and commit rendered
+  lecture figures from the demos.
 
-### Milestone 3: Celestial Mechanics Unit
+### Milestone 3: Celestial Mechanics Unit — teaching version complete
 
-- Improve restricted three-body model.
-- Add resonance diagnostics.
-- Add Poincare section tooling.
-- Add ejection-probability notebook.
-- Add discussion of numerical reliability.
+- CR3BP rotating-frame geometry, zero-velocity curves, Jacobi diagnostics, and
+  asteroid-belt ejection statistics are included.
+- Numerical caveats are documented, including the non-symplectic nature of the
+  classroom RK4 CR3BP integrator.
+- Remaining work: add resonance-angle diagnostics, finite-time Lyapunov or
+  MEGNO indicators, and a notebook-style ejection-probability workflow.
 
-### Milestone 4: Continua And Gauge Unit
+### Milestone 4: Continua And Gauge Unit — teaching version complete
 
-- Expand notes on deformation maps and compatibility.
-- Add Cosserat rod simulation in 2D and 3D.
-- Add dislocation/disclination examples.
-- Connect fluid relabeling symmetry to gauge language.
+- Navier-Stokes, exact laminar and unsteady solutions, stability discussions,
+  finite elasticity, linear elasticity, classical bars/shafts/beams, Cosserat
+  rods, and Shapere-Wilczek-style deforming-body gauge kinematics are present.
+- Python and Wolfram Language demos cover Navier-Stokes solutions, linear
+  elasticity, and deforming-body holonomy.
+- Remaining work: extend the Cosserat rod and deforming-body demos to richer
+  3D shape loops, and deepen the bridge between fluid relabeling symmetry and
+  gauge language.
 
-### Milestone 5: Publication Layer
+### Milestone 5: Publication Layer — next release work
 
-- Render notes to PDF.
+- Tag a `v0.2.0` release after the current working tree is committed, so the
+  151-page PDF, demos, tests, and planning documents are referenced by a stable
+  snapshot.
 - Convert selected demos to notebooks.
+- Add generated figures and an instructor guide.
 - Add a course website with Quarto or another static generator.
-- Add generated figures and instructor guide.
 
 ## 13. Style Guide
 
@@ -447,10 +613,12 @@ Project themes:
 
 ## 14. Immediate Next Work
 
-After this first implementation, the most valuable next steps are:
+The most valuable next steps are now:
 
-1. Add problem sets for the first four TeX chapters.
-2. Render the first set of figures from the Python demos.
-3. Upgrade the asteroid simulation with resonance labels.
-4. Add a polished lecture on symplectic maps using the standard map.
-5. Add a compact bibliography with reading paths.
+1. Commit the current closure round, then tag `v0.2.0`.
+2. Add problem sets and selected solutions for the core route.
+3. Commit rendered figures from the Python and Mathematica demos.
+4. Add an instructor guide with pacing, lecture goals, and recommended labs.
+5. Upgrade the asteroid simulation with resonance-angle diagnostics and
+   finite-time Lyapunov indicators.
+6. Add a compact bibliography with reading paths.

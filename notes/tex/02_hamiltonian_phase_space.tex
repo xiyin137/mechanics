@@ -1,0 +1,602 @@
+\chapter{Hamiltonian Mechanics And Phase Space}
+\label{chap:hamiltonian-phase-space}
+
+The Lagrangian chapter described motion as stationary paths in configuration
+space. Hamiltonian mechanics reorganizes the same dynamics on phase space, the
+space whose points specify both position and momentum. This reorganization is
+not merely a change of variables. It makes the symplectic form, Poisson
+brackets, canonical transformations, and phase-space volume available as
+structural tools. These tools are the language in which integrability,
+action-angle variables, perturbation theory, and KAM theory are most naturally
+stated.
+
+Throughout this chapter \(Q\) is a smooth configuration manifold of dimension
+\(n\), with local coordinates \(q^i\). The cotangent bundle \(T^*Q\) has
+induced coordinates \((q^i,p_i)\). When a Lagrangian is regular, the Legendre
+map carries \((q,\dot q)\) to \((q,p)\), and the Hamiltonian \(H\) is the
+corresponding energy function written in these phase-space coordinates. The
+assumptions behind this passage are stated explicitly below, because singular
+Lagrangians and gauge constraints require extra reduction machinery that
+belongs to more advanced treatments.
+
+\paragraph{Roadmap.}
+The chapter has four layers. First, the Legendre transform explains when
+velocity data on \(TQ\) can be replaced by momentum data on \(T^*Q\). Second,
+the canonical one-form and symplectic form show why Hamilton's equations are
+geometric rather than a mnemonic for signs. Third, Poisson brackets, the
+phase-space action, and canonical transformations identify the maps that
+preserve Hamiltonian structure. Fourth, the numerical lesson explains why a
+simulation should preserve geometry as well as approximate trajectories.
+
+Keep one distinction in view throughout the chapter. A point of phase space is
+instantaneous data, while a Hamiltonian flow is the rule that moves that data.
+The symplectic form is not another force law; it is the structure that turns
+the differential of \(H\) into a vector field and decides which coordinate
+changes are canonical.
+
+\section{Legendre Transform And Hamiltonian}
+\label{sec:legendre-hamiltonian}
+
+The Legendre transform sends \((q,\dot q)\in TQ\) to \((q,p)\in T^*Q\) by
+\[
+  p_i=\frac{\partial L}{\partial \dot q^i}.
+\]
+For a regular Lagrangian this can be inverted to express \(\dot q^i\) as a
+function of \((q,p,t)\). Concretely, regularity means that the velocity Hessian
+\[
+  W_{ij}(q,\dot q,t)=
+  \frac{\partial^2L}{\partial\dot q^i\partial\dot q^j}
+\]
+is nonsingular. The inverse function theorem then says that, locally in phase
+space, the equations \(p_i=\partial L/\partial\dot q^i\) can be solved for
+\(\dot q^i=\dot q^i(q,p,t)\).
+The Hamiltonian is
+\[
+  H(q,p,t)=p_i\dot q^i(q,p,t)-L(q,\dot q(q,p,t),t).
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \node[draw, rounded corners=2pt, minimum width=2.9cm, minimum height=0.9cm,
+    fill=blue!5] (tq) at (0,0) {\(TQ:\ (q,\dot q)\)};
+  \node[draw, rounded corners=2pt, minimum width=2.9cm, minimum height=0.9cm,
+    fill=red!5] (tsq) at (6.2,0) {\(T^*Q:\ (q,p)\)};
+  \draw[->, thick] (tq.east) -- node[below=5pt, fill=white, inner sep=2pt]
+    {\(\mathbb F L:\ p_i=\partial L/\partial\dot q^i\)} (tsq.west);
+  \draw[->, thick]
+    ([yshift=5pt]tsq.west) to[out=150,in=30]
+    node[above=5pt, fill=white, inner sep=2pt] {regular inverse}
+    ([yshift=5pt]tq.east);
+  \node[draw, rounded corners=2pt, fill=gray!6, align=center,
+    text width=0.46\textwidth, inner sep=4pt] at (3.1,-1.40)
+    {regular iff \(\det W\ne 0\)};
+\end{tikzpicture}
+\caption{The Legendre transform from tangent-bundle data to cotangent-bundle
+data. Singular Lagrangians require constraints; the Hamiltonian construction in
+this chapter assumes the regular case.}
+\label{fig:legendre-transform}
+\end{figure}
+
+\begin{derivation}[Hamilton's equations from the Legendre transform]
+In this calculation \(H\) is regarded as a function of \((q,p,t)\). The
+velocity \(\dot q=\dot q(q,p,t)\) is the inverse image of \((q,p)\) under the
+Legendre map, so its differential appears temporarily and then cancels. This is
+exactly where regularity is used.
+Differentiate \(H\):
+\[
+\begin{aligned}
+  \dd H
+  &=
+  \dot q^i\,\dd p_i
+  +
+  p_i\,\dd \dot q^i
+  -
+  \frac{\partial L}{\partial q^i}\dd q^i
+  -
+  \frac{\partial L}{\partial \dot q^i}\dd \dot q^i
+  -
+  \frac{\partial L}{\partial t}\dd t\\
+  &=
+  \dot q^i\,\dd p_i
+  -
+  \frac{\partial L}{\partial q^i}\dd q^i
+  -
+  \frac{\partial L}{\partial t}\dd t,
+\end{aligned}
+\]
+because \(p_i=\partial L/\partial \dot q^i\). Thus
+\[
+  \frac{\partial H}{\partial p_i}=\dot q^i,
+  \qquad
+  \frac{\partial H}{\partial q^i}=-\frac{\partial L}{\partial q^i}.
+\]
+Using the Euler-Lagrange equation \(\dot p_i=\partial L/\partial q^i\), we get
+\[
+  \boxed{
+    \dot q^i=\frac{\partial H}{\partial p_i},
+    \qquad
+    \dot p_i=-\frac{\partial H}{\partial q^i}
+  }.
+\]
+\end{derivation}
+
+The cancellation of the \(\dd\dot q\) terms is the algebraic heart of the
+Legendre transform. It says that once momentum has been defined by
+\(p_i=\partial L/\partial\dot q^i\), the Hamiltonian differential contains
+only \(\dd q,\dd p,\dd t\). Hamilton's equations are therefore a first-order
+system on \(T^*Q\), rather than a second-order system on \(Q\).
+
+The Legendre transform changes the bookkeeping of initial data. A Lagrangian
+state \((q,\dot q)\) records a position and a velocity; a Hamiltonian state
+\((q,p)\) records a position and the covector that measures how the action
+changes under endpoint displacement. The symplectic form below is built from
+that endpoint one-form, so Hamiltonian mechanics remembers the variational
+origin of the momentum rather than merely renaming velocity.
+
+This is also the point where singular systems leave the main road. If the
+velocity Hessian has null directions, some velocities cannot be solved from
+the momenta and some momenta become constraints. Electromagnetic gauge theory,
+relativistic reparametrization-invariant particles, and ideal incompressible
+fluids all have versions of this phenomenon. The present chapter stays in the
+regular case so that the geometry of \(T^*Q\) can be learned without the extra
+Dirac-constraint machinery.
+
+\section{Phase Space As The Space Of Solutions}
+\label{sec:phase-space-solutions}
+
+A useful slogan is that, for a deterministic Hamiltonian system, phase space is
+the same thing as the space of solutions.
+More precisely, if \(H\) is smooth and the Hamiltonian vector field is complete
+on the time interval under study, then every point
+\[
+  z_0=(q_0,p_0)\in T^*Q
+\]
+determines a unique trajectory \(z(t)=\Phi^t_H(z_0)\), and every trajectory is
+obtained this way from its value at any one time. Thus phase space is the set
+of all possible instantaneous states, but it is also a coordinate system on the
+family of all classical histories. The caveat is that this identification uses
+existence and uniqueness of the equations of motion; singular potentials,
+collisions, constraints, or finite-time blowup can invalidate the global
+statement even when the local Hamiltonian equations make sense.
+
+\section{The Symplectic Form}
+\label{sec:symplectic-form}
+
+The cotangent bundle \(T^*Q\) carries a canonical one-form
+\[
+  \Theta=p_i\,\dd q^i.
+\]
+The canonical symplectic form is
+\[
+  \omega=-\dd\Theta=\dd q^i\wedge\dd p_i.
+\]
+In arbitrary local phase-space coordinates
+\[
+  x^m,\qquad m=1,\ldots,2n,
+\]
+one can write
+\[
+  \omega=\frac12\omega_{mn}(x)\,\dd x^m\wedge\dd x^n,
+\]
+where \(\omega_{mn}=-\omega_{nm}\), \(\det(\omega_{mn})\neq0\), and
+\[
+  \dd\omega=0.
+\]
+The closedness condition is what makes \(\omega\) locally equivalent to the
+canonical form, while nondegeneracy is what lets the Hamiltonian determine a
+unique vector field. In canonical coordinates \(x=(q,p)\),
+\[
+  (\omega_{mn})=
+  \begin{pmatrix}
+  0 & I_n\\
+  -I_n & 0
+  \end{pmatrix}.
+\]
+The Poisson bracket can be expressed intrinsically by the bivector inverse to
+the symplectic form, with the sign convention fixed by Hamilton's equations
+below. The point is that the bracket is not extra structure once \(\omega\) is
+given.
+
+The two defining properties of \(\omega\) have different jobs. Nondegeneracy
+lets one solve \(\iota_{X_H}\omega=\dd H\) for a unique vector field, just as a
+mass matrix lets one solve force equals mass times acceleration. Closedness is
+the integrability condition behind canonical coordinates, Stokes-type
+arguments, and the preservation of symplectic area. Hamiltonian mechanics needs
+both.
+
+The Hamiltonian vector field \(X_H\) is defined by
+\[
+  \iota_{X_H}\omega=\dd H.
+\]
+Here \(\iota_X\) denotes interior contraction: if \(\omega\) is a two-form, then
+\((\iota_X\omega)(Y)=\omega(X,Y)\) for every vector field \(Y\).
+If
+\[
+  X_H=A^i\frac{\partial}{\partial q^i}
+  +
+  B_i\frac{\partial}{\partial p_i},
+\]
+then
+\[
+  \iota_{X_H}\omega=A^i\,\dd p_i-B_i\,\dd q^i.
+\]
+Equating this with
+\[
+  \dd H=\frac{\partial H}{\partial q^i}\dd q^i
+  +
+  \frac{\partial H}{\partial p_i}\dd p_i
+\]
+gives
+\[
+  A^i=\frac{\partial H}{\partial p_i},
+  \qquad
+  B_i=-\frac{\partial H}{\partial q^i}.
+\]
+Thus \(X_H\) is Hamilton's equation written geometrically.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[->] (-0.25,0) -- (6.9,0) node[right] {\(q\)};
+  \draw[->] (3.35,-2.85) -- (3.35,2.85) node[above] {\(p\)};
+  \node[below] at (0.25,0) {\(-\pi\)};
+  \node[below] at (3.35,0) {\(0\)};
+  \node[below] at (6.45,0) {\(\pi\)};
+  \foreach \E/\qmax in {0.35/0.86,0.90/1.47,1.50/2.09}
+  {
+    \draw[blue!70!black, thick, domain=-\qmax:\qmax, samples=120]
+      plot ({\x+3.35},{sqrt(2*(\E-1+cos(\x r)))});
+    \draw[blue!70!black, thick, domain=-\qmax:\qmax, samples=120]
+      plot ({\x+3.35},{-sqrt(2*(\E-1+cos(\x r)))});
+  }
+  \draw[red!70!black, thick, domain=-3.12:3.12, samples=180]
+    plot ({\x+3.35},{2.0*cos(0.5*\x r)});
+  \draw[red!70!black, thick, domain=-3.12:3.12, samples=180]
+    plot ({\x+3.35},{-2.0*cos(0.5*\x r)});
+  \draw[gray!65, thick, domain=-3.12:3.12, samples=180]
+    plot ({\x+3.35},{sqrt(2*(2.35-1+cos(\x r)))});
+  \draw[gray!65, thick, domain=-3.12:3.12, samples=180]
+    plot ({\x+3.35},{-sqrt(2*(2.35-1+cos(\x r)))});
+  \draw[->, thick] (4.15,0.78) -- (4.45,0.62) node[right] {\(X_H\)};
+  \node[blue!70!black, fill=white, inner sep=1pt] at (1.30,1.95)
+    {libration levels};
+  \node[red!70!black, fill=white, inner sep=1pt] at (5.25,-2.10)
+    {separatrix};
+  \node[gray!65!black, fill=white, inner sep=1pt] at (1.25,-2.35)
+    {rotation levels};
+  \node at (3.35,-3.18) {Exact level sets of \(H(q,p)=\frac12p^2+1-\cos q\).};
+\end{tikzpicture}
+\caption{The pendulum phase plane. Libration curves have
+\(0<E<2\), the separatrix has \(E=2\), and rotation curves have \(E>2\).
+The Hamiltonian vector field is tangent to energy level sets because
+\(\dot H=\{H,H\}=0\).}
+\label{fig:pendulum-phase-plane}
+\end{figure}
+
+\section{Poisson Brackets And Time Evolution}
+\label{sec:poisson-time-evolution}
+
+For \(f,g\in C^\infty(T^*Q)\), define
+\[
+  \Poisson{f}{g}
+  =
+  \frac{\partial f}{\partial q^i}
+  \frac{\partial g}{\partial p_i}
+  -
+  \frac{\partial f}{\partial p_i}
+  \frac{\partial g}{\partial q^i}.
+\]
+If \(z(t)=(q(t),p(t))\) follows Hamilton's equation, then
+\[
+  \frac{\dd}{\dd t}f(q(t),p(t),t)
+  =
+  \frac{\partial f}{\partial t}+\Poisson{f}{H}.
+\]
+A time-independent observable \(f\) is conserved exactly when
+\[
+  \Poisson{f}{H}=0.
+\]
+
+\begin{proposition}[Liouville volume preservation]
+Hamiltonian flow preserves the phase-space volume form
+\[
+  \Omega=\frac{1}{n!}\omega^n.
+\]
+\end{proposition}
+
+\begin{proof}
+Cartan's formula gives
+\[
+  \Lie_{X_H}\omega=\dd(\iota_{X_H}\omega)+\iota_{X_H}\dd\omega.
+\]
+Since \(\iota_{X_H}\omega=\dd H\) and \(\dd\omega=0\),
+\[
+  \Lie_{X_H}\omega=\dd\dd H=0.
+\]
+Therefore \(\Lie_{X_H}\omega^n=0\), so the associated volume form is preserved.
+\end{proof}
+
+\section{Phase-Space Action}
+\label{sec:phase-space-action}
+
+Hamilton's equations can also be derived from the phase-space action
+\[
+  S_H[q,p]=\int_{t_0}^{t_1}\left(p_i\dot q^i-H(q,p,t)\right)\dd t.
+\]
+Varying \(q\) and \(p\) independently, with \(\delta q(t_0)=\delta q(t_1)=0\),
+gives
+\[
+  \delta S_H
+  =
+  \int_{t_0}^{t_1}
+  \left[
+    \left(\dot q^i-\frac{\partial H}{\partial p_i}\right)\delta p_i
+    -
+    \left(\dot p_i+\frac{\partial H}{\partial q^i}\right)\delta q^i
+  \right]\dd t.
+\]
+Since \(\delta q\) and \(\delta p\) are arbitrary in the interior, the
+stationary curves are exactly Hamiltonian trajectories.
+
+\section{Canonical Transformations}
+\label{sec:canonical-transformations}
+
+A diffeomorphism \(\Phi:T^*Q\to T^*Q\) is canonical, or symplectic, if
+\[
+  \Phi^*\omega=\omega.
+\]
+Canonical transformations preserve Poisson brackets:
+\[
+  \Poisson{f\circ\Phi}{g\circ\Phi}
+  =
+  \Poisson{f}{g}\circ\Phi.
+\]
+This is why canonical coordinates may change but Hamiltonian mechanics keeps
+the same form. Later, action-angle variables will be canonical coordinates
+adapted to integrable motion.
+
+\begin{derivation}[Generating function for a canonical transformation]
+Let \((q,p)\) be old canonical coordinates and \((Q,P)\) new ones. A convenient
+type of generating function depends on the new momenta and old positions:
+\[
+  F=F(P,q).
+\]
+Impose
+\[
+  Q^i=\frac{\partial F}{\partial P_i}\bigg|_q,
+  \qquad
+  p_i=\frac{\partial F}{\partial q^i}\bigg|_P.
+\]
+Then
+\[
+  \dd F=Q^i\,\dd P_i+p_i\,\dd q^i.
+\]
+Taking another exterior derivative gives
+\[
+  0=\dd Q^i\wedge\dd P_i+\dd p_i\wedge\dd q^i.
+\]
+Therefore
+\[
+  \dd Q^i\wedge\dd P_i
+  =
+  \dd q^i\wedge\dd p_i.
+\]
+The canonical symplectic form is preserved, so the transformation is canonical.
+In coordinates this is the same cancellation one sees by expanding
+\[
+  \dd Q^i\wedge\dd P_i
+  =
+  \left(
+    \frac{\partial^2F}{\partial P_i\partial q^j}\dd q^j
+    +
+    \frac{\partial^2F}{\partial P_i\partial P_j}\dd P_j
+  \right)
+  \wedge \dd P_i,
+\]
+where the pure \(\dd P_i\wedge\dd P_j\) term vanishes because second
+derivatives are symmetric while the wedge product is antisymmetric.
+\end{derivation}
+
+The generating function is useful because it replaces the condition
+\(\Phi^*\omega=\omega\), which is a two-form equation, by the exactness of a
+one-form. Locally, a canonical transformation is often found by guessing the
+right exact differential. Globally, the same calculation must be patched across
+coordinate charts, which is why action-angle generating functions can be
+multivalued even when the symplectic form is perfectly well defined.
+
+\section{Numerical Lesson}
+\label{sec:numerical-lesson}
+
+The equations in this chapter are exact statements about smooth systems. A
+numerical integrator creates a discrete map
+\[
+  z_{n+1}=\Psi_{\Delta t}(z_n).
+\]
+For long-time Hamiltonian problems, whether \(\Psi_{\Delta t}\) preserves a
+symplectic form or a modified Hamiltonian can matter more than the local order
+of the method. This is why the pendulum, standard map, and asteroid demos are
+not merely programming exercises; they are experiments in preserving structure.
+
+The practical lesson is diagnostic. A good mechanics simulation reports not
+only a trajectory but also the quantities that the continuous problem says
+should be preserved or nearly preserved. Energy drift, angular-momentum drift,
+phase-space area, and event criteria are part of the model audit trail. Without
+them, a numerical plot can look convincing while solving the wrong mechanical
+problem.
+
+\section{What To Take Forward}
+\label{sec:hamiltonian-take-forward}
+
+The rest of the notes repeatedly reuse four lessons from this chapter.
+\begin{itemize}
+\item The configuration space \(Q\) is part of the model. Choosing bad
+coordinates can obscure a simple system, but it cannot change the system.
+\item Boundary terms are information, not clutter. They identify canonical
+momenta, forces, and conserved quantities.
+\item Symmetry produces conserved quantities through Noether's theorem, and
+those quantities are often the coordinates of a reduced problem.
+\item Hamiltonian mechanics is geometry on \(T^*Q\): the symplectic form
+determines Hamilton's equations, volume preservation, Poisson brackets, and the
+meaning of a canonical numerical method.
+\end{itemize}
+
+\section{Chapter-End Laboratories And Exercises}
+\label{sec:hamiltonian-chapter-end-labs}
+
+The laboratories below test when a Lagrangian can be converted into a
+Hamiltonian system and how the resulting phase portrait organizes motion.
+
+\subsection{A Nonstandard Lagrangian And Regularity}
+\label{sec:lab-nonstandard-lagrangian}
+
+This laboratory separates two ideas that are often conflated. A Lagrangian may
+produce a familiar-looking equation of motion and still fail to be globally
+regular. Regularity is a statement about whether velocities can be solved from
+momenta. Without it, the Legendre transform can fold phase space and the
+Hamiltonian description must be handled with care.
+
+Consider the one-dimensional Lagrangian
+\[
+  L(x,\dot x)
+  =
+  \frac{m^2\dot x^4}{12}
+  +
+  m\dot x^2V(x)
+  -
+  V(x)^2.
+\]
+The momentum is
+\[
+  p=\frac{\partial L}{\partial\dot x}
+  =
+  \frac{m^2}{3}\dot x^3+2mV\dot x.
+\]
+The Euler-Lagrange equation gives
+\[
+\begin{aligned}
+  0
+  &=
+  \frac{\dd}{\dd t}
+  \left(
+    \frac{m^2}{3}\dot x^3+2mV\dot x
+  \right)
+  -
+  \left(
+    m\dot x^2V'-2VV'
+  \right)\\
+  &=
+  (m\dot x^2+2V)(m\ddot x+V').
+\end{aligned}
+\]
+There are two branches. The Newtonian branch is
+\[
+  m\ddot x=-V'(x).
+\]
+The second branch,
+\[
+  m\dot x^2+2V(x)=0,
+\]
+is a singular energy-surface condition. The velocity Hessian
+\[
+  \frac{\partial^2L}{\partial\dot x^2}
+  =
+  m(m\dot x^2+2V)
+\]
+vanishes on this second branch. This example is a useful warning: a Lagrangian
+can produce familiar equations on a regular branch while being singular on
+another branch. Regularity is not decorative; it is what lets the Legendre
+transform define a Hamiltonian system.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \draw[->] (-3.0,0) -- (3.15,0) node[right] {\(\dot x\)};
+  \draw[->] (0,-2.2) -- (0,2.25) node[above] {\(p\)};
+  \draw[blue!70!black, thick, domain=-2.55:2.55, samples=180]
+    plot (\x,{0.33*\x*\x*\x-0.9*\x});
+  \draw[dashed, red!75!black] (-0.95,-1.9) -- (-0.95,1.9);
+  \draw[dashed, red!75!black] (0.95,-1.9) -- (0.95,1.9);
+  \fill[red!75!black] (-0.95,0.57) circle (1.3pt)
+    node[above left] {\(W=0\)};
+  \fill[red!75!black] (0.95,-0.57) circle (1.3pt)
+    node[below right] {\(W=0\)};
+  \draw[decorate, decoration={brace, amplitude=5pt}]
+    (-0.95,-1.15) -- (0.95,-1.15)
+    node[midway, below=9pt, fill=white, inner sep=1.5pt]
+    {multi-valued velocity branch};
+  \node[blue!70!black, align=center, fill=white, inner sep=2pt] at (2.05,1.45)
+    {folded\\Legendre map};
+\end{tikzpicture}
+\caption{Nonstandard Lagrangian laboratory. For a representative region with
+\(V<0\), the momentum-velocity map can fold where the velocity Hessian
+\(W=\partial^2L/\partial\dot x^2\) vanishes. At such points the Legendre
+transform is not locally invertible, even though the Euler-Lagrange equation has
+a familiar Newtonian branch.}
+\label{fig:lab-nonstandard-legendre-fold}
+\end{figure}
+\FloatBarrier
+
+\subsection{Pendulum Phase Space And The Separatrix}
+\label{sec:detailed-pendulum}
+
+The simple pendulum is the canonical one-degree-of-freedom Hamiltonian example.
+Let \(\theta\) be the angle from the downward vertical. The Lagrangian is
+\[
+  L=\frac12m\ell^2\dot\theta^2+mg\ell\cos\theta.
+\]
+The momentum and Hamiltonian are
+\[
+  p_\theta=m\ell^2\dot\theta,
+  \qquad
+  H(\theta,p_\theta)
+  =
+  \frac{p_\theta^2}{2m\ell^2}-mg\ell\cos\theta.
+\]
+Hamilton's equations are
+\[
+  \dot\theta=\frac{p_\theta}{m\ell^2},
+  \qquad
+  \dot p_\theta=-mg\ell\sin\theta.
+\]
+The equilibria are
+\[
+  (\theta,p_\theta)=(0,0)
+  \quad\text{and}\quad
+  (\pi,0)
+\]
+modulo \(2\pi\). The downward equilibrium is elliptic; the upward equilibrium
+is hyperbolic.
+
+The separatrix is the energy level through the hyperbolic point:
+\[
+  H=mg\ell.
+\]
+On this level,
+\[
+  \frac{p_\theta^2}{2m\ell^2}
+  =
+  mg\ell(1+\cos\theta)
+  =
+  2mg\ell\cos^2\frac{\theta}{2}.
+\]
+Therefore
+\[
+  p_\theta
+  =
+  \pm2m\ell\sqrt{g\ell}\cos\frac{\theta}{2}
+\]
+for \(-\pi\leq\theta\leq\pi\). The separatrix divides libration orbits, which
+oscillate around \(\theta=0\), from rotation orbits, which wind around the
+circle. This picture is the one-degree-of-freedom ancestor of separatrix
+splitting in perturbed Hamiltonian systems.
+
+\section{Associated Demos}
+\label{sec:hamiltonian-associated-demos}
+
+The associated phase-space demo is
+\path{demos/python/hamiltonian_pendulum.py}.
+It plots pendulum trajectories and the separatrix in \((\theta,p_\theta)\).
+Read it as a check on this chapter's central claim: phase portraits are not
+decorative plots of a solution after the fact, but pictures of Hamiltonian
+level sets and the symplectic flow on phase space.

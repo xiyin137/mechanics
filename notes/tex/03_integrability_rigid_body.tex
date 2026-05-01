@@ -10,6 +10,14 @@ description on angular momentum space, and it is completely integrable. At the
 same time, small modifications such as gravity acting on a heavy top lead toward
 nonintegrability and chaos.
 
+The most vivid symptom is the intermediate-axis flip. Spin a book about its
+longest or shortest principal axis and the rotation is stable; spin it about
+the middle axis and the book turns over. This is not a numerical accident. It
+is the geometry of two conserved quantities, energy and angular momentum,
+intersecting on the angular-momentum sphere. The rigid body is the first place
+where the pictures in these notes stop being optional: reduction, stability,
+Poinsot rolling, and invariant tori are all different views of the same motion.
+
 \begin{assumption}[Rigid body model]
 A rigid body is an ideal continuum whose internal distances do not change. A
 material point is labelled by a body coordinate \(X\in B\subset\R^3\). Its
@@ -21,40 +29,6 @@ where \(r(t)\in\R^3\) is the center-of-mass position and
 \(R(t)\in\SO(3)\) is the attitude matrix. The free rigid body chapter suppresses
 translation by working in the center-of-mass frame.
 \end{assumption}
-
-\begin{table}[htbp]
-\centering
-\caption{Rigid-body and integrability notation. Symbols that are overloaded in
-other chapters are cross-listed in Section~\ref{sec:overloaded-symbols}.}
-\label{tab:rigid-integrability-notation}
-\small
-\begin{tabular}{p{0.18\textwidth}p{0.48\textwidth}p{0.25\textwidth}}
-\toprule
-Symbol & Meaning & Space or units\\
-\midrule
-\(R\) & attitude matrix & \(\SO(3)\)\\
-\(\hat e_a\) & \(a\)-th body axis seen in space & unit vector in \(\R^3\)\\
-\(\omega_{\mathrm{space}}\) & spatial angular velocity & \(\R^3\), \(T^{-1}\)\\
-\(\Omega\) & body angular velocity & \(\R^3\), \(T^{-1}\)\\
-\(\widehat\Omega\) & skew matrix with \(\widehat\Omega v=\Omega\times v\) &
-\(\mathfrak{so}(3)\)\\
-\(I\) & inertia tensor in body frame & symmetric positive matrix\\
-\(I_1,I_2,I_3\) & principal moments of inertia & positive scalars\\
-\(M\) & body angular momentum & \(I\Omega\)\\
-\(J\) & spatial angular momentum & \(J=RM\)\\
-\(H\) & kinetic energy Hamiltonian & scalar energy\\
-\(C\) & squared angular momentum & Casimir on \(\mathfrak{so}(3)^*\)\\
-\(\ell(\Omega)\) & reduced Lagrangian & function on \(\mathfrak{so}(3)\)\\
-\(F_i\) & commuting first integrals & Liouville theorem\\
-\(M_f\) & common regular level set \(F_i=f_i\) & invariant manifold\\
-\(\Lambda\) & period lattice of commuting flows & subgroup of \(\R^n\)\\
-\(\gamma_j\) & one-cycle on an invariant torus & element of \(H_1(\mathbb T^n)\)\\
-\(I_j\) & action variable & \((2\pi)^{-1}\oint_{\gamma_j}p_i\dd q^i\)\\
-\(\theta^j\) & angle variable conjugate to \(I_j\) & \(2\pi\)-periodic coordinate\\
-\(S(I,q)\) & generating function for angles & locally multivalued\\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \paragraph{Roadmap.}
 The chapter moves from a concrete body to the general geometry of integrable
@@ -133,6 +107,39 @@ space axes, while \(\Omega\) is expressed in the moving body axes. They describe
 the same instantaneous rotation, but derivatives of body components must also
 differentiate the moving frame. Euler's equation is exactly where this
 bookkeeping becomes dynamical.
+
+\paragraph{Derivative rules for moving frames.}
+If \(A(t)\) is a vector written in body components, then its spatial vector is
+\(a(t)=R(t)A(t)\). Differentiating gives
+\[
+  \dot a
+  =
+  \dot R A+R\dot A
+  =
+  R(\widehat\Omega A+\dot A)
+  =
+  R(\dot A+\Omega\times A).
+\]
+Thus
+\[
+  \boxed{
+  \dot a_{\mathrm{space}}
+  =
+  R\left(\dot A_{\mathrm{body}}+\Omega\times A_{\mathrm{body}}\right).
+  }
+\]
+Conversely, if \(a\) is fixed in space and \(A=R^Ta\) are its body components,
+then
+\[
+  \dot A
+  =
+  -\widehat\Omega A
+  =
+  -\Omega\times A.
+\]
+This rule explains the form of Euler's equation before any variational
+calculation is done: a vector can be conserved in space while its body
+components precess because the axes themselves are moving.
 
 \section{\texorpdfstring{Euler Angles, Metric, And The Topology Of \(\SO(3)\)}{Euler Angles, Metric, And The Topology Of SO(3)}}
 \label{sec:euler-angles-so3}
@@ -343,6 +350,12 @@ Under the hat isomorphism this becomes
 \]
 
 \begin{derivation}[Euler-Poincare equation for the free rigid body]
+This derivation differs from the ordinary Euler-Lagrange calculation because
+\(\Omega\) is not an independent velocity coordinate. It is the body-frame
+velocity \(R^{-1}\dot R\), so its allowed variation must come from an allowed
+variation of \(R\in\SO(3)\). The formula
+\(\delta\Omega=\dot\Sigma+\Omega\times\Sigma\) is the constraint that keeps the
+variation on the rotation group.
 The reduced action is
 \[
   S[R]=\int_{t_0}^{t_1}\ell(\Omega)\,\dd t,
@@ -387,6 +400,11 @@ these notes. In components this is
 and cyclic permutations.
 \end{derivation}
 
+The term \(\Omega\times M\) is not an external torque. It is the correction
+that appears because \(M\) is expressed in the rotating body frame. In the
+space frame the angular momentum \(J=RM\) is constant; in the body frame the
+components of the same vector change because the axes themselves rotate.
+
 \section{Euler Equations In Principal Axes}
 \label{sec:euler-equations-principal}
 
@@ -424,6 +442,93 @@ Similarly,
 \]
 \end{proof}
 
+\section{Reconstruction Of The Attitude}
+\label{sec:rigid-attitude-reconstruction}
+
+Euler's equations are the reduced equations: they determine the body angular
+momentum \(M(t)\) or body angular velocity \(\Omega(t)=I^{-1}M(t)\), but they
+do not by themselves tell us the attitude \(R(t)\). Once the reduced solution
+is known, the attitude is recovered from the reconstruction equation
+\[
+  \boxed{
+  \dot R=R\widehat\Omega,\qquad R(0)=R_0.
+  }
+\]
+This is a linear equation on the group along the already-computed reduced
+motion. In general its solution is a path-ordered exponential,
+\[
+  R(t)=R_0\,\mathcal P
+  \exp\left(\int_0^t\widehat\Omega(s)\,\dd s\right),
+\]
+where \(\mathcal P\) denotes path ordering, because
+\(\widehat\Omega(t_1)\) and \(\widehat\Omega(t_2)\) need not commute.
+
+The same equation explains why spatial angular momentum is conserved. Define
+\[
+  J(t)=R(t)M(t).
+\]
+Then
+\[
+\begin{aligned}
+  \dot J
+  &=
+  \dot R M+R\dot M\\
+  &=
+  R(\Omega\times M+\dot M)\\
+  &=
+  0
+\end{aligned}
+\]
+by Euler's equation. Thus the reduced equation \(\dot M+\Omega\times M=0\) is
+equivalent to the statement that the physical angular momentum vector \(J\) is
+fixed in space.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \draw[->] (-0.2,0) -- (3.25,0) node[right] {\(M_1\)};
+  \draw[->] (0,-0.25) -- (0,3.25) node[above] {\(M_2\)};
+  \draw[blue!70!black, thick]
+    (1.35,1.55) ellipse (1.20 and 0.58);
+  \node[blue!70!black, align=center, fill=white, inner sep=2pt] at (1.35,2.55)
+    {Euler flow\\on reduced curve};
+  \foreach \x/\y in {0.55/1.55,1.35/2.13,2.15/1.55}
+  {
+    \fill[blue!70!black] (\x,\y) circle (1.1pt);
+    \draw[red!75!black] (\x,\y) circle (0.26);
+    \draw[red!75!black, ->] (\x,\y) -- ++(0.26,0.0);
+  }
+  \node[red!75!black, align=center, fill=white, inner sep=2pt] at (4.65,2.75)
+    {attitude fiber\\over a reduced state};
+  \draw[red!75!black, ->, thick] (2.55,1.75) -- (4.0,2.10);
+  \draw[red!75!black, ->, thick] (2.45,1.35) -- (4.0,1.05);
+  \begin{scope}[xshift=4.1cm]
+    \draw[thick] (0,0.65) rectangle (1.65,2.45);
+    \draw[->, purple!75!black, thick]
+      (0.18,0.92) .. controls (0.55,1.55) and (1.05,1.72) .. (1.42,2.25);
+    \node[purple!75!black, align=center, fill=white, inner sep=2pt] at (0.86,0.20)
+      {reconstruct \(R(t)\)\\from \(\dot R=R\widehat\Omega\)};
+  \end{scope}
+\end{tikzpicture}
+\caption{Reduction and reconstruction for the free rigid body. Euler's
+equations evolve the body angular momentum on a reduced curve. The attitude is
+then reconstructed by integrating \(\dot R=R\widehat\Omega\), with a circle of
+possible orientations over a typical reduced state.}
+\label{fig:rigid-reduction-reconstruction}
+\end{figure}
+
+For numerical work this distinction is important. Integrating \(M\) or
+\(\Omega\) checks the reduced invariants \(H\) and \(C=\norm M^2\). Integrating
+\(R\) checks the group constraint \(R^TR=I\), \(\det R=1\), and the conservation
+of \(J=RM\). The associated Python demo uses an exponential update
+\[
+  R_{n+1}
+  =
+  R_n\exp\left(\Delta t\,\widehat\Omega_{n+1/2}\right)
+\]
+for the reconstruction step, so the attitude stays on \(\SO(3)\) up to roundoff
+while the reduced integrator controls the evolution of \(\Omega\).
+
 \section{Geometry Of The Reduced Motion}
 \label{sec:rigid-reduced-geometry}
 
@@ -460,11 +565,11 @@ ellipsoid.
     plot ({0}, {2*cos(\t)}, {2*sin(\t)});
 
   \draw[blue!70!black, thick, domain=0:360, samples=140, variable=\t]
-    plot ({sqrt(847/340)*cos(\t)}, {sqrt(2541/507)*sin(\t)}, {0});
+    plot ({sqrt(5/2)*cos(\t)}, {sqrt(5)*sin(\t)}, {0});
   \draw[blue!70!black, thin, domain=0:360, samples=140, variable=\t]
-    plot ({sqrt(847/340)*cos(\t)}, {0}, {2.75*sin(\t)});
+    plot ({sqrt(5/2)*cos(\t)}, {0}, {sqrt(15/2)*sin(\t)});
   \draw[blue!70!black, thin, domain=0:360, samples=140, variable=\t]
-    plot ({0}, {sqrt(2541/507)*cos(\t)}, {2.75*sin(\t)});
+    plot ({0}, {sqrt(5)*cos(\t)}, {sqrt(15/2)*sin(\t)});
 
   \draw[purple!80!black, very thick, domain=0:360, samples=180, variable=\t]
     plot ({sqrt(1 + 0.75*sin(\t)*sin(\t))}, {1.732*cos(\t)}, {1.5*sin(\t)});
@@ -472,12 +577,13 @@ ellipsoid.
     plot ({-sqrt(1 + 0.75*sin(\t)*sin(\t))}, {1.732*cos(\t)}, {1.5*sin(\t)});
 
   \fill[purple!80!black] ({sqrt(1 + 0.75*0*0)}, {1.732}, {0}) circle (1.3pt);
-  \node[red!65!black, align=center] at (-2.2,-1.15,-0.65)
+  \node[red!65!black, align=center, fill=white, inner sep=2pt] at (-2.65,-1.25,-0.75)
     {angular momentum\\sphere \(C=\norm M^2\)};
-  \node[blue!70!black, align=center] at (1.95,1.55,2.95)
+  \node[blue!70!black, align=center, fill=white, inner sep=2pt] at (2.75,1.75,3.28)
     {energy ellipsoid\\\(2H=M^TI^{-1}M\)};
-  \node[purple!80!black] at (-0.55,-2.2,1.45)
+  \node[purple!80!black, fill=white, inner sep=2pt] at (3.45,-1.10)
     {intersection trajectories};
+  \draw[purple!80!black, ->] (2.80,-0.90) -- (1.05,0.25);
 \end{tikzpicture}
 \caption{Rigid-body reduction in angular-momentum space. Conservation of
 \(\norm M^2\) confines the motion to a sphere, conservation of \(H\) confines it
@@ -485,9 +591,91 @@ to an ellipsoid, and the reduced trajectory is their intersection. The solid
 and dashed purple curves are the two projected branches of the exact
 three-dimensional intersection for the sphere \(\norm M^2=4\) and the
 representative ellipsoid with semi-axes
-\(\sqrt{847/340},\sqrt{2541/507},11/4\).}
+\(\sqrt{5/2},\sqrt5,\sqrt{15/2}\).}
 \label{fig:rigid-body-reduced-geometry}
 \end{figure}
+
+\section{Poinsot Construction}
+\label{sec:poinsot-construction}
+
+The same invariants have a classical geometric interpretation in angular
+velocity space. Define the inertia ellipsoid
+\[
+  \mathcal E_H=\{\Omega:\Omega^TI\Omega=2H\}.
+\]
+At a point \(\Omega\) on this ellipsoid, the normal vector is proportional to
+\[
+  \nabla_\Omega(\Omega^TI\Omega)=2I\Omega=2M.
+\]
+In spatial coordinates the corresponding angular velocity is
+\[
+  \omega_{\mathrm{space}}=R\Omega,
+\]
+and the normal is the fixed spatial angular momentum
+\[
+  J=RM.
+\]
+Because
+\[
+  J\cdot\omega_{\mathrm{space}}
+  =
+  (RM)\cdot(R\Omega)
+  =
+  M\cdot\Omega
+  =
+  2H,
+\]
+the tip of \(\omega_{\mathrm{space}}\) lies in the fixed plane
+\[
+  \boxed{\Pi_J=\{\omega:J\cdot\omega=2H\}.}
+\]
+This plane is perpendicular to \(J\) and has distance \(2H/\norm J\) from the
+origin. It is tangent to the moving inertia ellipsoid at the instantaneous
+angular velocity. Thus the free rigid body can be pictured as the inertia
+ellipsoid rolling without slipping on the fixed invariable plane.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \begin{scope}[xshift=-0.4cm]
+    \draw[fill=blue!4, draw=blue!70!black, thick] (0,0) ellipse (1.65 and 0.85);
+    \draw[blue!70!black, dashed] (-1.65,0) arc (180:360:1.65 and 0.28);
+    \draw[blue!70!black] (1.65,0) arc (0:180:1.65 and 0.28);
+    \draw[purple!75!black, thick]
+      (-0.9,0.15) .. controls (-0.35,0.85) and (0.7,0.55) .. (1.05,-0.05);
+    \fill[purple!75!black] (0.18,0.55) circle (1.5pt)
+      node[above right] {\(\Omega\)};
+    \draw[->, red!75!black, thick] (0.18,0.55) -- (0.95,1.25)
+      node[right] {\(M=I\Omega\)};
+    \node[blue!70!black] at (0,-1.25) {inertia ellipsoid \(\mathcal E_H\)};
+    \node[purple!75!black] at (-1.25,0.95) {polhode};
+  \end{scope}
+  \begin{scope}[xshift=4.6cm, yshift=0.1cm]
+    \draw[fill=gray!12, draw=gray!75, thick]
+      (-1.7,-0.55) -- (1.8,-0.15) -- (1.2,0.95) -- (-2.1,0.55) -- cycle;
+    \draw[->, red!75!black, thick] (0,0.15) -- (0,2.0)
+      node[above] {fixed \(J\)};
+    \draw[purple!75!black, thick]
+      (-1.0,0.05) .. controls (-0.25,0.55) and (0.9,0.42) .. (1.25,0.18);
+    \fill[purple!75!black] (0.05,0.43) circle (1.5pt)
+      node[below right] {\(\omega_{\mathrm{space}}\)};
+    \node[gray!70!black] at (0,-0.95) {invariable plane \(\Pi_J\)};
+    \node[purple!75!black] at (1.35,0.75) {herpolhode};
+  \end{scope}
+\end{tikzpicture}
+\caption{Poinsot construction. In body angular-velocity space, the motion lies
+on the inertia ellipsoid and traces the polhode. In space, the tip of angular
+velocity lies in the fixed invariable plane perpendicular to the conserved
+spatial angular momentum \(J\); its trace is the herpolhode.}
+\label{fig:poinsot-construction}
+\end{figure}
+
+Poinsot's construction is not a separate solution method from the reduced
+equations. It is the same conservation of \(H\) and \(J\), viewed in angular
+velocity space rather than angular momentum space. Its value is conceptual: it
+makes clear why the reduced trajectory is a curve, why the invariable plane is
+fixed in space, and why body-frame quantities can move while the spatial
+angular momentum does not.
 
 \section{Stability Of Principal-Axis Rotations}
 \label{sec:principal-axis-stability}
@@ -541,6 +729,55 @@ The geometric reason is that the energy restricted to a fixed angular momentum
 sphere has extrema at the smallest and largest inertia axes but a saddle at the
 intermediate axis.
 
+\begin{derivation}[Energy-Casimir stability test]
+The same conclusion can be read without solving the linearized equations. Work
+on the angular-momentum sphere
+\[
+  C(M)=M_1^2+M_2^2+M_3^2=c^2.
+\]
+Near rotation about the first principal axis, write
+\[
+  M=(M_1,\eta_2,\eta_3),
+  \qquad
+  M_1=\sqrt{c^2-\eta_2^2-\eta_3^2}.
+\]
+Expanding the Hamiltonian to second order gives
+\[
+\begin{aligned}
+  H-H_0
+  &=
+  \frac12\left(\frac{1}{I_2}-\frac{1}{I_1}\right)\eta_2^2
+  +
+  \frac12\left(\frac{1}{I_3}-\frac{1}{I_1}\right)\eta_3^2
+  +
+  O(\eta^4).
+\end{aligned}
+\]
+If \(I_1<I_2<I_3\), both quadratic coefficients are negative. The first-axis
+rotation is therefore a strict local maximum of \(H\) on the sphere \(C=c^2\).
+The third-axis rotation is similarly a strict local minimum. Either extremum
+prevents nearby trajectories with the same \(C\) and nearly the same \(H\) from
+leaving a small neighborhood.
+
+For the intermediate axis,
+\[
+  M=(\eta_1,M_2,\eta_3),
+\]
+and
+\[
+  H-H_0
+  =
+  \frac12\left(\frac{1}{I_1}-\frac{1}{I_2}\right)\eta_1^2
+  +
+  \frac12\left(\frac{1}{I_3}-\frac{1}{I_2}\right)\eta_3^2
+  +
+  O(\eta^4).
+\]
+The two coefficients have opposite signs, so the point is a saddle of the
+energy restricted to the angular-momentum sphere. This is the energy-Casimir
+form of the intermediate-axis instability.
+\end{derivation}
+
 \section{Lie-Poisson Structure}
 \label{sec:lie-poisson-rigid-body}
 
@@ -551,6 +788,16 @@ not with canonical coordinates. The Lie-Poisson bracket is
   =
   -M\cdot\left(\nabla F(M)\times\nabla G(M)\right).
 \]
+In coordinate functions this says
+\[
+  \Poisson{M_i}{M_j}=-\epsilon_{ijk}M_k.
+\]
+The minus sign matches the body-frame convention used above. Had we used
+spatial angular momentum components as reduced variables, the sign would be
+opposite. This is another place where the body/space distinction is not
+cosmetic: it changes the reduced Poisson bracket while leaving the physical
+motion unchanged.
+
 For
 \[
   H(M)=\frac12M\cdot I^{-1}M,
@@ -578,6 +825,13 @@ for every observable \(F\). For the rigid body bracket,
 is a Casimir. Its level sets are the coadjoint orbits, which here are spheres.
 \end{definition}
 
+The Casimir is why the reduced phase space is foliated by angular-momentum
+spheres. Each sphere carries a genuine two-dimensional symplectic structure,
+and the rigid body restricted to one such sphere has one degree of freedom.
+This is the reduced reason that the intersection curves in
+Figure~\ref{fig:rigid-body-reduced-geometry} are the phase curves of the
+system.
+
 \section{Liouville Integrability And Invariant Tori}
 \label{sec:liouville-tori}
 
@@ -595,6 +849,13 @@ the integrals are compatible rather than fighting one another. Compactness says
 the flow coordinates eventually repeat, turning straight-line motion on
 \(\R^n\) into straight-line motion on a torus. Dropping any one of these
 assumptions changes the conclusion.
+
+This is why the theorem should not be read backwards. Seeing a bounded-looking
+orbit or many conserved-looking quantities in a simulation does not by itself
+prove integrability. One must know that the integrals are globally defined on
+the phase-space region under study, independent on the level set, and in
+involution. The free rigid body passes these tests; a slightly forced or
+gravity-coupled top often fails them.
 
 \begin{definition}[Liouville integrability]
 A Hamiltonian system on a \(2n\)-dimensional symplectic manifold is Liouville
@@ -704,7 +965,7 @@ are the quantities that label which torus one is on.
 
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[scale=1.0, >=Latex]
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
   \draw[thick] (0,0) rectangle (4.2,3.0);
   \draw[->, blue!70!black, thick] (0.45,0.55) -- (3.75,0.55)
     node[midway, below] {\(\gamma_1\)};
@@ -717,14 +978,15 @@ are the quantities that label which torus one is on.
   \draw[purple!75!black, thick, ->]
     (-0.15,-0.23) -- (0.25,0.25);
   \draw[gray!70, ->] (4.2,1.5) -- (4.8,1.5)
-    node[right] {identify};
+    node[right, fill=white, inner sep=1.5pt] {identify};
   \draw[gray!70, ->] (2.1,3.0) -- (2.1,3.55)
-    node[above] {identify};
+    node[above, fill=white, inner sep=1.5pt] {identify};
   \node[align=center] at (2.1,-0.75)
     {flat model of a two-dimensional invariant torus\\
      \(\mathbb R^2/\Lambda\) with angle coordinates};
-  \node[purple!75!black, align=center] at (5.25,2.45)
-    {Hamiltonian flow\\straightens to\\constant slope};
+  \node[purple!75!black, align=center, fill=white, inner sep=2pt] at (5.35,2.35)
+    {Hamiltonian flow\\has constant slope};
+  \draw[purple!75!black, ->] (4.65,2.17) -- (3.35,2.58);
 \end{tikzpicture}
 \caption{A Liouville torus is locally a space of commuting flow times with
 periodic identifications. Action variables label the torus; angle variables
@@ -812,9 +1074,9 @@ The involution condition gives
 \[
   0=\Poisson{F_i}{F_j}
   =
-  A_{ik}B_{jk}-A_{jk}B_{ik},
+  B_{ik}A_{jk}-A_{ik}B_{jk},
 \]
-or
+or, equivalently,
 \[
   AB^T-BA^T=0.
 \]
@@ -835,8 +1097,7 @@ Choose a basis of one-cycles \(\gamma_1,\ldots,\gamma_n\) on an invariant torus
 \]
 Actions are therefore not arbitrary constants of integration. They are
 phase-space areas measured around the independent cycles of the torus. This is
-why they are insensitive to small deformations of the cycle and why they
-survive as adiabatic invariants in Chapter~\ref{chap:hamilton-jacobi}.
+why they are insensitive to small deformations of the cycle on a fixed torus.
 They are invariant under continuous deformations of \(\gamma_j\) on the torus.
 If \(\gamma_j\) and \(\gamma_j'\) bound a two-chain \(D\subset M_f\), then by
 Stokes' theorem
@@ -902,6 +1163,127 @@ and Hamilton's equations reduce to
 Thus motion on each invariant torus is linear. If the frequencies are rationally
 related, the orbit closes; otherwise the orbit is dense on the torus.
 
+The word ``linear'' refers to the angle coordinates, not to the original
+configuration variables. A dense quasiperiodic curve on a torus can look quite
+complicated after being projected to ordinary coordinates. Action-angle
+variables are valuable precisely because they separate the simple invariant
+motion on the torus from the sometimes complicated embedding of that torus in
+phase space.
+
+\section{Action Integrals In One Degree Of Freedom}
+\label{sec:one-dimensional-action-integrals}
+
+The word action now appears in a second, related sense. Hamilton's principle
+uses the time integral \(\int L\,\dd t\) as a functional on paths. Action-angle
+theory uses
+\[
+  I_j=\frac{1}{2\pi}\oint_{\gamma_j}p_i\,\dd q^i
+\]
+as a coordinate labelling a closed orbit or invariant torus. The
+common ingredient is the canonical one-form \(p_i\,\dd q^i\), whose periods are
+the action variables.
+
+The abstract definition
+\[
+  I_j=\frac{1}{2\pi}\oint_{\gamma_j}p_i\,\dd q^i
+\]
+is easiest to understand first in one degree of freedom. Suppose an autonomous
+system has Hamiltonian
+\[
+  H(q,p)=\frac{p^2}{2m}+V(q)
+\]
+and a bounded orbit between turning points \(q_-(E)\) and \(q_+(E)\). On the
+energy curve \(H=E\),
+\[
+  p(q,E)=\pm\sqrt{2m(E-V(q))}.
+\]
+The closed phase-space loop has a positive-momentum branch and a
+negative-momentum branch, so the action is
+\[
+  \boxed{
+  I(E)=\frac{1}{2\pi}\oint p\,\dd q
+  =
+  \frac1{\pi}\int_{q_-(E)}^{q_+(E)}
+  \sqrt{2m(E-V(q))}\,\dd q.
+  }
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[->] (-0.4,0) -- (6.6,0) node[right] {\(q\)};
+  \draw[->] (0,-2.0) -- (0,2.2) node[above] {\(p\)};
+  \draw[densely dotted] (1.0,-1.7) -- (1.0,1.8);
+  \draw[densely dotted] (5.3,-1.7) -- (5.3,1.8);
+  \node[below=6pt] at (1.0,0) {\(q_-\)};
+  \node[below=6pt] at (5.3,0) {\(q_+\)};
+  \draw[blue!70!black, thick, ->]
+    (1.0,0) .. controls (2.0,1.55) and (4.2,1.55) .. (5.3,0);
+  \draw[blue!70!black, thick, ->]
+    (5.3,0) .. controls (4.2,-1.55) and (2.0,-1.55) .. (1.0,0);
+  \node[blue!70!black] at (3.2,1.65) {\(+p(q,E)\)};
+  \node[blue!70!black] at (3.2,-1.65) {\(-p(q,E)\)};
+  \node[align=center, fill=white, inner sep=1pt] at (3.2,0.55)
+    {enclosed area\\\(\displaystyle \oint p\,\dd q=2\pi I\)};
+\end{tikzpicture}
+\caption{For a one-dimensional bound orbit the action is the signed
+phase-space area enclosed by the energy curve divided by \(2\pi\). The turning
+points contribute no endpoint term when differentiating with respect to
+energy because \(p(q_\pm,E)=0\).}
+\label{fig:action-loop}
+\end{figure}
+
+The period follows by differentiating \(I(E)\). The moving endpoint terms
+vanish because \(p(q_\pm(E),E)=0\):
+\[
+  \frac{\dd I}{\dd E}
+  =
+  \frac1{\pi}\int_{q_-}^{q_+}
+  \frac{m\,\dd q}{\sqrt{2m(E-V(q))}}
+  =
+  \frac1{2\pi}T(E).
+\]
+Therefore
+\[
+  \boxed{
+  \omega(E)=\frac{\dd H}{\dd I}
+  =
+  \left(\frac{\dd I}{\dd E}\right)^{-1},
+  \qquad
+  T(E)=2\pi\frac{\dd I}{\dd E}.
+  }
+\]
+This formula is the one-dimensional seed of action-angle theory. The
+same period integral reappears on higher-dimensional invariant tori by
+integrating the canonical one-form around a basis of cycles.
+
+\begin{example}[Harmonic oscillator]
+For
+\[
+  H=\frac{p^2}{2m}+\frac12m\omega_0^2q^2,
+\]
+the phase curve is an ellipse:
+\[
+  \frac{p^2}{2mE}+\frac{q^2}{2E/(m\omega_0^2)}=1.
+\]
+The area enclosed by the ellipse is
+\[
+  \pi\sqrt{2mE}\sqrt{\frac{2E}{m\omega_0^2}}
+  =
+  \frac{2\pi E}{\omega_0}.
+\]
+Thus
+\[
+  I=\frac{1}{2\pi}\operatorname{Area}=\frac{E}{\omega_0},
+  \qquad
+  H(I)=\omega_0 I.
+\]
+The conjugate angle advances uniformly:
+\[
+  \dot\theta=\frac{\partial H}{\partial I}=\omega_0.
+\]
+\end{example}
+
 \section{Rigid Body Tori}
 \label{sec:rigid-body-tori}
 
@@ -913,6 +1295,13 @@ The full rigid body with fixed center of mass has three degrees of freedom. On
 are mutually Poisson commuting when \(J_3\) is a fixed spatial component of
 angular momentum and \(J^2=\norm{J}^2\). For regular values, their common level
 set is a three-torus.
+
+The phrase ``regular values'' hides the familiar exceptional motions. Principal
+axis rotations and separatrix-level motions are not generic tori: the level set
+can pinch, a cycle can collapse, or the period can diverge. Liouville
+integrability describes the open dense region of phase space where the
+commuting flows are independent and compact; the exceptional sets are exactly
+where the qualitative changes in rigid-body motion occur.
 
 The geometry can be seen in two stages. First, the body angular momentum
 \(M=R^TJ\) is constrained by
@@ -960,6 +1349,13 @@ mechanics to gauge theory of deforming bodies.
 \section{What To Take Forward}
 \label{sec:rigid-take-forward}
 
+The rigid-body chapter supplies both a model and a method. The model is the
+free body, whose motion is visible through energy ellipsoids, momentum
+spheres, Poinsot rolling, and attitude reconstruction. The method is more
+general: use symmetry to reduce, use conserved quantities to find invariant
+sets, and then ask whether those invariant sets are tori carrying linear
+motion.
+
 \begin{itemize}
 \item \(\SO(3)\) is a curved configuration space; Euler angles are useful local
 coordinates but not the system itself.
@@ -970,15 +1366,220 @@ constraints reduce the motion to closed curves and tori.
 \item Liouville tori arise from commuting Hamiltonian flows, not from a lucky
 choice of variables. Action-angle coordinates are coordinates adapted to those
 tori.
+\item Action variables are period integrals of the canonical one-form. Their
+geometric definition explains why the coordinates are adapted to invariant
+tori.
 \item Replacing one global attitude \(R(t)\) by a field \(R(X,t)\) is the
 conceptual step from rigid bodies to gauge descriptions of deformable bodies.
 \end{itemize}
+
+
+\section{Chapter-End Laboratories And Exercises}
+\label{sec:rigid-integrability-chapter-end-labs}
+
+These calculations connect action variables to concrete integrable systems and
+show how the rigid body fits into the same torus-based language.
+
+\subsection[Oscillator Actions In Polar Coordinates]{Action Variables For The
+Isotropic Oscillator In Polar Coordinates}
+\label{sec:detailed-oscillator-actions}
+
+A canonical test case for action-angle coordinates is the two-dimensional
+isotropic oscillator
+\[
+  H=
+  \frac{p_r^2}{2m}
+  +
+  \frac{p_\theta^2}{2mr^2}
+  +
+  \frac12m\omega^2r^2.
+\]
+The angular momentum
+\[
+  L=p_\theta
+\]
+is conserved. The angular action is immediate:
+\[
+  I_\theta=\frac1{2\pi}\oint p_\theta\,\dd\theta=L.
+\]
+The radial action is
+\[
+  I_r
+  =
+  \frac1{\pi}
+  \int_{r_-}^{r_+}
+  \sqrt{
+    2mE-\frac{L^2}{r^2}-m^2\omega^2r^2
+  }\,\dd r.
+\]
+Rather than evaluate this integral by brute force, use a structural argument.
+For the Cartesian oscillator,
+\[
+  H=\omega(I_x+I_y).
+\]
+The angular momentum generates rotations in the plane. For nonnegative \(L\),
+the circular orbit has all its action in rotation and no radial oscillation.
+On a circular orbit,
+\[
+  I_r=0,
+  \qquad
+  E=\omega L.
+\]
+Radial oscillation has twice the angular oscillator frequency: one full radial
+cycle occurs while the Cartesian oscillator runs through half of its ellipse.
+Therefore the Hamiltonian in polar actions must be
+\[
+  \boxed{
+  H=\omega(2I_r+|I_\theta|).
+  }
+\]
+Solving for the radial action,
+\[
+  \boxed{
+  I_r=\frac{E}{2\omega}-\frac{|L|}{2}.
+  }
+\]
+This formula is a useful reminder: action variables depend on the chosen basis
+of cycles. Cartesian actions and polar actions are related by an integral
+linear change of torus cycles, not by an arbitrary smooth coordinate change.
+
+\subsection{Symmetric Free Top: Actions And Dense Motion}
+\label{sec:detailed-symmetric-top-actions}
+
+For a symmetric free rigid body with
+\[
+  I_1=I_2>I_3,
+\]
+use Euler angles \((\phi,\theta,\psi)\). The conserved quantities are
+\[
+  H,\qquad J^2,\qquad J_z.
+\]
+The momentum conjugate to \(\psi\) is the body-axis component of angular
+momentum:
+\[
+  p_\psi=M_3.
+\]
+The momentum conjugate to \(\phi\) is the spatial vertical component:
+\[
+  p_\phi=J_z.
+\]
+The total angular momentum satisfies the standard Euler-angle identity
+\[
+  J^2
+  =
+  p_\theta^2
+  +
+  \frac{(p_\phi-p_\psi\cos\theta)^2}{\sin^2\theta}
+  +
+  p_\psi^2.
+\]
+This equation is the rigid-body analogue of the angular-momentum identity in
+spherical coordinates. It says that \(p_\theta\) is not an independent
+constant; it is determined by \(J\), \(J_z=p_\phi\), \(M_3=p_\psi\), and
+\(\theta\).
+
+For the symmetric top,
+\[
+  H
+  =
+  \frac{J^2-M_3^2}{2I_1}
+  +
+  \frac{M_3^2}{2I_3}.
+\]
+Solving for \(M_3^2\) gives
+\[
+  M_3^2
+  =
+  \frac{2I_1I_3}{I_1-I_3}
+  \left(
+    H-\frac{J^2}{2I_1}
+  \right).
+\]
+Thus one action is
+\[
+  I_\psi=M_3
+  =
+  \sqrt{
+  \frac{2I_1I_3}{I_1-I_3}
+  \left(
+    H-\frac{J^2}{2I_1}
+  \right)
+  },
+\]
+with sign chosen by the orientation of the \(\psi\)-cycle. Another action is
+\[
+  I_\phi=J_z.
+\]
+The remaining action is the cycle traced by the nutation angle \(\theta\):
+\[
+  I_\theta
+  =
+  \frac1{2\pi}\oint p_\theta\,\dd\theta
+  =
+  \frac1\pi\int_{\theta_-}^{\theta_+}
+  \sqrt{
+    J^2-M_3^2
+    -
+    \frac{(J_z-M_3\cos\theta)^2}{\sin^2\theta}
+  }\;\dd\theta .
+\]
+The endpoints \(\theta_\pm\) are the roots where the square root vanishes.
+Evaluating this standard angular-momentum integral gives the piecewise-linear
+answer
+\[
+  \boxed{
+  I_\theta=J-\max\{|J_z|,|M_3|\}.
+  }
+\]
+Thus the simple formula
+\[
+  I_\theta=J-|J_z|
+\]
+is the local chamber \(|J_z|\ge |M_3|\). In the other chamber the limiting
+projection is the body-axis component, and the same cycle convention gives
+\(I_\theta=J-|M_3|\). This chamber dependence is not a new physical
+conservation law; it records which projection of the angular momentum sphere
+sets the polar turning circle. The spin action \(I_\psi=M_3\) remains a
+separate action measuring rotation about the body's symmetry axis.
+
+In action variables, this means
+\[
+  J=I_\theta+\max\{|I_\phi|,|I_\psi|\},
+\]
+and hence the free symmetric-top Hamiltonian is
+\[
+  H(I_\theta,I_\phi,I_\psi)
+  =
+  \frac{
+    \big(I_\theta+\max\{|I_\phi|,|I_\psi|\}\big)^2-I_\psi^2
+  }{2I_1}
+  +
+  \frac{I_\psi^2}{2I_3},
+\]
+within a fixed chamber. The absolute values and maximum are the price paid for
+using Euler-angle cycles across coordinate singularities; once a chamber is
+chosen, the Hamiltonian is smooth in the corresponding local action variables.
+
+The angle equations are
+\[
+  \dot\alpha_j=\frac{\partial H}{\partial I_j}.
+\]
+It does not depend on the inertial direction of the angular momentum. This
+degeneracy is a symmetry, not chaos. In the nonsymmetric free rigid body the
+generic invariant sets are still Liouville tori, but the action integrals
+involve elliptic functions rather than the elementary chamber formula above.
 
 \section{Associated Demos}
 \label{sec:rigid-associated-demos}
 
 The script \path{demos/python/rigid_body_euler_top.py} integrates Euler's
-equations and plots invariant drift. The Mathematica script
+equations, reconstructs the attitude with
+\[
+  R_{n+1}=R_n\exp(\Delta t\,\widehat\Omega_{n+1/2}),
+\]
+and reports drift in \(H\), \(C=\norm M^2\), the spatial momentum
+\(J=RM\), and the constraints \(R^TR=I\), \(\det R=1\). The Mathematica script
 \path{demos/mathematica/RigidBodyEulerTop.wl} gives a symbolic and numerical
-companion. A useful check is to compare the numerical drift in \(H\) and \(C\)
-for several time steps and initial conditions near the intermediate axis.
+companion for the reduced equations. A useful check is to compare the numerical
+drift in \(H\), \(C\), and \(J\) for several time steps and initial conditions
+near the intermediate axis.

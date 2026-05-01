@@ -1,0 +1,1378 @@
+\chapter{Lagrangian Mechanics}
+\label{chap:lagrangian}
+
+\section{Mechanical Data}
+\label{sec:lagrangian-mechanical-data}
+
+The first question in any mechanics problem is not ``what is the force?'' but
+``what is the space of possible configurations?'' Once that space is named, the
+rest of the theory becomes coordinate-independent.
+
+A pendulum moves on a circle, not on a line. A double pendulum lives on a
+torus. A rigid body lives on \(\SO(3)\), not in a box of nine independent
+matrix entries. Choosing the configuration space correctly is therefore not a
+matter of taste; it is the first physical idealization. A poor choice turns
+constraints into clutter. A good choice lets the variational principle see the
+geometry directly.
+
+\begin{definition}[Finite-dimensional mechanical system]
+A regular finite-dimensional Lagrangian mechanical system consists of:
+\begin{enumerate}
+\item a smooth \(n\)-dimensional configuration manifold \(Q\);
+\item a time interval \(I=[t_0,t_1]\);
+\item a Lagrangian \(L:TQ\times I\to \R\);
+\item a class of admissible curves \(q:I\to Q\), possibly satisfying constraints.
+\end{enumerate}
+The action of an admissible curve is
+\[
+  S[q]=\int_{t_0}^{t_1} L(q(t),\dot q(t),t)\,\dd t.
+\]
+\end{definition}
+
+\begin{assumption}[Coordinate patch for derivations]
+Derivations in this chapter are written in one coordinate chart
+\((q^1,\ldots,q^n)\). The equations obtained are tensorial or intrinsic when
+the objects used to build them are intrinsic. Coordinates are a calculation
+device, not an additional physical structure.
+\end{assumption}
+
+\paragraph{Roadmap.}
+The chapter has three jobs. First it derives the Euler-Lagrange equations from
+Hamilton's principle, including boundary terms, constraints, and Noether
+charges. Second it treats Kepler motion and the rigid body as the first serious
+examples of the formalism. Third it prepares the boundary momentum and energy
+concepts that the next chapter converts into Hamiltonian phase space. The point
+is not to replace Newton's law by harder notation; it is to
+make clear which parts of mechanics are coordinate choices and which parts are
+geometric structure.
+
+The primitive object here is a path in configuration space, and the
+variational principle selects the physical path.  The phase-space viewpoint is
+deliberately deferred to Chapter~\ref{chap:hamiltonian-phase-space}.  This
+separation keeps the reader from treating momenta and symplectic forms as
+automatic decorations of Lagrangian mechanics; they appear only after the
+Legendre transform has been justified.
+
+\paragraph{Derivation checkpoints.}
+Whenever this chapter differentiates an action, check three things before
+following the algebra: which variables are varied, which endpoint conditions
+are imposed, and which boundary terms survive. Whenever it invokes a symmetry,
+check whether the symmetry acts on configuration space and whether the action
+is invariant up to an allowed boundary term. These checks are small, but they
+prevent the most common mistakes: using an inadmissible virtual displacement or
+calling a quantity conserved before verifying the symmetry hypothesis.
+
+\section{Variations And The Euler-Lagrange Equations}
+\label{sec:euler-lagrange}
+
+Let \(q_\eps(t)\) be a smooth one-parameter family of curves with
+\(q_0(t)=q(t)\). The variation vector field along \(q\) is
+\[
+  \eta(t)=\left.\frac{\partial q_\eps(t)}{\partial \eps}\right|_{\eps=0},
+  \qquad
+  \eta^i(t)=\left.\frac{\partial q_\eps^i(t)}{\partial \eps}\right|_{\eps=0}.
+\]
+For fixed-endpoint variations we impose
+\[
+  \eta(t_0)=0,\qquad \eta(t_1)=0.
+\]
+The variational calculation below has one essential idea. The path \(q(t)\) is
+a critical point of the action when every infinitesimal deformation of the path
+changes the action only at second order. Differentiating the action produces a
+term proportional to \(\dot\eta\); integration by parts moves the derivative
+onto the momentum, and the endpoint condition kills the boundary term. What is
+left must vanish for every interior virtual displacement \(\eta\), which forces
+the Euler-Lagrange equations pointwise in time.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[->] (-0.3,0) -- (7.2,0) node[right] {\(t\)};
+  \draw[->] (0,-0.2) -- (0,3.0) node[above] {configuration coordinate};
+  \draw[densely dotted] (0.5,0) -- (0.5,2.75);
+  \draw[densely dotted] (6.5,0) -- (6.5,2.75);
+  \draw[thick, blue] plot[smooth] coordinates {(0.5,0.7) (1.8,1.25) (3.2,1.0) (4.7,2.0) (6.5,2.35)};
+  \draw[thick, red, dashed] plot[smooth] coordinates {(0.5,0.7) (1.8,1.55) (3.2,1.25) (4.7,1.75) (6.5,2.35)};
+  \draw[->, red] (3.2,1.0) -- (3.2,1.25) node[midway,right] {\(\eta(t)\)};
+  \draw[->, red!70!black] (4.7,2.0) -- (4.7,1.75);
+  \fill (0.5,0.7) circle (2pt) node[below right] {\(q(t_0)\)};
+  \fill (6.5,2.35) circle (2pt) node[above left] {\(q(t_1)\)};
+  \node[below] at (0.5,0) {\(t_0\)};
+  \node[below] at (6.5,0) {\(t_1\)};
+  \node[blue] at (2.3,0.6) {\(q(t)\)};
+  \node[red] at (4.25,1.35) {\(q_\eps(t)=q(t)+\eps\eta(t)+O(\eps^2)\)};
+\end{tikzpicture}
+\caption{A fixed-endpoint variation changes the path in the interior while
+holding the initial and final configurations fixed. The infinitesimal change is
+the vector field \(\eta(t)=\delta q(t)\) along the path.}
+\label{fig:fixed-endpoint-variation}
+\end{figure}
+
+\begin{derivation}[Euler-Lagrange equations]
+The first variation of the action is
+\[
+\begin{aligned}
+  \delta S
+  &=
+  \left.\frac{\dd}{\dd\eps}\right|_{\eps=0}
+  \int_{t_0}^{t_1}L(q_\eps,\dot q_\eps,t)\,\dd t\\
+  &=
+  \int_{t_0}^{t_1}
+  \left(
+    \frac{\partial L}{\partial q^i}\eta^i
+    +
+    \frac{\partial L}{\partial \dot q^i}\dot\eta^i
+  \right)\dd t.
+\end{aligned}
+\]
+Integrate the second term by parts:
+\[
+  \int_{t_0}^{t_1}
+  \frac{\partial L}{\partial \dot q^i}\dot\eta^i\,\dd t
+  =
+  \left[
+    \frac{\partial L}{\partial \dot q^i}\eta^i
+  \right]_{t_0}^{t_1}
+  -
+  \int_{t_0}^{t_1}
+  \frac{\dd}{\dd t}\left(\frac{\partial L}{\partial \dot q^i}\right)\eta^i
+  \,\dd t.
+\]
+The boundary term vanishes because \(\eta(t_0)=\eta(t_1)=0\). Therefore
+\[
+  \delta S
+  =
+  \int_{t_0}^{t_1}
+  \left[
+    \frac{\partial L}{\partial q^i}
+    -
+    \frac{\dd}{\dd t}\left(\frac{\partial L}{\partial \dot q^i}\right)
+  \right]\eta^i\,\dd t.
+\]
+The fundamental lemma of the calculus of variations says that if this integral
+vanishes for all compactly supported variations \(\eta\), then the coefficient
+of every \(\eta^i\) vanishes. Hence
+\[
+  \boxed{
+  \frac{\dd}{\dd t}\left(\frac{\partial L}{\partial \dot q^i}\right)
+  -
+  \frac{\partial L}{\partial q^i}=0
+  }.
+\]
+\end{derivation}
+
+The boxed equation is local in time because the variations are arbitrary in the
+interior of the interval. This is the conceptual content of the fundamental
+lemma: a single global statement, \(\delta S=0\), becomes a pointwise
+differential equation only because the virtual displacement \(\eta(t)\) can be
+chosen independently near each time. Boundary conditions and endpoint terms are
+therefore not afterthoughts; they decide which variations are admissible and
+which physical quantities appear at the endpoints.
+
+\section{Boundary Terms And Forces}
+\label{sec:boundary-forces}
+
+The integration-by-parts calculation also explains momenta. Without imposing
+fixed endpoints, the boundary contribution is
+\[
+  \left[p_i\eta^i\right]_{t_0}^{t_1},
+  \qquad
+  p_i=\frac{\partial L}{\partial \dot q^i}.
+\]
+Thus \(p_i\) is the coefficient of endpoint displacement in the first variation
+of the action. This is a sharper definition than ``mass times velocity'', which
+is only true in special coordinates for special Lagrangians.
+
+If nonconservative generalized forces \(Q_i(q,\dot q,t)\) are present, the
+Lagrange-d'Alembert principle is
+\[
+  \delta S+\int_{t_0}^{t_1}Q_i\eta^i\,\dd t=0,
+\]
+which gives
+\[
+  \frac{\dd}{\dd t}\left(\frac{\partial L}{\partial \dot q^i}\right)
+  -
+  \frac{\partial L}{\partial q^i}
+  =
+  Q_i.
+\]
+The present course focuses mainly on conservative and Hamiltonian systems, but
+this formula is useful when comparing with fluids and continua.
+
+It is important that \(Q_i\) is a covector along the path, not necessarily a
+Euclidean force vector. In Cartesian coordinates for a particle the distinction
+is invisible, but in generalized coordinates \(Q_i\eta^i\) is the virtual work
+done by the force under the virtual displacement \(\eta\). This is why the
+same variational formula can describe torques, constraint reactions, pressure
+work, and elastic boundary tractions once the correct configuration space has
+been named.
+
+\section{Natural Lagrangians And The Metric Form}
+\label{sec:natural-lagrangians}
+
+Many mechanical systems have a Lagrangian of the form
+\[
+  L(q,\dot q)=T(q,\dot q)-V(q)
+  =
+  \frac{1}{2}g_{ij}(q)\dot q^i\dot q^j - V(q),
+\]
+where \(g_{ij}\) is a positive-definite mass metric on \(Q\), and \(V\) is
+potential energy.
+
+The word ``metric'' here has physical content. It tells us how much kinetic
+energy a given velocity has, and it may depend on configuration. For a point
+particle in Cartesian coordinates \(g_{ij}\) is just \(m\delta_{ij}\). For a
+pendulum, double pendulum, or rigid body written in angles, the same kinetic
+energy becomes a curved metric on the configuration space. The Christoffel
+symbols below are therefore inertial terms caused by coordinates on a curved
+configuration space, not new forces.
+
+\begin{derivation}[Geodesic-plus-force equation]
+For the natural Lagrangian,
+\[
+  \frac{\partial L}{\partial \dot q^i}=g_{ij}\dot q^j,
+\]
+so
+\[
+  \frac{\dd}{\dd t}\frac{\partial L}{\partial \dot q^i}
+  =
+  g_{ij}\ddot q^j
+  +
+  \frac{\partial g_{ij}}{\partial q^k}\dot q^k\dot q^j.
+\]
+Also
+\[
+  \frac{\partial L}{\partial q^i}
+  =
+  \frac{1}{2}\frac{\partial g_{jk}}{\partial q^i}\dot q^j\dot q^k
+  -
+  \frac{\partial V}{\partial q^i}.
+\]
+The Euler-Lagrange equation becomes
+\[
+  g_{ij}\ddot q^j
+  +
+  \left(
+    \frac{\partial g_{ij}}{\partial q^k}
+    -
+    \frac{1}{2}\frac{\partial g_{jk}}{\partial q^i}
+  \right)\dot q^k\dot q^j
+  =
+  -\frac{\partial V}{\partial q^i}.
+\]
+After symmetrizing the velocity terms and raising an index with \(g^{\ell i}\),
+\[
+  \boxed{
+  \ddot q^\ell+\Gamma^\ell_{jk}\dot q^j\dot q^k
+  =
+  -g^{\ell i}\frac{\partial V}{\partial q^i}
+  },
+\]
+where
+\[
+  \Gamma^\ell_{jk}
+  =
+  \frac{1}{2}g^{\ell i}
+  \left(
+    \frac{\partial g_{ij}}{\partial q^k}
+    +
+    \frac{\partial g_{ik}}{\partial q^j}
+    -
+    \frac{\partial g_{jk}}{\partial q^i}
+  \right)
+\]
+are the Christoffel symbols of the mass metric.
+\end{derivation}
+
+Thus even ``force-free'' motion on a curved configuration space need not look
+like \(\ddot q=0\) in coordinates. The Christoffel terms are inertial terms
+created by the geometry of \(Q\) and the chosen coordinates. The invariant
+content is that the covariant acceleration equals the metric gradient of the
+potential:
+\[
+  \nabla_{\dot q}\dot q=-\operatorname{grad}_g V.
+\]
+This is the coordinate-free form of the boxed equation.
+
+\section{Holonomic Constraints}
+\label{sec:holonomic-constraints}
+
+A holonomic constraint is a condition
+\[
+  \Phi^a(q,t)=0,\qquad a=1,\ldots,k,
+\]
+that cuts out an admissible submanifold of configuration space. If one works in
+the ambient coordinates \(q^i\), the constrained equations take the multiplier
+form
+\[
+  \frac{\dd}{\dd t}\frac{\partial L}{\partial \dot q^i}
+  -
+  \frac{\partial L}{\partial q^i}
+  =
+  \lambda_a\frac{\partial \Phi^a}{\partial q^i}.
+\]
+The multipliers \(\lambda_a\) are not arbitrary forces. They are whatever
+constraint reactions are needed to keep the motion on \(\Phi^a=0\). If instead
+one parametrizes the constraint surface directly, the \(\lambda_a\) disappear
+and the same physics is expressed with fewer coordinates.
+
+\section{Symmetry And Noether's Theorem}
+\label{sec:noether}
+
+Noether's theorem is the first place where the variational viewpoint pays a
+large dividend. A symmetry is not merely a visual invariance of a picture; it
+is a transformation of the configuration space that leaves the Lagrangian, and
+therefore the action, unchanged. The infinitesimal version of that
+transformation is a vector field \(\xi_Q\) along which the action has zero
+first variation. The conserved quantity is the momentum paired with that vector
+field.
+
+\begin{definition}[Infinitesimal generator]
+Let a Lie group \(G\) act on \(Q\). For \(\xi\in\mathfrak g\), the infinitesimal
+generator is the vector field
+\[
+  \xi_Q(q)=\left.\frac{\dd}{\dd s}\right|_{s=0}\exp(s\xi)\cdot q.
+\]
+In coordinates, write \(\xi_Q=\xi_Q^i(q)\partial/\partial q^i\).
+\end{definition}
+
+\begin{assumption}[Lagrangian symmetry]
+The action of \(G\) is a symmetry if
+\[
+  L(g\cdot q,\,T_qg\cdot \dot q,\,t)=L(q,\dot q,t)
+\]
+for all \(g\in G\), \(q\in Q\), and \(\dot q\in T_qQ\).
+\end{assumption}
+
+\begin{proposition}[Noether theorem]
+For every \(\xi\in\mathfrak g\), the quantity
+\[
+  J_\xi(q,\dot q)
+  =
+  \frac{\partial L}{\partial \dot q^i}\xi_Q^i(q)
+  =
+  p_i\xi_Q^i(q)
+\]
+is conserved along solutions of the Euler-Lagrange equations.
+\end{proposition}
+
+\begin{proof}
+Differentiate the symmetry condition along \(g=\exp(s\xi)\) at \(s=0\):
+\[
+  0=
+  \frac{\partial L}{\partial q^i}\xi_Q^i
+  +
+  \frac{\partial L}{\partial \dot q^i}
+  \frac{\dd}{\dd t}\xi_Q^i(q(t)).
+\]
+Along an Euler-Lagrange solution,
+\[
+  \frac{\partial L}{\partial q^i}
+  =
+  \frac{\dd}{\dd t}\frac{\partial L}{\partial \dot q^i}.
+\]
+Substitute this into the previous equation:
+\[
+  0=
+  \frac{\dd}{\dd t}\left(\frac{\partial L}{\partial \dot q^i}\right)\xi_Q^i
+  +
+  \frac{\partial L}{\partial \dot q^i}
+  \frac{\dd}{\dd t}\xi_Q^i
+  =
+  \frac{\dd}{\dd t}
+  \left(
+    \frac{\partial L}{\partial \dot q^i}\xi_Q^i
+  \right).
+\]
+\end{proof}
+
+\begin{example}[Translation and rotation]
+For a particle in \(\R^3\) with \(L=\frac12m\norm{\dot x}^2-V(x)\), translation
+symmetry in direction \(a\) gives \(J_a=m\dot x\cdot a\). If \(V\) is invariant
+under all translations, linear momentum is conserved. Rotational symmetry about
+axis \(a\) gives
+\[
+  J_a=(x\times m\dot x)\cdot a,
+\]
+so angular momentum is conserved when \(V\) is rotationally invariant.
+\end{example}
+
+\section{Basic Example: The Kepler Problem}
+\label{sec:kepler-lagrangian}
+
+The Kepler problem should appear immediately after the Lagrangian formalism,
+because it is the simplest serious payoff of cyclic coordinates, Noether's
+theorem, and reduction by symmetry.
+
+\begin{assumption}[Kepler model]
+We study a particle of reduced mass \(\mu\) moving in \(\R^3\setminus\{0\}\)
+under an attractive inverse-square central potential. The Lagrangian is
+\[
+  L(r,\dot r)
+  =
+  \frac12\mu\norm{\dot r}^2+\frac{k}{\norm r},
+  \qquad
+  k=Gm_1m_2>0.
+\]
+The coordinate \(r=x_1-x_2\) is the relative separation of the two bodies.
+\end{assumption}
+
+Rotational invariance gives conservation of angular momentum
+\[
+  J=r\times p=\mu r\times\dot r.
+\]
+Since \(J\cdot r=0\) and \(J\cdot \dot r=0\), the motion stays in the plane
+perpendicular to \(J\). In polar coordinates \((\rho,\theta)\) in that plane,
+\[
+  L=\frac12\mu(\dot\rho^2+\rho^2\dot\theta^2)+\frac{k}{\rho}.
+\]
+The angle \(\theta\) is cyclic, hence
+\[
+  \ell=\frac{\partial L}{\partial\dot\theta}=\mu\rho^2\dot\theta
+\]
+is conserved. The energy is
+\[
+  E=\frac12\mu\dot\rho^2+\frac{\ell^2}{2\mu\rho^2}-\frac{k}{\rho}.
+\]
+Thus the radial motion is one-dimensional motion in the effective potential
+\[
+  V_{\mathrm{eff}}(\rho)=\frac{\ell^2}{2\mu\rho^2}-\frac{k}{\rho}.
+\]
+In this subsection \(\ell\) is the ordinary, massful angular momentum of the
+relative two-body problem. In Chapter~\ref{chap:perturbation-chaos}, where
+asteroid motion is written per unit asteroid mass, the same orbit equation is
+often written using the specific angular momentum
+\(\ell_{\mathrm{spec}}=\ell/\mu=\rho^2\dot\theta\). The detailed central-force
+derivation in Section~\ref{subsec:detailed-binet} keeps an arbitrary particle
+mass \(m\), making the conversion between the two conventions explicit.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \draw[->] (0,0) -- (6.5,0) node[right] {\(\rho\)};
+  \draw[->] (0,-1.9) -- (0,3.1) node[above] {\(V_{\mathrm{eff}}\)};
+  \fill[blue!8] (0.624,-0.7) rectangle (2.52,0);
+  \draw[blue, thick, domain=0.36:6.1, samples=160]
+    plot (\x,{1.1/(\x*\x)-2.2/\x});
+  \draw[dashed] (0,-0.7) -- (6.2,-0.7) node[right] {bound \(E<0\)};
+  \draw[dashed] (0,0.45) -- (6.2,0.45) node[right] {scattering \(E>0\)};
+  \node[blue, fill=white, inner sep=1.5pt] at (4.45,-1.05)
+    {\(V_{\mathrm{eff}}(\rho)\)};
+  \fill (1.0,-1.1) circle (1.4pt) node[below] {minimum};
+  \fill (0.624,-0.7) circle (1.3pt);
+  \fill (2.52,-0.7) circle (1.3pt);
+  \draw[<->, blue!70!black] (0.624,-1.58) -- (2.52,-1.58)
+    node[midway, below=2pt] {allowed radial interval};
+  \node[align=center, fill=white, inner sep=2pt] at (2.65,2.05)
+    {centrifugal barrier\\near \(\rho=0\)};
+\end{tikzpicture}
+\caption{The Kepler problem reduces to one-dimensional radial motion in an
+effective potential. For a fixed negative energy, the radial coordinate is
+trapped between two turning points; for positive energy there is only a closest
+approach before scattering.}
+\label{fig:kepler-effective-potential}
+\end{figure}
+
+\begin{derivation}[Orbit equation]
+Set \(u=1/\rho\). Since \(\ell=\mu\rho^2\dot\theta\),
+\[
+  \frac{\dd}{\dd t}=\dot\theta\frac{\dd}{\dd\theta}
+  =
+  \frac{\ell}{\mu}\,u^2\frac{\dd}{\dd\theta}.
+\]
+The radial Euler-Lagrange equation is
+\[
+  \mu(\ddot\rho-\rho\dot\theta^2)=-\frac{k}{\rho^2}.
+\]
+In terms of \(u(\theta)\) this becomes
+\[
+  \frac{\dd^2u}{\dd\theta^2}+u=\frac{\mu k}{\ell^2}.
+\]
+Therefore
+\[
+  u(\theta)=\frac{\mu k}{\ell^2}\left[1+e\cos(\theta-\theta_0)\right],
+\]
+or
+\[
+  \boxed{
+  \rho(\theta)=
+  \frac{\ell^2/(\mu k)}{1+e\cos(\theta-\theta_0)}
+  }.
+\]
+The parameter \(e\) is the eccentricity. The conic is an ellipse, parabola, or
+hyperbola according as \(e<1\), \(e=1\), or \(e>1\).
+\end{derivation}
+
+The Kepler problem also has the Laplace-Runge-Lenz vector
+\[
+  A=p\times J-\mu k\frac{r}{\norm r},
+\]
+which is conserved and points toward periapse. Its existence is special: it is
+the extra conservation law behind the absence of perihelion precession in the
+ideal inverse-square problem.
+
+\section{Basic Example: Rigid Body As A Lagrangian System}
+\label{sec:rigid-body-lagrangian}
+
+The second basic example is the rigid body. It is best introduced directly after
+Lagrangian mechanics, before using it later as a reduced Hamiltonian and
+integrable system.
+
+\begin{assumption}[Free rigid body]
+A material point \(X\) in the body frame is located at
+\[
+  x(t)=R(t)X,
+  \qquad R(t)\in\SO(3),
+\]
+with the center of mass fixed at the origin. The body is rigid, so all dynamics
+is in the attitude \(R(t)\). No external torque acts.
+\end{assumption}
+
+The body angular velocity is defined by
+\[
+  R^{-1}\dot R=\widehat\Omega,
+  \qquad
+  \widehat\Omega v=\Omega\times v.
+\]
+The kinetic energy is
+\[
+  L(R,\dot R)=T
+  =
+  \frac12\Omega^TI\Omega,
+\]
+where \(I\) is the inertia tensor in the body frame. In principal axes,
+\[
+  I=\diag(I_1,I_2,I_3),
+  \qquad
+  L=\frac12(I_1\Omega_1^2+I_2\Omega_2^2+I_3\Omega_3^2).
+\]
+
+\begin{derivation}[Euler equation from constrained variations]
+A variation inside \(\SO(3)\) has the form
+\[
+  \delta R=R\widehat\Sigma,
+\]
+where \(\Sigma(t_0)=\Sigma(t_1)=0\). This implies
+\[
+  \delta\Omega=\dot\Sigma+\Omega\times\Sigma.
+\]
+Let \(M=\partial L/\partial\Omega=I\Omega\). Then
+\[
+\begin{aligned}
+  \delta S
+  &=
+  \int M\cdot(\dot\Sigma+\Omega\times\Sigma)\,\dd t\\
+  &=
+  \int(-\dot M+M\times\Omega)\cdot\Sigma\,\dd t.
+\end{aligned}
+\]
+Stationarity gives
+\[
+  \dot M=M\times\Omega,
+\]
+or, with the hat convention \(\widehat\Omega v=\Omega\times v\) used
+throughout,
+\[
+  \dot M+\Omega\times M=0.
+\]
+In principal axes this is
+\[
+\begin{aligned}
+  I_1\dot\Omega_1 &= (I_2-I_3)\Omega_2\Omega_3,\\
+  I_2\dot\Omega_2 &= (I_3-I_1)\Omega_3\Omega_1,\\
+  I_3\dot\Omega_3 &= (I_1-I_2)\Omega_1\Omega_2.
+\end{aligned}
+\]
+\end{derivation}
+
+This derivation is deliberately placed here: the rigid body is not first of all
+an abstract Lie-Poisson system. It is a Lagrangian system on \(\SO(3)\), and the
+Lie-Poisson picture is what appears after symmetry reduction.
+
+\section{What To Take Forward}
+\label{sec:lagrangian-take-forward}
+
+The Lagrangian formalism begins with a configuration manifold \(Q\), a path
+\(q(t)\in Q\), and an action functional
+\[
+  S[q]=\int_{t_0}^{t_1} L(q,\dot q,t)\,dt .
+\]
+The Euler-Lagrange equations are the stationarity condition for variations with
+fixed endpoints. Their boundary term defines the conjugate momentum. Natural
+Lagrangians make the geometric content explicit: the kinetic energy is a
+Riemannian metric on \(Q\), the Christoffel symbols describe the inertial terms
+produced by curvilinear coordinates, and forces enter through potentials or
+through the Lagrange-d'Alembert principle.
+
+Constraints and symmetry are not side remarks. Holonomic constraints replace
+\(Q\) by a constraint submanifold or introduce multipliers that measure
+constraint forces. Continuous symmetries produce conserved momenta through
+Noether's theorem. The Kepler problem illustrates how rotational symmetry and
+an accidental conserved Runge-Lenz vector organize the conic sections; the
+rigid body illustrates how a finite-dimensional system can already contain
+nontrivial geometry, body frames, inertia tensors, and reduced equations.
+
+These ideas are the input for the next chapter. The Legendre transform converts
+the boundary momentum into a phase-space coordinate, and the same action
+principle then becomes the symplectic Hamiltonian formalism.
+
+\section{Chapter-End Laboratories And Exercises}
+\label{sec:lagrangian-chapter-end-labs}
+
+The laboratories below test the Lagrangian ideas of this chapter: coordinate
+independence, symmetry reduction, central-force stability, time-dependent
+Lagrangians, effective potentials, and contact forces.
+
+\subsection{Form-Invariance Of Lagrange Equations}
+\label{sec:lab-point-transformations}
+
+We begin with the coordinate-independence of the Euler-Lagrange equations. Let
+\[
+  q^i=q^i(s^1,\ldots,s^n,t)
+\]
+be a regular time-dependent point transformation. Regular means that the
+Jacobian \(\partial q^i/\partial s^a\) has rank \(n\). The transformed
+Lagrangian is
+\[
+  L'(s,\dot s,t)=L(q(s,t),\dot q(s,\dot s,t),t),
+\]
+where
+\[
+  \dot q^i
+  =
+  \frac{\partial q^i}{\partial s^a}\dot s^a
+  +
+  \frac{\partial q^i}{\partial t}.
+\]
+Two elementary identities do the work:
+\[
+  \frac{\partial \dot q^i}{\partial \dot s^a}
+  =
+  \frac{\partial q^i}{\partial s^a},
+  \qquad
+  \frac{\dd}{\dd t}
+  \left(
+    \frac{\partial q^i}{\partial s^a}
+  \right)
+  =
+  \frac{\partial \dot q^i}{\partial s^a}.
+\]
+Using the chain rule,
+\[
+  \frac{\partial L'}{\partial \dot s^a}
+  =
+  \frac{\partial L}{\partial \dot q^i}
+  \frac{\partial q^i}{\partial s^a},
+\]
+and
+\[
+  \frac{\partial L'}{\partial s^a}
+  =
+  \frac{\partial L}{\partial q^i}
+  \frac{\partial q^i}{\partial s^a}
+  +
+  \frac{\partial L}{\partial \dot q^i}
+  \frac{\partial \dot q^i}{\partial s^a}.
+\]
+Therefore
+\[
+\begin{aligned}
+  \frac{\dd}{\dd t}\frac{\partial L'}{\partial \dot s^a}
+  -
+  \frac{\partial L'}{\partial s^a}
+  &=
+  \left(
+    \frac{\dd}{\dd t}\frac{\partial L}{\partial\dot q^i}
+    -
+    \frac{\partial L}{\partial q^i}
+  \right)
+  \frac{\partial q^i}{\partial s^a}.
+\end{aligned}
+\]
+If \(q(t)\) satisfies the Euler-Lagrange equations, the right side vanishes;
+if the transformation is regular, the converse holds as well. Thus the
+Euler-Lagrange equation is not tied to a preferred coordinate system.
+
+\subsection{Central Forces From First Principles}
+\label{sec:detailed-central-forces}
+
+The central-force problem is the prototype of reduction by symmetry. Rotational
+invariance gives conservation of angular momentum; angular momentum confines
+the motion to a plane; polar coordinates in that plane reduce the dynamics to a
+one-dimensional radial equation with an effective potential. The later Kepler
+and precession calculations are refinements of this same reduction.
+
+The lesson is broader than celestial mechanics. Every reduction in these notes
+has the same shape: use a symmetry to find a conserved quantity, use the
+conserved quantity to remove a variable, and then interpret the remaining
+equation on the reduced space. Central forces are the cleanest place to see the
+pattern because the geometry is visible in ordinary Euclidean space.
+
+Let a particle of mass \(m\) move in a central potential \(V(r)\), where
+\[
+  r=\norm{x},
+  \qquad
+  x\in\R^3\setminus\{0\}.
+\]
+The Lagrangian is
+\[
+  L=\frac12m\norm{\dot x}^2-V(r).
+\]
+Rotational invariance gives angular momentum
+\[
+  J=x\times p=m x\times\dot x.
+\]
+Since
+\[
+  \frac{\dd J}{\dd t}
+  =
+  \dot x\times m\dot x+x\times m\ddot x
+  =
+  x\times\left(-V'(r)\frac{x}{r}\right)=0,
+\]
+the vector \(J\) is constant. Because \(J\cdot x=0\) and
+\(J\cdot\dot x=0\), the motion lies in the plane perpendicular to \(J\). Use
+polar coordinates \((r,\theta)\) in this plane:
+\[
+  L=\frac12m(\dot r^2+r^2\dot\theta^2)-V(r).
+\]
+The angle \(\theta\) is cyclic, so
+\[
+  \ell=\frac{\partial L}{\partial\dot\theta}=mr^2\dot\theta
+\]
+is conserved. The energy is
+\[
+  E=\frac12m\dot r^2+\frac{\ell^2}{2mr^2}+V(r).
+\]
+Thus the radial motion is one-dimensional motion in
+\[
+  V_{\mathrm{eff}}(r)
+  =
+  V(r)+\frac{\ell^2}{2mr^2}.
+\]
+Here \(\ell\) is the massful angular momentum. To compare with the
+specific-energy Kepler convention used in
+Section~\ref{sec:kepler-perturbation}, divide the Hamiltonian, energy, and
+angular momentum by the particle mass; then
+\(\ell_{\mathrm{spec}}=\ell/m=r^2\dot\theta\). The orbit equation is unchanged
+after this bookkeeping conversion, provided \(k/m\) is read as the
+gravitational parameter \(GM\).
+
+\subsubsection{Binet Equation}
+\label{subsec:detailed-binet}
+
+Let
+\[
+  u(\theta)=\frac1r.
+\]
+Since
+\[
+  \dot\theta=\frac{\ell}{mr^2}=\frac{\ell}{m}u^2,
+\]
+we have
+\[
+  \frac{\dd}{\dd t}
+  =
+  \frac{\ell}{m}u^2\frac{\dd}{\dd\theta}.
+\]
+Also
+\[
+  \dot r
+  =
+  \frac{\dd}{\dd t}(u^{-1})
+  =
+  -u^{-2}\dot u
+  =
+  -\frac{\ell}{m}u',
+\]
+where a prime denotes \(\dd/\dd\theta\). Differentiating once more,
+\[
+  \ddot r
+  =
+  -\frac{\ell}{m}\frac{\dd u'}{\dd t}
+  =
+  -\frac{\ell^2}{m^2}u^2u''.
+\]
+The radial equation is
+\[
+  m(\ddot r-r\dot\theta^2)=F(r),
+  \qquad
+  F(r)=-V'(r).
+\]
+Substitute the formulas above:
+\[
+  m\left(
+    -\frac{\ell^2}{m^2}u^2u''
+    -
+    \frac1u\frac{\ell^2}{m^2}u^4
+  \right)
+  =
+  -\frac{\ell^2}{m}u^2(u''+u)
+  =
+  F(1/u).
+\]
+Therefore
+\[
+  \boxed{
+  u''+u
+  =
+  -\frac{m}{\ell^2u^2}F(1/u).
+  }
+\]
+This is Binet's equation. It turns a central-force problem into a differential
+equation for the orbit shape \(r(\theta)\).
+
+\subsubsection{Kepler Conics And The Laplace-Runge-Lenz Vector}
+\label{subsec:detailed-kepler-lrl}
+
+For the Kepler potential
+\[
+  V(r)=-\frac{k}{r},
+  \qquad
+  k>0,
+\]
+the force is
+\[
+  F(r)=-\frac{k}{r^2}.
+\]
+Binet's equation becomes
+\[
+  u''+u=\frac{mk}{\ell^2}.
+\]
+The solution is
+\[
+  u(\theta)=\frac{mk}{\ell^2}\left[1+e\cos(\theta-\theta_0)\right],
+\]
+or
+\[
+  r(\theta)=\frac{\ell^2/(mk)}
+  {1+e\cos(\theta-\theta_0)}.
+\]
+This is a conic section with focus at the force center.
+
+The extra conserved vector is
+\[
+  A=p\times J-mk\frac{x}{r}.
+\]
+To verify conservation, write \(\hat r=x/r\). Since \(J\) is constant,
+\[
+  \dot A=\dot p\times J-mk\dot{\hat r}.
+\]
+The force law gives
+\[
+  \dot p=-\frac{k}{r^2}\hat r.
+\]
+Use
+\[
+  J=mx\times\dot x=mr^2\dot\theta\,\hat z=\ell\hat z
+\]
+in the orbital plane. Then
+\[
+  \dot{\hat r}=\dot\theta\,\hat\theta,
+\]
+and
+\[
+  \dot p\times J
+  =
+  -\frac{k}{r^2}\hat r\times(\ell\hat z)
+  =
+  \frac{k\ell}{r^2}\hat\theta
+  =
+  mk\dot\theta\,\hat\theta
+  =
+  mk\dot{\hat r}.
+\]
+Hence
+\[
+  \dot A=0.
+\]
+The vector \(A\) points toward periapse. Taking the dot product with \(x\),
+\[
+  A\cdot x
+  =
+  (p\times J)\cdot x-mkr.
+\]
+By cyclic permutation,
+\[
+  (p\times J)\cdot x=J\cdot(x\times p)=J\cdot J=\ell^2.
+\]
+Therefore
+\[
+  A r\cos(\theta-\theta_0)=\ell^2-mkr,
+\]
+which rearranges to
+\[
+  r=\frac{\ell^2/(mk)}{1+(A/(mk))\cos(\theta-\theta_0)}.
+\]
+Thus the eccentricity is
+\[
+  e=\frac{\norm A}{mk}.
+\]
+The conic equation and the hidden conservation law are the same fact written
+in two languages.
+
+\subsubsection[Small Periapse Precession]{Small Periapse Precession From A
+\texorpdfstring{\(1/r^3\)}{1/r^3} Perturbation}
+\label{subsec:detailed-precession}
+
+A useful perturbation of the Kepler potential is
+\[
+  V(r)=-\frac{k}{r}-\frac{\epsilon}{r^3},
+  \qquad
+  0<|\epsilon|\ll1.
+\]
+The radial force is
+\[
+  F(r)=-V'(r)=-\frac{k}{r^2}-\frac{3\epsilon}{r^4}.
+\]
+Binet's equation gives
+\[
+  u''+u
+  =
+  \frac{mk}{\ell^2}
+  +
+  \frac{3m\epsilon}{\ell^2}u^2.
+\]
+For a nearly circular orbit, write
+\[
+  u(\theta)=u_0+\eta(\theta),
+  \qquad
+  |\eta|\ll u_0.
+\]
+The constant \(u_0\) solves
+\[
+  u_0=\frac{mk}{\ell^2}+\frac{3m\epsilon}{\ell^2}u_0^2.
+\]
+Linearizing in \(\eta\),
+\[
+  \eta''+\eta
+  =
+  \frac{6m\epsilon u_0}{\ell^2}\eta,
+\]
+or
+\[
+  \eta''+\kappa^2\eta=0,
+  \qquad
+  \kappa^2=1-\frac{6m\epsilon u_0}{\ell^2}.
+\]
+The radial oscillation has angular period
+\[
+  \Delta\theta_r=\frac{2\pi}{\kappa}.
+\]
+The periapse advance per radial cycle is the excess over \(2\pi\):
+\[
+  \Delta\varpi
+  =
+  2\pi\left(\frac1\kappa-1\right)
+  \approx
+  \frac{6\pi m\epsilon u_0}{\ell^2}.
+\]
+Thus the \(1/r^3\) correction breaks the closed Kepler ellipse and produces
+precession. This is the simplest analytic counterpart to the numerical
+precession demo.
+
+\subsection{Damped Oscillator From A Time-Dependent Lagrangian}
+\label{sec:lab-damped-oscillator}
+
+Let
+\[
+  L(q,\dot q,t)
+  =
+  e^{\gamma t}
+  \left(
+    \frac12m\dot q^2-\frac12kq^2
+  \right).
+\]
+The Euler-Lagrange equation is
+\[
+  \frac{\dd}{\dd t}(e^{\gamma t}m\dot q)+e^{\gamma t}kq=0,
+\]
+or
+\[
+  \boxed{
+  m\ddot q+m\gamma\dot q+kq=0.
+  }
+\]
+Although this is a dissipative equation, it comes from a time-dependent
+Lagrangian. The canonical energy is not conserved because \(L\) depends
+explicitly on time.
+
+Set
+\[
+  s=e^{\gamma t/2}q,
+  \qquad
+  q=e^{-\gamma t/2}s.
+\]
+Then
+\[
+  \dot q=e^{-\gamma t/2}\left(\dot s-\frac{\gamma}{2}s\right).
+\]
+Substituting into the action gives
+\[
+  L
+  =
+  \frac12m\left(\dot s-\frac{\gamma}{2}s\right)^2
+  -
+  \frac12ks^2.
+\]
+The cross term is a total derivative:
+\[
+  -\frac12m\gamma s\dot s
+  =
+  -\frac{\dd}{\dd t}\left(\frac14m\gamma s^2\right).
+\]
+Discarding that total derivative, the equivalent Lagrangian is
+\[
+  L_{\mathrm{eff}}
+  =
+  \frac12m\dot s^2
+  -
+  \frac12m
+  \left(
+    \frac{k}{m}-\frac{\gamma^2}{4}
+  \right)s^2.
+\]
+Thus
+\[
+  \ddot s+\left(\frac{k}{m}-\frac{\gamma^2}{4}\right)s=0.
+\]
+The transformation has moved damping into a shifted oscillator frequency.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \draw[->] (-0.2,0) -- (6.45,0) node[right] {\(t\)};
+  \draw[->] (0,-1.45) -- (0,1.6) node[above] {amplitude};
+  \draw[blue!70!black, dashed, domain=0:6.0, samples=120]
+    plot (\x,{1.10*exp(-0.22*\x)});
+  \draw[blue!70!black, dashed, domain=0:6.0, samples=120]
+    plot (\x,{-1.10*exp(-0.22*\x)});
+  \draw[blue!70!black, thick, domain=0:6.0, samples=180]
+    plot (\x,{1.10*exp(-0.22*\x)*cos(2.7*\x r)});
+  \draw[red!75!black, thick, domain=0:6.0, samples=180]
+    plot (\x,{1.10*cos(2.7*\x r)});
+  \node[blue!70!black, fill=white, inner sep=1.5pt] at (4.7,0.43) {\(q(t)\)};
+  \node[red!75!black, fill=white, inner sep=1.5pt] at (4.6,1.27) {\(s=e^{\gamma t/2}q\)};
+  \node[align=center] at (3.2,-1.85)
+    {rescaling absorbs the exponential damping envelope};
+\end{tikzpicture}
+\caption{Damped-oscillator laboratory. In the original coordinate \(q\), the
+motion has a decaying envelope. The rescaled coordinate \(s=e^{\gamma t/2}q\)
+obeys an undamped oscillator equation with shifted frequency.}
+\label{fig:lab-damped-oscillator-rescaling}
+\end{figure}
+\FloatBarrier
+
+\subsection{Rotating Hoop: Effective Potential And Bifurcation}
+\label{sec:lab-rotating-hoop}
+
+A bead of mass \(m\) moves without friction on a hoop of radius \(a\). The hoop
+is vertical and rotates about its vertical diameter with imposed angular speed
+\(\omega\). Let \(\theta\) be the angle of the bead measured from the downward
+vertical. The bead position has speed
+\[
+  v^2=a^2\dot\theta^2+a^2\omega^2\sin^2\theta.
+\]
+The Lagrangian is
+\[
+  L
+  =
+  \frac12ma^2\dot\theta^2
+  +
+  \frac12ma^2\omega^2\sin^2\theta
+  +
+  mga\cos\theta.
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \begin{scope}
+    \draw[->] (0,-2.05) -- (0,2.25) node[above] {rotation axis};
+    \draw[dashed] (0,-1.85) -- (0,1.85);
+    \draw[thick] (0,0) circle (1.65);
+    \draw[fill=red!70!black] (1.17,-1.17) circle (0.09);
+    \draw[thick] (0,0) -- (1.17,-1.17);
+    \draw[->] (0,-0.75) arc (-90:-45:0.75);
+    \node at (0.55,-0.95) {\(\theta\)};
+    \draw[->, blue!70!black] (1.17,-1.17) -- (1.95,-1.17)
+      node[midway, below=2pt, fill=white, inner sep=1pt]
+      {\(a\omega\sin\theta\)};
+    \node[below] at (0,-1.72) {downward vertical};
+    \node at (0,-2.45) {bead on rotating vertical hoop};
+  \end{scope}
+  \begin{scope}[xshift=5.0cm, xscale=0.58]
+    \draw[->] (-3.45,0) -- (3.45,0) node[right] {\(\theta\)};
+    \draw[->] (0,-1.5) -- (0,1.55) node[above] {\(V_{\mathrm{eff}}\)};
+    \draw[gray!60] (-3.1416,-0.05) -- (-3.1416,0.05)
+      node[below=3pt] {\(-\pi\)};
+    \draw[gray!60] (3.1416,-0.05) -- (3.1416,0.05)
+      node[below=3pt] {\(\pi\)};
+    \draw[blue!70!black, thick, domain=-3.1416:3.1416, samples=180]
+      plot (\x,{-0.35*sin(\x r)*sin(\x r)-0.80*cos(\x r)});
+    \draw[red!75!black, thick, domain=-3.1416:3.1416, samples=180]
+      plot (\x,{-0.95*sin(\x r)*sin(\x r)-0.45*cos(\x r)+0.25});
+    \node[blue!70!black, align=center, fill=white, inner sep=1.5pt] at (-2.30,1.15)
+      {\(\omega<\omega_c\)\\one minimum};
+    \node[red!75!black, align=center, fill=white, inner sep=1.5pt] at (2.25,1.15)
+      {\(\omega>\omega_c\)\\two minima};
+  \end{scope}
+\end{tikzpicture}
+\caption{Rotating-hoop laboratory. The geometry fixes the kinetic term
+\(a^2\omega^2\sin^2\theta\), and the effective potential changes from one
+bottom minimum to two off-bottom minima when \(\omega\) crosses
+\(\omega_c=\sqrt{g/a}\). The potential curves are schematic and emphasize the
+bifurcation, not numerical scale.}
+\label{fig:lab-rotating-hoop}
+\end{figure}
+\FloatBarrier
+
+This is a one-dimensional system with effective potential
+\[
+  V_{\mathrm{eff}}(\theta)
+  =
+  -\frac12ma^2\omega^2\sin^2\theta
+  -
+  mga\cos\theta.
+\]
+Equilibria satisfy
+\[
+  \frac{\dd V_{\mathrm{eff}}}{\dd\theta}
+  =
+  ma\sin\theta(g-a\omega^2\cos\theta)=0.
+\]
+Thus either
+\[
+  \theta=0,\pi,
+\]
+or
+\[
+  \cos\theta=\frac{g}{a\omega^2}.
+\]
+The off-bottom equilibria exist only when
+\[
+  \omega\geq\omega_c=\sqrt{\frac{g}{a}}.
+\]
+At \(\omega=\omega_c\), the bottom equilibrium changes stability and two
+symmetric equilibria appear. This is a concrete mechanics realization of a
+pitchfork bifurcation in an effective potential.
+
+\subsection{Rolling Contact: Contact Forces As Multipliers}
+\label{sec:lab-rolling-contact}
+
+Rolling examples force one to distinguish coordinates, constraints, and
+reaction forces.
+
+\subsubsection{Hoop Rolling On A Fixed Cylinder}
+
+A hoop of mass \(m\) and radius \(r\) rolls without slipping on the outside of a
+fixed cylinder of radius \(R\). Let \(\theta\) be the angular position of the
+hoop center measured from the top. The center of mass moves on a circle of
+radius \(R+r\). The rolling condition gives
+\[
+  r\dot\phi=(R+r)\dot\theta,
+\]
+where \(\phi\) is the spin angle of the hoop. Since the hoop has
+\[
+  I_{\mathrm{hoop}}=mr^2,
+\]
+the kinetic energy is
+\[
+  T=
+  \frac12m(R+r)^2\dot\theta^2
+  +
+  \frac12mr^2\dot\phi^2
+  =
+  m(R+r)^2\dot\theta^2.
+\]
+Starting from rest at the top, energy gives
+\[
+  m(R+r)^2\dot\theta^2
+  =
+  mg(R+r)(1-\cos\theta).
+\]
+The radial equation is
+\[
+  mg\cos\theta-N=m(R+r)\dot\theta^2,
+\]
+where \(N\) is the normal force. Loss of contact occurs at \(N=0\). Using the
+energy relation,
+\[
+  \cos\theta=1-\cos\theta,
+\]
+so
+\[
+  \boxed{\cos\theta=\frac12.}
+\]
+The hoop leaves the cylinder at \(\theta=\pi/3\) from the top.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
+  \draw[thick, fill=gray!8] (0,0) circle (1.4);
+  \draw[thick, fill=blue!7] (1.65,1.65) circle (0.45);
+  \draw[dashed] (0,0) -- (1.65,1.65);
+  \draw[dashed] (0,0) -- (0,2.35);
+  \draw[->] (0,1.9) arc (90:45:1.9);
+  \node at (0.85,1.95) {\(\theta\)};
+  \draw[->, red!75!black, thick] (1.65,1.65) -- (2.15,2.15)
+    node[right] {\(N\)};
+  \draw[->, black!70, thick] (1.65,1.65) -- (1.65,0.75)
+    node[below] {\(mg\)};
+  \draw[->, blue!70!black, thick] (2.1,1.65) arc (0:65:0.45);
+  \node[blue!70!black, fill=white, inner sep=1pt] at (2.33,2.08) {\(\dot\phi\)};
+  \node[align=center] at (0,-1.95)
+    {loss of contact occurs when the\\normal force reaches \(N=0\)};
+  \node[fill=white, inner sep=1.5pt] at (-1.1,-1.1) {fixed cylinder \(R\)};
+  \node[fill=white, inner sep=1.5pt] at (2.85,2.45) {rolling hoop \(r\)};
+\end{tikzpicture}
+\caption{Rolling-contact laboratory. The radial force balance must be kept
+until the end because the contact force \(N\) is the diagnostic for leaving the
+surface. Eliminating the rolling constraint gives the motion, but \(N=0\)
+decides the loss-of-contact angle.}
+\label{fig:lab-rolling-contact}
+\end{figure}
+\FloatBarrier
+
+\subsubsection{Solid Cylinder Inside A Hollow Cylinder}
+
+Now consider a solid cylinder of radius \(R\) rolling inside a fixed hollow
+cylinder of radius \(2R\). The center of mass moves on a circle of radius
+\(R\). With rolling imposed, the kinetic energy is
+\[
+  T
+  =
+  \frac12MR^2\dot\theta^2
+  +
+  \frac14MR^2\dot\theta^2,
+\]
+because a solid cylinder has moment of inertia \(I=(1/2)MR^2\). Taking the
+potential as \(V=-MgR\cos\theta\), the Lagrangian is
+\[
+  L=\frac34MR^2\dot\theta^2+MgR\cos\theta.
+\]
+The equation of motion is
+\[
+  \frac32MR^2\ddot\theta+MgR\sin\theta=0,
+\]
+or
+\[
+  \frac32\ddot\theta+\frac{g}{R}\sin\theta=0.
+\]
+For small oscillations,
+\[
+  \boxed{
+  \omega_{\mathrm{small}}=\sqrt{\frac{2g}{3R}}.
+  }
+\]
+
+\subsection{Schwarzschild-Type Central-Force Stability}
+\label{sec:lab-schwarzschild-stability}
+
+Consider the central Lagrangian
+\[
+  L=-m\sqrt{
+    A(r)-\frac{\dot r^2}{A(r)}-r^2\dot\theta^2
+  },
+  \qquad
+  A(r)=1-\frac{R}{r},
+  \qquad r>R.
+\]
+This model is a relativistic-looking laboratory for circular-orbit stability.
+Define
+\[
+  B=A-\frac{\dot r^2}{A}-r^2\dot\theta^2.
+\]
+The conserved energy and angular momentum are
+\[
+  E=\frac{mA}{\sqrt B},
+  \qquad
+  L_z=\frac{mr^2\dot\theta}{\sqrt B}.
+\]
+Eliminating \(\dot\theta\) and \(B\) gives the radial equation in effective
+potential form:
+\[
+  \dot r^2
+  =
+  \frac{A^2}{E^2}
+  \left[
+    E^2-A\left(m^2+\frac{L_z^2}{r^2}\right)
+  \right].
+\]
+Thus circular orbits are critical points of
+\[
+  U_{\mathrm{eff}}(r)
+  =
+  A(r)\left(m^2+\frac{L_z^2}{r^2}\right)
+\]
+at fixed \(L_z\). The circular-orbit condition \(U_{\mathrm{eff}}'(r_0)=0\)
+gives
+\[
+  L_z^2
+  =
+  \frac{Rm^2r_0^2}{2r_0-3R}.
+\]
+Hence circular orbits require \(r_0>3R/2\). Stability is determined by
+\[
+  U_{\mathrm{eff}}''(r_0)
+  =
+  \frac{2Rm^2(r_0-3R)}
+  {r_0^3(2r_0-3R)}.
+\]
+Therefore
+\[
+  \boxed{
+  r_0>3R \text{ is stable},\qquad
+  \frac32R<r_0<3R \text{ is unstable}.
+  }
+\]
+This is the same structural calculation used in more realistic relativistic
+orbit problems: circular-orbit stability is a second-derivative question for
+an effective potential at fixed angular momentum.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=0.72cm,y=1.0cm, >=Latex, font=\small]
+  \draw[->] (0,0) -- (9.35,0) node[right] {\(r/R\)};
+  \draw[->] (0,-0.35) -- (0,3.0) node[above] {\(U_{\mathrm{eff}}\)};
+  \draw[dashed] (1.0,-0.2) -- (1.0,2.8) node[above] {\(R\)};
+  \draw[dashed] (3.0,-0.2) -- (3.0,2.8) node[above] {\(3R\)};
+  \draw[red!75!black, thick, domain=1.12:8.9, samples=220]
+    plot (\x,{0.45+1.25*(1-1/\x)*(1+5/(\x*\x))});
+  \fill[red!75!black] (1.84,1.87) circle (1.3pt);
+  \node[red!75!black, fill=white, inner sep=1.5pt] at (3.05,2.35)
+    {unstable circular orbit};
+  \fill[blue!70!black] (8.16,1.63) circle (1.3pt);
+  \node[blue!70!black, fill=white, inner sep=1.5pt] at (7.10,1.20)
+    {stable circular orbit};
+  \draw[blue!70!black, thick, ->] (7.50,1.27) -- (8.07,1.58);
+  \draw[red!75!black, thick, ->] (1.55,1.55) -- (1.78,1.82);
+  \node[align=center] at (4.75,-0.75)
+    {stability is the sign of \(U_{\mathrm{eff}}''(r_0)\)\\
+     at fixed angular momentum};
+\end{tikzpicture}
+\caption{Effective-potential picture for the Schwarzschild-type laboratory.
+Circular orbits are critical points; the outer critical point is a minimum
+\((r_0>3R)\), while the inner one is a maximum
+\((3R/2<r_0<3R)\). The curve is schematic.}
+\label{fig:lab-schwarzschild-effective-potential}
+\end{figure}
+\FloatBarrier
+
+\section{Associated Demos}
+\label{sec:lagrangian-associated-demos}
+
+This chapter is mostly analytic, but two later demos are natural companions for
+its examples:
+\begin{itemize}
+\item \path{demos/python/hamiltonian_pendulum.py}, read after the Legendre
+transform in Chapter~\ref{chap:hamiltonian-phase-space}, turns effective
+potential thinking into a phase portrait.
+\item \path{demos/python/rigid_body_euler_top.py}, read after
+Chapter~\ref{chap:rigid-integrability}, continues the Lagrangian rigid-body
+derivation into reduced Euler equations and attitude reconstruction.
+\end{itemize}
+The point of listing them here is organizational: the same examples are first
+derived from the action, then revisited in phase-space or reduced variables.
+The computation should be read as a later layer of the same model, not as a
+separate topic.
