@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Hamiltonian pendulum demo with a symplectic Euler integrator.
 
-Authors: GPT 5.5 and Xi Yin.
+Authors: OpenAI GPT 5.5 under the supervision of Xi Yin; review contributions from Anthropic Opus 4.7.
 """
 
 from __future__ import annotations

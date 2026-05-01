@@ -8,7 +8,7 @@
      /Applications/Wolfram.app/Contents/MacOS/WolframKernel -script demos/mathematica/LinearElasticity.wl
      /Applications/Wolfram.app/Contents/MacOS/WolframKernel -script demos/mathematica/LinearElasticity.wl --plot
 
-   Authors: GPT 5.5 and Xi Yin.
+   Authors: OpenAI GPT 5.5 under the supervision of Xi Yin; review contributions from Anthropic Opus 4.7.
 *)
 
 ClearAll["Global`*"];

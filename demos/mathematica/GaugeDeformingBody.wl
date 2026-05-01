@@ -1,6 +1,6 @@
 (* Gauge-theory toy model for deforming bodies.
 
-   Authors: GPT 5.5 and Xi Yin.
+   Authors: OpenAI GPT 5.5 under the supervision of Xi Yin; review contributions from Anthropic Opus 4.7.
 
    The first part reconstructs a planar Cosserat rod from a curvature
    connection kappa(s). The second part shows an Abelian SO(2)-like connection

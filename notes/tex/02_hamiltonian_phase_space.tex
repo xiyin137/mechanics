@@ -144,7 +144,7 @@ reparametrization-invariant particles, and ideal incompressible fluids all have
 versions of this phenomenon. The present chapter stays in the regular case so
 that the geometry of \(T^*Q\) can be developed before Dirac constraints enter.
 
-\section{Phase Space As The Space Of Solutions}
+\section{Phase Space As Initial Data And Histories}
 \label{sec:phase-space-solutions}
 
 For a deterministic Hamiltonian system, phase space parametrizes the solutions.
@@ -164,11 +164,16 @@ statement even when the local Hamiltonian equations make sense.
 \section{The Symplectic Form}
 \label{sec:symplectic-form}
 
-The cotangent bundle \(T^*Q\) carries a canonical one-form
+The cotangent bundle \(T^*Q\) carries a canonical one-form, often called the
+Liouville one-form,
 \[
   \Theta=p_i\,\dd q^i.
 \]
-This formula is intrinsic, although it is written in coordinates. If
+The terminology remembers Liouville's nineteenth-century role in the invariant
+volume and integration theory of Hamiltonian systems; the object itself is the
+tautological one-form on a cotangent bundle.
+This formula is intrinsic under changes of coordinates on the base manifold
+\(Q\), although it is written in induced cotangent coordinates. If
 \(\tilde q^j=\tilde q^j(q)\) and the induced cotangent coordinates satisfy
 \[
   \tilde p_j=\frac{\partial q^i}{\partial\tilde q^j}p_i,
@@ -187,6 +192,12 @@ The canonical symplectic form is
 \[
   \omega=-\dd\Theta=\dd q^i\wedge\dd p_i.
 \]
+This sign convention fixes the later Hamiltonian equation
+\(\iota_{X_H}\omega=\dd H\). Some standard references, including Arnold's
+\emph{Mathematical Methods of Classical Mechanics}, use the opposite sign for
+the canonical symplectic form and compensate by the corresponding convention
+for Hamiltonian vector fields or Poisson brackets. The geometry is unchanged;
+only the sign bookkeeping changes.
 It is closed because
 \[
   \dd\omega=-\dd^2\Theta=0.
@@ -204,8 +215,9 @@ where \(\omega_{mn}=-\omega_{nm}\), \(\det(\omega_{mn})\neq0\), and
   \dd\omega=0.
 \]
 The closedness condition is what makes \(\omega\) locally equivalent to the
-canonical form, while nondegeneracy is what lets the Hamiltonian determine a
-unique vector field. In canonical coordinates \(x=(q,p)\),
+canonical form; this is Darboux's theorem (1882). Nondegeneracy is what lets
+the Hamiltonian determine a unique vector field. In canonical coordinates
+\(x=(q,p)\),
 \[
   (\omega_{mn})=
   \begin{pmatrix}
@@ -213,10 +225,29 @@ unique vector field. In canonical coordinates \(x=(q,p)\),
   -I_n & 0
   \end{pmatrix}.
 \]
+Darboux's proof can be sketched as a local induction. Choose a function
+\(q^1\) with nonzero differential. Nondegeneracy gives a Hamiltonian vector
+field transverse to its level sets; integrate that vector field to construct a
+conjugate coordinate \(p_1\) with \(\{q^1,p_1\}=1\). The symplectic orthogonal
+to the span of \(\partial_{q^1},\partial_{p_1}\) carries a closed nondegenerate
+two-form of dimension \(2n-2\), so the construction repeats. The result is a
+coordinate chart in which \(\omega=\dd q^i\wedge\dd p_i\).
 The Poisson bracket can be expressed intrinsically by the bivector inverse to
 the symplectic form, with the sign convention fixed by Hamilton's equations
 below. Once \(\omega\) is given, the bracket is the corresponding algebraic
 operation on functions.
+In arbitrary coordinates, let \(\pi^{mn}\) be defined by
+\[
+  \pi^{mn}\omega_{nk}=\delta^m{}_k.
+\]
+With the convention \(\iota_{X_H}\omega=\dd H\), this gives
+\[
+  \Poisson{f}{g}
+  =
+  -\pi^{mn}\partial_m f\,\partial_n g,
+\]
+which reduces to the displayed canonical formula in coordinates
+\((q^i,p_i)\).
 
 The two defining properties of \(\omega\) have different jobs. Nondegeneracy
 lets one solve \(\iota_{X_H}\omega=\dd H\) for a unique vector field, just as a
@@ -231,6 +262,10 @@ The Hamiltonian vector field \(X_H\) is defined by
 \]
 Here \(\iota_X\) denotes interior contraction: if \(\omega\) is a two-form, then
 \((\iota_X\omega)(Y)=\omega(X,Y)\) for every vector field \(Y\).
+This coordinate-free language became standard in the twentieth-century
+geometric formulation of mechanics, with Lichnerowicz, Kirillov, and Souriau
+among the central figures. The formula is not an additional physical postulate;
+it is Hamilton's equations written without choosing canonical coordinates.
 If
 \[
   X_H=A^i\frac{\partial}{\partial q^i}
@@ -278,7 +313,8 @@ Thus \(X_H\) is Hamilton's equation written geometrically.
     plot ({\x+3.35},{sqrt(2*(2.35-1+cos(\x r)))});
   \draw[gray!65, thick, domain=-3.12:3.12, samples=180]
     plot ({\x+3.35},{-sqrt(2*(2.35-1+cos(\x r)))});
-  \draw[->, thick] (4.15,0.78) -- (4.45,0.62) node[right] {\(X_H\)};
+  \draw[->, thick] (4.02,0.90) -- (4.60,0.60);
+  \node[fill=white, inner sep=1pt] at (4.95,0.88) {\(X_H\)};
   \node[blue!70!black, fill=white, inner sep=1pt] at (1.30,1.95)
     {libration levels};
   \node[red!70!black, fill=white, inner sep=1pt] at (5.25,-2.10)
@@ -326,7 +362,9 @@ Hamiltonian flow preserves the phase-space volume form
 \end{proposition}
 
 \begin{proof}
-Cartan's formula gives\footnote{For any differential form \(\alpha\) and vector
+Liouville's 1838 volume-preservation theorem is a direct consequence of
+Cartan's formula for Lie derivatives.\footnote{For any differential form
+\(\alpha\) and vector
 field \(X\), \(\mathcal L_X\alpha=\dd(\iota_X\alpha)+\iota_X\dd\alpha\). One
 proves it first on functions and one-forms, then uses that both sides are
 graded derivations of the exterior algebra.}
@@ -375,6 +413,10 @@ Canonical transformations preserve Poisson brackets:
   =
   \Poisson{f}{g}\circ\Phi.
 \]
+Indeed, \(\Phi^*\omega=\omega\) implies that the inverse bivector is also
+preserved, \(\Phi_*\pi=\pi\). Applying the bivector formula for the bracket to
+\(\dd(f\circ\Phi)=\Phi^*(\dd f)\) and
+\(\dd(g\circ\Phi)=\Phi^*(\dd g)\) gives the displayed identity.
 This is why canonical coordinates may change but Hamiltonian mechanics keeps
 the same form. Later, action-angle variables will be canonical coordinates
 adapted to integrable motion.
@@ -428,9 +470,10 @@ right exact differential. Globally, the same calculation must be patched across
 coordinate charts, which is why action-angle generating functions can be
 multivalued even when the symplectic form is perfectly well defined.
 
-The type-II function used above is one member of the standard local family. The
-four common choices are distinguished by which old and new variables are treated
-as independent:
+The type-II function used above is one member of the standard local family,
+systematized in Jacobi's Hamiltonian lectures of the 1840s. The four common
+choices are distinguished by which old and new variables are treated as
+independent:
 \[
 \begin{array}{c|c|c}
 \text{type} & \text{generating function} & \text{differential convention}\\
@@ -457,6 +500,9 @@ For long-time Hamiltonian problems, whether \(\Psi_{\Delta t}\) preserves a
 symplectic form or a modified Hamiltonian can matter more than the local order
 of the method. The pendulum, standard map, and asteroid demos are therefore
 experiments in preserving structure.
+This viewpoint is the basis of symplectic integration, developed in modern
+numerical form by Ruth, Channell-Scovel, Sanz-Serna, Yoshida, and others in the
+1980s and 1990s.
 
 The practical lesson is diagnostic. A good mechanics simulation reports not
 only a trajectory but also the quantities that the continuous problem says
@@ -567,8 +613,9 @@ define a Hamiltonian system.
   \fill[red!75!black] (0.95,-0.57) circle (1.3pt)
     node[below right] {\(W=0\)};
   \draw[decorate, decoration={brace, amplitude=5pt}]
-    (1.35,-0.57) -- (1.35,0.57)
-    node[midway, right=8pt, fill=white, inner sep=1.5pt, align=left]
+    (1.45,-0.57) -- (1.45,0.57);
+  \draw[->, gray!70] (2.52,0.45) -- (1.50,0.28);
+  \node[align=left, fill=white, inner sep=1.5pt] at (2.66,0.88)
     {multiple \(\dot x\)\\for one \(p\)};
   \node[blue!70!black, align=center, fill=white, inner sep=2pt] at (2.05,1.45)
     {folded\\Legendre map};

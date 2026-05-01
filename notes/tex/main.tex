@@ -3,7 +3,7 @@
 \input{preamble}
 
 \title{Notes on Classical Mechanics}
-\author{GPT 5.5 and Xi Yin}
+\author{OpenAI GPT 5.5 under the supervision of Xi Yin, with review contributions from Anthropic Opus 4.7}
 \date{\today}
 
 \begin{document}
@@ -15,7 +15,12 @@
 \vspace*{0.16\textheight}
 {\huge Notes on Classical Mechanics\par}
 \vspace{1.25cm}
-{\Large GPT 5.5 and Xi Yin\par}
+{\large
+\begin{minipage}{0.82\textwidth}
+\centering
+written by OpenAI GPT 5.5 under the supervision of Xi Yin, with review
+contributions from Anthropic Opus 4.7
+\end{minipage}\par}
 \vspace{0.6cm}
 {\large \today\par}
 \vfill
@@ -30,10 +35,10 @@ layer uses Kepler motion and rigid bodies to make that language concrete, then
 builds integrability through action-angle variables and invariant tori.  The
 third layer studies perturbation: canonical transformations, resonances, KAM
 mechanisms, breakdown of tori, and restricted three-body dynamics.  The final
-layer carries the same structural ideas into continuum mechanics by treating
-elastic media and shape-changing bodies as material systems before turning to
-fluids, where Eulerian fields, Navier-Stokes dynamics, exact flows, stability
-criteria, and vorticity become the natural variables.  Figures, exercises,
+layer carries the same structural ideas into continuum mechanics: elastic
+media emphasize material deformation, shape-changing bodies emphasize
+connections and holonomy, and fluids emphasize Eulerian fields, Navier-Stokes
+dynamics, exact flows, stability criteria, and vorticity.  Figures, exercises,
 Python demonstrations, and Wolfram Language notebooks are placed next to the
 derivations so that the architecture of the theory, its computations, and its
 physical examples reinforce one another.
@@ -99,14 +104,14 @@ role in the overall architecture:
 \text{Eulerian fields, Navier-Stokes, exact flows, stability}.
 \end{array}
 \]
-This dependency map is also a warning about shortcuts. For example, KAM theory
-uses action-angle variables and near-identity generating functions. The
-Liouville-torus construction explains the invariant tori, and canonical
+This dependency map records the conceptual order of the main constructions.
+KAM theory uses action-angle variables and near-identity generating functions:
+the Liouville-torus construction explains the invariant tori, and canonical
 perturbation theory tests what survives when the system is no longer exactly
-integrable.
-Similarly, the gauge theory of deforming bodies is clearest only after one has
-separated configuration, symmetry, momentum, and connection in the rigid-body
-chapters.
+integrable.  The gauge theory of deforming bodies uses the same separation of
+configuration, symmetry, momentum, and connection that first appears in the
+rigid-body analysis, while elasticity supplies the material-field language
+needed for continuum bodies.
 
 \paragraph{How to use the computational material.}
 The scripts are controlled experiments attached to the derivations. A good run

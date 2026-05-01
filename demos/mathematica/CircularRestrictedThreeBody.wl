@@ -3,7 +3,7 @@
    Units: total primary mass = 1, primary separation = 1, angular velocity = 1.
    The smaller primary has mass fraction mu.
 
-   Authors: GPT 5.5 and Xi Yin.
+   Authors: OpenAI GPT 5.5 under the supervision of Xi Yin; review contributions from Anthropic Opus 4.7.
 
    Run with:
      /Applications/Wolfram.app/Contents/MacOS/WolframKernel -script demos/mathematica/CircularRestrictedThreeBody.wl

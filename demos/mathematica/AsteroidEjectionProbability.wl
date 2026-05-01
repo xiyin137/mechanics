@@ -1,6 +1,6 @@
 (* Restricted Sun-Jupiter asteroid ejection probability demo.
 
-   Authors: GPT 5.5 and Xi Yin.
+   Authors: OpenAI GPT 5.5 under the supervision of Xi Yin; review contributions from Anthropic Opus 4.7.
 
    This is a compact Mathematica companion to the Python ensemble simulation.
    It favors readability over speed. For large ensembles use the Python script.

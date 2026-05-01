@@ -14,7 +14,7 @@ A closed rectangle in shape space can therefore generate a net body rotation.
 The example is deliberately small: it is a reproducible numerical microscope
 for nonabelian holonomy.
 
-Authors: GPT 5.5 and Xi Yin.
+Authors: OpenAI GPT 5.5 under the supervision of Xi Yin; review contributions from Anthropic Opus 4.7.
 """
 
 from __future__ import annotations

@@ -3,9 +3,10 @@
 
 A cat falls. It rights itself in mid-air without any external torque. Its
 angular momentum can remain zero while its orientation changes, because the cat
-cycles through internal shapes. The same mechanism appears in low-Reynolds
-swimming, astronaut reorientation, and the rotor laboratory below: closed loops
-in shape space produce rigid motions in physical space.
+cycles through internal shapes. Related geometric-phase mechanisms appear in
+low-Reynolds swimming, astronaut reorientation, and the rotor laboratory below:
+closed loops in shape space produce rigid motions in physical space, although
+the constraints and shape variables differ from one system to another.
 
 Frank Wilczek's gauge-theoretic viewpoint, developed with Shapere in the
 context of swimming and self-propulsion,\footnote{A. Shapere and F. Wilczek,
@@ -46,11 +47,11 @@ base variable is shape \(s\), time \(t\), or material position \(X\).
 \section{Gauge Kinematics Of Deformable Bodies}
 \label{sec:gauge-kinematics-deformable-bodies}
 
-The preceding chapter described how an elastic body deforms relative to a
-reference body. Gauge kinematics adds the rigid placement of a shape-changing
-body in space. A choice of body axes at each shape gives a local description,
-while holonomy around a closed loop records the observable rigid motion produced
-by the shape cycle.
+Elasticity describes deformation relative to a reference body. Gauge kinematics
+adds another question: how is the same changing shape placed and oriented in
+space? A choice of body axes at each shape gives a local description, while
+holonomy around a closed loop records the observable rigid motion produced by
+the shape cycle.
 
 The Wilczek-Shapere point of view begins with a finite deformable body moving in
 space. Separate its configuration into:
@@ -67,13 +68,18 @@ shape. A shape-dependent change of axes
 \[
   h:\mathcal S\to G
 \]
-changes the representative \(g\). This is exactly a gauge choice.
+changes the representative \(g\). At this stage this is best described as the
+analogue of a gauge choice: the full gauge-theoretic content appears once the
+connection, curvature, and holonomy transformation laws are introduced below.
 
 Geometrically, the full configuration space is locally a product
 \[
   Q_{\mathrm{full}}\simeq G\times\mathcal S,
 \]
-but no preferred product splitting is supplied by physics. The projection
+but no preferred product splitting is supplied by bare kinematics. A kinetic
+energy metric on \(Q_{\mathrm{full}}\), together with a momentum constraint,
+does pick out a distinguished splitting; that distinguished splitting is the
+mechanical connection. The projection
 \[
   Q_{\mathrm{full}}\to\mathcal S
 \]
@@ -93,7 +99,8 @@ the Shapere-Wilczek description is a gauge theory of deforming bodies.
 \subsection{Principal-Bundle Form Of The Split}
 \label{subsec:deforming-body-principal-bundle}
 
-The clean mathematical model is a principal bundle.  Let \(Q_{\mathrm{full}}\)
+The geometric content of the split is a principal bundle.  Let
+\(Q_{\mathrm{full}}\)
 be the full configuration space of the deforming body, after any constraints
 such as fixed center of mass have been imposed.  The rigid-motion group \(G\)
 acts on \(Q_{\mathrm{full}}\) by changing the overall placement of the same
@@ -163,8 +170,10 @@ potential.  Under the change of section above it transforms as
 \]
 which is exactly the inhomogeneous transformation law expected of a connection.
 The curvature and holonomy are developed below; the important point here is
-that the connection is the mathematical object that makes the phrase ``pure
-shape change'' meaningful.
+that a connection supplies a chosen horizontal subspace, so the phrase ``pure
+shape change'' has a specified meaning. The mechanical connection is the
+particular connection selected by the kinetic-energy metric and the momentum
+value.
 
 \begin{figure}[htbp]
 \centering
@@ -173,25 +182,25 @@ shape change'' meaningful.
   \draw[->] (0,-0.2) -- (0,4.1) node[above] {\(s^2\)};
   \draw[thick, blue, ->] (1.2,1.2) .. controls (2.8,3.4) and (5.0,3.1) .. (5.0,1.4);
   \draw[thick, blue, ->] (5.0,1.4) .. controls (3.9,0.4) and (2.2,0.3) .. (1.2,1.2);
-  \node[blue, fill=white, inner sep=2pt] at (3.25,3.58) {shape cycle};
-  \begin{scope}[shift={(1.2,1.2)}, scale=0.28]
+  \node[blue, fill=white, inner sep=2pt] at (3.25,3.72) {closed shape loop};
+  \begin{scope}[shift={(1.2,1.2)}, scale=0.36]
     \draw[fill=gray!20, thick] (-0.8,0) ellipse (0.45 and 0.25);
     \draw[fill=gray!20, thick] (0.8,0) ellipse (0.45 and 0.25);
     \draw[thick] (-0.35,0) -- (0.35,0);
   \end{scope}
-  \begin{scope}[shift={(5.0,1.4)}, scale=0.28, rotate=-20]
+  \begin{scope}[shift={(5.0,1.4)}, scale=0.36, rotate=-20]
     \draw[fill=gray!20, thick] (-1.0,0) ellipse (0.55 and 0.18);
     \draw[fill=gray!20, thick] (1.0,0) ellipse (0.55 and 0.18);
     \draw[thick] (-0.45,0) -- (0.45,0);
   \end{scope}
-  \begin{scope}[shift={(5.35,3.05)}, scale=0.28, rotate=45]
+  \begin{scope}[shift={(5.35,3.05)}, scale=0.36, rotate=45]
     \draw[fill=gray!20, thick] (-0.8,0) ellipse (0.45 and 0.25);
     \draw[fill=gray!20, thick] (0.8,0) ellipse (0.45 and 0.25);
     \draw[thick] (-0.35,0) -- (0.35,0);
     \draw[red!80!black, thick, ->] (0.0,0.65) arc (90:300:0.45);
   \end{scope}
   \draw[red!80!black, thick, ->] (4.85,2.72) -- (5.18,2.92);
-  \node[align=center, fill=white, inner sep=2pt] at (2.55,0.62)
+  \node[align=center, fill=white, inner sep=2pt] at (2.55,0.38)
     {closed shape loop\\can have nonzero holonomy};
   \node[red!80!black, align=center, fill=white, inner sep=2pt] at (5.75,2.35)
     {net rigid\\rotation};
@@ -446,6 +455,17 @@ For a closed shape cycle \(\Gamma\), the net displacement is
 \]
 where \(\mathcal P\) denotes path ordering. The result can be nontrivial even
 though the shape returns to its starting point.
+The path-ordered exponential is the limit of multiplying many small
+reconstruction steps. If \(0=t_0<t_1<\cdots<t_N=T\), then
+\[
+  g(t_{j+1})
+  \approx
+  g(t_j)\exp\left(-\mathcal A_{\alpha}(s(t_j))
+  \dot s^\alpha(t_j)\Delta t_j\right),
+\]
+and the factors must remain in time order because elements of \(G\) need not
+commute. Taking the mesh size to zero gives the displayed
+\(\mathcal P\exp\) formula.
 
 The curvature of the connection is
 \[
@@ -532,10 +552,10 @@ For a small loop enclosing area element
   \draw[blue!70!black, thick, ->] (c) -- (d);
   \draw[blue!70!black, thick, ->] (d) -- (a);
   \draw[red!75!black, thick, ->] (2.35,2.15) arc (210:-80:0.42);
-  \draw[red!75!black, ->] (4.45,2.55) -- (2.95,2.22);
-  \node[red!75!black, align=left, fill=white, inner sep=2pt] at (5.65,2.78)
+  \draw[red!75!black, ->] (4.55,2.78) -- (2.95,2.22);
+  \node[red!75!black, align=left, fill=white, inner sep=2pt] at (5.72,3.02)
     {net rigid motion\\\(-\mathcal F_{12}\delta s^1\delta s^2\)};
-  \node[align=center, fill=white, inner sep=2pt] at (2.5,0.50)
+  \node[align=center, fill=white, inner sep=2pt] at (2.5,0.34)
     {same infinitesimal shape loop,\\different final placement};
 \end{tikzpicture}
 \caption{Curvature is the local density of holonomy. Traversing a small
@@ -544,9 +564,16 @@ rigid displacement proportional to the curvature through the enclosed area.}
 \label{fig:gauge-curvature-small-loop}
 \end{figure}
 
-Thus curvature is the local density of geometric phase. This is the same
-mathematical idea as Hannay angle, Berry phase, and the rigid-body falling-cat
-effect, now written for deforming bodies.
+Thus curvature is the local density of geometric phase. Berry phase, Hannay
+angle, and falling-cat reorientation are all holonomies of connections over
+parameter or shape spaces, but the constructions differ. Berry's phase is a
+quantum \(U(1)\) holonomy, Hannay's angle is the classical adiabatic analogue
+on invariant tori, and the falling-cat effect is a generally nonabelian
+\(\SE(3)\) or \(\SO(3)\) holonomy on shape space with no adiabatic limit
+required. The historical anchors are Berry (1984), Hannay (1985), the
+Shapere-Wilczek geometric-phase program (1989), and Montgomery's gauge-theory
+treatment of the falling cat (1993). The common word is geometric phase, not
+identity of mechanisms.
 
 Flat connections can still produce frame changes along open paths, but a small
 closed loop detects curvature. The curvature is the local observable of the
@@ -627,8 +654,9 @@ body rotation whose leading rotation vector is proportional to
 up to the sign convention set by the direction of traversal and by
 \(g^{-1}\dot g=-\mathcal A(\dot s)\). The essential content is the holonomy: a
 closed loop in internal shape variables produces a rigid rotation even though
-the rotors return to their starting angles. This is the same geometric-phase
-mechanism as the falling cat, written as a connection over shape space.
+the rotors return to their starting angles. Like the falling cat, this is a
+nonabelian \(\SO(3)\) holonomy over shape space, although the physical
+constraints and shape coordinates are different.
 
 \section{Swimming At Low Reynolds Number}
 \label{sec:low-reynolds-swimming}
@@ -652,10 +680,34 @@ above gives
 \[
   \xi=-\mathcal A_\alpha(s)\dot s^\alpha.
 \]
-The connection is now computed from a hydrodynamic boundary-value problem. A
-reciprocal one-parameter stroke encloses no area in shape space and produces no
-net motion: this is Purcell's scallop theorem in gauge language. A
-two-parameter stroke can enclose area and swim by curvature.
+The connection is now computed from a hydrodynamic boundary-value problem. More
+explicitly, solving the Stokes problem with unit rigid velocity gives a
+resistance matrix \(R(s)\), and solving it with unit shape velocity gives a
+shape-force matrix \(B(s)\). The zero-force and zero-torque condition has the
+linear form
+\[
+  R(s)\xi+B_\alpha(s)\dot s^\alpha=0,
+\]
+so
+\[
+  \xi=-R(s)^{-1}B_\alpha(s)\dot s^\alpha.
+\]
+Thus \(\mathcal A_\alpha=R^{-1}B_\alpha\).
+
+A reciprocal one-parameter stroke encloses no area in shape space and produces
+no net motion: this is Purcell's 1977 scallop theorem in gauge language. In
+one shape coordinate \(s\), the reconstruction is
+\[
+  g^{-1}\dot g=-\mathcal A(s)\dot s.
+\]
+Traversing a path from \(s_0\) to \(s_1\) and then retracing it reverses
+\(\dot s\,dt=\dd s\), so the ordered product of rigid motions is inverted on
+the return leg. At zero Reynolds number there is no inertial memory to
+distinguish the outward stroke from the reversed stroke, hence the net
+displacement is trivial. A two-parameter stroke can enclose area and swim by
+curvature. Later geometric swimmer models, including work by Kanso, Marsden,
+and Rowley, make this connection computation explicit for finite-dimensional
+shape families.
 
 \section{Local Frames In Elastic Continua}
 \label{sec:local-frames-elastic-continua}
@@ -759,9 +811,14 @@ then it is pure gauge and satisfies the Maurer-Cartan identity:
   =
   0.
 \]
+Conversely, on a simply connected material patch, \(F=0\) implies locally that
+the connection is pure gauge: parallel transport is path independent, so one
+can define \(R(X)\) by transporting a chosen initial frame from a base point to
+\(X\), and this \(R\) satisfies \(A=R^{-1}\dd R\).
 Nonzero curvature means that local frames cannot be integrated into a single
 smooth orientation field without singularities or defects. In defect theory,
-curvature is associated with disclinations, or rotational defects.
+curvature is associated with disclinations, or rotational defects; classical
+continuum defect theory was developed by Kondo, Bilby, Kroner, and others.
 
 To describe translational defects, introduce a local coframe \(\theta^a\), which
 measures material line elements in a local frame. The connection one-forms
@@ -791,6 +848,20 @@ defect densities. With covariant exterior derivative \(D\),
   \qquad
   D T^a=F^a{}_b\wedge\theta^b.
 \]
+They follow directly from the definitions. For curvature
+\(F=\dd\omega+\omega\wedge\omega\),
+\[
+  DF=\dd F+\omega\wedge F-F\wedge\omega=0,
+\]
+because the \(\dd\omega\wedge\omega\) and \(\omega\wedge\dd\omega\) terms
+cancel after expanding. For torsion,
+\[
+  DT^a
+  =
+  D(\dd\theta^a+\omega^a{}_b\wedge\theta^b)
+  =
+  F^a{}_b\wedge\theta^b.
+\]
 The first identity says that disclination density satisfies a Bianchi identity.
 The second says that dislocation density is not independent of rotational
 curvature when the local frame itself has curvature. These identities are the
@@ -808,6 +879,8 @@ orientation angle \(\theta(s)\). Its director is
 \[
   d_1=(\cos\theta,\sin\theta).
 \]
+The Cosserat brothers' 1909 theory introduced precisely this idea that a
+continuum point can carry an independent local frame, not only a position.
 Let
 \[
   d_2=(-\sin\theta,\cos\theta).
@@ -876,6 +949,19 @@ condition \(M=0\) at the free end. With external forces and the constraint
 where \(n\) is internal force, \(f\) is applied force per length, and
 \(\ell\) is applied couple per length. These equations are the one-dimensional
 balance laws behind the reconstruction formulas above.
+They follow from the constrained variational functional
+\[
+  \int_0^L
+  \left[
+    \frac12B(\theta'-\kappa_0)^2
+    +n\cdot(r'-d_1)
+    -f\cdot r-\ell\,\theta
+  \right]\dd s.
+\]
+Variation with respect to \(r\) gives \(n'+f=0\). Variation with respect to
+\(\theta\) gives the moment equation, because
+\(\delta d_1=\delta\theta\,d_2\) and \(d_1\times n\) is the scalar out-of-plane
+moment of the internal force about the centerline.
 
 \section{What To Take Forward}
 \label{sec:deforming-body-take-forward}
@@ -982,87 +1068,35 @@ be attributed to a changed shape. It must come from the noncommuting
 connection components. This is the finite-dimensional version of geometric
 phase.
 
-Let the body have isotropic base inertia
-\[
-  I_{\mathrm{body}}=I_0\mathbf 1.
-\]
-Let one internal rotor spin about the body \(z\)-axis with angle \(\alpha\) and
-inertia \(I_1\), and let a second rotor spin about the body \(y\)-axis with
-angle \(\beta\) and inertia \(I_2\). The internal shape space is the torus
-\[
-  \mathcal S=S^1_\alpha\times S^1_\beta.
-\]
-Let \(\Omega\in\R^3\) be the body angular velocity. In the body frame, the
-rotor angular velocities are
-\[
-  \Omega+\dot\alpha e_z,
-  \qquad
-  \Omega+\dot\beta e_y.
-\]
-Keeping only the rotational kinetic energy relevant for reconstruction,
-\[
-  T=
-  \frac12I_0\norm{\Omega}^2
-  +
-  \frac12I_1(\Omega_z+\dot\alpha)^2
-  +
-  \frac12I_2(\Omega_y+\dot\beta)^2.
-\]
-The body angular momentum conjugate to \(\Omega\) is
-\[
-  \Pi
-  =
-  I_0\Omega
-  +
-  I_1(\Omega_z+\dot\alpha)e_z
-  +
-  I_2(\Omega_y+\dot\beta)e_y.
-\]
-Set total angular momentum to zero. Componentwise,
-\[
-  (I_0+I_1)\Omega_z+I_1\dot\alpha=0,
-\]
-\[
-  (I_0+I_2)\Omega_y+I_2\dot\beta=0,
-\]
-\[
-  I_0\Omega_x=0.
-\]
-Therefore
-\[
-  \Omega
-  =
-  -\frac{I_1}{I_0+I_1}\dot\alpha\,e_z
-  -
-  \frac{I_2}{I_0+I_2}\dot\beta\,e_y.
-\]
-In connection notation,
-\[
-  g^{-1}\dot g
-  =
-  -\mathcal A_\alpha\dot\alpha-\mathcal A_\beta\dot\beta,
-\]
-with
+The kinetic-energy calculation was done in
+Section~\ref{sec:two-rotor-deforming-body-model}. The laboratory uses that
+result rather than repeating the algebra:
 \[
   \mathcal A_\alpha=
-  \frac{I_1}{I_0+I_1}e_z,
-  \qquad
+  \frac{I_1}{I_0+I_1}e_z,\qquad
   \mathcal A_\beta=
   \frac{I_2}{I_0+I_2}e_y.
 \]
-The components are constant, but the structure group is nonabelian:
-\[
-  [e_z,e_y]\neq0.
-\]
-Thus the curvature contains the commutator term
+The components are constant, so the only curvature comes from noncommutativity:
 \[
   \mathcal F_{\alpha\beta}
   =
-  [\mathcal A_\alpha,\mathcal A_\beta].
+  [\mathcal A_\alpha,\mathcal A_\beta]
+  =
+  -\frac{I_1I_2}{(I_0+I_1)(I_0+I_2)}\,e_x.
 \]
-A small rectangular cycle in \((\alpha,\beta)\) can therefore produce a net
-body rotation even though each rotor angle returns to its original value. This
-is the finite-dimensional version of falling-cat holonomy.
+For a rectangular stroke of signed area
+\(\Delta\alpha\,\Delta\beta\), the leading rigid rotation is
+\[
+  \Delta g
+  \approx
+  \exp\left(
+    -\mathcal F_{\alpha\beta}\Delta\alpha\,\Delta\beta
+  \right).
+\]
+This is the point of the exercise: because the rotor angles return to their
+initial values, any final rotation of the body is holonomy, not a changed
+shape.
 
 \begin{figure}[htbp]
 \centering
@@ -1081,10 +1115,10 @@ is the finite-dimensional version of falling-cat holonomy.
       node[midway, left] {\(-\Delta\beta\)};
     \node[align=center] at (2.05,3.35) {closed shape loop\\on the rotor torus};
   \end{scope}
-  \draw[gray!85, thick, ->] (4.25,1.50) --
-    node[above, fill=white, inner sep=1pt]
-      {\([\mathcal A_\alpha,\mathcal A_\beta]\)}
-    (5.20,1.50);
+  \draw[gray!85, thick, ->] (4.30,2.62) --
+    (5.18,1.62);
+  \node[above, fill=white, inner sep=1pt] at (4.60,2.76)
+      {\([\mathcal A_\alpha,\mathcal A_\beta]\)};
   \begin{scope}[xshift=5.4cm]
     \draw[->, thick] (0,0) -- (1.6,0) node[right] {\(e_x\)};
     \draw[->, thick] (0,0) -- (0,1.6) node[above] {\(e_z\)};
@@ -1095,7 +1129,7 @@ is the finite-dimensional version of falling-cat holonomy.
       {rotation about \(e_x\)};
     \node[black!65, fill=white, inner sep=1pt] at (0.72,1.95)
       {body-frame axes};
-    \node[red!75!black, align=center, fill=white, inner sep=1.5pt] at (0.92,-1.55)
+    \node[red!75!black, align=center, fill=white, inner sep=1.5pt] at (1.15,-1.62)
       {net body rotation\\from \([\mathcal A_\alpha,\mathcal A_\beta]\)};
   \end{scope}
 \end{tikzpicture}

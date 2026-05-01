@@ -1,12 +1,32 @@
 \chapter{The Three-Body Problem}
 \label{chap:three-body-problem}
 
-Two bodies under mutual gravity move on conic sections forever. Three bodies
-do not admit a comparable general solution. Adding one more gravitating body
-preserves the exact conservation laws of Newtonian mechanics but destroys
-generic integrability. What remains is a rich set of structures:
+Two bodies under mutual gravity move on conic sections: ellipses, parabolas, or
+hyperbolas, with collision as a singular limiting case. Three bodies do not
+admit a comparable solution in elementary functions. Sundman gave a convergent
+series solution in 1912, away from triple collision, but that result does not
+restore practical integrability or the Kepler conic picture. Binary collisions
+can be regularized by changing variables and time scale, while triple collision
+is the obstruction left out of Sundman's global statement; in the three-body
+problem it is tied to the exceptional zero-angular-momentum collapse channel.
+Belorizky already emphasized in 1930 that Sundman's series converges far too
+slowly for practical computation. Adding one more gravitating body preserves
+the exact conservation laws of Newtonian mechanics but destroys generic
+integrability. What remains is a rich set of structures:
 rotating-triangle exact solutions, equilibrium points in the rotating frame,
 resonant islands, chaotic scattering, and long-time transport.
+The historical drama matters because it calibrates the claim: Poincare's work
+on the King Oscar problem exposed homoclinic tangles as a mechanism by which a
+deterministic Hamiltonian system can evade integration by additional first
+integrals.
+The prize essay was submitted for King Oscar II's 1889 competition and then
+substantially revised after Poincare discovered the error that led him to
+homoclinic intersections; the expanded account appeared in the
+\emph{Methodes nouvelles de la mecanique celeste} (1892--1899).
+Painleve's 1895 singularity theorem clarifies a separate issue: in the
+three-body problem, finite-time singularities require collision. Xia's 1992
+noncollision singularities for five bodies show that this is a special feature
+of low \(N\), not a general safety theorem for Newtonian gravity.
 
 This chapter connects every phenomenon back to a controlled reduction of
 Newton's law. We first formulate the full Newtonian three-body problem and
@@ -218,10 +238,12 @@ expansion or collapse of the configuration.
 \begin{remark}[Why the two-body miracle fails]
 For two bodies, the center-of-mass reduction leaves one relative vector in a
 central potential. Angular momentum reduces the dynamics to a one-dimensional
-radial problem, and the Laplace-Runge-Lenz vector gives the conic orbit. For
-three bodies there is no single relative radius and no central force after
+radial problem, while the Laplace-Runge-Lenz vector gives the conic orbit
+because the inverse-square potential has an accidental Kepler symmetry. Central
+forces alone do not give that vector; generic central potentials still precess.
+For three bodies there is no single relative radius and no central force after
 reduction. Pairwise forces keep changing the effective center seen by each
-body, so the Kepler constants are no longer constants of the full motion.
+body, so the Kepler-only constants are no longer constants of the full motion.
 \end{remark}
 
 \subsection{Central Configurations And Special Solutions}
@@ -263,12 +285,27 @@ the centripetal force \(m\omega^2s/\sqrt3\) gives
 This is a genuine three-body orbit with fixed shape.
 \end{example}
 
+Lagrange found the equilateral family in his 1772 study of the three-body
+problem. The collinear central configurations below go back to Euler's 1767
+work and are the finite-mass ancestors of the collinear Lagrange points in the
+restricted problem.
+
 \begin{example}[Euler collinear solutions]
 There are also central configurations with the three bodies on one line. The
 relative separations are fixed in a rotating frame, and the line rotates
 uniformly. Unlike the equilateral case, the ratios of the two gaps depend on
 the three masses and are determined by an algebraic equation. These collinear
 solutions are the ancestors of \(L_1,L_2,L_3\) in the restricted problem.
+For the ordering \(m_1,m_2,m_3\) on a line, set the distance \(m_2m_3\) equal
+to \(x\) times the distance \(m_1m_2\). Euler's calculation gives the quintic
+\[
+\begin{aligned}
+ &(m_1+m_2)x^5+(3m_1+2m_2)x^4+(3m_1+m_2)x^3\\
+ &\qquad -(m_2+3m_3)x^2-(2m_2+3m_3)x-(m_2+m_3)=0.
+\end{aligned}
+\]
+Its unique positive root gives the gap ratio for that ordering; the other two
+collinear configurations come from the other orderings of the masses.
 \end{example}
 
 Section~\ref{sec:lab-three-body} turns the equal-mass equilateral solution into
@@ -276,6 +313,11 @@ a numerical laboratory. There the exact rotating triangle is used as the
 comparison orbit, and small perturbations of the initial velocities show how a
 central configuration can organize nearby motion without making the full
 three-body problem integrable.
+Much later, Chenciner and Montgomery found the figure-eight periodic orbit
+(2000), a striking equal-mass solution with zero angular momentum. It is not a
+central configuration, but pedagogically it reinforces the same lesson: special
+exact orbits can be beautiful without making the generic three-body problem
+integrable.
 
 \section{Circular Restricted Three-Body Problem}
 \label{sec:circular-restricted-three-body-problem}
@@ -283,7 +325,9 @@ three-body problem integrable.
 The circular restricted three-body problem is the cleanest autonomous model
 behind the Sun-Jupiter-asteroid story. Two massive primaries move on circular
 Kepler orbits about their common center of mass, and a third body has zero
-mass, so it feels the primaries but does not affect them. After choosing units
+mass, so it feels the primaries but does not affect them. Historically, this is
+the setting of Jacobi's integral (1836) and Hill's lunar restricted problem
+(1878). After choosing units
 in which
 \[
   G(m_1+m_2)=1,\qquad
@@ -362,8 +406,10 @@ In components,
   \ddot y+2\dot x=\Omega_y.
   }
 \]
-The Coriolis force is velocity dependent but does no work; it bends trajectories
-on the energy surface without changing the Jacobi constant below.
+The Coriolis force is velocity dependent and does no work in the rotating
+frame, but the deeper reason a Jacobi integral exists is that the rotating-frame
+Hamiltonian is autonomous. The conserved quantity is rotating-frame energy,
+equivalently inertial energy minus \(\omega L_z\) in dimensional variables.
 \end{derivation}
 
 \begin{figure}[htbp]
@@ -379,10 +425,10 @@ on the energy surface without changing the Jacobi constant below.
   \coordinate (lfour) at (0.25,1.386);
   \coordinate (lfive) at (0.25,-1.386);
   \fill[yellow!80!black] (pone) circle (3.5pt);
-  \node[yellow!45!black, below left=2pt] at (pone) {\(P_1\)};
+  \node[yellow!45!black, below=5pt] at (pone) {\(P_1\)};
   \fill[orange!80!black] (ptwo) circle (2.6pt);
-  \node[orange!80!black, below right=2pt] at (ptwo) {\(P_2\)};
-  \foreach \pt/\lab/\anchor in {lone/L_1/above left,ltwo/L_2/above,lthree/L_3/above}
+  \node[orange!80!black, below=5pt] at (ptwo) {\(P_2\)};
+  \foreach \pt/\lab/\anchor in {lone/L_1/above left,ltwo/L_2/above right,lthree/L_3/above}
   {
     \draw[red!75!black, thick] (\pt) ++(0,-0.08) -- ++(0,0.16);
     \node[red!75!black, \anchor=3pt] at (\pt) {\(\lab\)};
@@ -429,6 +475,10 @@ It is customary to multiply by \(-2\) and define the Jacobi constant
   }
 \]
 This is the energy integral of the autonomous rotating-frame problem.
+Equivalently, before nondimensionalizing the angular speed to one, the
+conserved rotating-frame Hamiltonian is the inertial energy shifted by
+\(-\omega L_z\); the Jacobi constant is the customary sign-reversed version of
+that autonomous Hamiltonian.
 \end{derivation}
 
 \begin{derivation}[Canonical Hamiltonian in the rotating frame]
@@ -499,6 +549,10 @@ forbidden region because that would require imaginary speed. When the
 zero-velocity neck near \(L_1\) or \(L_2\) opens, transport between regions
 becomes possible. This is the rotating-frame picture behind many capture,
 escape, and ejection mechanisms.
+The allowed components are often called Hill regions. Near a secondary primary,
+the small allowed lobe gives the Hill-sphere approximation used in celestial
+mechanics: it is the configuration-space shadow of the same Jacobi-energy
+constraint, not a literal material boundary.
 
 \begin{figure}[htbp]
 \centering
@@ -523,22 +577,22 @@ escape, and ejection mechanisms.
     \draw[->] (-2.0,0) -- (2.25,0) node[right] {\(x\)};
     \draw[->] (0,-1.25) -- (0,1.25) node[above] {\(y\)};
     \draw[blue!70!black, thick]
-      (-1.35,0) .. controls (-1.20,0.70) and (-0.30,0.78) .. (0.20,0.20)
-      .. controls (0.70,0.60) and (1.25,0.45) .. (1.35,0)
-      .. controls (1.25,-0.45) and (0.70,-0.60) .. (0.20,-0.20)
-      .. controls (-0.30,-0.78) and (-1.20,-0.70) .. (-1.35,0);
+      (-1.45,0) .. controls (-1.25,0.78) and (-0.36,0.82) .. (0.28,0.28)
+      .. controls (0.88,0.66) and (1.38,0.52) .. (1.55,0)
+      .. controls (1.38,-0.52) and (0.88,-0.66) .. (0.28,-0.28)
+      .. controls (-0.36,-0.82) and (-1.25,-0.78) .. (-1.45,0);
     \fill[white]
-      (-1.22,0) .. controls (-1.08,0.58) and (-0.30,0.62) .. (0.20,0.10)
-      .. controls (0.64,0.48) and (1.08,0.36) .. (1.18,0)
-      .. controls (1.08,-0.36) and (0.64,-0.48) .. (0.20,-0.10)
-      .. controls (-0.30,-0.62) and (-1.08,-0.58) .. (-1.22,0);
+      (-1.28,0) .. controls (-1.12,0.62) and (-0.34,0.66) .. (0.28,0.17)
+      .. controls (0.78,0.50) and (1.18,0.40) .. (1.34,0)
+      .. controls (1.18,-0.40) and (0.78,-0.50) .. (0.28,-0.17)
+      .. controls (-0.34,-0.66) and (-1.12,-0.62) .. (-1.28,0);
     \fill[yellow!80!black] (-0.75,0) circle (2.8pt);
     \fill[orange!80!black] (0.88,0) circle (2.2pt);
     \draw[red!75!black, thick] (0.2,-0.09) -- (0.2,0.09);
-    \node[red!75!black, above=3pt, fill=white, inner sep=1.5pt,
+    \node[red!75!black, above left=4pt, fill=white, inner sep=1.5pt,
       font=\small] at (0.2,0.09) {\(L_1\)};
     \draw[red!75!black, thick] (1.18,-0.09) -- (1.18,0.09);
-    \node[red!75!black, above=3pt, fill=white, inner sep=1.5pt,
+    \node[red!75!black, above right=4pt, fill=white, inner sep=1.5pt,
       font=\small] at (1.18,0.09) {\(L_2\)};
     \draw[red!75!black, ->] (0.2,-0.52) -- (0.2,-0.14);
     \node[align=center] at (0,-1.65) {neck open\\transport channel};
@@ -605,6 +659,27 @@ Linearizing about \(L_4\) or \(L_5\) gives stable oscillations when
 \[
   \mu(1-\mu)<\frac{1}{27}.
 \]
+Here is the calculation. Write a perturbation as
+\((\xi,\eta)\) around \(L_4\). At \(L_4\),
+\[
+  \Omega_{xx}=\frac34,\qquad
+  \Omega_{yy}=\frac94,\qquad
+  \Omega_{xy}=\frac{3\sqrt3}{4}(1-2\mu).
+\]
+The linearized equations
+\[
+  \ddot\xi-2\dot\eta=\Omega_{xx}\xi+\Omega_{xy}\eta,\qquad
+  \ddot\eta+2\dot\xi=\Omega_{xy}\xi+\Omega_{yy}\eta
+\]
+have characteristic polynomial
+\[
+  \lambda^4+\lambda^2+\frac{27}{4}\mu(1-\mu)=0.
+\]
+All four eigenvalues are purely imaginary exactly when the two roots in
+\(\lambda^2\) are real and negative, which is equivalent to
+\[
+  1-27\mu(1-\mu)\ge0.
+\]
 Equivalently, for \(\mu\leq 1/2\),
 \[
   \mu<\mu_R
@@ -615,6 +690,9 @@ Equivalently, for \(\mu\leq 1/2\),
 The Sun-Jupiter value is about \(9.53\times10^{-4}\), far below this threshold.
 This is why Trojan motion near the triangular points is a natural classroom
 example of stable motion in a nontrivial three-body setting.
+The stability criterion is historically due to Gascheau (1843) and Routh
+(1875). Its Solar System relevance became visible with the discovery of Trojan
+asteroids such as 588 Achilles near Jupiter's triangular points in 1906.
 \end{remark}
 
 \subsection{Connection To The Asteroid-Belt Model}
@@ -687,8 +765,19 @@ Equivalently, the asteroid obeys the explicitly time-dependent Hamiltonian
 The last term is the potential whose gradient gives the indirect acceleration.
 Because \(r_J(t)\) is periodic, this is a periodically forced one-particle
 Hamiltonian. It can be made autonomous by adjoining the forcing phase
-\(\phi=n_Jt\) and its conjugate action, but the resulting system has more than
-one degree of freedom and can exhibit resonance and chaotic transport.
+\(\phi=n_Jt\) and its conjugate action \(I_\phi\). With
+\[
+  r_J(\phi)=a_J(\cos\phi,\sin\phi),
+\]
+the extended Hamiltonian is
+\[
+  K(r,p,\phi,I_\phi)
+  =
+  H_{\mathrm{hel}}(r,p,\phi)+n_JI_\phi,
+\]
+so Hamilton's equation gives \(\dot\phi=\partial K/\partial I_\phi=n_J\). The
+resulting autonomous system has more than one degree of freedom and can exhibit
+resonance and chaotic transport.
 
 \begin{derivation}[Indirect term]
 Let \(x\) be the asteroid position in an inertial frame and \(x_\odot\) the Sun
@@ -794,10 +883,10 @@ then
   v_{n+1} &= v_{n+1/2}+\frac{\Delta t}{2}a(r_{n+1},t_{n+1}).
 \end{aligned}
 \]
-Because Jupiter's position is explicitly time-dependent in the prescribed
-circular model, the method is not exactly the same as a symplectic map for an
-autonomous finite-dimensional Hamiltonian. It is still much better pedagogically
-than an opaque black-box integrator because every force evaluation is visible.
+As written in physical time with prescribed Jupiter forcing, this update is not
+the symplectic map of the autonomous extended Hamiltonian \(K\). It is still
+pedagogically preferable to an opaque black-box integrator because every force
+evaluation is visible.
 
 \section{What To Take Forward}
 \label{sec:three-body-take-forward}
@@ -805,7 +894,15 @@ than an opaque black-box integrator because every force evaluation is visible.
 \begin{itemize}
 \item The full three-body problem is Newtonian and Hamiltonian, but its
 translation and rotation symmetries do not reduce it to a one-degree-of-freedom
-radial equation.  The failure is structural, not a lack of clever coordinates.
+radial equation.  The failure is structural, not a lack of clever coordinates:
+Bruns proved in 1887 that there are no additional integrals algebraic in the
+coordinates, momenta, and time, apart from the classical ones; Painleve extended
+the algebraic scope to velocity variables. Poincare's 1890 theorem addressed a
+different class, ruling out generic additional analytic integrals in the
+perturbative setting. The obstruction is the same small-divisor mechanism seen
+in Chapter~\ref{chap:perturbation-chaos}: a formal integral must solve
+homological equations whose resonant denominators cannot be made to vanish
+generically.
 \item Jacobi coordinates remove center-of-mass motion and diagonalize the mass
 metric.  They reveal two coupled relative vectors, which is the simplest
 coordinate-level reason the two-body Kepler solution does not generalize.
@@ -886,7 +983,7 @@ The symmetric initial positions are
   \draw[->, red!75!black, thick] (r2) -- ++(-0.56,-0.32);
   \draw[->, red!75!black, thick] (r3) -- ++(0.56,-0.32);
   \draw[dashed] (0,0) circle (1.25);
-  \node[red!75!black, align=center, fill=white, inner sep=1.5pt] at (1.65,1.24)
+  \node[red!75!black, align=center, fill=white, inner sep=1.5pt] at (1.92,1.33)
     {tangent velocities\\for rotating triangle};
   \node[align=center, fill=white, inner sep=1.5pt] at (0,-1.95)
     {the perturbation lab changes the initial velocities\\and monitors

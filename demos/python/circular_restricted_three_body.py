@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Circular restricted three-body problem in rotating barycentric units.
 
-Authors: GPT 5.5 and Xi Yin.
+Authors: OpenAI GPT 5.5 under the supervision of Xi Yin; review contributions from Anthropic Opus 4.7.
 
 The primaries have total mass one, separation one, and angular velocity one.
 The mass parameter mu is the mass of the smaller primary.  The larger primary

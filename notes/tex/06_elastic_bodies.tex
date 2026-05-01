@@ -1,31 +1,33 @@
 \chapter{Elastic Bodies}
 \label{chap:elastic-body}
 
-\section{Why Elastic Bodies Come Before Fluids}
-\label{sec:elastic-vs-fluid}
+\section{Elastic Solids As Material Continua}
+\label{sec:elastic-material-continua}
 
 Pull a rubber band and let go. It snaps back. Push a finger through honey and
 the honey flows around the finger. The rubber band stores energy in shear; the
 honey responds through a rate-dependent stress. That distinction separates an
 elastic solid from a simple fluid.
 
-The elastic case is the cleaner first continuum model because every material
-point keeps a persistent label.  This lets us carry the configuration-space
-logic of the finite-dimensional chapters almost unchanged into field theory.
-This chapter therefore begins with the material map
+Elasticity is the continuum setting closest to the finite-dimensional mechanics
+developed earlier because every material point keeps a persistent label. This
+lets the configuration-space logic of particles and rigid bodies pass into field
+theory with minimal translation. The basic unknown is the material map
 \[
   \varphi:B\times I\to\R^3,
   \qquad
   x=\varphi(X,t),
 \]
-and treats \(X\in B\) as a persistent label of a material point.  The central
-questions are local and material: how the deformation gradient measures stretch,
-which strain fields can come from a single-valued displacement, how stored
-energy produces stress, and how boundary-value problems reduce the field
-equations to measurable stiffness laws.  The gauge theory of shape-changing
-bodies is separated into Chapter~\ref{chap:deforming-body}, where overall rigid
-motion and internal deformation become distinct variables.  Fluid mechanics is
-then treated after these material-body ideas are in place.
+where \(X\in B\) is the label of a material point and \(x\) is its current
+spatial position. The central questions are local and material: how the
+deformation gradient measures stretch, which strain fields can come from a
+single-valued displacement, how stored energy produces stress, and how
+boundary-value problems reduce the field equations to measurable stiffness
+laws. Chapter~\ref{chap:deforming-body} keeps the material body but separates
+overall rigid placement from internal shape. Chapter~\ref{chap:fluid} changes
+the constitutive question: material labels can still be used in derivations, but
+the state of a simple fluid is organized most effectively by Eulerian fields and
+rate-dependent stress.
 
 \paragraph{Roadmap.}
 The chapter has one main narrative.  Deformation gradients measure local
@@ -94,12 +96,19 @@ The Green strain is
 \[
   E_{AB}=\frac12(C_{AB}-\delta_{AB}).
 \]
+The names are part of the logic: Cauchy's finite-deformation tensors and
+Green's strain organize deformation by comparing metrics, not by subtracting
+points. Truesdell and Noll later made the objectivity requirements systematic
+in modern continuum mechanics.
 It vanishes for every rigid motion
 \[
   \varphi(X)=a+QX,\qquad Q\in\SO(3),
 \]
 because \(F=Q\) and \(Q^TQ=I\). This invariance is why \(E\), not \(F-I\), is a
-geometric strain measure for finite deformations.
+geometric strain measure for finite deformations. It is not the only such
+measure. The Almansi strain, Biot strain, Hencky logarithmic strain, and the
+Seth-Hill family are also objective finite-strain measures; they agree to first
+order in small strain and differ in how they organize finite stretch.
 
 For small displacement
 \[
@@ -136,8 +145,9 @@ The infinitesimal strain is therefore
       .. controls (0.75,2.0) and (0.35,1.25) .. (0.55,0.45);
     \coordinate (X) at (1.4,1.15);
     \draw[black, fill=black] (X) circle (1.6pt) node[below left] {\(X\)};
-    \draw[red!75!black, thick, ->] (X) -- ++(0.9,0.38)
-      node[midway, above] {\(\delta X\)};
+    \draw[red!75!black, thick, ->] (X) -- ++(0.9,0.38);
+    \node[red!75!black, fill=white, inner sep=1pt] at (2.12,1.74) {\(\delta X\)};
+    \draw[red!75!black, ->] (1.96,1.60) -- (1.74,1.30);
     \node at (1.75,-0.55) {reference body \(B\)};
   \end{scope}
   \draw[thick, ->] (3.8,1.35) -- node[above] {\(\varphi\)} (5.3,1.35);
@@ -152,8 +162,10 @@ The infinitesimal strain is therefore
     \draw[black, fill=black] (x) circle (1.6pt);
     \node[fill=white, inner sep=1pt] at (2.75,0.42) {\(x=\varphi(X)\)};
     \draw[black!55, ->] (2.42,0.55) -- (1.67,1.05);
-    \draw[red!75!black, thick, ->] (x) -- ++(1.05,0.62)
-      node[midway, below right, fill=white, inner sep=1pt] {\(\delta x=F\delta X\)};
+    \draw[red!75!black, thick, ->] (x) -- ++(1.05,0.62);
+    \node[red!75!black, fill=white, inner sep=1pt] at (2.74,1.98)
+      {\(\delta x=F\delta X\)};
+    \draw[red!75!black, ->] (2.44,1.82) -- (2.10,1.47);
     \node at (1.8,-0.55) {current placement};
   \end{scope}
 \end{tikzpicture}
@@ -226,6 +238,9 @@ Because \(\det F>0\) and \(\det U>0\), \(\det R_{\mathrm p}=1\). Thus
   V=R_{\mathrm p}UR_{\mathrm p}^T
 \]
 gives \(F=R_{\mathrm p}U=VR_{\mathrm p}\).
+The construction also proves uniqueness: the positive square root \(U=C^{1/2}\)
+is unique, so \(R_{\mathrm p}=FU^{-1}\) and \(V=R_{\mathrm p}UR_{\mathrm p}^T\)
+are unique for every \(F\) with \(\det F>0\).
 \end{derivation}
 
 The eigenvalues of \(U\) are the principal stretches. They are intrinsic
@@ -273,8 +288,9 @@ record the intrinsic stretching that can store elastic energy.
   \begin{scope}[xshift=8.6cm]
     \draw[->] (-1.35,0) -- (1.55,0) node[right] {\(e_1\)};
     \draw[->] (0,-1.15) -- (0,1.35) node[above] {\(e_2\)};
-    \draw[red!70!black, ->] (0.65,0.0) arc (0:28:0.65);
-    \node[red!70!black, fill=white, inner sep=1pt] at (1.30,0.84) {\(R_{\mathrm p}\)};
+    \draw[red!70!black, very thick, ->] (0.78,-0.05) arc (-5:30:0.78);
+    \node[red!70!black, fill=white, inner sep=1pt] at (1.42,0.98) {\(R_{\mathrm p}\)};
+    \draw[red!70!black, ->] (1.22,0.82) -- (0.82,0.30);
     \node[align=center] at (0,-1.55) {image under \(F=R_{\mathrm p}U\)};
   \end{scope}
 \end{tikzpicture}
@@ -290,10 +306,18 @@ rigid rotation \(Q\in\SO(3)\), the deformation gradient becomes \(QF\), but
 \[
   (QF)^T(QF)=F^TF=C.
 \]
-Thus a frame-indifferent stored energy can be written as
+Thus, for an ordinary hyperelastic solid, frame indifference is equivalent to
+the statement that the stored energy factors through \(C\):
 \[
   W(F,X)=\widehat W(C,X).
 \]
+The converse is immediate: if \(W(F,X)=\widehat W(F^TF,X)\), then
+\[
+  W(QF,X)=\widehat W(F^TQ^TQF,X)=\widehat W(F^TF,X)=W(F,X).
+\]
+For orientation-preserving deformations with \(J>0\), polar decomposition gives
+the other direction: \(F=R_{\mathrm p}U\), so frame indifference removes
+\(R_{\mathrm p}\) and leaves dependence only on \(U^2=C\).
 For an isotropic material, the material has no preferred direction in the
 reference body, so \(\widehat W\) may depend on \(C\) only through its principal
 invariants:
@@ -365,6 +389,10 @@ The answer is controlled by the Saint-Venant tensor:
   \partial_k\partial_m e_{\ell n}=0.
   }
 \]
+Saint-Venant formulated the compatibility condition in 1864; Beltrami later
+recast it in the double-curl form in 1886. Its geometric content is that
+incompatibility records defects, residual stress, or a non-Euclidean reference
+geometry inside the strain field.
 This is often written
 \[
   \operatorname{curl}\operatorname{curl} e=0.
@@ -408,6 +436,19 @@ Thus the displayed compatibility condition is exactly the linearized flatness
 condition.
 \end{derivation}
 
+On a simply connected domain the condition is also sufficient. If
+\(\operatorname{curl}\operatorname{curl}e=0\), the linearized curvature of
+\(g=\delta+2e\) vanishes. Locally there are vector fields \(\xi\) solving
+\[
+  \partial_i\xi_j+\partial_j\xi_i=2e_{ij}.
+\]
+The obstruction to patching these local solutions is a rigid motion on each
+overlap, because the difference of two solutions has zero symmetric gradient.
+On a simply connected body these rigid-motion cocycles can be chosen
+consistently, giving a single-valued displacement \(\xi\) unique up to a global
+rigid motion. This is the sufficiency part of Saint-Venant compatibility; on a
+multiply connected body, periods around noncontractible loops must also vanish.
+
 \section{Hyperelastic Action And Piola Stress}
 \label{sec:hyperelastic-action}
 
@@ -422,13 +463,14 @@ volume. Let \(\rho_0(X)\) be reference mass density. The action is
   \right)\dd^3X\,\dd t.
 \]
 
-\begin{assumption}[Hyperelasticity]
+\begin{assumption}[Hyperelastic material]
 The stress is derived from stored energy:
 \[
   P^A{}_i=\frac{\partial W}{\partial F^i{}_A}.
 \]
-This excludes plasticity, viscosity, fracture, and history dependence. Those
-effects require additional internal variables or dissipation laws.
+This assumption excludes hypoelastic, Cauchy-elastic but non-potential,
+viscous, plastic, fracture, and history-dependent materials unless additional
+internal variables or dissipation laws are added.
 \end{assumption}
 
 \begin{derivation}[Elastodynamic equation]
@@ -486,6 +528,8 @@ The first Piola-Kirchhoff stress \(P\) measures force per reference area. The
 Cauchy stress \(\sigma\) measures force per current spatial area. The two
 stress tensors represent the same physical traction, but on different surface
 elements.
+Cauchy's 1822 tetrahedron argument is the classical reason a traction law
+linear in the surface normal must be represented by a stress tensor.
 
 \begin{proposition}[Cauchy's traction theorem]
 At a fixed point and time, suppose the traction \(t(n)\) on a plane with unit
@@ -499,7 +543,8 @@ shrinking material volumes. Then there is a unique tensor \(\sigma\) such that
 \begin{proof}
 Use Cauchy's tetrahedron. Let the oblique face have area \(A\) and outward
 normal \(n\), and let the three coordinate faces have outward normals
-\(-e_i\) and areas \(A_i=n_iA\). Force balance on the tetrahedron gives
+\(-e_i\) and areas \(A_i=n_iA\), first for \(n_i\ge0\). Force balance on the
+tetrahedron gives
 \[
   t(n)A+\sum_i t(-e_i)A_i+O(V)=0,
 \]
@@ -510,8 +555,12 @@ terms scale like volume, so \(O(V)/A\to0\). Hence
   t(n)=-\sum_i n_i t(-e_i).
 \]
 Applying the same argument to a thin pillbox gives \(t(-e_i)=-t(e_i)\).
-Therefore \(t(n)=\sum_i n_i t(e_i)\). Define \(\sigma\) by taking its \(i\)-th
-column to be \(t(e_i)\). Then \(t(n)=\sigma n\), and uniqueness follows by
+Therefore \(t(n)=\sum_i n_i t(e_i)\) for normals in the chosen octant. Repeating
+the tetrahedron in each octant gives the same formula whenever the signs of the
+components of \(n\) are fixed. Continuity of \(t(n)\) on the unit sphere then
+extends the formula across the coordinate great circles where one component
+vanishes. Define \(\sigma\) by taking its \(i\)-th column to be \(t(e_i)\).
+Then \(t(n)=\sigma n\) for every unit normal \(n\), and uniqueness follows by
 evaluating the formula on the basis normals \(e_i\).
 \end{proof}
 
@@ -693,11 +742,23 @@ polarization and two transverse polarizations in an isotropic solid.
 \end{derivation}
 
 The calculation is also a useful diagnostic for elastic constants. Stability
-requires \(c_P^2>0\) and \(c_S^2>0\), while the energy argument below gives the
-slightly sharper conditions \(\mu>0\) and
-\(K_{\mathrm{bulk}}=\lambda+2\mu/3>0\). The two statements are consistent:
-positive shear stiffness gives shear waves, and positive bulk stiffness gives a
-real longitudinal wave speed.
+of propagating plane waves requires \(c_P^2>0\) and \(c_S^2>0\), namely
+\(\mu>0\) and \(\lambda+2\mu>0\). This is strictly weaker than positive
+definiteness of the quadratic elastic energy, which gives
+\(\mu>0\) and \(K_{\mathrm{bulk}}=\lambda+\frac23\mu>0\). Wave-speed positivity
+therefore does not by itself imply the stronger energy convexity condition.
+In finite elasticity these distinctions become sharper. Positive wave speeds
+are related to strong ellipticity, or positivity of the second variation on
+rank-one perturbations \(a\otimes n\). Energy minimization requires stronger
+conditions, often expressed through rank-one convexity, quasiconvexity, or the
+more checkable sufficient condition of polyconvexity. These are not cosmetic
+terms: a stored energy can be frame indifferent and support real small-amplitude
+waves while still failing to be globally convex as a function of all entries of
+\(F\).
+The \(P\)- and \(S\)-wave names are not only formal: seismology uses precisely
+this longitudinal/transverse split, and Oldham's 1906 inference of Earth's core
+from the \(S\)-wave shadow zone is a memorable physical consequence of the same
+calculation.
 
 \section{Elastic Constants And Classical Boundary-Value Problems}
 \label{sec:elastic-constants-boundary-problems}
@@ -712,6 +773,13 @@ a notation checkpoint: \(E_{\mathrm Y}\), \(\nu_{\mathrm P}\), \(\lambda\),
 They measure different responses, and the boundary-value problems below show
 which modulus an experiment actually sees.
 
+Saint-Venant's principle is the philosophical license behind many of the
+one-dimensional reductions below. Details of how a load is applied at an end are
+expected to decay over distances comparable to the cross-section size, so a
+slender body can have a robust interior bar, shaft, or beam solution even when
+the end fixtures are complicated. This is an asymptotic modelling principle, not
+an exact theorem for every geometry.
+
 \subsection{Moduli, Positivity, And Nearly Incompressible Solids}
 \label{subsec:elastic-moduli-positivity}
 
@@ -719,8 +787,8 @@ The quadratic energy
 \[
   W(e)=\frac{\lambda}{2}(\tr e)^2+\mu e:e
 \]
-is best understood by splitting strain into volume-changing and shape-changing
-parts. Define
+becomes transparent after splitting strain into volume-changing and
+shape-changing parts. Define
 \[
   e_0=e-\frac13(\tr e)I,
   \qquad
@@ -801,6 +869,8 @@ Equivalently,
   \sigma_{ij}=\lambda(\partial_k\xi_k)\delta_{ij}
   +\mu(\partial_i\xi_j+\partial_j\xi_i).
 \]
+This static Navier-Cauchy equation descends from Navier's 1821 molecular theory
+and Cauchy's continuum formulation of stress in the 1820s.
 Boundary conditions are part of the problem statement. On a displacement
 boundary \(\partial B_D\), one prescribes
 \[
@@ -830,8 +900,17 @@ internal stress work equals external virtual work.
 The weak form also gives uniqueness in the standard coercive case. If the body
 has a nonempty displacement boundary, or if rigid translations and rotations
 are otherwise fixed, the quadratic elastic energy is strictly convex on the
-admissible displacement space. Korn's inequality controls the full displacement
-gradient by the strain, and the Lax-Milgram theorem then gives a unique weak
+admissible displacement space. Korn's inequality is the missing analytic
+bridge:
+\[
+  \|\xi\|_{H^1(B)}
+  \le C\left(\|e(\xi)\|_{L^2(B)}+\|\xi\|_{L^2(B)}\right),
+\]
+and, after fixing rigid motions or imposing displacement boundary conditions,
+the \(L^2\)-term can be removed. The inequality is an integration-by-parts
+statement that the skew part of \(\nabla\xi\) is controlled by the symmetric
+part once rigid rotations are excluded. With Korn's inequality, the bilinear
+elastic energy is coercive, and the Lax-Milgram theorem gives a unique weak
 solution for compatible loads. In a pure traction problem, uniqueness holds
 only modulo rigid motions, which must be removed by side constraints.
 
@@ -869,6 +948,10 @@ The negative lateral strain is the definition of Poisson's ratio:
 This simple formula is often the cleanest way to remember what Young's modulus
 measures: it is stress divided by axial strain in a uniaxial test with free
 lateral contraction.
+The appearance of Poisson's ratio is also a historical caution: early
+``rari-constant'' elasticity in the Cauchy-Poisson tradition overconstrained
+the moduli. Modern isotropic linear elasticity needs two independent elastic
+constants.
 
 \subsection{Torsion Of A Circular Shaft}
 \label{subsec:circular-shaft-torsion}
@@ -898,9 +981,28 @@ The shear stress grows linearly with radius:
 The maximum shear stress occurs at the boundary \(r=a\). This is the torsional
 counterpart of the axial bar formula: stiffness is the elastic modulus times a
 geometric moment of the cross-section.
+Circular shafts are special because warping vanishes. Saint-Venant's general
+torsion theory allows non-circular sections, but then the cross-section warps and
+the simple polar-moment formula must be replaced by a torsion function.
+For a non-circular cross-section \(A\), one writes the axial displacement as a
+warping function \(\chi(x,y)\) and solves a two-dimensional Poisson problem on
+\(A\) with Neumann boundary condition determined by the boundary tangent. The
+torsional rigidity is then not \(\mu J_{\mathrm{polar}}\), but an energy
+integral involving \(\chi\). The circular formula is the special case in which
+symmetry forces \(\chi=0\).
 
 \subsection{Euler-Bernoulli Beam Bending}
 \label{subsec:euler-bernoulli-beam}
+
+The Euler-Bernoulli model traces back to Daniel Bernoulli's elastic-energy
+viewpoint and Euler's 1744 elastica. Its assumptions are deliberate: later
+Timoshenko theory restores shear deformation and rotary inertia when the beam
+is not sufficiently slender.
+As an asymptotic reduction from three-dimensional elasticity, it assumes a
+slenderness parameter \(h/L\ll1\), where \(h\) is a cross-section diameter.
+Keeping the leading bending energy gives strains of order \(h\,w''\); transverse
+shear strains and rotary inertia enter at higher order in \(h/L\). This is why
+the model is excellent for long thin beams and unreliable for short thick ones.
 
 For a slender beam, let \(x\in[0,L]\) be arclength along the undeformed neutral
 axis and let \(w(x)\) be a small transverse deflection. The Euler-Bernoulli
@@ -1012,6 +1114,9 @@ It satisfies \(w(0)=w(L)=0\), zero bending moment at both supports, and
     \node[red!75!black, anchor=west, fill=white, inner sep=1.5pt]
       at (4.03,0.29) {\(P_{\mathrm{end}}\)};
     \draw[<->] (0,0.02) -- node[below] {\(L\)} (3.6,0.02);
+    \draw[densely dashed] (3.6,1.05) -- (3.6,0.34);
+    \draw[<->, purple!75!black] (3.35,1.05) -- (3.35,0.34)
+      node[midway, left, fill=white, inner sep=1pt] {\(w(L)\)};
     \node[align=center, fill=white, inner sep=1.5pt] at (1.85,1.72)
       {cantilever beam\\\(w(L)=P_{\mathrm{end}}L^3/(3E_{\mathrm Y}I_{\mathrm{area}})\)};
   \end{scope}
@@ -1048,8 +1153,9 @@ Linear isotropic elasticity is the small-strain limit. Its two Lam\'e constants
 encode the quadratic energy, the Navier-Cauchy equation describes displacement
 waves and static equilibrium, and the classical bar, torsion, and beam problems
 show how continuum equations reduce to experimentally measurable stiffness
-laws. The next chapter uses this elastic language as the material side of a
-gauge theory of deforming bodies.
+laws. The same material description also has a frame-theoretic extension:
+once each material point is allowed its own local orientation, elastic
+kinematics becomes the material side of a gauge theory of deforming bodies.
 
 \paragraph{Questions to carry forward.}
 Which tensor lives in the reference configuration, and which lives in space?
@@ -1058,7 +1164,6 @@ field with defects? Which boundary term defines the stress being measured?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:elastic-body-chapter-end-labs}
-\label{sec:elastic-body-questions}
 
 The chapter-end work is organized as an audit of the elastic modelling chain:
 objectivity, variational stress, linearization, and classical reductions. The

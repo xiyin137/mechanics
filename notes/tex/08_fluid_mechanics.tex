@@ -4,17 +4,25 @@
 \section{What Is A Fluid?}
 \label{sec:what-is-fluid}
 
-A fluid is a continuum that has lost its memory of a reference shear. Push a
-finger through honey: the displaced material moves, stretches, and eventually
-fills in behind the finger, but no permanent shear strain is stored. Pull the
-finger out and the honey does not snap back.
+A simple Newtonian fluid is a continuum that has lost its memory of a reference
+shear. Push a finger through honey: the displaced material moves, stretches,
+and eventually fills in behind the finger, but no permanent shear strain is
+stored. Pull the finger out and the honey does not snap back. This is a
+constitutive idealization, not the definition of every material called a fluid:
+viscoelastic fluids, Bingham fluids, granular media, and superfluids require
+different constitutive structures.
 
-This is why the Eulerian description is natural. We observe fields at fixed
-points in space: velocity, density, pressure, and stress. The moving-particle
-viewpoint returns through the material derivative and transport theorems. The
-preceding elastic and deforming-body chapters kept the material reference
-description in the foreground; this chapter shifts the emphasis to Eulerian
-fields and treats fluids on their own terms.
+This is why the Eulerian description is convenient for many fluid problems. We
+observe fields at fixed points in space: velocity, density, pressure, and
+stress. The moving-particle viewpoint returns through the material derivative
+and transport theorems, and remains essential for ideal-fluid variational
+principles, vortex-line transport, mixing, and free-surface motion. The
+historical names are literal here: Euler wrote the inviscid fluid equations in
+Eulerian form in the 1750s, while the Lagrangian description follows labelled
+material particles. The preceding elastic and deforming-body chapters kept the
+material reference description in the foreground; this chapter shifts the
+emphasis to Eulerian fields without treating them as the only natural
+description.
 
 The basic fields are functions on physical space:
 \[
@@ -36,7 +44,7 @@ be replaced by weak forms and jump conditions.
 \end{assumption}
 
 \paragraph{Roadmap.}
-The derivation is deliberately staged. First we learn how to differentiate
+The derivation is staged in the order of the modelling choices. First we learn how to differentiate
 quantities attached to moving fluid parcels. Then we convert integral balance
 laws into local partial differential equations for mass and momentum. Only
 after those kinematic and balance statements are in place do we introduce the
@@ -45,12 +53,13 @@ Navier-Stokes equation. The later sections use that equation in three ways:
 exact laminar solutions, stability analysis, and Hamiltonian point-vortex
 reduction.
 
-This placement at the end of the notes is intentional.  Elastic bodies show how
-configuration-space mechanics becomes a material field theory.  Deforming bodies
-show how frame choices and connections enter when internal shape is separated
-from rigid placement.  Fluid mechanics then asks what remains when material
-labels are still allowed in derivations but no longer provide the most useful
-state variables.
+Elastic bodies use a material map as the primary unknown; deforming bodies add
+frame choices and connections to material shape. A simple fluid still permits
+material labels in derivations, but its closed equations are most useful as
+equations for Eulerian fields: density, velocity, pressure, and stress at
+points in space. The common continuum thread is stress and balance; the
+constitutive question shifts from stored deformation energy to rate-dependent
+stress.
 
 The staging matters because the Navier-Stokes equation has three different
 ingredients. Its inertial term is kinematics, its pressure and stress terms
@@ -109,6 +118,9 @@ There are two sources of change. The value of \(f\) can change along each
 particle path, and the volume element occupied by neighboring particles can
 expand or contract. The Reynolds transport theorem is exactly the formula that
 keeps both effects.
+Reynolds gave the theorem in this systematic continuum-mechanics form in his
+1903 treatise, but the pullback idea is already present in Euler's Lagrangian
+description of fluids.
 
 \begin{figure}[htbp]
 \centering
@@ -241,6 +253,11 @@ an advected scalar.
 \section{Cauchy Momentum Balance}
 \label{sec:cauchy-momentum}
 
+Cauchy's 1822--1823 stress principle is the common ancestor of the elastic and
+fluid balance laws used in these notes. The same traction theorem that produced
+stress in Chapter~\ref{chap:elastic-body} now produces the stress tensor of a
+moving fluid.
+
 Newton's second law for a material volume \(V(t)\) is
 \[
   \frac{\dd}{\dd t}\int_{V(t)}\rho u\,\dd^3x
@@ -279,6 +296,13 @@ leaves only this axial term. Since the volume is arbitrary,
 \[
   \sigma=\sigma^T.
 \]
+In indices, the extra term is
+\[
+  \epsilon_{ijk}\sigma_{kj}\,e_i,
+\]
+which is twice the axial vector of the skew tensor
+\((\sigma-\sigma^T)/2\). Angular-momentum balance without internal body
+couples forces this vector to vanish pointwise.
 
 \begin{derivation}[Local momentum equation]
 Apply the transport theorem to \(f=\rho u\). Using mass conservation, the
@@ -336,6 +360,13 @@ temperature, or internal variables.
 \section{Newtonian Stress And The Navier-Stokes Equation}
 \label{sec:navier-stokes-derivation}
 
+The name Navier-Stokes compresses a longer history: Navier introduced a
+viscous molecular model in 1822, Cauchy supplied the stress framework,
+Saint-Venant developed continuum viscous stresses, and Stokes gave the
+standard nineteenth-century formulation in 1845. The modern axiomatic language
+of objectivity and constitutive response was systematized by Truesdell and
+Noll in the twentieth century.
+
 The balance laws so far are universal for continua, but they are not yet a
 closed fluid model: the stress tensor \(\sigma\) is still unknown. A
 constitutive law supplies the missing relation between stress and motion. For a
@@ -366,7 +397,8 @@ constitutive assumption with three ingredients:
 \]
 Objectivity removes \(W\). Isotropy says that a linear map from the symmetric
 tensor \(D\) to a symmetric stress can only use the deviatoric part of \(D\)
-and its trace. The most general isotropic linear relation is therefore
+and its trace. Within the local, linear, objective, isotropic simple-fluid class
+defined by these assumptions, the most general linear relation is therefore
 \[
   \boxed{
   \sigma=-pI+2\mu D+\lambda(\nabla\cdot u)I.
@@ -428,8 +460,10 @@ For incompressible flow with constant \(\rho\),
 \[
   \nabla\cdot u=0,
 \]
-and the pressure is best understood as the Lagrange multiplier enforcing this
-constraint. The equations reduce to
+and pressure plays the role, in this incompressible model, of the Lagrange
+multiplier enforcing this constraint. In compressible flow pressure is instead a
+thermodynamic variable closed by an equation of state. The incompressible
+equations reduce to
 \[
   \boxed{
   \begin{aligned}
@@ -455,8 +489,11 @@ constraint role explicit:
 \]
 with boundary conditions determined by the normal component of the momentum
 equation at the wall. The pressure is therefore a nonlocal field: it adjusts
-instantaneously, within the incompressible model, to project the acceleration
-back onto divergence-free velocity fields.
+instantaneously within the incompressible model, the formal \(c_s\to\infty\)
+limit, to project the acceleration back onto divergence-free velocity fields.
+Real fluids transmit pressure disturbances at the speed of sound;
+incompressibility is the low-Mach, long-wavelength approximation in which that
+propagation time is neglected.
 
 \section{Initial And Boundary Data For Navier-Stokes}
 \label{sec:navier-stokes-data}
@@ -602,6 +639,10 @@ must draw energy from mean shear fast enough to beat viscous dissipation.
 \section{Vorticity And Circulation}
 \label{sec:vorticity-circulation}
 
+Helmholtz's 1858 vortex theorems and Kelvin's 1869 circulation theorem are the
+classical anchors for this section. They explain which parts of inviscid
+vorticity motion survive without viscosity.
+
 The vorticity is
 \[
   \omega=\nabla\times u.
@@ -662,6 +703,73 @@ where \(h\) is specific enthalpy. The integrand becomes
 \]
 The integral of a single-valued total derivative around a closed loop is zero.
 \end{proof}
+
+\begin{proposition}[Helmholtz vortex theorems, inviscid barotropic form]
+For a smooth inviscid barotropic fluid with conservative body force:
+\begin{enumerate}
+\item vortex lines are transported by the fluid motion;
+\item the circulation around a small material loop moving with a vortex tube is
+constant, so the vortex-tube strength is constant;
+\item vortex lines cannot begin or end in the interior of the fluid.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Kelvin's theorem gives conservation of circulation around every material loop.
+Apply it to a small loop encircling a vortex tube. By Stokes' theorem,
+\[
+  \oint_{\partial S(t)}u\cdot\dd x
+  =
+  \int_{S(t)}\omega\cdot n\,\dd S,
+\]
+so the vorticity flux through a material cross-section of the tube is constant.
+If a material curve is initially tangent to \(\omega\), then the inviscid
+vorticity equation
+\[
+  \frac{D\omega}{Dt}=\omega\cdot\nabla u-\omega\,\nabla\cdot u
+\]
+has the same stretching form as the evolution equation for an infinitesimal
+material line element per unit mass; hence vortex lines move with the fluid.
+Finally, \(\nabla\cdot\omega=\nabla\cdot(\nabla\times u)=0\), so vortex flux has
+no interior sources or sinks. Vortex lines either close, meet a boundary, or
+continue to infinity.
+\end{proof}
+
+\section{Bernoulli's Theorem As An Inviscid First Integral}
+\label{sec:bernoulli-theorem}
+
+Daniel Bernoulli's \emph{Hydrodynamica} (1738) is older than the modern
+Navier-Stokes equation, but its central invariant appears cleanly from Euler's
+equation. For inviscid barotropic flow with conservative body force
+\(-\nabla\Phi\),
+\[
+  \frac{D u}{D t}=-\nabla h-\nabla\Phi,
+\]
+where \(h\) is specific enthalpy, defined by \(\dd h=\rho^{-1}\dd p\). Assume
+the flow is steady. The vector identity
+\[
+  (u\cdot\nabla)u
+  =
+  \nabla\left(\frac12|u|^2\right)-u\times\omega,
+  \qquad
+  \omega=\nabla\times u,
+\]
+gives
+\[
+  \nabla\left(\frac12|u|^2+h+\Phi\right)=u\times\omega.
+\]
+Dotting with \(u\) removes the right-hand side:
+\[
+  u\cdot\nabla\left(\frac12|u|^2+h+\Phi\right)=0.
+\]
+Thus
+\[
+  \boxed{\frac12|u|^2+h+\Phi=\text{constant along each streamline}.}
+\]
+If the steady flow is also irrotational on a connected region, then
+\(u\times\omega=0\), so the same Bernoulli function is constant throughout that
+region. The distinction matters: streamline-wise Bernoulli and global Bernoulli
+are different statements with different hypotheses.
 
 \section{How Exact Navier-Stokes Solutions Are Found}
 \label{sec:exact-ns-solution-strategy}
@@ -849,6 +957,11 @@ The volume flux per unit span is
 \subsection{Hagen-Poiseuille Pipe Flow}
 \label{subsec:hagen-poiseuille}
 
+Hagen (1839) and Poiseuille (1840) measured this pipe-flow law experimentally
+before it became a standard derivation from
+Navier-Stokes. It is a useful reminder that some continuum laws entered
+mechanics through measurement before their modern derivation was settled.
+
 For a circular pipe of radius \(a\), use cylindrical radius \(r\) and seek
 \[
   u=V(r)e_z,\qquad -\frac{\dd p}{\dd z}=G>0.
@@ -907,9 +1020,9 @@ of viscous laminar flow.
     \draw[thick] (0,3.0) -- (3.0,3.0);
     \draw[->, thick, black!70] (0.28,3.25) -- (1.16,3.25)
       node[midway, above, fill=white, inner sep=1.5pt] {\(-\partial_xp=G\)};
-    \foreach \y/\len in {0.45/0.45,0.95/1.05,1.50/1.45,2.05/1.05,2.55/0.45}
+    \foreach \y/\len in {0.45/0.20,0.95/0.85,1.50/1.65,2.05/0.85,2.55/0.20}
       \draw[red!75!black, thick, ->] (0.35,\y) -- ++(\len,0);
-    \node[red!75!black, fill=white, inner sep=1.5pt] at (2.30,2.76) {Poiseuille};
+    \node[red!75!black, fill=white, inner sep=1.5pt] at (2.36,2.55) {Poiseuille};
     \node at (1.5,-0.35) {\(V(0)=V(h)=0\)};
   \end{scope}
 \end{tikzpicture}
@@ -935,6 +1048,9 @@ to solve the full Navier-Stokes equation.
 
 \subsection{Stokes' First Problem}
 \label{subsec:stokes-first-problem}
+
+Stokes' 1851 first problem is the canonical similarity solution for viscous
+diffusion of momentum from an impulsively moved wall.
 
 Let a viscous incompressible fluid occupy the half-space \(y>0\). For
 \(t<0\), both fluid and wall are at rest. At \(t=0\), the wall at \(y=0\) is
@@ -1129,9 +1245,9 @@ and the cell-averaged kinetic energy density is
       (1.6,0.330) (1.8,0.274) (2.0,0.224) (2.2,0.180)
       (2.4,0.144) (2.6,0.114) (2.8,0.089) (3.0,0.068) (3.2,0.052)
     };
-    \node[blue!70!black, fill=white, inner sep=1pt] at (1.35,0.13) {\(t_1\)};
-    \node[red!75!black, fill=white, inner sep=1pt] at (2.05,0.17) {\(t_2\)};
-    \node[purple!75!black, fill=white, inner sep=1pt] at (2.80,0.18) {\(t_3\)};
+    \node[blue!70!black, fill=white, inner sep=1pt] at (0.98,0.27) {\(t_1\)};
+    \node[red!75!black, fill=white, inner sep=1pt] at (1.70,0.36) {\(t_2\)};
+    \node[purple!75!black, fill=white, inner sep=1pt] at (2.45,0.31) {\(t_3\)};
   \end{scope}
   \node[align=center] at (1.8,-0.55) {Stokes first problem:\\viscous penetration grows like \(\sqrt{\nu t}\)};
 
@@ -1202,12 +1318,14 @@ from the base flow.
   \draw[thick] (0,3.05) -- (5.3,3.05);
   \foreach \y/\len in {0.65/0.35,1.10/0.62,1.55/0.92,2.00/1.25,2.45/1.55,2.85/1.8}
     \draw[blue!70!black, thick, ->] (0.45,\y) -- ++(\len,0);
-  \draw[red!75!black, thick, ->] (2.75,1.15) -- (2.75,2.05)
-    node[midway,right, fill=white, inner sep=1pt] {\(\tilde v\)};
-  \draw[red!75!black, thick, ->] (2.75,2.05) -- (3.55,2.05)
-    node[right, fill=white, inner sep=1pt] {energy exchange};
+  \draw[red!75!black, thick, ->] (2.75,1.15) -- (2.75,2.05);
+  \node[red!75!black, fill=white, inner sep=1pt] at (2.42,2.16) {\(\tilde v\)};
+  \draw[red!75!black, thick, ->] (2.75,2.05) -- (3.55,2.05);
   \draw[purple!75!black, thick, domain=0.3:5.0, samples=120]
     plot (\x,{1.75+0.22*sin(115*\x)});
+  \draw[red!75!black, <->] (4.20,1.75) -- (4.20,1.97);
+  \node[red!75!black, anchor=west, fill=white, inner sep=1pt] at (4.28,1.86)
+    {amp.};
   \node[blue!70!black] at (4.25,2.75) {base shear \(U(y)e_x\)};
   \node[purple!75!black, fill=white, inner sep=1pt] at (4.10,1.16)
     {normal-mode disturbance};
@@ -1222,11 +1340,20 @@ flow and the disturbance.}
 \subsection{Orr-Sommerfeld Equation}
 \label{subsec:orr-sommerfeld}
 
+Orr and Sommerfeld derived this normal-mode equation independently in
+1907--1908. Its history is a useful warning: the equation is linear, but the
+transition problem it probes is not exhausted by linear eigenvalues.
+
 For two-dimensional perturbations, introduce a streamfunction
 \[
   \tilde u=\partial_y\psi,\qquad
   \tilde v=-\partial_x\psi.
 \]
+Squire's theorem justifies this restriction for parallel shear flows: if a
+three-dimensional normal mode is unstable at Reynolds number \(\mathrm{Re}\),
+then there is a two-dimensional mode unstable at a no larger effective Reynolds
+number. Thus the least stable linear mode can be found in the two-dimensional
+Orr-Sommerfeld problem.
 Seek normal modes
 \[
   \psi(x,y,t)=\phi(y)e^{i\alpha x+\sigma t}.
@@ -1260,6 +1387,12 @@ Orr-Sommerfeld equation. A base flow is linearly unstable if some eigenvalue has
 \[
   \operatorname{Re}\sigma>0.
 \]
+For viscous flow on a bounded channel, the no-slip boundary conditions make the
+Orr-Sommerfeld operator a fourth-order non-self-adjoint boundary-value problem
+with a discrete spectrum. The eigenfunctions are not orthogonal in the way
+self-adjoint Sturm-Liouville modes are, and the inviscid Rayleigh limit is
+singular: continuous-spectrum effects and critical layers can appear as
+\(\mathrm{Re}\to\infty\).
 Many fluid-mechanics texts write the same normal mode as
 \(e^{i\alpha(x-ct)}\). With the convention used here, the complex phase speed
 \(c\) and growth rate \(\sigma\) are related by
@@ -1271,12 +1404,14 @@ so \(\operatorname{Re}\sigma=\alpha\,\operatorname{Im}c\) for real
 
 \begin{remark}[Classical facts]
 Plane Poiseuille flow has a linear instability above a critical Reynolds number
-about \(5772\), using centerline speed and half-channel width. Plane Couette
-flow is linearly stable for all Reynolds numbers in the classical
+about \(5772\), using centerline speed and half-channel width; the computation
+was made reliable in the twentieth century by Thomas and later Orszag. Plane
+Couette flow is linearly stable for all Reynolds numbers in the classical
 Orr-Sommerfeld analysis, yet it can transition through finite-amplitude
-disturbances. Stability is therefore not a single concept: linear eigenvalue
-stability, energy stability, transient growth, and nonlinear transition answer
-different questions.
+disturbances. Reynolds' 1883 dye experiment in pipe flow is the founding
+observation behind this warning. Stability is therefore not a single concept:
+linear eigenvalue stability, energy stability, transient growth, and nonlinear
+transition answer different questions.
 \end{remark}
 
 \subsection{Energy Stability Estimate}
@@ -1304,7 +1439,10 @@ In two dimensions, an idealized vorticity distribution can be written as
 \[
   \omega(x,y)=\sum_{i=1}^{N}\Gamma_i\delta(x-x_i,y-y_i),
 \]
-where \(\Gamma_i\) is circulation. The point vortex equations are
+where \(\Gamma_i\) is circulation. Helmholtz introduced point-vortex
+idealizations in his 1858 vortex work, and Kirchhoff gave the Hamiltonian form.
+Here they serve as a finite-dimensional Hamiltonian reduction of ideal-fluid
+motion. The point vortex equations are
 \[
 \begin{aligned}
   \Gamma_i\dot x_i &= \frac{\partial H}{\partial y_i},\\
@@ -1325,27 +1463,32 @@ This is Hamiltonian mechanics, but the symplectic form is weighted:
   =
   \sum_i \Gamma_i\,\dd x_i\wedge\dd y_i.
 \]
+When the circulations have mixed signs this form is not positive in any metric
+sense. That is not a problem: symplectic structure requires nondegeneracy, not
+positive definiteness.
 The weight \(\Gamma_i\) is the circulation carried by the \(i\)-th vortex. One
 can derive this finite-dimensional symplectic form by reducing the ideal-fluid
-Hamiltonian bracket to delta-function vorticity; here we take the reduced
-point-vortex bracket as the model.
+Hamiltonian bracket to delta-function vorticity; in this section we use the
+resulting point-vortex bracket as the model.
 
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[scale=1.05, >=Latex, font=\small]
   \draw[->] (-2.5,0) -- (2.7,0) node[right] {\(x\)};
   \draw[->] (0,-2.2) -- (0,2.4) node[above] {\(y\)};
-  \foreach \x/\y/\g/\lab/\anch in {-0.65/-0.35/+/{+\Gamma}/below left,0.65/0.35/-/{-\Gamma}/above right}
-  {
-    \draw[thick] (\x,\y) circle (0.16);
-    \node at (\x,\y) {\(\g\)};
-    \node[\anch=3pt, fill=white, inner sep=1pt] at (\x,\y) {\(\lab\)};
-  }
+  \draw[thick] (-0.65,-0.35) circle (0.16);
+  \node at (-0.65,-0.35) {\(+\)};
+  \node[fill=white, inner sep=1pt] (plusgamma) at (-1.24,-0.76) {\(+\Gamma\)};
+  \draw[thin] (plusgamma.north east) -- (-0.77,-0.43);
+  \draw[thick] (0.65,0.35) circle (0.16);
+  \node at (0.65,0.35) {\(-\)};
+  \node[fill=white, inner sep=1pt] (minusgamma) at (1.58,0.16) {\(-\Gamma\)};
+  \draw[thin] (minusgamma.west) -- (0.77,0.43);
   \draw[dashed] (-0.65,-0.35) -- (0.65,0.35);
   \draw[<->] (-0.65,-0.70) -- (0.65,0.00)
     node[midway, below right, fill=white, inner sep=1pt] {fixed separation \(d\)};
-  \draw[blue, thick, ->] (-1.74,-0.98) -- (-2.24,-0.05);
-  \draw[blue, thick, ->] (2.00,-0.08) -- (1.50,0.85);
+  \draw[blue, thick, ->] (-2.02,-1.22) -- (-2.52,-0.28);
+  \draw[blue, thick, ->] (2.12,-0.10) -- (1.60,0.86);
   \node[blue, align=center, fill=white, inner sep=1pt] at (1.72,1.20)
     {common\\translation};
 \end{tikzpicture}
@@ -1447,66 +1590,12 @@ with boundary conditions determined by the normal component. In incompressible
 Navier-Stokes, the pressure supplies exactly this gradient part of the
 acceleration.
 
-\subsection{Orr-Sommerfeld Equation With Boundary Conditions}
+\subsection{Orr-Sommerfeld Boundary Conditions And Spectrum}
 \label{sec:detailed-orr-sommerfeld}
 
-For a parallel base flow
-\[
-  U(y)e_x,
-\]
-linearized incompressible perturbations satisfy
-\[
-  \partial_t\tilde u
-  +
-  U\partial_x\tilde u
-  +
-  \tilde v U'e_x
-  =
-  -\nabla\tilde p+\frac1{\mathrm{Re}}\Delta\tilde u,
-  \qquad
-  \nabla\cdot\tilde u=0.
-\]
-For two-dimensional perturbations, introduce a streamfunction
-\[
-  \tilde u=\partial_y\psi,
-  \qquad
-  \tilde v=-\partial_x\psi.
-\]
-The perturbation vorticity is
-\[
-  \tilde\omega_z
-  =
-  \partial_x\tilde v-\partial_y\tilde u
-  =
-  -\Delta\psi.
-\]
-Taking the curl of the linearized momentum equation gives
-\[
-  \left(\partial_t+U\partial_x\right)\Delta\psi
-  -
-  U''\partial_x\psi
-  =
-  \frac1{\mathrm{Re}}\Delta^2\psi.
-\]
-Insert the normal mode
-\[
-  \psi(x,y,t)=\phi(y)e^{i\alpha x+\sigma t}.
-\]
-Then
-\[
-  \Delta\psi=(D^2-\alpha^2)\phi\,e^{i\alpha x+\sigma t},
-\]
-and the eigenvalue equation becomes
-\[
-  \boxed{
-  (\sigma+i\alpha U)(D^2-\alpha^2)\phi
-  -
-  i\alpha U''\phi
-  =
-  \frac1{\mathrm{Re}}(D^2-\alpha^2)^2\phi.
-  }
-\]
-No penetration means
+The body of the chapter derived the Orr-Sommerfeld equation. The laboratory
+here records the boundary and spectral data needed to turn that differential
+equation into a well-posed eigenvalue problem. No penetration means
 \[
   \tilde v=-\partial_x\psi=0
   \quad\Rightarrow\quad
@@ -1520,6 +1609,24 @@ at a wall. No slip also requires
 \]
 Thus the Orr-Sommerfeld equation is fourth order and needs the four wall
 conditions \(\phi=D\phi=0\) at the two boundaries.
+For a channel \(y\in[-1,1]\), the eigenvalue problem may be written as
+\[
+  \mathcal L_{\mathrm{OS}}\phi=\sigma\,\mathcal M\phi,
+  \qquad
+  \mathcal M=D^2-\alpha^2,
+\]
+where
+\[
+  \mathcal L_{\mathrm{OS}}
+  =
+  -i\alpha U(D^2-\alpha^2)+i\alpha U''
+  +\frac1{\mathrm{Re}}(D^2-\alpha^2)^2.
+\]
+The no-slip boundary conditions make this a discrete non-self-adjoint spectral
+problem for finite \(\mathrm{Re}\). Numerically, one must monitor convergence
+with respect to the wall-normal discretization because non-normal operators can
+produce spurious eigenvalues and large transient amplification even when every
+eigenvalue is stable.
 
 \section{Associated Demos}
 \label{sec:fluid-associated-demos}

@@ -29,10 +29,12 @@ interpretation.
 
 The notes also distinguish three kinds of equality. A definition introduces a
 symbol, as in \(p_i=\partial L/\partial\dot q^i\). An identity holds because of
-previous definitions, as in \(\omega=-\dd\Theta\). An equation of motion holds
-only along physical trajectories, as in \(\dot p_i=-\partial H/\partial q^i\).
-Many confusions in mechanics come from silently moving an equation from one
-category to another.
+previous definitions and conventions: for example, after the canonical
+one-form \(\Theta\) on \(T^*Q\) has been defined and the sign convention for
+the symplectic form has been chosen, \(\omega=-\dd\Theta\) is an identity in
+that convention. An equation of motion holds only along physical trajectories,
+as in \(\dot p_i=-\partial H/\partial q^i\). Many confusions in mechanics come
+from silently moving an equation from one category to another.
 
 There is a fourth reading habit that is just as important: keep track of the
 stage of a calculation. Before a variational principle is imposed, \(q(t)\) is
@@ -80,8 +82,9 @@ means the matrix
 \[
   \frac{\partial^2L}{\partial \dot q^i\partial \dot q^j}
 \]
-is nonsingular. Singular Lagrangians lead to constraints and gauge theories in
-the Dirac sense; those require a separate treatment.
+is nonsingular. Singular Lagrangians lead to constrained Hamiltonian systems and
+gauge theories. Dirac and Bergmann developed the standard formalism in the
+1950s; it requires a separate treatment.
 \end{assumption}
 
 \begin{assumption}[Einstein summation]
@@ -117,7 +120,7 @@ instead of finitely many coordinates.
 \node[box] (lag) at (0,2.1) {Lagrangian mechanics\\configuration, action, variation};
 \node[box] (ham) at (5.5,2.1) {Hamiltonian mechanics\\phase space, symplectic form\\canonical maps};
 \node[box] (chaos) at (5.5,-1.25) {Integrability and chaos\\actions, tori, transport};
-\node[box] (cont) at (0,-1.25) {Elasticity and fluids\\fields, stress, frames};
+\node[box] (cont) at (0,-1.25) {Continuum bodies\\fields, stress, frames};
 \node[smallbox] (examples) at (-2.75,0.42) {Kepler and rigid body\\first exact models};
 \node[smallbox] (demos) at (8.25,0.42) {Demos and diagnostics\\drift, sections, probability};
 \draw[arr] (lag) -- (ham);
@@ -126,8 +129,8 @@ instead of finitely many coordinates.
 \draw[arr] (cont) -- (lag);
 \draw[softarr, thin] (examples.north east) -- (lag.west);
 \draw[softarr, thin] (examples.south east) -- (cont.west);
-\draw[softarr, thin] (demos.north west) -- (ham.east);
-\draw[softarr, thin] (demos.south west) -- (chaos.east);
+\draw[softarr, thin] (demos.north west) to[out=160,in=-20] (ham.south east);
+\draw[softarr, thin] (demos.south west) to[out=200,in=20] (chaos.north east);
 \end{tikzpicture}
 \caption{The course loop. The central theories are connected by examples and
 computational diagnostics: exact models teach the geometry, while numerical
@@ -251,17 +254,7 @@ the argument after the model and diagnostics have been specified.
 \subsection*{What The Laboratories Practice}
 \label{sec:worked-lab-summary}
 
-\begin{itemize}
-\item Coordinate changes preserve the Euler-Lagrange form when the
-transformation is regular; the same physical path can have many coordinate
-descriptions.
-\item Regularity of the velocity Hessian is what permits a Lagrangian system to
-be rewritten as a Hamiltonian system without losing information.
-\item Constraints and contact forces should be solved together. Eliminating a
-constraint too early can hide the force that decides loss of contact.
-\item Effective potentials turn circular-orbit and bifurcation questions into
-ordinary one-variable stability tests.
-\item The Henon-Heiles, three-body, elastic, rotor, and fluid examples show how
-quickly integrable intuition must be supplemented by phase-space geometry,
-field constraints, boundary conditions, and numerical diagnostics.
-\end{itemize}
+The laboratories are not a second table of contents. They are checkpoints for
+the reading rule above: state the model, name the variables, derive the
+diagnostic, and then interpret what the diagnostic measures. Later chapters
+will supply the individual topics.

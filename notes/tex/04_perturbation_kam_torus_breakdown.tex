@@ -1,7 +1,7 @@
 \chapter{Perturbation, KAM, And Breakdown Of Invariant Tori}
 \label{chap:perturbation-chaos}
 
-\section{What This Chapter Studies}
+\section{From Integrable Motion To Transport}
 \label{sec:perturbation-chapter-purpose}
 
 A massless asteroid orbits the Sun while Jupiter perturbs it. Without Jupiter,
@@ -12,15 +12,16 @@ Lagrange points and ejection statistics, is developed separately in
 Chapter~\ref{chap:three-body-problem}.
 
 Historically, this is the question that broke the dream of solving mechanics
-by writing enough first integrals. Poincare's work on the three-body problem
-showed that a small perturbation of an integrable system can fold stable and
-unstable manifolds into a tangle. The modern story is more nuanced than
-``small perturbations make chaos.'' Kolmogorov, Arnold, and Moser found the
-survival theorem hidden inside the failure: sufficiently irrational invariant
-tori persist, while resonant regions become the sites of islands, separatrix
-splitting, and transport. The standard map is this chapter's compact
-laboratory; the asteroid problem is the gravitational setting we revisit once
-the perturbative mechanisms are clear.
+by writing enough first integrals. Poincare's 1890 negative theorem showed
+that generic perturbations of an integrable Hamiltonian need not admit
+additional analytic first integrals beyond the energy; his later work on the
+three-body problem exposed the stable-unstable manifold tangles behind this
+failure. The modern story is more nuanced than ``small perturbations make
+chaos.'' Kolmogorov, Arnold, and Moser found the survival theorem hidden inside
+the failure: sufficiently irrational invariant tori persist, while resonant
+regions become the sites of islands, separatrix splitting, and transport. The
+standard map is this chapter's compact laboratory; the asteroid problem is the
+gravitational setting we revisit once the perturbative mechanisms are clear.
 
 \begin{assumption}[Celestial perturbation model]
 When a celestial example is needed, this chapter uses a planar restricted
@@ -47,8 +48,9 @@ gives the positive result: many sufficiently irrational tori persist under
 small perturbation. The breakdown section gives the complementary mechanisms:
 resonant normal forms, island widths, resonance overlap, separatrix splitting,
 and cantori. The Poincare-map and standard-map sections then make these
-mechanisms concrete in two-dimensional return maps. The three-body chapter then
-uses the same mechanisms to interpret a numerical asteroid ejection experiment.
+mechanisms concrete in two-dimensional return maps. These mechanisms become the
+interpretive language for the asteroid ejection experiment developed in the
+three-body chapter.
 
 Numerical asteroid ejection probabilities are meaningful because the analytic
 and geometric levels explain where transport channels come from. The analytic
@@ -66,7 +68,7 @@ identify where that first-order calculation is least trustworthy. Numerical
 experiments later in the chapter test the transport suggested by these
 estimates over a stated finite time horizon.
 
-\section{The Kepler Problem}
+\section{Kepler Motion As The Integrable Reference}
 \label{sec:kepler-perturbation}
 
 For two bodies of masses \(m_1,m_2\), let
@@ -200,6 +202,9 @@ depends on the perturbation strength, eccentricity, and the order of the
 resonance. The point of marking the nominal location is to identify where slow
 angle combinations can form; the later chaos discussion explains what happens
 inside and near those zones.
+Historically, the missing-asteroid bands at these resonances are the Kirkwood
+gaps, identified empirically by Daniel Kirkwood in 1866 before modern
+Hamiltonian perturbation theory supplied the phase-space explanation.
 
 \begin{figure}[htbp]
 \centering
@@ -208,11 +213,11 @@ inside and near those zones.
   \foreach \x/\lab in {0/2.0,2/2.5,4/3.0,6/3.5,8/4.0,10/4.5,12/5.0}
     \draw (\x,0.07) -- (\x,-0.07) node[below] {\lab};
   \draw[ultra thick, blue!35] (0.1,0) -- (7.0,0);
-  \node[blue!60!black, fill=white, inner sep=1.5pt] at (3.6,-0.48)
+  \node[blue!60!black, fill=white, inner sep=1.5pt] at (3.6,-0.62)
     {asteroid-belt-like annulus};
   \foreach \x/\lab/\y in {2.008/3:1/1.25,3.302/5:2/1.70,3.833/7:3/1.35,5.114/2:1/1.70}
   {
-    \draw[red!75!black, thick] (\x,-0.18) -- (\x,0.92);
+    \draw[red!75!black, thick] (\x,0.18) -- (\x,0.92);
     \draw[red!75!black, thin] (\x,0.92) -- (\x,\y-0.10);
     \node[red!75!black, fill=white, inner sep=1pt] at (\x,\y) {\lab};
   }
@@ -258,10 +263,13 @@ theory gives the subtler answer: for small analytic perturbations, most
 sufficiently irrational tori persist, while resonant regions create islands,
 separatrices, and chaotic transport.
 
-The historical landmarks are the Fermi-Pasta-Ulam-Tsingou numerical experiment
-of 1953, which contradicted naive ergodicity, and the
-Kolmogorov-Arnold-Moser work of the 1950s and early 1960s, which explained why
-small perturbations can leave most invariant tori intact while still allowing
+The historical landmarks should be kept in the right order. Kolmogorov
+announced the KAM mechanism in 1954, while the Fermi-Pasta-Ulam-Tsingou
+computations were run in 1953--1955 and published in 1955 as a striking
+challenge to naive ergodicity. Arnold's analytic proof in 1963 and Moser's
+\(C^k\) theorem in 1962 made the survival mechanism into the modern KAM
+theorem. These developments are parallel windows onto the same fact: small
+perturbations can leave most invariant tori intact while still allowing
 chaotic regions.
 
 \section{Canonical Perturbation Theory And Small Divisors}
@@ -497,10 +505,11 @@ the torus is deformed.
 The theorem is best read as a statement about labelled invariant tori, not
 about individual trajectories. An unperturbed action value \(I\) determines a
 frequency \(\omega_0(I)=\partial H_0/\partial I\). If that frequency is
-Diophantine and the twist condition below holds, then the perturbed system has
-a nearby torus carrying quasiperiodic motion with the corresponding frequency.
-Points on resonant or nearly resonant tori are precisely the points for which
-this labelling argument breaks down.
+Diophantine with constants \((\alpha,\tau)\), the twist condition below holds,
+and \(\eps\) is small enough relative to \(\alpha\), then the perturbed system
+has a nearby torus carrying quasiperiodic motion with the corresponding
+frequency. Points on resonant or nearly resonant tori are precisely the points
+for which this labelling argument breaks down.
 
 The theorem does not give one uniform conclusion for all initial conditions. A
 small perturbation produces a mixed phase space: most sufficiently irrational
@@ -596,12 +605,32 @@ the first-order generating function is analytic on every slightly smaller
 strip. The price is the factor \(\alpha^{-1}\) and the loss of width
 \(r-r'\).
 
-KAM uses a Newton-style iteration. At each step, one solves a homological
-equation like the first-order equation, removes most of the angle dependence,
-and shrinks the analytic domain to pay for derivative losses. The error is made
-quadratically smaller at each step. Diophantine estimates keep the small
-divisors under control; nondegeneracy lets one adjust the action label so the
-desired frequency remains fixed.
+KAM uses an iterative correction scheme, but it should not be confused with
+ordinary finite-dimensional Newton's method. Solving the homological equation
+loses derivatives or analytic width, so the proof must shrink analytic domains,
+or in differentiable settings use a Nash-Moser type scheme, to compensate. At
+each step, one removes most of the angle dependence and makes the error
+quadratically smaller. Diophantine estimates keep the small divisors under
+control; nondegeneracy lets one adjust the action label so the desired frequency
+remains fixed.
+The phrase ``quadratically smaller'' has the same algebraic origin as Newton's
+method. In a toy one-mode problem
+\[
+  H=H_0(I)+\epsilon h(I)\cos(k\cdot\theta),
+\]
+choose \(S_1\) so that
+\(\{H_0,S_1\}=-h(I)\cos(k\cdot\theta)\). The transformed Hamiltonian begins
+\[
+  H\circ\Phi_{\epsilon S_1}
+  =
+  H_0+\epsilon\langle H_1\rangle
+  +
+  \frac{\epsilon^2}{2}\{H_1,S_1\}
+  +O(\epsilon^3).
+\]
+The order-\(\epsilon\) oscillation has been cancelled; the remaining
+oscillatory part is order \(\epsilon^2\), while the denominator
+\(k\cdot\omega\) is controlled by the Diophantine condition.
 
 In proof-outline form, the iteration has four repeating moves:
 \[
@@ -646,7 +675,7 @@ torus with conjugate quasiperiodic motion.
   \node[red!70!black, align=center, fill=white, inner sep=2pt] at (5.30,0.90)
     {resonant gaps\\and chaotic layers};
   \draw[decorate, decoration={brace, amplitude=4pt}, thick]
-    (0.4,-0.52) -- (6.65,-0.52)
+    (0.65,-0.58) -- (6.40,-0.58)
     node[midway, below=10pt, fill=white, inner sep=1.5pt]
     {large measure remains when \(\eps\) is small};
 \end{tikzpicture}
@@ -669,12 +698,12 @@ through resonance channels.
 \label{sec:breakdown-invariant-tori}
 
 KAM theory is a survival theorem, but a mechanics course also has to explain
-what the theorem deliberately leaves unprotected. A surviving irrational torus
-is a barrier in a two-dimensional section; a resonant torus is instead a place
-where perturbations can accumulate coherently. The route from regular motion
-to chaotic transport begins by studying these unprotected resonant tori one by
-one, then asking when neighboring resonances overlap and open a connected
-transport channel.
+which structures lie outside its hypotheses. A surviving irrational torus is a
+barrier in a two-dimensional section; a resonant torus is instead a place where
+perturbations can accumulate coherently. The route from regular motion to
+chaotic transport begins by studying these resonant tori one by one, then
+asking when neighboring resonances overlap and open a connected transport
+channel.
 
 The tori most exposed to perturbation are those whose frequencies are
 rationally related. On such a torus there exists a nonzero integer vector
@@ -732,7 +761,11 @@ surface. For \(N\geq3\), the codimension is at least two, so a single torus
 does not divide the energy surface into disconnected regions. This is why
 Arnold diffusion is possible in higher-dimensional nearly integrable systems:
 motion can drift through connected resonance channels even when many KAM tori
-survive.
+survive. Arnold's 1964 example showed this mechanism explicitly. Nekhoroshev's
+1977 theorem supplies the complementary stability statement for steep analytic
+Hamiltonians: for sufficiently small perturbations, action drift is typically
+confined for exponentially long times even though the theorem does not exclude
+drift on still longer scales.
 
 \subsection{Resonant Normal Form And Island Width}
 \label{subsec:resonant-normal-form-island-width}
@@ -837,9 +870,11 @@ chaotic layers should be expected when
   }
 \]
 The Chirikov criterion is a physical overlap test for the separatrix layers of
-neighboring resonances. Before overlap, islands may be surrounded by surviving
-invariant curves. After overlap, hyperbolic manifolds from different resonances
-intersect and produce a connected chaotic sea.
+neighboring resonances, introduced by Chirikov in the plasma-physics literature
+and systematized in his 1979 review. It is not a theorem with a sharp universal
+constant. Before overlap, islands may be surrounded by surviving invariant
+curves. After overlap, hyperbolic manifolds from different resonances intersect
+and produce a connected chaotic sea.
 
 The criterion also explains why low-order resonances dominate pictures. A
 Fourier coefficient associated with a large vector \(k\) is exponentially small
@@ -858,9 +893,9 @@ area-preserving twist maps break into periodic orbits.
 Let \(F\) be an area-preserving twist map of an annulus. If a rational
 invariant curve of rotation number \(p/q\) is destroyed by a perturbation while
 nearby boundary curves twist in opposite directions under \(F^q\), then
-\(F\) has at least two periodic orbits of period \(q\) in the resonant annulus.
-Generically these periodic points alternate between elliptic and hyperbolic
-type around the annulus.
+\(F^q\) has at least \(2q\) fixed points in the resonant annulus, equivalently
+at least two \(q\)-periodic orbits of \(F\). Generically these periodic points
+alternate between elliptic and hyperbolic type around the annulus.
 \end{proposition}
 
 The hypothesis about opposite twist is the section-map version of being on
@@ -869,16 +904,19 @@ points have stable and unstable manifolds. If those manifolds coincide, they
 form a separatrix. If they split and intersect transversely, the separatrix is
 replaced by a homoclinic tangle.
 
-This theorem is the precise mathematical reason a rational torus generically turns
-into an island chain. The next section derives this mechanism directly for a
-Poincare map, including the area-preservation argument that forces fixed
-points of the resonant iterate.
+This theorem gives the global fixed-point guarantee behind the island-chain
+picture for area-preserving twist maps. The local resonant normal form already
+explains the pendulum-like mechanism; Poincare-Birkhoff supplies the stronger
+annulus-level statement that elliptic and hyperbolic periodic points must
+appear under a twist perturbation of a rational invariant curve. The next
+section derives the local mechanism directly for a Poincare map, including the
+area-preservation argument that forces fixed points of the resonant iterate.
 
 The proof of Poincare-Birkhoff uses fixed-point arguments on the annulus and is
 outside the elementary perturbative estimates developed here. We use it as a
 structural theorem about area-preserving twist maps; standard self-contained
-treatments appear in Birkhoff's original work and in modern accounts such as
-Moser-Zehnder.
+treatments appear in Poincare's 1912 ``last geometric theorem,'' Birkhoff's
+1913 proof, and modern accounts such as Moser-Zehnder.
 
 \subsection{Separatrix Splitting And Homoclinic Tangles}
 \label{subsec:separatrix-splitting-homoclinic-tangles}
@@ -897,7 +935,9 @@ infinite sequence of further intersections. The resulting homoclinic tangle is
 the geometric core of deterministic chaos: strips of phase space are stretched,
 folded, and reinserted near the saddle.
 
-One first-order way to measure separatrix splitting is the Melnikov function.
+One first-order way to measure separatrix splitting is the Melnikov function
+(Melnikov, 1963). The homoclinic-tangle picture itself goes back to Poincare's
+\emph{Methodes nouvelles} in the 1890s.
 Assume a one-degree-of-freedom separatrix Hamiltonian \(H_{\mathrm{sep}}(z)\),
 with separatrix orbit \(z_0(t)\), is perturbed periodically:
 \[
@@ -930,6 +970,11 @@ two manifolds cross transversely.
 If \(M(t_0)\) has a simple zero, then the two manifolds intersect
 transversely for sufficiently small nonzero \(\eps\). Thus a single computable
 integral can diagnose the birth of a chaotic layer near a separatrix.
+The final implication from transverse homoclinic intersection to symbolic
+dynamics uses the Smale-Birkhoff homoclinic theorem: a transverse homoclinic
+point of an area-preserving map implies a horseshoe on an invariant set. The
+Melnikov calculation supplies the transverse intersection hypothesis; the
+Smale-Birkhoff theorem supplies the rigorous chaos conclusion.
 
 \subsection{Cantori And Partial Barriers}
 \label{subsec:cantori-partial-barriers}
@@ -942,34 +987,54 @@ golden-mean rotation number
 \]
 is the standard example because its continued fraction is
 \([1;1,1,1,\ldots]\), making it maximally poorly approximated among
-irrationals in the usual sense.
+irrationals in the precise Hurwitz sense: every irrational \(x\) has
+infinitely many rationals \(p/q\) with
+\[
+  \left|x-\frac pq\right|<\frac{1}{\sqrt5\,q^2},
+\]
+and the constant \(\sqrt5\) is sharp, with equality approached by the golden
+ratio and its fractional-linear equivalents.
 
-When an irrational invariant curve finally breaks, Aubry-Mather theory supplies
-the replacement object. For an area-preserving twist map and an irrational
+When an irrational invariant curve finally breaks, Aubry-Mather theory
+(Mather, 1982; Aubry, 1983) supplies the replacement object. For an
+area-preserving twist map and an irrational
 rotation number \(\rho\), there is an invariant Aubry-Mather set with rotation
 number \(\rho\). If the KAM curve survives, this set is the curve itself. If
 the curve has broken, the set is a Cantor-like invariant set called a
 cantorus. Its gaps prevent it from being a continuous barrier, but small gaps
 can still make transport through the associated turnstile lobes very slow.
+One variational model is the Frenkel-Kontorova form of an exact twist map:
+orbits are critical sequences of an action
+\[
+  \mathcal S(\{\theta_n\})=\sum_n L(\theta_n,\theta_{n+1}),
+\]
+with a prescribed mean rotation number. Minimizing sequences with irrational
+rotation number are ordered and cannot cross. When the invariant curve exists,
+these minimizers fill it; after breakup, the same ordered minimizers survive
+only on a Cantor set.
 
 For the standard map, a famous numerical benchmark is that the last invariant
 curve with golden-mean rotation breaks near
 \[
   K_c\approx0.971635.
 \]
-This number is obtained by numerical criteria such as Greene's residue
-criterion. For a rational periodic orbit of period \(q\), the residue of the
+This number is obtained by numerical criteria such as Greene's 1979 residue
+criterion, later sharpened by MacKay's renormalization work. For a rational
+periodic orbit of period \(q\), the residue of the
 \(q\)-fold derivative is
 \[
   R=\frac{2-\tr(DT_K^q)}{4}.
 \]
 For an elliptic periodic point \(0<R<1\); for a hyperbolic point \(R<0\) or
-\(R>1\). Greene's residue conjecture says that an irrational invariant curve
+\(R>1\). Greene's residue conjecture remains a conjecture: it says that an
+irrational invariant curve
 with rotation number \(\rho\) exists precisely when the residues of periodic
 orbits whose rotation numbers \(p_n/q_n\) approach \(\rho\) remain bounded in
 the appropriate limiting sense. The number \(K_c\approx0.971635\) is the value
 at which this criterion predicts breakdown of the golden-mean invariant curve
-in the standard map, and direct numerical simulations support it.
+in the standard map. Direct numerical simulations and MacKay-Stark style
+renormalization results support the criterion in important cases, but it should
+not be read as a proved theorem in the generality of its numerical use.
 
 \begin{figure}[htbp]
 \centering
@@ -1053,6 +1118,9 @@ area-preserving map. This loses the time parametrization but keeps the geometry
 needed to see resonance. Near a resonant torus, some iterate of the unperturbed
 map is the identity; after perturbation, that near-identity map unfolds into
 fixed points, island chains, and separatrices.
+Poincare introduced this return-map viewpoint in the \emph{Methodes nouvelles};
+it is one of the reasons that modern Hamiltonian chaos is usually drawn on a
+section before it is described in full phase space.
 
 This is why maps are so useful in a chapter about flows. A continuous orbit can
 hide its organization in time; a section records each return to a transverse
@@ -1168,6 +1236,10 @@ The standard map is
   q_{n+1} &= q_n+p_{n+1}\pmod{2\pi}.
 \end{aligned}
 \]
+This map is often called the Chirikov standard map. It emerged from kicked
+rotor and resonance-overlap models in the 1960s, and Chirikov's 1979 review made
+it the canonical laboratory for the transition from invariant curves to global
+Hamiltonian chaos.
 This is naturally a map of the cylinder, with \(q\) taken modulo \(2\pi\) and
 \(p\in\R\). For phase portraits on a compact square, the Python demo reduces
 both \(q\) and \(p\) modulo \(2\pi\), giving the corresponding map on the
@@ -1195,7 +1267,13 @@ A common drift-kick convention for the standard map is
   T_K(\theta,p)=\left(\theta+p,\ p+K\sin(\theta+p)\right),
 \]
 which is symplectically equivalent to the convention above after shifting where
-the kick is placed. At \(K=0\), the invariant curve
+the kick is placed. If
+\[
+  D(\theta,p)=(\theta+p,p),\qquad Kc(\theta,p)=(\theta,p+K\sin\theta),
+\]
+then the map used above is \(D\circ Kc\), while the drift-kick convention is
+\(Kc\circ D=D^{-1}(D\circ Kc)D\) up to the same choice of section along the
+kicked flow. At \(K=0\), the invariant curve
 \[
   C:\quad p=\frac{2\pi}{3}
 \]
@@ -1295,7 +1373,7 @@ structure.
   \addplot[only marks, mark=x, mark size=3.0pt, line width=0.8pt, purple!75!black]
     coordinates {(0.000000,1.888577) (1.888577,1.888577) (4.394609,2.506032)};
   \addlegendentry{hyperbolic points}
-  \node[anchor=west, black!55, fill=white, inner sep=1pt] at (axis cs:0.18,2.34)
+  \node[anchor=west, black!55, fill=white, inner sep=1pt] at (axis cs:5.08,2.34)
     {\(p=2\pi/3\)};
 \end{axis}
 \end{tikzpicture}
@@ -1433,7 +1511,10 @@ share the same local geometry.
 \subsection{Henon-Heiles As The Finite-Dimensional Chaos Bridge}
 \label{sec:lab-henon-heiles}
 
-The Henon-Heiles Hamiltonian is
+Henon and Heiles introduced this Hamiltonian in 1964 as a galactic-dynamics
+model, and it became one of the first smooth Hamiltonian systems where
+numerical Poincare sections made the breakdown of integrability visible. The
+Henon-Heiles Hamiltonian is
 \[
   H_{\mathrm{HH}}
   =
@@ -1483,6 +1564,15 @@ generates resonant Fourier modes with \(k_1+k_2=0\). Those modes cannot be
 removed by a periodic \(S_2\). This is the small-divisor obstruction in its
 most concrete classroom form: the unperturbed oscillator has equal
 frequencies, so resonant combinations of angles do not average away.
+For example, the second-order transformed Hamiltonian contains
+\[
+  \frac{\lambda_{\mathrm{HH}}^2}{2}\{H_1,S_1\}.
+\]
+Products of first-order Fourier modes add their wave vectors. Nonresonant
+modes \(k\) and \(k'\) in \(H_1\) can therefore produce \(k+k'=(1,-1)\) or
+\((2,-2)\), and these satisfy \((k+k')\cdot\omega_0=0\). The obstruction is not
+that the first-order cubic term is already resonant; it is that the
+near-identity transformation creates resonant terms at the next order.
 
 The Henon-Heiles system is therefore the right finite-dimensional bridge from
 integrability to Hamiltonian chaos. At low energy, Poincare sections show
@@ -1504,9 +1594,9 @@ visible in a four-dimensional phase space.
     }
     \draw[red!75!black, thick]
       (0,1.75) -- (-1.55,-0.95) -- (1.55,-0.95) -- cycle;
-  \node[red!75!black, align=center, fill=white, inner sep=1pt] at (0.05,-1.50)
+  \node[red!75!black, align=center, fill=white, inner sep=1pt] at (0.05,-1.68)
     {three escape\\valleys};
-  \draw[red!75!black, ->] (0.58,-1.32) -- (0.08,-0.98);
+  \draw[red!75!black, ->] (0.54,-1.48) -- (0.08,-0.98);
     \node[anchor=west, fill=white, inner sep=1pt] at (0.52,2.08)
       {configuration contours};
   \end{scope}
@@ -1518,7 +1608,9 @@ visible in a four-dimensional phase space.
     \foreach \a in {0,120,240}
       \draw[red!75!black, thick] ({0.82*cos(\a)},{0.82*sin(\a)})
         ellipse (0.28 and 0.13);
-    \foreach \x/\y in {-1.3/0.9,-1.1/-0.8,-0.4/1.15,0.25/-1.2,1.0/0.75,1.25/-0.55}
+    \foreach \x/\y in {-1.3/0.9,-1.1/-0.8,-0.4/1.15,0.25/-1.2,1.0/0.75,1.25/-0.55,
+      -1.45/0.25,-0.95/1.25,-0.75/-1.18,-0.15/0.95,0.45/-0.85,0.75/1.12,
+      1.38/0.18,1.52/-0.92,-1.55/-0.42}
       \fill[black!55] (\x,\y) circle (0.9pt);
     \node[anchor=west, fill=white, inner sep=1pt] at (0.42,1.58)
       {Poincare-section sketch};
@@ -1527,7 +1619,8 @@ visible in a four-dimensional phase space.
 \caption{Henon-Heiles laboratory. Configuration-space contours show the
 threefold cubic deformation of the oscillator potential; a Poincare-section
 sketch records the phase-space transition from invariant curves to islands and
-chaotic scatter. Both panels identify the structures used in the derivation.}
+a schematic chaotic layer. Both panels identify the structures used in the
+derivation.}
 \label{fig:lab-henon-heiles}
 \end{figure}
 \FloatBarrier
