@@ -1423,9 +1423,10 @@ visible in a four-dimensional phase space.
     }
     \draw[red!75!black, thick]
       (0,1.75) -- (-1.55,-0.95) -- (1.55,-0.95) -- cycle;
-    \node[red!75!black, align=center, fill=white, inner sep=1pt] at (0,-1.47)
+    \node[red!75!black, align=center, fill=white, inner sep=1pt] at (1.15,-1.48)
       {three escape\\valleys};
-    \node[fill=white, inner sep=1pt] at (0.15,2.55) {configuration contours};
+    \node[anchor=west, fill=white, inner sep=1pt] at (0.52,2.08)
+      {configuration contours};
   \end{scope}
   \begin{scope}[xshift=5.2cm]
     \draw[->] (-1.8,0) -- (1.9,0) node[right] {\(x\)};
@@ -1437,7 +1438,8 @@ visible in a four-dimensional phase space.
         ellipse (0.28 and 0.13);
     \foreach \x/\y in {-1.3/0.9,-1.1/-0.8,-0.4/1.15,0.25/-1.2,1.0/0.75,1.25/-0.55}
       \fill[black!55] (\x,\y) circle (0.9pt);
-    \node[fill=white, inner sep=1pt] at (0.45,2.30) {Poincare-section cartoon};
+    \node[anchor=west, fill=white, inner sep=1pt] at (0.42,1.58)
+      {Poincare-section cartoon};
   \end{scope}
 \end{tikzpicture}
 \caption{Henon-Heiles laboratory. Configuration-space contours show the

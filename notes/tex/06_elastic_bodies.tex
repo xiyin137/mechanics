@@ -920,8 +920,9 @@ It satisfies \(w(0)=w(L)=0\), zero bending moment at both supports, and
       \draw[thick] (-0.18,\y-0.12) -- (0,\y);
     \draw[blue!70!black, thick, domain=0:3.6, samples=100]
       plot (\x,{1.05-0.055*\x*\x*(3.6-\x/3)});
-    \draw[red!75!black, thick, ->] (3.85,0.62) -- (3.85,-0.10)
-      node[below right=1pt] {\(P_{\mathrm{end}}\)};
+    \draw[red!75!black, thick, ->] (3.92,0.66) -- (3.92,-0.08);
+    \node[red!75!black, anchor=west, fill=white, inner sep=1.5pt]
+      at (4.03,0.29) {\(P_{\mathrm{end}}\)};
     \draw[<->] (0,0.02) -- node[below] {\(L\)} (3.6,0.02);
     \node[align=center, fill=white, inner sep=1.5pt] at (1.85,1.72)
       {cantilever beam\\\(w(L)=P_{\mathrm{end}}L^3/(3E_{\mathrm Y}I_{\mathrm{area}})\)};

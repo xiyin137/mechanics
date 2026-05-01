@@ -596,7 +596,7 @@ Project themes:
 ### Milestone 5: Publication Layer — next release work
 
 - Tag a `v0.2.0` release after the current working tree is committed, so the
-  151-page PDF, demos, tests, and planning documents are referenced by a stable
+  149-page PDF, demos, tests, and planning documents are referenced by a stable
   snapshot.
 - Convert selected demos to notebooks.
 - Add generated figures and an instructor guide.
