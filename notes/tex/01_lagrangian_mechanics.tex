@@ -4,9 +4,9 @@
 \section{Mechanical Data}
 \label{sec:lagrangian-mechanical-data}
 
-The first question in any mechanics problem is not ``what is the force?'' but
-``what is the space of possible configurations?'' Once that space is named, the
-rest of the theory becomes coordinate-independent.
+A mechanics problem begins by naming its space of possible configurations. Once
+that space is named, the rest of the theory can be formulated independently of
+any particular coordinate chart.
 
 A pendulum moves on a circle, not on a line. A double pendulum lives on a
 torus. A rigid body lives on \(\SO(3)\), not in a box of nine independent
@@ -37,21 +37,18 @@ device, not an additional physical structure.
 \end{assumption}
 
 \paragraph{Roadmap.}
-The chapter has three jobs. First it derives the Euler-Lagrange equations from
+The chapter has three jobs. First, it derives the Euler-Lagrange equations from
 Hamilton's principle, including boundary terms, constraints, and Noether
-charges. Second it treats Kepler motion and the rigid body as the first serious
-examples of the formalism. Third it prepares the boundary momentum and energy
-concepts that the next chapter converts into Hamiltonian phase space. The point
-is not to replace Newton's law by harder notation; it is to
-make clear which parts of mechanics are coordinate choices and which parts are
-geometric structure.
+charges. Second, it treats Kepler motion and the rigid body as the first serious
+examples of the formalism. Third, it prepares the boundary momentum and energy
+concepts that the next chapter converts into Hamiltonian phase space. The
+variational principle separates coordinate choices from geometric structure and
+places forces, constraints, and conserved quantities in a common framework.
 
-The primitive object here is a path in configuration space, and the
-variational principle selects the physical path.  The phase-space viewpoint is
-deliberately deferred to Chapter~\ref{chap:hamiltonian-phase-space}.  This
-separation keeps the reader from treating momenta and symplectic forms as
-automatic decorations of Lagrangian mechanics; they appear only after the
-Legendre transform has been justified.
+The primitive object here is a path in configuration space, and the variational
+principle selects the physical path.  The phase-space viewpoint is developed in
+Chapter~\ref{chap:hamiltonian-phase-space}.  In that order, momenta and
+symplectic forms appear as consequences of the Legendre transform.
 
 \paragraph{Derivation checkpoints.}
 Whenever this chapter differentiates an action, check three things before
@@ -64,6 +61,10 @@ calling a quantity conserved before verifying the symmetry hypothesis.
 
 \section{Variations And The Euler-Lagrange Equations}
 \label{sec:euler-lagrange}
+
+What does it mean for the action to be stationary? It means that the first
+derivative of \(S[q_\eps]\) vanishes for every admissible infinitesimal change
+of the path.
 
 Let \(q_\eps(t)\) be a smooth one-parameter family of curves with
 \(q_0(t)=q(t)\). The variation vector field along \(q\) is
@@ -100,7 +101,8 @@ the Euler-Lagrange equations pointwise in time.
   \node[below] at (0.5,0) {\(t_0\)};
   \node[below] at (6.5,0) {\(t_1\)};
   \node[blue] at (2.3,0.6) {\(q(t)\)};
-  \node[red] at (4.25,1.35) {\(q_\eps(t)=q(t)+\eps\eta(t)+O(\eps^2)\)};
+  \node[red, align=left, fill=white, inner sep=1.5pt] at (4.95,1.05)
+    {\(q_\eps(t)=q(t)+\eps\eta(t)\)\\\({}+O(\eps^2)\)};
 \end{tikzpicture}
 \caption{A fixed-endpoint variation changes the path in the interior while
 holding the initial and final configurations fixed. The infinitesimal change is
@@ -161,13 +163,38 @@ of every \(\eta^i\) vanishes. Hence
 \]
 \end{derivation}
 
-The boxed equation is local in time because the variations are arbitrary in the
-interior of the interval. This is the conceptual content of the fundamental
-lemma: a single global statement, \(\delta S=0\), becomes a pointwise
-differential equation only because the virtual displacement \(\eta(t)\) can be
-chosen independently near each time. Boundary conditions and endpoint terms are
-therefore not afterthoughts; they decide which variations are admissible and
-which physical quantities appear at the endpoints.
+\begin{proof}[Fundamental lemma used above]
+Let \(f(t)\) be continuous on \((t_0,t_1)\), and suppose
+\[
+  \int_{t_0}^{t_1} f(t)\eta(t)\,\dd t=0
+\]
+for every smooth compactly supported test function \(\eta\). If \(f(t_*)>0\)
+at some interior point, continuity gives an interval \([a,b]\) on which
+\(f\ge f(t_*)/2\). Choose a nonnegative smooth bump \(\eta\) supported in
+\([a,b]\) and not identically zero. Then the integral is positive, a
+contradiction. Applying the same argument to \(-\eta\) rules out \(f(t_*)<0\).
+Thus \(f=0\) pointwise. Applying this to each component of the bracketed
+coefficient gives the Euler-Lagrange equations.
+\end{proof}
+
+The Euler-Lagrange equation is local in time because the variations are
+arbitrary in the interior of the interval. A single global statement,
+\(\delta S=0\), becomes a pointwise differential equation because
+\(\eta(t)\) can be chosen independently near each time. Boundary conditions and
+endpoint terms are part of the variational data: they decide which variations
+are admissible and which physical quantities appear at the endpoints.
+
+For a regular Lagrangian, the velocity Hessian
+\[
+  W_{ij}(q,\dot q,t)
+  =
+  \frac{\partial^2L}{\partial\dot q^i\partial\dot q^j}
+\]
+is nonsingular. The Euler-Lagrange equations can then be solved locally for
+\(\ddot q^i\) as smooth functions of \((q,\dot q,t)\). Standard ODE existence
+and uniqueness therefore gives a unique local solution for each initial state
+\((q(t_0),\dot q(t_0))\), as long as the solution remains in the chosen chart
+and no singularity is reached.
 
 \section{Boundary Terms And Forces}
 \label{sec:boundary-forces}
@@ -184,7 +211,9 @@ of the action. This is a sharper definition than ``mass times velocity'', which
 is only true in special coordinates for special Lagrangians.
 
 If nonconservative generalized forces \(Q_i(q,\dot q,t)\) are present, the
-Lagrange-d'Alembert principle is
+Lagrange-d'Alembert principle adds virtual work to Hamilton's principle. The
+admissible virtual displacements are the same ones used in the variational
+problem, and the external force does virtual work \(Q_i\eta^i\). Thus
 \[
   \delta S+\int_{t_0}^{t_1}Q_i\eta^i\,\dd t=0,
 \]
@@ -302,8 +331,15 @@ A holonomic constraint is a condition
   \Phi^a(q,t)=0,\qquad a=1,\ldots,k,
 \]
 that cuts out an admissible submanifold of configuration space. If one works in
-the ambient coordinates \(q^i\), the constrained equations take the multiplier
-form
+the ambient coordinates \(q^i\), admissible variations must preserve the
+constraint to first order:
+\[
+  \frac{\partial\Phi^a}{\partial q^i}\eta^i=0.
+\]
+The Euler-Lagrange residual therefore has to vanish only on vectors tangent to
+the constraint surface. Lagrange's multiplier rule says that a covector
+vanishing on this tangent space is a linear combination of the constraint
+gradients. Hence the constrained equations take the multiplier form
 \[
   \frac{\dd}{\dd t}\frac{\partial L}{\partial \dot q^i}
   -
@@ -320,12 +356,11 @@ and the same physics is expressed with fewer coordinates.
 \label{sec:noether}
 
 Noether's theorem is the first place where the variational viewpoint pays a
-large dividend. A symmetry is not merely a visual invariance of a picture; it
-is a transformation of the configuration space that leaves the Lagrangian, and
-therefore the action, unchanged. The infinitesimal version of that
-transformation is a vector field \(\xi_Q\) along which the action has zero
-first variation. The conserved quantity is the momentum paired with that vector
-field.
+large dividend. A symmetry is a transformation of the configuration space that
+leaves the Lagrangian, and therefore the action, unchanged. The infinitesimal
+version of that transformation is a vector field \(\xi_Q\) along which the
+action has zero first variation. The conserved quantity is the momentum paired
+with that vector field.
 
 \begin{definition}[Infinitesimal generator]
 Let a Lie group \(G\) act on \(Q\). For \(\xi\in\mathfrak g\), the infinitesimal
@@ -400,8 +435,7 @@ so angular momentum is conserved when \(V\) is rotationally invariant.
 \section{Basic Example: The Kepler Problem}
 \label{sec:kepler-lagrangian}
 
-The Kepler problem should appear immediately after the Lagrangian formalism,
-because it is the simplest serious payoff of cyclic coordinates, Noether's
+Kepler motion is the first serious payoff of cyclic coordinates, Noether's
 theorem, and reduction by symmetry.
 
 \begin{assumption}[Kepler model]
@@ -595,7 +629,7 @@ Lie-Poisson picture is what appears after symmetry reduction.
 The Lagrangian formalism begins with a configuration manifold \(Q\), a path
 \(q(t)\in Q\), and an action functional
 \[
-  S[q]=\int_{t_0}^{t_1} L(q,\dot q,t)\,dt .
+  S[q]=\int_{t_0}^{t_1} L(q,\dot q,t)\,\dd t .
 \]
 The Euler-Lagrange equations are the stationarity condition for variations with
 fixed endpoints. Their boundary term defines the conjugate momentum. Natural
@@ -604,8 +638,8 @@ Riemannian metric on \(Q\), the Christoffel symbols describe the inertial terms
 produced by curvilinear coordinates, and forces enter through potentials or
 through the Lagrange-d'Alembert principle.
 
-Constraints and symmetry are not side remarks. Holonomic constraints replace
-\(Q\) by a constraint submanifold or introduce multipliers that measure
+Constraints and symmetry are structural ingredients. Holonomic constraints
+replace \(Q\) by a constraint submanifold or introduce multipliers that measure
 constraint forces. Continuous symmetries produce conserved momenta through
 Noether's theorem. The Kepler problem illustrates how rotational symmetry and
 an accidental conserved Runge-Lenz vector organize the conic sections; the
@@ -615,6 +649,11 @@ nontrivial geometry, body frames, inertia tensors, and reduced equations.
 These ideas are the input for the next chapter. The Legendre transform converts
 the boundary momentum into a phase-space coordinate, and the same action
 principle then becomes the symplectic Hamiltonian formalism.
+
+\paragraph{Questions to carry forward.}
+When does a boundary term become a new state variable? Which constraints should
+be solved by coordinates, and which should be kept as multipliers? Which
+symmetries survive after a change of variables?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:lagrangian-chapter-end-labs}
@@ -1040,20 +1079,20 @@ The transformation has moved damping into a shifted oscillator frequency.
 
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
-  \draw[->] (-0.2,0) -- (6.45,0) node[right] {\(t\)};
+\begin{tikzpicture}[x=0.82cm,y=1.0cm, >=Latex, font=\small]
+  \draw[->] (-0.2,0) -- (8.45,0) node[right] {\(t\)};
   \draw[->] (0,-1.45) -- (0,1.6) node[above] {amplitude};
-  \draw[blue!70!black, dashed, domain=0:6.0, samples=120]
-    plot (\x,{1.10*exp(-0.22*\x)});
-  \draw[blue!70!black, dashed, domain=0:6.0, samples=120]
-    plot (\x,{-1.10*exp(-0.22*\x)});
-  \draw[blue!70!black, thick, domain=0:6.0, samples=180]
-    plot (\x,{1.10*exp(-0.22*\x)*cos(2.7*\x r)});
-  \draw[red!75!black, thick, domain=0:6.0, samples=180]
-    plot (\x,{1.10*cos(2.7*\x r)});
-  \node[blue!70!black, fill=white, inner sep=1.5pt] at (4.7,0.43) {\(q(t)\)};
-  \node[red!75!black, fill=white, inner sep=1.5pt] at (4.6,1.27) {\(s=e^{\gamma t/2}q\)};
-  \node[align=center] at (3.2,-1.85)
+  \draw[blue!70!black, dashed, domain=0:8.0, samples=150]
+    plot (\x,{1.10*exp(-0.25*\x)});
+  \draw[blue!70!black, dashed, domain=0:8.0, samples=150]
+    plot (\x,{-1.10*exp(-0.25*\x)});
+  \draw[blue!70!black, very thick, domain=0:8.0, samples=260]
+    plot (\x,{1.10*exp(-0.25*\x)*cos(3.25*\x r)});
+  \draw[red!75!black, thick, domain=0:8.0, samples=260]
+    plot (\x,{1.10*cos(3.25*\x r)});
+  \node[blue!70!black, fill=white, inner sep=1.5pt] at (5.9,0.28) {\(q(t)\)};
+  \node[red!75!black, fill=white, inner sep=1.5pt] at (6.1,1.24) {\(s=e^{\gamma t/2}q\)};
+  \node[align=center] at (4.1,-1.85)
     {rescaling absorbs the exponential damping envelope};
 \end{tikzpicture}
 \caption{Damped-oscillator laboratory. In the original coordinate \(q\), the
@@ -1215,8 +1254,8 @@ The hoop leaves the cylinder at \(\theta=\pi/3\) from the top.
   \draw[dashed] (0,0) -- (0,2.35);
   \draw[->] (0,1.9) arc (90:45:1.9);
   \node at (0.85,1.95) {\(\theta\)};
-  \draw[->, red!75!black, thick] (1.65,1.65) -- (2.15,2.15)
-    node[right] {\(N\)};
+  \draw[->, red!75!black, very thick] (1.65,1.65) -- (2.25,2.25);
+  \node[red!75!black, fill=white, inner sep=1pt] at (1.92,2.32) {\(N\)};
   \draw[->, black!70, thick] (1.65,1.65) -- (1.65,0.75)
     node[below] {\(mg\)};
   \draw[->, blue!70!black, thick] (2.1,1.65) arc (0:65:0.45);
@@ -1224,7 +1263,7 @@ The hoop leaves the cylinder at \(\theta=\pi/3\) from the top.
   \node[align=center] at (0,-1.95)
     {loss of contact occurs when the\\normal force reaches \(N=0\)};
   \node[fill=white, inner sep=1.5pt] at (-1.1,-1.1) {fixed cylinder \(R\)};
-  \node[fill=white, inner sep=1.5pt] at (2.85,2.45) {rolling hoop \(r\)};
+  \node[fill=white, inner sep=1.5pt] at (2.82,2.60) {rolling hoop \(r\)};
 \end{tikzpicture}
 \caption{Rolling-contact laboratory. The radial force balance must be kept
 until the end because the contact force \(N\) is the diagnostic for leaving the
@@ -1332,29 +1371,29 @@ an effective potential at fixed angular momentum.
 
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}[x=0.72cm,y=1.0cm, >=Latex, font=\small]
-  \draw[->] (0,0) -- (9.35,0) node[right] {\(r/R\)};
-  \draw[->] (0,-0.35) -- (0,3.0) node[above] {\(U_{\mathrm{eff}}\)};
-  \draw[dashed] (1.0,-0.2) -- (1.0,2.8) node[above] {\(R\)};
-  \draw[dashed] (3.0,-0.2) -- (3.0,2.8) node[above] {\(3R\)};
-  \draw[red!75!black, thick, domain=1.12:8.9, samples=220]
-    plot (\x,{0.45+1.25*(1-1/\x)*(1+5/(\x*\x))});
-  \fill[red!75!black] (1.84,1.87) circle (1.3pt);
-  \node[red!75!black, fill=white, inner sep=1.5pt] at (3.05,2.35)
+\begin{tikzpicture}[x=0.62cm,y=1.25cm, >=Latex, font=\small]
+  \draw[->] (0,0) -- (10.55,0) node[right] {\(r/R\)};
+  \draw[->] (0,-0.25) -- (0,2.25) node[above] {\(U_{\mathrm{eff}}\)};
+  \draw[dashed] (1.0,-0.15) -- (1.0,2.05) node[above] {\(R\)};
+  \draw[dashed] (3.0,-0.15) -- (3.0,2.05) node[above] {\(3R\)};
+  \draw[red!75!black, thick, domain=1.25:10.0, samples=260]
+    plot (\x,{1.50+5.5*(-1/\x+4/(\x*\x)-4/(\x*\x*\x))});
+  \fill[red!75!black] (2.0,1.50) circle (1.3pt);
+  \node[red!75!black, fill=white, inner sep=1.5pt] at (2.95,1.90)
     {unstable circular orbit};
-  \fill[blue!70!black] (8.16,1.63) circle (1.3pt);
-  \node[blue!70!black, fill=white, inner sep=1.5pt] at (7.10,1.20)
+  \fill[blue!70!black] (6.0,1.09) circle (1.3pt);
+  \node[blue!70!black, fill=white, inner sep=1.5pt] at (7.55,0.82)
     {stable circular orbit};
-  \draw[blue!70!black, thick, ->] (7.50,1.27) -- (8.07,1.58);
-  \draw[red!75!black, thick, ->] (1.55,1.55) -- (1.78,1.82);
-  \node[align=center] at (4.75,-0.75)
+  \draw[blue!70!black, thick, ->] (7.15,0.88) -- (6.12,1.06);
+  \draw[red!75!black, thick, ->] (2.65,1.78) -- (2.05,1.52);
+  \node[align=center] at (5.3,-0.58)
     {stability is the sign of \(U_{\mathrm{eff}}''(r_0)\)\\
      at fixed angular momentum};
 \end{tikzpicture}
 \caption{Effective-potential picture for the Schwarzschild-type laboratory.
-Circular orbits are critical points; the outer critical point is a minimum
-\((r_0>3R)\), while the inner one is a maximum
-\((3R/2<r_0<3R)\). The curve is schematic.}
+Circular orbits are critical points. The plotted curve is an affine rescaling of
+\(-1/r+4/r^2-4/r^3\), which has an inner maximum between \(3R/2\) and \(3R\)
+and an outer visible minimum with \(r_0>3R\).}
 \label{fig:lab-schwarzschild-effective-potential}
 \end{figure}
 \FloatBarrier
@@ -1372,7 +1411,6 @@ potential thinking into a phase portrait.
 Chapter~\ref{chap:rigid-integrability}, continues the Lagrangian rigid-body
 derivation into reduced Euler equations and attitude reconstruction.
 \end{itemize}
-The point of listing them here is organizational: the same examples are first
-derived from the action, then revisited in phase-space or reduced variables.
-The computation should be read as a later layer of the same model, not as a
-separate topic.
+The same examples are first derived from the action, then revisited in
+phase-space or reduced variables. The computation adds a later layer to the same
+model.

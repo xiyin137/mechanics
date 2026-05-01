@@ -1,35 +1,30 @@
 \chapter{The Three-Body Problem}
 \label{chap:three-body-problem}
 
-The three-body problem is the first Newtonian gravitational system in which all
-of the themes of these notes meet: variational mechanics, Hamiltonian phase
-space, symmetry reduction, integrable limits, resonances, and chaos. The
-two-body problem is exactly solvable because its symmetries and hidden
-conserved quantities reduce the motion to conic sections. Adding one more
-gravitating body preserves the obvious conservation laws but destroys generic
-integrability. The resulting system contains special exact solutions, stable
-and unstable relative equilibria, resonant islands, chaotic scattering, and
-long-time transport.
+Two bodies under mutual gravity move on conic sections forever. Three bodies
+do not admit a comparable general solution. Adding one more gravitating body
+preserves the exact conservation laws of Newtonian mechanics but destroys
+generic integrability. What remains is a rich set of structures:
+rotating-triangle exact solutions, equilibrium points in the rotating frame,
+resonant islands, chaotic scattering, and long-time transport.
 
-This chapter is written as a self-contained bridge between the Kepler problem
-and the asteroid-belt simulations in the demos. We first formulate the full
-Newtonian problem and reduce translations. We then describe Jacobi coordinates,
-angular momentum, and the special central configurations. The circular
-restricted three-body problem is derived as a controlled limit in which two
-massive primaries move on circular Kepler orbits and the third body is a test
-particle. Finally we connect that model to Sun-Jupiter-asteroid dynamics and to
-numerical estimates of ejection probability.
+This chapter connects every phenomenon back to a controlled reduction of
+Newton's law. We first formulate the full Newtonian three-body problem and
+reduce translations using Jacobi coordinates. We then derive the circular
+restricted three-body problem as a controlled limit and compute its
+rotating-frame Hamiltonian, Jacobi constant, zero-velocity curves, and Lagrange
+points. Finally we connect that model to the Sun-Jupiter-asteroid demo and to
+ejection statistics.
 
 \paragraph{Roadmap.}
-The chapter deliberately moves through three models rather than jumping
-straight to a simulation. The full three-body problem supplies the Hamiltonian,
-the conserved quantities, and the reason generic integrability fails. The
-circular restricted three-body problem supplies the rotating frame, Jacobi
-constant, zero-velocity curves, and Lagrange points. The heliocentric
-Sun-Jupiter-asteroid model supplies the finite-time ensemble experiment. Each
-model keeps part of the previous one and discards part of it; the text names
-those decisions so that numerical ejection is not mistaken for an intrinsic
-property of an unspecified ``three-body problem.''
+The chapter moves through three models in a fixed order. The full three-body
+problem supplies the Hamiltonian, the conserved quantities, and the reason
+generic integrability fails. The circular restricted three-body problem supplies
+the rotating frame, Jacobi constant, zero-velocity curves, and Lagrange points.
+The heliocentric Sun-Jupiter-asteroid model supplies the finite-time ensemble
+experiment. Each model keeps part of the previous one and discards part of it;
+the text names those decisions so that numerical ejection is tied to a specified
+model and time scale.
 
 \paragraph{Model hierarchy.}
 The reader should keep four levels separate:
@@ -41,9 +36,8 @@ The reader should keep four levels separate:
 \text{asteroid ensemble} &:& \text{finite-time numerical statistic}.
 \end{array}
 \]
-The later levels are not replacements for the earlier ones. They are controlled
-reductions chosen to isolate transport, escape channels, and resonance-driven
-loss in a teachable setting.
+The later levels are controlled reductions chosen to isolate transport, escape
+channels, and resonance-driven loss in a teachable setting.
 
 \section{The Newtonian Three-Body Problem}
 \label{sec:newtonian-three-body-problem}
@@ -126,9 +120,8 @@ separatrices, homoclinic tangles, chaotic scattering, and transport.
 \subsection{Translation Reduction And Jacobi Coordinates}
 \label{subsec:three-body-jacobi-coordinates}
 
-The center-of-mass degree of freedom is dynamically trivial, and it is worth
-removing it explicitly rather than merely saying ``work in the center-of-mass
-frame.''  Let
+The center-of-mass degree of freedom is dynamically trivial. Removing it
+explicitly shows exactly which variables remain in the interacting problem. Let
 \[
   m_{12}=m_1+m_2,\qquad M=m_{12}+m_3,
 \]
@@ -210,13 +203,14 @@ degree \(-1\), Euler's theorem gives
 \[
   \sum_i q_i\cdot\frac{\partial U}{\partial q_i}=-U.
 \]
-With \(H=T-U\), we obtain
+Using \(H=T-U\) gives
 \[
   \boxed{\ddot I_{\mathrm{cm}}=4H+2U.}
 \]
-This identity is not a solution formula, but it is a powerful diagnostic.  For
-a bounded noncollisional motion, the long-time average of \(\ddot I_{\mathrm{cm}}\)
-vanishes and one obtains the virial relation \(2\langle T\rangle=\langle U\rangle\).
+This identity is a diagnostic for the size of the configuration. For a bounded
+noncollisional motion, the long-time average of \(\ddot I_{\mathrm{cm}}\)
+vanishes, so time averaging gives the virial relation
+\(2\langle T\rangle=\langle U\rangle\).
 For escape or near-collision, \(I_{\mathrm{cm}}\) instead records the large-scale
 expansion or collapse of the configuration.
 \end{derivation}
@@ -399,8 +393,9 @@ on the energy surface without changing the Jacobi constant below.
     \draw[red!75!black, thick] (\pt) ++(-0.08,0.08) -- ++(0.16,-0.16);
     \node[red!75!black, \anchor=3pt] at (\pt) {\(\lab\)};
   }
-  \draw[blue!60!black, ->] (1.55,1.00) arc (28:78:0.78);
-  \node[blue!60!black, fill=white, inner sep=1pt] at (1.95,1.48) {rotating frame};
+  \draw[blue!60!black, ->] (1.20,0.45) arc (20:95:1.05);
+  \node[blue!60!black, fill=white, inner sep=1pt] at (1.70,1.18)
+    {rotating frame};
 \end{tikzpicture}
 \caption{Circular restricted three-body geometry in rotating barycentric
 coordinates. The primaries are fixed, while the test particle moves under
@@ -509,7 +504,7 @@ escape, and ejection mechanisms.
 \centering
 \begin{tikzpicture}[scale=1.0, >=Latex]
   \begin{scope}
-    \fill[gray!15] (-2.0,-1.15) rectangle (2.0,1.15);
+    \fill[gray!22] (-2.0,-1.15) rectangle (2.0,1.15);
     \draw[->] (-2.0,0) -- (2.25,0) node[right] {\(x\)};
     \draw[->] (0,-1.25) -- (0,1.25) node[above] {\(y\)};
     \draw[blue!70!black, thick] (-0.75,0) ellipse (0.62 and 0.45);
@@ -518,12 +513,13 @@ escape, and ejection mechanisms.
     \fill[white] (0.88,0) ellipse (0.32 and 0.25);
     \fill[yellow!80!black] (-0.75,0) circle (2.8pt);
     \fill[orange!80!black] (0.88,0) circle (2.2pt);
-    \draw[red!75!black, thick] (0.2,-0.08) -- (0.2,0.08);
-    \node[red!75!black, above] at (0.2,0.08) {\(L_1\)};
+    \draw[red!75!black, thick] (0.2,-0.09) -- (0.2,0.09);
+    \node[red!75!black, above=3pt, fill=white, inner sep=1.5pt,
+      font=\small] at (0.2,0.09) {\(L_1\)};
     \node[align=center] at (0,-1.65) {neck closed\\separate allowed lobes};
   \end{scope}
   \begin{scope}[xshift=5.6cm]
-    \fill[gray!15] (-2.0,-1.15) rectangle (2.0,1.15);
+    \fill[gray!22] (-2.0,-1.15) rectangle (2.0,1.15);
     \draw[->] (-2.0,0) -- (2.25,0) node[right] {\(x\)};
     \draw[->] (0,-1.25) -- (0,1.25) node[above] {\(y\)};
     \draw[blue!70!black, thick]
@@ -538,8 +534,12 @@ escape, and ejection mechanisms.
       .. controls (-0.30,-0.62) and (-1.08,-0.58) .. (-1.22,0);
     \fill[yellow!80!black] (-0.75,0) circle (2.8pt);
     \fill[orange!80!black] (0.88,0) circle (2.2pt);
-    \draw[red!75!black, thick] (0.2,-0.08) -- (0.2,0.08);
-    \node[red!75!black, above] at (0.2,0.08) {\(L_1\)};
+    \draw[red!75!black, thick] (0.2,-0.09) -- (0.2,0.09);
+    \node[red!75!black, above=3pt, fill=white, inner sep=1.5pt,
+      font=\small] at (0.2,0.09) {\(L_1\)};
+    \draw[red!75!black, thick] (1.18,-0.09) -- (1.18,0.09);
+    \node[red!75!black, above=3pt, fill=white, inner sep=1.5pt,
+      font=\small] at (1.18,0.09) {\(L_2\)};
     \draw[red!75!black, ->] (0.2,-0.52) -- (0.2,-0.14);
     \node[align=center] at (0,-1.65) {neck open\\transport channel};
   \end{scope}
@@ -746,7 +746,8 @@ outside Jupiter's orbital scale. It separately records close approaches to
 Jupiter and collisions with the inner solar cutoff.
 \end{assumption}
 
-This probability is not an intrinsic number attached to nature. It depends on:
+An ejection probability is a finite-time statistic tied to a specified
+experiment. It depends on:
 \[
   \text{model}+\text{initial ensemble}+\text{time horizon}
   +\text{numerical method}+\text{loss criterion}.
@@ -760,11 +761,10 @@ mean-motion resonance with Jupiter. The nominal resonance locations are
   \qquad
   (p:q)\in\{3:1,5:2,7:3,2:1\}.
 \]
-These labels should not be overinterpreted: a bin is not a resonance island,
-and the real resonance width depends on eccentricity and perturbation strength.
-They are a diagnostic overlay, useful for asking whether large loss fractions
-cluster near the same places where perturbation theory predicts slow resonant
-angles.
+These labels are a diagnostic overlay. A semimajor-axis bin is wider and cruder
+than a resonance island, and the actual resonance width depends on eccentricity
+and perturbation strength. The overlay asks whether large loss fractions cluster
+near the same places where perturbation theory predicts slow resonant angles.
 
 For a bin containing \(n_b\) sampled particles and \(e_b\) ejections, the
 reported fraction is
@@ -824,6 +824,11 @@ observables. They become meaningful only when the ensemble, integration time,
 timestep, invariants, and loss criterion are stated.
 \end{itemize}
 
+\paragraph{Questions to carry forward.}
+Which structures come from exact Newtonian symmetries, and which come from the
+restricted approximation? How does the Jacobi constant shape escape channels?
+Which ejection statistics remain stable when the timestep, ensemble, or
+planetary mass is varied?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:three-body-chapter-end-labs}
@@ -903,13 +908,13 @@ such as
   \dot x_2(0)=-\frac{\sqrt3}{2}v-\epsilon,\qquad
   \dot x_3(0)=\frac{\sqrt3}{2}v.
 \]
-The important lesson is not the particular number \(0.8\). It is the workflow:
-derive Newton's equations from a Lagrangian, integrate the exact pairwise
-forces, monitor energy and angular momentum, and compare unperturbed symmetric
-motion with perturbed motion. This is the finite-mass cousin of the
-Sun-Jupiter-asteroid ejection simulation.
+The workflow matters more than the particular number \(0.8\): derive Newton's
+equations from a Lagrangian, integrate the exact pairwise forces, monitor
+energy and angular momentum, and compare unperturbed symmetric motion with
+perturbed motion. This is the finite-mass cousin of the Sun-Jupiter-asteroid
+ejection simulation.
 
-\section{Questions For The Reader}
+\subsection{Questions For The Reader}
 \label{sec:three-body-questions}
 
 \begin{enumerate}
@@ -929,7 +934,7 @@ canonical momenta to rotating-frame velocities.
 \item How does \(\widehat P_{\mathrm{ej}}(T)\) change with \(T\)?
 \item Which semimajor-axis bins have the largest ejection fractions?
 \item What changes when \(M_J\) is scaled upward?
-\item Which losses are close encounters rather than clean ejections?
+\item Which losses are close encounters, and which are clean ejections?
 \item How sensitive are the results to \(\Delta t\)?
 \item Are apparent resonance structures stable under a different random seed?
 \end{enumerate}

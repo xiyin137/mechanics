@@ -1,14 +1,18 @@
 \chapter{Hamiltonian Mechanics And Phase Space}
 \label{chap:hamiltonian-phase-space}
 
+Phase space is a parameter space for histories. A point
+\((q,p)\in T^*Q\) is one possible state at one instant; the Hamiltonian flow
+extends it forward and backward in time. Two histories that meet at the same
+phase-space point are the same history, at least for as long as the equations
+have a unique solution.
+
 The Lagrangian chapter described motion as stationary paths in configuration
-space. Hamiltonian mechanics reorganizes the same dynamics on phase space, the
-space whose points specify both position and momentum. This reorganization is
-not merely a change of variables. It makes the symplectic form, Poisson
-brackets, canonical transformations, and phase-space volume available as
-structural tools. These tools are the language in which integrability,
-action-angle variables, perturbation theory, and KAM theory are most naturally
-stated.
+space. Hamiltonian mechanics reorganizes the same dynamics on phase space and
+brings the symplectic form, Poisson brackets, canonical transformations, and
+phase-space volume into the foreground. These tools are the language in which
+integrability, action-angle variables, perturbation theory, and KAM theory are
+most naturally stated.
 
 Throughout this chapter \(Q\) is a smooth configuration manifold of dimension
 \(n\), with local coordinates \(q^i\). The cotangent bundle \(T^*Q\) has
@@ -22,17 +26,16 @@ belongs to more advanced treatments.
 \paragraph{Roadmap.}
 The chapter has four layers. First, the Legendre transform explains when
 velocity data on \(TQ\) can be replaced by momentum data on \(T^*Q\). Second,
-the canonical one-form and symplectic form show why Hamilton's equations are
-geometric rather than a mnemonic for signs. Third, Poisson brackets, the
-phase-space action, and canonical transformations identify the maps that
-preserve Hamiltonian structure. Fourth, the numerical lesson explains why a
-simulation should preserve geometry as well as approximate trajectories.
+the canonical one-form and symplectic form derive Hamilton's equations from
+geometry. Third, Poisson brackets, the phase-space action, and canonical
+transformations identify the maps that preserve Hamiltonian structure. Fourth,
+the numerical lesson explains why a simulation should preserve geometry as well
+as approximate trajectories.
 
 Keep one distinction in view throughout the chapter. A point of phase space is
 instantaneous data, while a Hamiltonian flow is the rule that moves that data.
-The symplectic form is not another force law; it is the structure that turns
-the differential of \(H\) into a vector field and decides which coordinate
-changes are canonical.
+The symplectic form supplies the structure that turns the differential of
+\(H\) into a vector field and decides which coordinate changes are canonical.
 
 \section{Legendre Transform And Hamiltonian}
 \label{sec:legendre-hamiltonian}
@@ -70,7 +73,7 @@ The Hamiltonian is
     ([yshift=5pt]tq.east);
   \node[draw, rounded corners=2pt, fill=gray!6, align=center,
     text width=0.46\textwidth, inner sep=4pt] at (3.1,-1.40)
-    {regular iff \(\det W\ne 0\)};
+    {regular iff \(\det(W)\neq 0\)};
 \end{tikzpicture}
 \caption{The Legendre transform from tangent-bundle data to cotangent-bundle
 data. Singular Lagrangians require constraints; the Hamiltonian construction in
@@ -125,30 +128,28 @@ The cancellation of the \(\dd\dot q\) terms is the algebraic heart of the
 Legendre transform. It says that once momentum has been defined by
 \(p_i=\partial L/\partial\dot q^i\), the Hamiltonian differential contains
 only \(\dd q,\dd p,\dd t\). Hamilton's equations are therefore a first-order
-system on \(T^*Q\), rather than a second-order system on \(Q\).
+system on \(T^*Q\), with \((q,p)\) as the instantaneous phase-space data.
 
 The Legendre transform changes the bookkeeping of initial data. A Lagrangian
 state \((q,\dot q)\) records a position and a velocity; a Hamiltonian state
 \((q,p)\) records a position and the covector that measures how the action
 changes under endpoint displacement. The symplectic form below is built from
-that endpoint one-form, so Hamiltonian mechanics remembers the variational
-origin of the momentum rather than merely renaming velocity.
+that endpoint one-form, so Hamiltonian mechanics retains the variational origin
+of momentum.
 
-This is also the point where singular systems leave the main road. If the
-velocity Hessian has null directions, some velocities cannot be solved from
-the momenta and some momenta become constraints. Electromagnetic gauge theory,
-relativistic reparametrization-invariant particles, and ideal incompressible
-fluids all have versions of this phenomenon. The present chapter stays in the
-regular case so that the geometry of \(T^*Q\) can be learned without the extra
-Dirac-constraint machinery.
+Singular systems begin when the velocity Hessian has null directions. Then some
+velocities cannot be solved from the momenta, and some momenta become
+constraints. Electromagnetic gauge theory, relativistic
+reparametrization-invariant particles, and ideal incompressible fluids all have
+versions of this phenomenon. The present chapter stays in the regular case so
+that the geometry of \(T^*Q\) can be developed before Dirac constraints enter.
 
 \section{Phase Space As The Space Of Solutions}
 \label{sec:phase-space-solutions}
 
-A useful slogan is that, for a deterministic Hamiltonian system, phase space is
-the same thing as the space of solutions.
-More precisely, if \(H\) is smooth and the Hamiltonian vector field is complete
-on the time interval under study, then every point
+For a deterministic Hamiltonian system, phase space parametrizes the solutions.
+If \(H\) is smooth and the Hamiltonian vector field is complete on the time
+interval under study, then every point
 \[
   z_0=(q_0,p_0)\in T^*Q
 \]
@@ -167,9 +168,28 @@ The cotangent bundle \(T^*Q\) carries a canonical one-form
 \[
   \Theta=p_i\,\dd q^i.
 \]
+This formula is intrinsic, although it is written in coordinates. If
+\(\tilde q^j=\tilde q^j(q)\) and the induced cotangent coordinates satisfy
+\[
+  \tilde p_j=\frac{\partial q^i}{\partial\tilde q^j}p_i,
+\]
+then the chain rule gives
+\[
+  \tilde p_j\,\dd\tilde q^j
+  =
+  \frac{\partial q^i}{\partial\tilde q^j}p_i
+  \frac{\partial\tilde q^j}{\partial q^k}\dd q^k
+  =
+  p_i\,\dd q^i.
+\]
+Thus \(\Theta\) is the same one-form in every coordinate system on \(Q\).
 The canonical symplectic form is
 \[
   \omega=-\dd\Theta=\dd q^i\wedge\dd p_i.
+\]
+It is closed because
+\[
+  \dd\omega=-\dd^2\Theta=0.
 \]
 In arbitrary local phase-space coordinates
 \[
@@ -195,8 +215,8 @@ unique vector field. In canonical coordinates \(x=(q,p)\),
 \]
 The Poisson bracket can be expressed intrinsically by the bivector inverse to
 the symplectic form, with the sign convention fixed by Hamilton's equations
-below. The point is that the bracket is not extra structure once \(\omega\) is
-given.
+below. Once \(\omega\) is given, the bracket is the corresponding algebraic
+operation on functions.
 
 The two defining properties of \(\omega\) have different jobs. Nondegeneracy
 lets one solve \(\iota_{X_H}\omega=\dd H\) for a unique vector field, just as a
@@ -306,7 +326,10 @@ Hamiltonian flow preserves the phase-space volume form
 \end{proposition}
 
 \begin{proof}
-Cartan's formula gives
+Cartan's formula gives\footnote{For any differential form \(\alpha\) and vector
+field \(X\), \(\mathcal L_X\alpha=\dd(\iota_X\alpha)+\iota_X\dd\alpha\). One
+proves it first on functions and one-forms, then uses that both sides are
+graded derivations of the exterior algebra.}
 \[
   \Lie_{X_H}\omega=\dd(\iota_{X_H}\omega)+\iota_{X_H}\dd\omega.
 \]
@@ -405,6 +428,23 @@ right exact differential. Globally, the same calculation must be patched across
 coordinate charts, which is why action-angle generating functions can be
 multivalued even when the symplectic form is perfectly well defined.
 
+The type-II function used above is one member of the standard local family. The
+four common choices are distinguished by which old and new variables are treated
+as independent:
+\[
+\begin{array}{c|c|c}
+\text{type} & \text{generating function} & \text{differential convention}\\
+\hline
+F_1(q,Q) & F_1 & p\,\dd q-P\,\dd Q=\dd F_1\\
+F_2(q,P) & F_2 & p\,\dd q+Q\,\dd P=\dd F_2\\
+F_3(p,Q) & F_3 & -q\,\dd p-P\,\dd Q=\dd F_3\\
+F_4(p,P) & F_4 & -q\,\dd p+Q\,\dd P=\dd F_4
+\end{array}
+\]
+Each line is just a different Legendre transform of the same exact one-form.
+The signs follow from preserving \(p\,\dd q-P\,\dd Q\) up to an exact
+differential.
+
 \section{Numerical Lesson}
 \label{sec:numerical-lesson}
 
@@ -415,8 +455,8 @@ numerical integrator creates a discrete map
 \]
 For long-time Hamiltonian problems, whether \(\Psi_{\Delta t}\) preserves a
 symplectic form or a modified Hamiltonian can matter more than the local order
-of the method. This is why the pendulum, standard map, and asteroid demos are
-not merely programming exercises; they are experiments in preserving structure.
+of the method. The pendulum, standard map, and asteroid demos are therefore
+experiments in preserving structure.
 
 The practical lesson is diagnostic. A good mechanics simulation reports not
 only a trajectory but also the quantities that the continuous problem says
@@ -440,6 +480,11 @@ those quantities are often the coordinates of a reduced problem.
 determines Hamilton's equations, volume preservation, Poisson brackets, and the
 meaning of a canonical numerical method.
 \end{itemize}
+
+\paragraph{Questions to carry forward.}
+Which transformations preserve \(\omega\) itself? When does the Legendre
+transform fail? Which numerical errors change the geometry of phase space, and
+which ones only change the parametrized trajectory?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:hamiltonian-chapter-end-labs}
@@ -505,8 +550,8 @@ is a singular energy-surface condition. The velocity Hessian
 \]
 vanishes on this second branch. This example is a useful warning: a Lagrangian
 can produce familiar equations on a regular branch while being singular on
-another branch. Regularity is not decorative; it is what lets the Legendre
-transform define a Hamiltonian system.
+another branch. Regularity is the hypothesis that lets the Legendre transform
+define a Hamiltonian system.
 
 \begin{figure}[htbp]
 \centering
@@ -522,9 +567,9 @@ transform define a Hamiltonian system.
   \fill[red!75!black] (0.95,-0.57) circle (1.3pt)
     node[below right] {\(W=0\)};
   \draw[decorate, decoration={brace, amplitude=5pt}]
-    (-0.95,-1.15) -- (0.95,-1.15)
-    node[midway, below=9pt, fill=white, inner sep=1.5pt]
-    {multi-valued velocity branch};
+    (1.35,-0.57) -- (1.35,0.57)
+    node[midway, right=8pt, fill=white, inner sep=1.5pt, align=left]
+    {multiple \(\dot x\)\\for one \(p\)};
   \node[blue!70!black, align=center, fill=white, inner sep=2pt] at (2.05,1.45)
     {folded\\Legendre map};
 \end{tikzpicture}
@@ -597,6 +642,5 @@ splitting in perturbed Hamiltonian systems.
 The associated phase-space demo is
 \path{demos/python/hamiltonian_pendulum.py}.
 It plots pendulum trajectories and the separatrix in \((\theta,p_\theta)\).
-Read it as a check on this chapter's central claim: phase portraits are not
-decorative plots of a solution after the fact, but pictures of Hamiltonian
-level sets and the symplectic flow on phase space.
+Read it as a check on this chapter's central claim: phase portraits display
+Hamiltonian level sets and the symplectic flow on phase space.

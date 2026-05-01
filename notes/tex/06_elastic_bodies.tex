@@ -4,13 +4,15 @@
 \section{Why Elastic Bodies Come Before Fluids}
 \label{sec:elastic-vs-fluid}
 
-Elastic bodies and fluids share continuum balance laws, but the elastic case is
-the clearer first continuum model because every material point keeps a
-persistent label.  This lets us carry the configuration-space logic of the
-finite-dimensional chapters almost unchanged into field theory.  A fluid has no
-preferred static shear shape: its deviatoric stress is tied to the rate of
-deformation.  An elastic body stores energy in deformation itself.  This chapter
-therefore begins with the material map
+Pull a rubber band and let go. It snaps back. Push a finger through honey and
+the honey flows around the finger. The rubber band stores energy in shear; the
+honey responds through a rate-dependent stress. That distinction separates an
+elastic solid from a simple fluid.
+
+The elastic case is the cleaner first continuum model because every material
+point keeps a persistent label.  This lets us carry the configuration-space
+logic of the finite-dimensional chapters almost unchanged into field theory.
+This chapter therefore begins with the material map
 \[
   \varphi:B\times I\to\R^3,
   \qquad
@@ -23,9 +25,7 @@ energy produces stress, and how boundary-value problems reduce the field
 equations to measurable stiffness laws.  The gauge theory of shape-changing
 bodies is separated into Chapter~\ref{chap:deforming-body}, where overall rigid
 motion and internal deformation become distinct variables.  Fluid mechanics is
-then treated after these material-body ideas are in place, so the reader can see
-exactly what changes when the persistent reference shape is no longer the main
-organizing structure.
+then treated after these material-body ideas are in place.
 
 \paragraph{Roadmap.}
 The chapter has one main narrative.  Deformation gradients measure local
@@ -38,9 +38,9 @@ as a controlled small-displacement limit.
 The guiding distinction is between intrinsic deformation and frame description.
 Quantities such as \(C=F^TF\) and the Green strain do not change under a rigid
 rotation of the observer. Stress measures such as \(P\) and \(\sigma\) live in
-different configurations and are related by the deformation gradient.  The
-goal is not to memorize several names for stress and strain; it is to know
-which space each tensor acts on and which boundary term defines it.
+different configurations and are related by the deformation gradient.  Each
+stress or strain tensor is introduced together with the space on which it acts
+and the boundary term that defines its mechanical meaning.
 
 \begin{assumption}[Regular deformation map]
 Unless stated otherwise, \(\varphi(\cdot,t)\) is a smooth orientation-preserving
@@ -49,9 +49,9 @@ embedding of the reference body into space:
   J(X,t)=\det F(X,t)>0.
 \]
 The inequality \(J>0\) rules out local interpenetration and orientation
-reversal. Global injectivity is a stronger condition than \(J>0\); it is assumed
-when contact or self-intersection would otherwise matter, but most local stress
-derivations only require \(F\) to be nonsingular.
+reversal. Global injectivity is stronger than \(J>0\). We assume it when contact
+or self-intersection matters; otherwise the local stress derivations use only
+nonsingularity of \(F\).
 \end{assumption}
 
 \begin{assumption}[Reference versus spatial densities]
@@ -69,10 +69,10 @@ momentum balance, and stress work back to the fixed material domain \(B\).
 \label{sec:deformation-gradient-strain}
 
 Elasticity begins by comparing nearby material points before and after
-deformation. The object that does this comparison is not the displacement
-itself but its derivative: two deformations that differ by a rigid translation
-have the same local strain. This is why the deformation gradient \(F\), and the
-metric-like tensor \(C=F^TF\), are the natural first objects.
+deformation. Local strain is measured by the derivative of the displacement
+map: two deformations that differ by a rigid translation have the same local
+strain. This is why the deformation gradient \(F\), and the metric-like tensor
+\(C=F^TF\), are the natural first objects.
 
 The deformation gradient is the local linearization of the deformation map:
 \[
@@ -149,7 +149,9 @@ The infinitesimal strain is therefore
       .. controls (3.25,1.7) and (2.35,2.45) .. (1.25,2.18)
       .. controls (0.45,1.95) and (0.25,1.05) .. (0.55,0.55);
     \coordinate (x) at (1.55,1.15);
-    \draw[black, fill=black] (x) circle (1.6pt) node[below left] {\(x=\varphi(X)\)};
+    \draw[black, fill=black] (x) circle (1.6pt);
+    \node[fill=white, inner sep=1pt] at (2.75,0.42) {\(x=\varphi(X)\)};
+    \draw[black!55, ->] (2.42,0.55) -- (1.67,1.05);
     \draw[red!75!black, thick, ->] (x) -- ++(1.05,0.62)
       node[midway, below right, fill=white, inner sep=1pt] {\(\delta x=F\delta X\)};
     \node at (1.8,-0.55) {current placement};
@@ -190,6 +192,20 @@ unique symmetric positive square root
 \[
   U=C^{1/2}.
 \]
+The square root is constructed by the spectral theorem. Write
+\[
+  C=O\Lambda O^T,\qquad
+  \Lambda=\operatorname{diag}(\lambda_1,\lambda_2,\lambda_3),
+  \qquad \lambda_i>0,
+\]
+with \(O\) orthogonal. Define
+\[
+  C^{1/2}=O\operatorname{diag}(\sqrt{\lambda_1},\sqrt{\lambda_2},\sqrt{\lambda_3})O^T.
+\]
+This matrix is symmetric positive definite and squares to \(C\). If \(S\) is
+another symmetric positive square root, then \(S\) commutes with \(C=S^2\) and
+preserves the eigenspaces of \(C\); on each eigenspace positivity selects the
+positive square root. Hence \(S=C^{1/2}\).
 Define
 \[
   R_{\mathrm p}=FU^{-1}.
@@ -221,11 +237,10 @@ gradient.
 
 This distinction is the doorway to objectivity. A constitutive law for an
 ordinary elastic solid may depend on stretch invariants such as those of
-\(C\), but it may not change merely because an observer superposes a rigid
-rotation on the whole experiment. Polar decomposition makes the separation
-visible: \(R_{\mathrm p}\) tells how the local material frame is carried into
-space, while \(U\) and \(C\) record the intrinsic stretching that can store
-elastic energy.
+\(C\), and it must be invariant under a superposed rigid rotation of the
+observer. Polar decomposition makes the separation visible: \(R_{\mathrm p}\)
+tells how the local material frame is carried into space, while \(U\) and \(C\)
+record the intrinsic stretching that can store elastic energy.
 
 \begin{figure}[htbp]
 \centering
@@ -259,7 +274,7 @@ elastic energy.
     \draw[->] (-1.35,0) -- (1.55,0) node[right] {\(e_1\)};
     \draw[->] (0,-1.15) -- (0,1.35) node[above] {\(e_2\)};
     \draw[red!70!black, ->] (0.65,0.0) arc (0:28:0.65);
-    \node[red!70!black] at (0.95,0.25) {\(R_{\mathrm p}\)};
+    \node[red!70!black, fill=white, inner sep=1pt] at (1.30,0.84) {\(R_{\mathrm p}\)};
     \node[align=center] at (0,-1.55) {image under \(F=R_{\mathrm p}U\)};
   \end{scope}
 \end{tikzpicture}
@@ -358,12 +373,40 @@ When the condition fails, the local strain field cannot be assembled into a
 single-valued displacement without cuts, defects, residual stress, or a
 non-Euclidean reference geometry.
 
-\begin{remark}[Geometric meaning]
-The compatibility equations are the linearized version of flatness. A strain
-field defines a metric \(g_{ij}=\delta_{ij}+2e_{ij}\). If this metric is the
-pullback of the Euclidean metric by an embedding, its Riemann curvature must
-vanish. Linearizing that curvature gives Saint-Venant compatibility.
-\end{remark}
+\begin{derivation}[Saint-Venant compatibility as linearized curvature]
+A small strain field defines the metric
+\[
+  g_{ij}=\delta_{ij}+2e_{ij}.
+\]
+To first order in \(e\), the Christoffel symbols are
+\[
+  \Gamma^i{}_{jk}
+  =
+  \partial_j e_{ik}+\partial_k e_{ij}-\partial_i e_{jk},
+\]
+where indices are raised and lowered with \(\delta_{ij}\). The linearized
+Riemann tensor is therefore
+\[
+  R_{i\ell jm}
+  =
+  \partial_j\Gamma_{i\ell m}-\partial_m\Gamma_{i\ell j}
+  =
+  \partial_j\partial_\ell e_{im}
+  +\partial_m\partial_i e_{\ell j}
+  -\partial_j\partial_i e_{\ell m}
+  -\partial_m\partial_\ell e_{ij}.
+\]
+If \(e_{ij}=\frac12(\partial_i\xi_j+\partial_j\xi_i)\), this curvature
+vanishes because mixed derivatives commute. In three dimensions, the
+Saint-Venant tensor is the double dual of this linearized curvature:
+\[
+  (\operatorname{curl}\operatorname{curl}e)_{ij}
+  =
+  \epsilon_{ik\ell}\epsilon_{jmn}\partial_k\partial_m e_{\ell n}.
+\]
+Thus the displayed compatibility condition is exactly the linearized flatness
+condition.
+\end{derivation}
 
 \section{Hyperelastic Action And Piola Stress}
 \label{sec:hyperelastic-action}
@@ -444,6 +487,34 @@ Cauchy stress \(\sigma\) measures force per current spatial area. The two
 stress tensors represent the same physical traction, but on different surface
 elements.
 
+\begin{proposition}[Cauchy's traction theorem]
+At a fixed point and time, suppose the traction \(t(n)\) on a plane with unit
+normal \(n\) is continuous in \(n\), local, and satisfies force balance on
+shrinking material volumes. Then there is a unique tensor \(\sigma\) such that
+\[
+  t(n)=\sigma n.
+\]
+\end{proposition}
+
+\begin{proof}
+Use Cauchy's tetrahedron. Let the oblique face have area \(A\) and outward
+normal \(n\), and let the three coordinate faces have outward normals
+\(-e_i\) and areas \(A_i=n_iA\). Force balance on the tetrahedron gives
+\[
+  t(n)A+\sum_i t(-e_i)A_i+O(V)=0,
+\]
+where \(V\) is the tetrahedron volume. Shrink the tetrahedron while keeping its
+shape fixed. Traction terms scale like area and the inertial and body-force
+terms scale like volume, so \(O(V)/A\to0\). Hence
+\[
+  t(n)=-\sum_i n_i t(-e_i).
+\]
+Applying the same argument to a thin pillbox gives \(t(-e_i)=-t(e_i)\).
+Therefore \(t(n)=\sum_i n_i t(e_i)\). Define \(\sigma\) by taking its \(i\)-th
+column to be \(t(e_i)\). Then \(t(n)=\sigma n\), and uniqueness follows by
+evaluating the formula on the basis normals \(e_i\).
+\end{proof}
+
 \begin{derivation}[Piola transform from traction balance]
 Let a material surface element have reference unit normal \(N\) and reference
 area \(\dd S\). Its spatial image has unit normal \(n\) and area \(\dd a\).
@@ -509,7 +580,16 @@ When \(W(F,X)=\widehat W(C,X)\), this symmetry can also be seen directly. Since
 \[
   \delta C=F^T\delta F+\delta F^TF,
 \]
-one obtains
+the variation of \(W\) is
+\[
+  \delta W
+  =
+  \frac{\partial\widehat W}{\partial C}:\delta C
+  =
+  2\left(F\frac{\partial\widehat W}{\partial C}\right):\delta F,
+\]
+where \(\partial\widehat W/\partial C\) is symmetric. Comparing with
+\(\delta W=P:\delta F\) gives
 \[
   P=2F\frac{\partial \widehat W}{\partial C}.
 \]
@@ -747,6 +827,14 @@ vanishing on \(\partial B_D\),
 This is the elastic analogue of deriving Cauchy's equation from balance laws:
 internal stress work equals external virtual work.
 
+The weak form also gives uniqueness in the standard coercive case. If the body
+has a nonempty displacement boundary, or if rigid translations and rotations
+are otherwise fixed, the quadratic elastic energy is strictly convex on the
+admissible displacement space. Korn's inequality controls the full displacement
+gradient by the strain, and the Lax-Milgram theorem then gives a unique weak
+solution for compatible loads. In a pure traction problem, uniqueness holds
+only modulo rigid motions, which must be removed by side constraints.
+
 \subsection{Uniaxial Extension}
 \label{subsec:uniaxial-extension}
 
@@ -963,6 +1051,10 @@ show how continuum equations reduce to experimentally measurable stiffness
 laws. The next chapter uses this elastic language as the material side of a
 gauge theory of deforming bodies.
 
+\paragraph{Questions to carry forward.}
+Which tensor lives in the reference configuration, and which lives in space?
+Which compatibility conditions distinguish an actual deformation from a strain
+field with defects? Which boundary term defines the stress being measured?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:elastic-body-chapter-end-labs}

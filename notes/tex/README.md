@@ -19,6 +19,6 @@ The current files form an integrated draft:
 - `08_fluid_mechanics.tex`
 
 The notes intentionally track the demo scripts. Worked derivations, exercises,
-and simulation pointers are placed at the ends of the chapters they support,
-rather than in standalone back-matter chapters. Equations should eventually be
-paired with figures generated from `demos/python`.
+and simulation pointers live at the ends of the chapters they support. Equations
+that depend on numerical data should be checked against the corresponding
+scripts in `demos/python`.

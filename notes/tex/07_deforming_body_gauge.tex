@@ -1,18 +1,23 @@
 \chapter{Gauge Theory Of Deforming Bodies}
 \label{chap:deforming-body}
 
-Rigid-body mechanics separates orientation from shape because a rigid body has
-no internal shape variables.  A deforming body has both.  Frank Wilczek's
-gauge-theoretic viewpoint, developed with Shapere in the context of swimming
-and self-propulsion,\footnote{A. Shapere and F. Wilczek, ``Gauge kinematics of
+A cat falls. It rights itself in mid-air without any external torque. Its
+angular momentum can remain zero while its orientation changes, because the cat
+cycles through internal shapes. The same mechanism appears in low-Reynolds
+swimming, astronaut reorientation, and the rotor laboratory below: closed loops
+in shape space produce rigid motions in physical space.
+
+Frank Wilczek's gauge-theoretic viewpoint, developed with Shapere in the
+context of swimming and self-propulsion,\footnote{A. Shapere and F. Wilczek,
+``Gauge kinematics of
 deformable bodies,'' \emph{American Journal of Physics} 57, 514--518 (1989),
 \href{https://doi.org/10.1119/1.15986}{doi:10.1119/1.15986}. Their closely
 related low-Reynolds-number swimming formulation appears in
 \href{https://doi.org/10.1017/S002211208900025X}{doi:10.1017/S002211208900025X}.}
 treats the decomposition into overall rigid motion and internal deformation as
-a choice of gauge.  The physically meaningful object is not the instantaneous
-frame itself, but the connection that tells us which rigid motion accompanies an
-infinitesimal change of shape under a specified momentum constraint.
+a choice of gauge.  The connection tells us which rigid motion accompanies an
+infinitesimal change of shape under a specified momentum constraint, and its
+curvature and holonomy describe the observable geometric phase.
 
 The central phenomenon is geometric phase.  A body can execute a closed loop in
 shape space and return to the same internal shape while acquiring a net rotation
@@ -42,19 +47,17 @@ base variable is shape \(s\), time \(t\), or material position \(X\).
 \label{sec:gauge-kinematics-deformable-bodies}
 
 The preceding chapter described how an elastic body deforms relative to a
-reference body. Gauge kinematics asks a different but compatible question: if
-the body changes shape internally, how much of its observed motion is a genuine
-rigid displacement, and how much is a convention for choosing body axes at each
-shape? This is the same distinction that appears in gauge theory: local
-descriptions depend on a frame choice, while holonomy around a closed loop is
-observable.
+reference body. Gauge kinematics adds the rigid placement of a shape-changing
+body in space. A choice of body axes at each shape gives a local description,
+while holonomy around a closed loop records the observable rigid motion produced
+by the shape cycle.
 
 The Wilczek-Shapere point of view begins with a finite deformable body moving in
 space. Separate its configuration into:
 \[
   g\in G,\qquad s\in\mathcal S,
 \]
-where \(G\) is the rigid-motion group, usually \(\SE(3)\) or \(\SO(3)\), and
+where \(G\) is the rigid-motion group, such as \(\SE(3)\) or \(\SO(3)\), and
 \(\mathcal S\) is shape space. A point of the full configuration space is a
 rigid placement \(g\) together with an internal shape \(s\).
 
@@ -237,9 +240,9 @@ has the block form
   \xi\\ \dot s
   \end{pmatrix}.
 \]
-This is not an additional assumption about linearity of the equations of
-motion; it is simply the quadratic form of kinetic energy written in the
-variables \((\xi,\dot s)\).  The block \(M(s)\) is the locked inertia operator:
+This is the quadratic form of kinetic energy written in the variables
+\((\xi,\dot s)\), not a linearization of the equations of motion. The block
+\(M(s)\) is the locked inertia operator:
 it measures the rigid momentum produced by a rigid velocity when the shape is
 held fixed.  The block \(m(s)\) is the shape-space metric for pure deformation
 in the chosen frame.  The off-diagonal block \(A(s)\) is the crucial one: it
@@ -521,7 +524,10 @@ For a small loop enclosing area element
   \coordinate (c) at (3.65,2.55);
   \coordinate (d) at (1.35,2.55);
   \fill[blue!10] (a) -- (b) -- (c) -- (d) -- cycle;
-  \draw[blue!70!black, thick, ->] (a) -- node[below] {\(\delta s^1\)} (b);
+  \draw[blue!70!black, thick, ->] (a) -- (b);
+  \node[blue!70!black, fill=white, inner sep=1pt, font=\large]
+    at (2.50,1.53)
+    {\(\delta s^1\)};
   \draw[blue!70!black, thick, ->] (b) -- node[right] {\(\delta s^2\)} (c);
   \draw[blue!70!black, thick, ->] (c) -- (d);
   \draw[blue!70!black, thick, ->] (d) -- (a);
@@ -543,11 +549,10 @@ mathematical idea as Hannay angle, Berry phase, and the rigid-body falling-cat
 effect, now written for deforming bodies.
 
 Flat connections can still produce frame changes along open paths, but a small
-closed loop detects curvature. This is why the curvature, rather than the
-connection coefficients themselves, is the local observable of the gauge
-description. Different choices of body frame change \(\mathcal A\), while the
-holonomy around a loop changes by conjugation and therefore represents the same
-physical displacement.
+closed loop detects curvature. The curvature is the local observable of the
+gauge description. Different choices of body frame change \(\mathcal A\), while
+the holonomy around a loop changes by conjugation and therefore represents the
+same physical displacement.
 
 \section{A Two-Rotor Deforming-Body Model}
 \label{sec:two-rotor-deforming-body-model}
@@ -620,11 +625,10 @@ body rotation whose leading rotation vector is proportional to
   ab\,\Delta\alpha\,\Delta\beta\,e_x
 \]
 up to the sign convention set by the direction of traversal and by
-\(g^{-1}\dot g=-\mathcal A(\dot s)\). The point is not the sign. The point is
-that a closed loop in internal shape variables produces a rigid rotation even
-though the rotors return to their starting angles. This is the same
-geometric-phase mechanism as the falling cat, written as a connection over
-shape space.
+\(g^{-1}\dot g=-\mathcal A(\dot s)\). The essential content is the holonomy: a
+closed loop in internal shape variables produces a rigid rotation even though
+the rotors return to their starting angles. This is the same geometric-phase
+mechanism as the falling cat, written as a connection over shape space.
 
 \section{Swimming At Low Reynolds Number}
 \label{sec:low-reynolds-swimming}
@@ -648,11 +652,10 @@ above gives
 \[
   \xi=-\mathcal A_\alpha(s)\dot s^\alpha.
 \]
-The connection is now computed from a hydrodynamic boundary-value problem
-rather than from an inertia tensor. A reciprocal one-parameter stroke encloses
-no area in shape space and produces no net motion: this is Purcell's scallop
-theorem in gauge language. A two-parameter stroke can enclose area and swim by
-curvature.
+The connection is now computed from a hydrodynamic boundary-value problem. A
+reciprocal one-parameter stroke encloses no area in shape space and produces no
+net motion: this is Purcell's scallop theorem in gauge language. A
+two-parameter stroke can enclose area and swim by curvature.
 
 \section{Local Frames In Elastic Continua}
 \label{sec:local-frames-elastic-continua}
@@ -794,8 +797,8 @@ curvature when the local frame itself has curvature. These identities are the
 continuum-defect analogue of \(\nabla\cdot(\nabla\times A)=0\): they tell which
 defect fields can be prescribed consistently.
 
-The gauge theory is not decorative terminology. It records which descriptions
-depend on arbitrary local choices of frame and which quantities are invariant.
+The gauge theory records which descriptions depend on arbitrary local choices of
+frame and which quantities are invariant.
 
 \section{Cosserat Rod As A One-Dimensional Gauge Theory}
 \label{sec:cosserat-rod}
@@ -805,13 +808,22 @@ orientation angle \(\theta(s)\). Its director is
 \[
   d_1=(\cos\theta,\sin\theta).
 \]
+Let
+\[
+  d_2=(-\sin\theta,\cos\theta).
+\]
+Then the moving-frame equations are
+\[
+  d_1'=\theta' d_2,\qquad d_2'=-\theta' d_1.
+\]
+Thus curvature is the connection coefficient for the rotation of the director
+frame along the rod:
+\[
+  \kappa=\theta'.
+\]
 For an inextensible unshearable rod,
 \[
   r'(s)=d_1(s).
-\]
-The connection is the scalar curvature
-\[
-  \kappa(s)=\theta'(s).
 \]
 Given \(\kappa\),
 \[
@@ -835,6 +847,36 @@ compares actual curvature with preferred curvature. Here \(B\) is bending
 stiffness and \(\kappa_0\) is intrinsic curvature. In gauge language, the
 energy penalizes mismatch between a connection and a preferred connection.
 
+The Euler-Lagrange equation is short in this one-dimensional case. Since
+\(\kappa=\theta'\),
+\[
+  \delta E_{\mathrm{bend}}
+  =
+  \int_0^L B(\kappa-\kappa_0)\delta\theta'\,\dd s
+  =
+  \left[M\,\delta\theta\right]_0^L
+  -
+  \int_0^L M'\delta\theta\,\dd s,
+\]
+where
+\[
+  M=B(\kappa-\kappa_0)
+\]
+is the bending moment. With fixed end angles and no distributed applied couple,
+stationarity gives
+\[
+  M'=0.
+\]
+If endpoint angles are free, the boundary term supplies the natural moment
+condition \(M=0\) at the free end. With external forces and the constraint
+\(r'=d_1\), force balance adds the usual Cosserat equations
+\[
+  n'(s)+f(s)=0,\qquad M'(s)+d_1(s)\times n(s)+\ell(s)=0,
+\]
+where \(n\) is internal force, \(f\) is applied force per length, and
+\(\ell\) is applied couple per length. These equations are the one-dimensional
+balance laws behind the reconstruction formulas above.
+
 \section{What To Take Forward}
 \label{sec:deforming-body-take-forward}
 
@@ -856,6 +898,11 @@ the local frame and
 translation data to be incompatible, producing curvature and torsion as physical
 defect densities.
 
+\paragraph{Questions to carry forward.}
+Which rigid motion is physical, and which is a frame convention? How much
+holonomy is captured by curvature for a small loop, and what changes for a
+large loop? How does the finite-dimensional connection become a field theory
+over a material body?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:deforming-body-chapter-end-labs}
@@ -888,7 +935,10 @@ is
 \]
 plus the correction from the variation of \(\mathcal A_\alpha(s)\) across the
 loop. The Baker-Campbell-Hausdorff formula gives the commutator contribution,
-while the spatial variation gives derivative terms. The result is
+while the spatial variation gives derivative terms.\footnote{We use only the
+leading commutator term
+\(\exp X\exp Y\exp(-X)\exp(-Y)=\exp([X,Y]+O(\|(X,Y)\|^3))\). Higher terms are
+higher nested commutators.} The result is
 \[
   g_{\mathrm{loop}}
   =
@@ -1031,6 +1081,10 @@ is the finite-dimensional version of falling-cat holonomy.
       node[midway, left] {\(-\Delta\beta\)};
     \node[align=center] at (2.05,3.35) {closed shape loop\\on the rotor torus};
   \end{scope}
+  \draw[gray!85, thick, ->] (4.25,1.50) --
+    node[above, fill=white, inner sep=1pt]
+      {\([\mathcal A_\alpha,\mathcal A_\beta]\)}
+    (5.20,1.50);
   \begin{scope}[xshift=5.4cm]
     \draw[->, thick] (0,0) -- (1.6,0) node[right] {\(e_x\)};
     \draw[->, thick] (0,0) -- (0,1.6) node[above] {\(e_z\)};

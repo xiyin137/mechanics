@@ -4,54 +4,10 @@
 \section{Purpose Of These Notes}
 \label{sec:notation-purpose}
 
-These notes are written as lecture notes rather than as a compressed reference.
-Each chapter states its assumptions, defines its symbols before use whenever
-possible, and derives the central equations from a clearly named structure:
-action principles, symplectic geometry, symmetry, or continuum balance laws.
-
-Mechanics is full of controlled overloading. The same letter \(\omega\) can
-mean a symplectic form, an angular velocity, a vorticity, or a frequency
-vector. The word ``action'' can mean a functional, an action variable, or a
-group action. The notes do not try to eliminate this language; doing so would
-make the subject less recognizable. Instead they make the overloads explicit,
-section by section, and insist that every important symbol be tied to a space,
-a convention, and a physical interpretation.
-
-The guiding convention is simple: when an equation appears, the reader should
-know what space it lives on, which variables are independent, which assumptions
-make it valid, and what physical information it carries.
-
-The notes are meant to be self-contained at the level of a first serious pass
-through advanced mechanics. When a result is used later, the earlier occurrence
-should have supplied the model, the variables, the assumptions, and the
-derivation strategy. The reader should never have to guess whether an equation
-is a definition, an equation of motion, a constraint, a conservation law, or a
-coordinate representation of a geometric object.
-
-Self-contained does not mean that every calculation starts from elementary
-calculus. It means that every new structure is introduced with enough context
-to be used responsibly. For example, when the notes invoke a symplectic form,
-they state the phase space and the sign convention; when they invoke a stress
-tensor, they state the balance law and the constitutive assumption; when they
-invoke a connection, they say which frame choice is being compared.
-
-The recurring reading questions are:
-\[
-\begin{gathered}
-  \text{What is the configuration or phase space?}\\
-  \text{What structure is being preserved or varied?}\\
-  \text{Which assumptions make the calculation legal?}\\
-  \text{What physical or geometric information survives a change of coordinates?}
-\end{gathered}
-\]
-These questions are deliberately repeated in different contexts. They are the
-thread connecting particles, rigid bodies, celestial mechanics, elastic and
-deforming continua, and fluids.
-
-\section{Exposition Standard Used In The Notes}
-\label{sec:exposition-standard}
-
-Each major derivation is written to answer five questions in order:
+Each chapter states its assumptions, defines its symbols before use, and derives
+the central equations from a named structure: an action principle, a symplectic
+form, a symmetry, or a balance law. The standard for every major derivation is
+the same:
 \[
 \begin{array}{rcl}
 \text{model} &:& \text{what physical idealization is being made?}\\
@@ -61,11 +17,15 @@ Each major derivation is written to answer five questions in order:
 \text{interpretation} &:& \text{what does the result say invariantly?}
 \end{array}
 \]
-When a derivation feels long, this list is the intended guide. A displayed
-equation should not be read as an isolated fact; it is either part of the
-model, a definition of notation, a consequence of a principle, or an
-interpretation of the result. The surrounding prose is meant to identify which
-role the equation is playing.
+These five questions are the local checklist. They connect particles, rigid
+bodies, celestial mechanics, elastic and deforming continua, and fluids.
+
+Mechanics overloads its symbols. The letter \(\omega\) can mean a symplectic
+form, an angular velocity, a vorticity, or a frequency vector, depending on the
+chapter. The word ``action'' can mean a path functional, an action variable, or
+a group action. The notes keep the conventional language but define it locally:
+each important symbol is tied to a space, a convention, and a physical
+interpretation.
 
 The notes also distinguish three kinds of equality. A definition introduces a
 symbol, as in \(p_i=\partial L/\partial\dot q^i\). An identity holds because of
@@ -79,44 +39,15 @@ stage of a calculation. Before a variational principle is imposed, \(q(t)\) is
 an arbitrary admissible curve. After the first variation is set to zero, it is
 a physical trajectory. Before a constraint is solved, a multiplier is an
 unknown reaction force. After a reduction is performed, the same multiplier may
-have disappeared from the reduced equation but not from the original force
-balance. The exposition tries to mark these stage changes explicitly because
-they are where hidden assumptions most often enter.
+have disappeared from the reduced equation while still existing in the original
+force balance. The text marks these stage changes explicitly.
 
-\section{How Notation Is Introduced}
-\label{sec:notation-control}
-
-Notation in mechanics is necessarily overloaded: \(I\) can mean a time
-interval, an inertia tensor, or an action variable; \(\omega\) can mean a
-symplectic form, an angular velocity, a frequency vector, or vorticity. A large
-ledger at the beginning of the notes would ask the reader to memorize symbols
-before seeing the systems that make them meaningful. These notes instead use a
-local rule: the first serious use of a symbol in a chapter or section defines
-it in context, and that local definition is authoritative until the context
-changes.
-
-\begin{enumerate}
-\item A symbol is introduced next to the model, equation, figure, or derivation
-where it first does work.
-\item If a standard symbol is reused with a different meaning, the local
-definition overrides the global convention only inside that section or chapter.
-\item Bold or vector notation indicates Euclidean vectors only when the ambient
-space and metric have been named.
-\item Upper/lower indices in finite-dimensional mechanics indicate coordinate
-indices on a manifold and its cotangent bundle. In continuum chapters, capital
-indices such as \(A,B\) label material coordinates and lower-case indices such
-as \(i,j\) label spatial coordinates.
-\item Every theorem, derivation, example, and demo should be readable together
-with the definitions and assumptions stated immediately before the calculation.
-\end{enumerate}
-
-When a symbol looks familiar, do not infer its meaning from memory alone. Read
-the nearest definition and ask three questions: is the object a scalar, vector,
-covector, tensor, map, or form; on which space is it defined; and is the
-equation using it coordinate-free or only a local coordinate expression? This
-small pause is especially important for \(p\), \(I\), \(\omega\), \(J\),
-\(\Omega\), \(F\), and \(A\), all of which are intentionally reused in standard
-ways.
+Notation is introduced where it first does work. If a standard symbol is reused,
+the local definition governs the current section or chapter. Upper/lower
+indices in finite-dimensional mechanics label coordinates on a manifold and its
+cotangent bundle; in continuum chapters, capital indices such as \(A,B\) label
+material coordinates and lower-case indices such as \(i,j\) label spatial
+coordinates.
 
 \section{Standing Mathematical Assumptions}
 \label{sec:standing-assumptions}
@@ -137,8 +68,9 @@ written \(q^1,\ldots,q^n\).
 
 \begin{assumption}[Endpoint variations]
 For Hamilton's principle in its basic form, variations of the path satisfy
-\(\delta q(t_0)=\delta q(t_1)=0\). Free-endpoint and boundary-force variants are
-important, but they are not the default convention.
+\(\delta q(t_0)=\delta q(t_1)=0\). Free-endpoint and boundary-force variants
+are introduced when boundary work or transversality conditions are part of the
+model.
 \end{assumption}
 
 \begin{assumption}[Regular Lagrangians]
@@ -164,12 +96,12 @@ and orientation.
 \section{A Map Of The Course}
 \label{sec:course-map}
 
-The course moves through four enlargements of the same idea. The diagram is not
-a dependency graph; it is a loop that the notes revisit at increasing levels of
-structure. A variational principle produces equations, Hamiltonian geometry
-organizes their phase space, action-angle variables describe integrable tori,
-perturbation theory tests the stability of those tori, and continuum mechanics
-returns to the same questions with fields instead of finitely many coordinates.
+The course moves through four enlargements of the same idea. The diagram below
+shows the loop revisited throughout the notes: a variational principle produces
+equations, Hamiltonian geometry organizes their phase space, action-angle
+variables describe integrable tori, perturbation theory tests the stability of
+those tori, and continuum mechanics returns to the same questions with fields
+instead of finitely many coordinates.
 
 \begin{figure}[htbp]
 \centering
@@ -192,10 +124,10 @@ returns to the same questions with fields instead of finitely many coordinates.
 \draw[arr] (ham) -- (chaos);
 \draw[arr] (chaos) -- (cont);
 \draw[arr] (cont) -- (lag);
-\draw[softarr] (examples.north east) to[out=30,in=210] (lag.west);
-\draw[softarr] (examples.south east) to[out=-35,in=160] (cont.north west);
-\draw[softarr] (demos.north west) to[out=150,in=-30] (ham.east);
-\draw[softarr] (demos.south west) to[out=205,in=10] (chaos.east);
+\draw[softarr, thin] (examples.north east) -- (lag.west);
+\draw[softarr, thin] (examples.south east) -- (cont.west);
+\draw[softarr, thin] (demos.north west) -- (ham.east);
+\draw[softarr, thin] (demos.south west) -- (chaos.east);
 \end{tikzpicture}
 \caption{The course loop. The central theories are connected by examples and
 computational diagnostics: exact models teach the geometry, while numerical
@@ -228,8 +160,8 @@ parameters matter.
 \section{How To Read Long Derivations}
 \label{sec:read-long-derivations}
 
-Long derivations in mechanics usually have two layers. The first layer is
-formal: differentiate an action, apply a balance law, invert a Legendre
+Long derivations in mechanics have two layers. The first layer is formal:
+differentiate an action, apply a balance law, invert a Legendre
 transform, or change coordinates. The second layer is structural: identify the
 conserved quantity, the reduced phase space, the constraint force, or the
 connection hidden in the algebra. The notes spell out both layers whenever the
@@ -246,7 +178,7 @@ A useful way to read each derivation is to keep a small ledger:
 \text{choice of frame} & \text{connection and curvature}
 \end{array}
 \]
-Most mistakes in mechanics are ledger mistakes: using an equation outside the
+Many mistakes in mechanics are ledger mistakes: using an equation outside the
 assumptions that produced it, changing a frame without transforming the
 components, or interpreting a reduced equation as if no reduction had occurred.
 
@@ -257,26 +189,24 @@ identified. For example, the symbols \(\Gamma^\ell{}_{ij}\), \(\lambda_a\),
 equation, constraint reaction, gauge connection, and torsion are the underlying
 objects.
 
-A useful test is to cover the displayed equations and summarize the argument
-in sentences. If the prose summary is impossible, the issue is rarely a
-missing algebraic trick; it is usually that the model, space, principle, or
-interpretation has not been identified. The notes are designed so that each
-long derivation can be reconstructed from those four pieces.
+A useful test is to cover the displayed equations and summarize the argument in
+sentences. When the prose summary breaks down, return to the model, space,
+principle, and interpretation before trying more algebra. Long derivations in
+these notes are meant to be reconstructible from those four pieces.
 
 \section{How To Use Chapter-End Laboratories}
 \label{sec:chapter-end-laboratories}
 
-The worked examples, exercises, and computational scripts in these notes are
-not collected in a separate final chapter. They are placed at the ends of the
-chapters whose ideas they test. This is deliberate. A laboratory is where a
-formalism proves that it can survive contact with a specific model: a coordinate
-change, a constraint force, a resonance, a pressure multiplier, a finite-time
-ejection criterion, or a gauge holonomy.
+The worked examples, exercises, and computational scripts are placed at the ends
+of the chapters whose ideas they test. A laboratory is where a formalism proves
+that it can survive contact with a specific model: a coordinate change, a
+constraint force, a resonance, a pressure multiplier, a finite-time ejection
+criterion, or a gauge holonomy.
 
 Read each chapter-end laboratory with three questions in mind. What is the
 minimal model? Which calculation turns the model into a diagnostic quantity?
 What would fail if one of the assumptions were changed? These questions turn a
-worked example into a reusable method rather than a solved problem to memorize.
+worked example into a reusable method.
 
 For teaching, each laboratory can be split into three layers. The first layer is
 the statement of the model and assumptions; students should be able to write
@@ -285,10 +215,10 @@ diagnostic equation, conserved quantity, reduced system, or numerical test. The
 third layer is interpretation: stability, bifurcation, transport, reaction
 force, pressure projection, ejection, or holonomy.
 
-Figures in laboratory sections should be read before the algebra and then
-checked again after the final boxed result. If a figure cannot be tied to a
-specific equation, reduction, boundary condition, or diagnostic criterion, the
-mechanics has not yet been understood geometrically.
+In laboratory sections, figures introduce the geometry before the algebra and
+should be checked again after the final boxed result. A figure earns its place
+by making a specific equation, reduction, boundary condition, or diagnostic
+criterion visible.
 
 \subsection*{Problem-To-Demo Conversion Rules}
 \label{sec:lab-demo-rules}
@@ -312,11 +242,11 @@ For probabilistic demos such as asteroid ejection, the output must also state
   \text{time horizon},\quad
   \text{ejection criterion}.
 \]
-Without these, a numerical picture is not a reproducible mechanics experiment.
-The same rule applies in reverse when reading a demo: the code should reveal
-the equations it integrates, the units in which parameters are measured, the
-events it declares, and the invariants it monitors. A plot is the last line of
-the argument, not the first.
+These entries make a numerical picture into a reproducible mechanics
+experiment. The same rule applies in reverse when reading a demo: the code
+should reveal the equations it integrates, the units in which parameters are
+measured, the events it declares, and the invariants it monitors. A plot closes
+the argument after the model and diagnostics have been specified.
 
 \subsection*{What The Laboratories Practice}
 \label{sec:worked-lab-summary}

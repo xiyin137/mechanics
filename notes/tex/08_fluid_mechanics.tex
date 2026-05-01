@@ -4,21 +4,17 @@
 \section{What Is A Fluid?}
 \label{sec:what-is-fluid}
 
-Fluid mechanics is continuum mechanics with a special constitutive idea: the
-material does not resist a static shear deformation. A solid can sit in a
-sheared shape and store elastic energy; a simple fluid responds to shear through
-stress proportional to the rate of deformation. The preceding elastic and
-deforming-body chapters kept the material reference description in the
-foreground. This chapter now shifts the emphasis to Eulerian fields and treats
-fluids on their own terms.
+A fluid is a continuum that has lost its memory of a reference shear. Push a
+finger through honey: the displaced material moves, stretches, and eventually
+fills in behind the finger, but no permanent shear strain is stored. Pull the
+finger out and the honey does not snap back.
 
-A fluid has largely forgotten its reference shape. Push a finger through honey:
-the displaced material moves, stretches, and eventually fills in behind the
-finger, but no permanent shear strain is stored as an elastic memory of that
-particular shape. This is why the Eulerian description is natural. We watch
-velocity, density, pressure, and stress at points in space, and we reinsert the
-moving-particle viewpoint only through the material derivative and transport
-theorems.
+This is why the Eulerian description is natural. We observe fields at fixed
+points in space: velocity, density, pressure, and stress. The moving-particle
+viewpoint returns through the material derivative and transport theorems. The
+preceding elastic and deforming-body chapters kept the material reference
+description in the foreground; this chapter shifts the emphasis to Eulerian
+fields and treats fluids on their own terms.
 
 The basic fields are functions on physical space:
 \[
@@ -56,23 +52,22 @@ from rigid placement.  Fluid mechanics then asks what remains when material
 labels are still allowed in derivations but no longer provide the most useful
 state variables.
 
-The staging matters because the Navier-Stokes equation is not a single
-assumption. Its inertial term is kinematics, its pressure and stress terms come
-from momentum balance, and its viscous term comes from the Newtonian
+The staging matters because the Navier-Stokes equation has three different
+ingredients. Its inertial term is kinematics, its pressure and stress terms
+come from momentum balance, and its viscous term comes from the Newtonian
 constitutive law. Separating these ingredients makes it clear which part of the
 model changes when one studies inviscid flow, non-Newtonian fluids, elasticity,
 or low-Reynolds-number swimming.
 
 \paragraph{Derivation audit trail.}
-Every continuum equation below should be read with its conservation statement
-attached. The material derivative comes from following one labelled parcel.
-The Reynolds transport theorem converts derivatives of moving integrals into
-Eulerian fields. Mass conservation comes from conserving mass in every material
-volume. Cauchy's equation comes from momentum balance and the existence of a
-traction stress tensor. Navier-Stokes appears only after the Newtonian stress
-law is imposed. This audit trail is the best protection against treating
-\(\rho Du/Dt=-\nabla p+\mu\Delta u\) as an isolated formula rather than the
-endpoint of several modelling choices.
+Every continuum equation below is paired with its conservation statement. The
+material derivative comes from following one labelled parcel. The Reynolds
+transport theorem converts derivatives of moving integrals into Eulerian fields.
+Mass conservation comes from conserving mass in every material volume. Cauchy's
+equation comes from momentum balance and the existence of a traction stress
+tensor. Navier-Stokes appears after the Newtonian stress law is imposed, so
+\(\rho Du/Dt=-\nabla p+\mu\Delta u\) records a sequence of modelling choices:
+kinematics, mass balance, momentum balance, and constitutive law.
 
 \section{Material Derivative}
 \label{sec:material-derivative}
@@ -132,9 +127,9 @@ keeps both effects.
   \node[red!75!black, fill=white, inner sep=2pt] at (5.28,3.10)
     {boundary velocity \(u\)};
   \draw[red!75!black, ->] (4.75,2.88) -- (3.15,3.50);
-  \node[align=center, fill=white, inner sep=2pt] at (5.15,0.72)
+  \node[align=center, fill=white, inner sep=2pt] at (5.10,-0.32)
     {material points stay\\inside the moving volume};
-  \draw[black!55, ->] (4.55,0.95) -- (3.55,1.20);
+  \draw[black!55, ->] (4.55,-0.05) -- (3.55,1.20);
 \end{tikzpicture}
 \caption{A material volume is carried by the fluid velocity. Its boundary
 velocity is \(u\), so the time derivative of an integral over \(V(t)\) must
@@ -167,7 +162,21 @@ The Jacobian identity is
 \[
   \dot J=J\nabla\cdot u.
 \]
-One way to see it is Jacobi's formula:
+For any smooth path \(F(t)\in\operatorname{GL}(n)\), Jacobi's formula is
+\[
+  \frac{\dd}{\dd t}\det F
+  =
+  \det F\,\tr(F^{-1}\dot F).
+\]
+Indeed,
+\[
+  \det(F+\delta F)
+  =
+  \det F\,\det(I+F^{-1}\delta F)
+  =
+  \det F\left(1+\tr(F^{-1}\delta F)+O(\delta F^2)\right).
+\]
+Applying this formula to \(J=\det F\) gives
 \[
   \dot J=J\,\tr(F^{-1}\dot F),
 \]
@@ -243,17 +252,33 @@ Newton's second law for a material volume \(V(t)\) is
 where \(b\) is body force per unit mass and \(t(n)\) is surface traction on a
 surface whose outward unit normal is \(n\).
 
-\begin{assumption}[Cauchy stress hypothesis]
-The traction is local and linear in the normal:
+\begin{proposition}[Cauchy's traction theorem]
+Under the same locality and continuity hypotheses used in the tetrahedron
+argument of Section~\ref{sec:spatial-stress-frame-indifference}, there is a
+tensor \(\sigma(x,t)\) such that
 \[
   t(n)=\sigma n,
 \]
-where \(\sigma_{ij}(x,t)\) is the Cauchy stress tensor. Balance of angular
-momentum, in the absence of couple stresses, implies
+where \(\sigma\) is the Cauchy stress tensor.
+\end{proposition}
+
+Balance of angular momentum gives the symmetry of this tensor in the absence of
+couple stresses. For a material volume \(V(t)\), moment balance about the
+origin is
+\[
+  \frac{\dd}{\dd t}\int_{V(t)} \rho x\times u\,\dd^3x
+  =
+  \int_{V(t)} \rho x\times b\,\dd^3x
+  +
+  \int_{\partial V(t)} x\times(\sigma n)\,\dd S.
+\]
+Using the divergence theorem on the surface term gives the volume integral of
+\(x\times(\nabla\cdot\sigma)\) plus the axial vector of
+\(\sigma-\sigma^T\). Comparing with \(x\times\) the linear momentum balance
+leaves only this axial term. Since the volume is arbitrary,
 \[
   \sigma=\sigma^T.
 \]
-\end{assumption}
 
 \begin{derivation}[Local momentum equation]
 Apply the transport theorem to \(f=\rho u\). Using mass conservation, the
@@ -348,7 +373,22 @@ and its trace. The most general isotropic linear relation is therefore
   }
 \]
 Here \(p\) is pressure, \(\mu\geq0\) is shear viscosity, and \(\lambda\) is the
-second viscosity coefficient. For constant \(\mu,\lambda\),
+second viscosity coefficient. The symmetric strain-rate tensor decomposes as
+\[
+  D=D_0+\frac13(\tr D)I,\qquad \tr D_0=0.
+\]
+The representation statement used above is elementary in the linear case. A
+linear isotropic map \(L\) on symmetric tensors must commute with every
+rotation:
+\[
+  L(QDQ^T)=QL(D)Q^T.
+\]
+The one-dimensional subspace spanned by \(I\) is invariant, and the
+five-dimensional space of traceless symmetric tensors is irreducible under
+rotations. Hence \(L(D)=a(\tr D)I+bD_0\), which is the displayed law after
+renaming constants.
+
+For constant \(\mu,\lambda\),
 \[
 \begin{aligned}
   (\nabla\cdot\sigma)_i
@@ -379,11 +419,10 @@ Thus the compressible Navier-Stokes momentum equation is
 \]
 Together with mass conservation, an equation of state, and an energy or
 temperature equation when needed, this describes a Newtonian compressible fluid.
-The displayed equation should be read as the composition of three independent
-ingredients: Cauchy momentum balance, the Newtonian stress law, and the
-constant-viscosity simplification. If viscosity varies with temperature or
-composition, the divergence of \(2\mu D+\lambda(\nabla\cdot u)I\) must be kept
-in product-rule form.
+The displayed equation combines three independent ingredients: Cauchy momentum
+balance, the Newtonian stress law, and the constant-viscosity simplification. If
+viscosity varies with temperature or composition, the divergence of
+\(2\mu D+\lambda(\nabla\cdot u)I\) must be kept in product-rule form.
 
 For incompressible flow with constant \(\rho\),
 \[
@@ -446,8 +485,8 @@ The most common viscous wall condition is no slip:
 It says that the fluid velocity equals the velocity of the solid boundary, both
 normal and tangential components included. No slip is a molecular-scale
 constitutive fact about many ordinary fluids at ordinary solid walls; it is not
-implied by incompressibility alone. By contrast, inviscid Euler flow usually
-uses only no penetration,
+implied by incompressibility alone. By contrast, inviscid Euler flow uses only
+no penetration,
 \[
   u\cdot n=U_{\mathrm{wall}}\cdot n,
 \]
@@ -630,8 +669,7 @@ The integral of a single-valued total derivative around a closed loop is zero.
 The full Navier-Stokes equation is nonlinear because of \(u\cdot\nabla u\).
 Exact solutions are possible when symmetry, dimensional reduction, or a special
 pressure field makes that nonlinearity vanish or become a pure gradient. The
-examples below are not disconnected tricks; they illustrate three reusable
-mechanisms.
+examples below illustrate three reusable mechanisms.
 
 \begin{enumerate}
 \item \emph{Unidirectional shear flow.} If
@@ -670,9 +708,8 @@ which solution it represents.
 \section{Laminar Flow Solutions}
 \label{sec:laminar-solutions}
 
-Laminar solutions are exact, organized solutions of Navier-Stokes. They are
-important not because all flows are laminar, but because stability theory asks
-which organized solutions persist under disturbance.
+Laminar solutions are exact, organized solutions of Navier-Stokes. Stability
+theory asks which of these organized solutions persist under disturbance.
 Each solution follows from three choices: geometry, boundary conditions, and
 pressure gradient or wall motion. Changing any one of these choices changes the
 profile and the instability problem.
@@ -1092,9 +1129,9 @@ and the cell-averaged kinetic energy density is
       (1.6,0.330) (1.8,0.274) (2.0,0.224) (2.2,0.180)
       (2.4,0.144) (2.6,0.114) (2.8,0.089) (3.0,0.068) (3.2,0.052)
     };
-    \node[blue!70!black] at (3.15,0.10) {\(t_1\)};
-    \node[red!75!black] at (3.15,0.21) {\(t_2\)};
-    \node[purple!75!black] at (3.15,0.32) {\(t_3\)};
+    \node[blue!70!black, fill=white, inner sep=1pt] at (1.35,0.13) {\(t_1\)};
+    \node[red!75!black, fill=white, inner sep=1pt] at (2.05,0.17) {\(t_2\)};
+    \node[purple!75!black, fill=white, inner sep=1pt] at (2.80,0.18) {\(t_3\)};
   \end{scope}
   \node[align=center] at (1.8,-0.55) {Stokes first problem:\\viscous penetration grows like \(\sqrt{\nu t}\)};
 
@@ -1121,10 +1158,9 @@ while viscosity damps the amplitude.}
 \section{Linear Stability Of Laminar Shear Flow}
 \label{sec:linear-stability-shear}
 
-Exact laminar solutions are useful only if we also ask what happens to nearby
-motions. Stability analysis supplies this local question. We do not try to
-solve the full nonlinear transition-to-turbulence problem here. Instead we
-linearize Navier-Stokes around a known base flow and ask whether infinitesimal
+Exact laminar solutions become physically informative when their nearby motions
+are understood. Stability analysis supplies this local question. We linearize
+Navier-Stokes around a known base flow and ask whether infinitesimal
 disturbances grow or decay. This gives a mathematically controlled diagnostic
 that can be compared with experiments and simulations.
 
@@ -1167,13 +1203,14 @@ from the base flow.
   \foreach \y/\len in {0.65/0.35,1.10/0.62,1.55/0.92,2.00/1.25,2.45/1.55,2.85/1.8}
     \draw[blue!70!black, thick, ->] (0.45,\y) -- ++(\len,0);
   \draw[red!75!black, thick, ->] (2.75,1.15) -- (2.75,2.05)
-    node[midway,right] {\(\tilde v\)};
+    node[midway,right, fill=white, inner sep=1pt] {\(\tilde v\)};
   \draw[red!75!black, thick, ->] (2.75,2.05) -- (3.55,2.05)
-    node[right] {\(\tilde v\,U'(y)e_x\)};
+    node[right, fill=white, inner sep=1pt] {energy exchange};
   \draw[purple!75!black, thick, domain=0.3:5.0, samples=120]
     plot (\x,{1.75+0.22*sin(115*\x)});
   \node[blue!70!black] at (4.25,2.75) {base shear \(U(y)e_x\)};
-  \node[purple!75!black] at (4.0,1.25) {normal-mode disturbance};
+  \node[purple!75!black, fill=white, inner sep=1pt] at (4.10,1.16)
+    {normal-mode disturbance};
 \end{tikzpicture}
 \caption{Linear shear-flow stability. A wall-normal perturbation velocity
 \(\tilde v\) moves fluid across the base shear; the term
@@ -1339,6 +1376,11 @@ and transition.
 mechanics after a strong but explicit reduction.
 \end{itemize}
 
+\paragraph{Questions to carry forward.}
+Which part of Navier-Stokes is kinematics, which is balance law, and which is
+constitutive assumption? When is pressure a thermodynamic variable, and when is
+it a constraint multiplier? Which laminar solutions remain stable under small
+disturbances?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:fluid-chapter-end-labs}
@@ -1369,7 +1411,7 @@ Take the divergence of the momentum equation. Since
   \quad\text{and}\quad
   \nabla\cdot\Delta u=\Delta(\nabla\cdot u)=0,
 \]
-we obtain the pressure Poisson equation
+this gives the pressure Poisson equation
 \[
   \boxed{
   -\frac1\rho\Delta p
@@ -1390,6 +1432,20 @@ The last equality follows by expanding:
 and the second term vanishes by incompressibility. Thus \(p\) is whatever
 spatial field is needed to project the nonlinear acceleration back onto the
 space of divergence-free vector fields.
+
+This is the Helmholtz projection in PDE form. On a smooth bounded or periodic
+domain, with the appropriate boundary conditions, a vector field \(a\) can be
+decomposed as
+\[
+  a=a_{\mathrm{df}}+\nabla\phi,\qquad \nabla\cdot a_{\mathrm{df}}=0.
+\]
+Taking the divergence gives a Poisson equation
+\[
+  \Delta\phi=\nabla\cdot a,
+\]
+with boundary conditions determined by the normal component. In incompressible
+Navier-Stokes, the pressure supplies exactly this gradient part of the
+acceleration.
 
 \subsection{Orr-Sommerfeld Equation With Boundary Conditions}
 \label{sec:detailed-orr-sommerfeld}

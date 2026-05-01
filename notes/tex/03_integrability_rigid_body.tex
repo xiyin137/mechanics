@@ -12,10 +12,10 @@ nonintegrability and chaos.
 
 The most vivid symptom is the intermediate-axis flip. Spin a book about its
 longest or shortest principal axis and the rotation is stable; spin it about
-the middle axis and the book turns over. This is not a numerical accident. It
-is the geometry of two conserved quantities, energy and angular momentum,
-intersecting on the angular-momentum sphere. The rigid body is the first place
-where the pictures in these notes stop being optional: reduction, stability,
+the middle axis and the book turns over. The behavior comes from the geometry
+of two conserved quantities, energy and angular momentum, intersecting on the
+angular-momentum sphere. The rigid body is the first place
+where geometric pictures become part of the argument: reduction, stability,
 Poinsot rolling, and invariant tori are all different views of the same motion.
 
 \begin{assumption}[Rigid body model]
@@ -37,8 +37,8 @@ body: rotations live on \(\SO(3)\), angular velocity lives in its Lie algebra,
 and the reduced motion lives on angular momentum spheres. The second half
 abstracts the lesson: enough independent commuting first integrals force
 regular compact level sets to be tori, and on those tori the motion is linear.
-The rigid body is therefore not just an example after the theorem; it is the
-model that makes the theorem visible.
+The rigid body supplies the concrete model in which the theorem becomes
+visible.
 
 \paragraph{Three layers to keep separate.}
 Rigid-body mechanics mixes three descriptions that are often compressed into
@@ -46,8 +46,8 @@ one line of notation. The kinematic layer says how \(R(t)\in\SO(3)\) defines
 angular velocity. The dynamical layer says how the kinetic energy and the
 inertia tensor produce Euler's equations. The reduced Hamiltonian layer says
 why angular momentum spheres carry a Lie-Poisson flow. Each layer has its own
-variables and its own conserved quantities. Confusing them is the fastest way
-to lose a sign or to mistake body components for spatial components.
+variables and its own conserved quantities. Keeping the layers separate
+preserves the distinction between body components and spatial components.
 
 \section{The Rotation Group And Angular Velocity}
 \label{sec:rotation-group-angular-velocity}
@@ -56,8 +56,8 @@ The rotation group is
 \[
   \SO(3)=\{R\in\R^{3\times 3}:R^TR=I,\ \det R=1\}.
 \]
-It is useful to think of \(R\) as the matrix whose columns are the three
-orthonormal body axes \(\hat e_1,\hat e_2,\hat e_3\) as seen in space:
+The matrix \(R\) has columns equal to the three orthonormal body axes
+\(\hat e_1,\hat e_2,\hat e_3\) as seen in space:
 \[
   R=(\hat e_1\ \hat e_2\ \hat e_3).
 \]
@@ -94,6 +94,12 @@ by
 \[
   R^T\dot R=\widehat\Omega.
 \]
+The hat map is a Lie algebra isomorphism:
+\[
+  [\widehat a,\widehat b]=\widehat{a\times b}.
+\]
+This identity is the bridge between matrix commutators in \(\mathfrak{so}(3)\)
+and vector cross products in the rigid-body equations.
 The spatial angular velocity \(\omega_{\mathrm{space}}\) satisfies
 \[
   \dot R R^T=\widehat{\omega}_{\mathrm{space}},
@@ -231,13 +237,13 @@ The kinetic energy is
 \[
   T=\frac12\int_B\rho(X)\norm{\Omega\times X}^2\,\dd^3X.
 \]
-Using
+Use the vector identity
 \[
   \norm{\Omega\times X}^2
   =
   \norm{\Omega}^2\norm{X}^2-(\Omega\cdot X)^2,
 \]
-we obtain
+to write the kinetic energy as
 \[
   T=\frac12\Omega^T I\Omega,
 \]
@@ -317,8 +323,8 @@ symplectic form is still
   \omega=\dd q^i\wedge \dd p_i,
 \]
 but when it is expressed in the noncanonical variables \(M_a\), the Poisson
-brackets become the rigid-body Lie-Poisson brackets rather than
-\(\Poisson{M_a}{M_b}=0\).
+brackets become the rigid-body Lie-Poisson brackets; the variables \(M_a\) are
+not canonical coordinates with \(\Poisson{M_a}{M_b}=0\).
 Globally, because \(\SO(3)\) is a Lie group, left or right translation
 trivializes the cotangent bundle:
 \[
@@ -486,7 +492,7 @@ fixed in space.
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[scale=1.0, >=Latex, font=\small]
-  \draw[->] (-0.2,0) -- (3.25,0) node[right] {\(M_1\)};
+  \draw[->] (-0.2,0) -- (3.25,0) node[below right] {\(M_1\)};
   \draw[->] (0,-0.25) -- (0,3.25) node[above] {\(M_2\)};
   \draw[blue!70!black, thick]
     (1.35,1.55) ellipse (1.20 and 0.58);
@@ -498,7 +504,7 @@ fixed in space.
     \draw[red!75!black] (\x,\y) circle (0.26);
     \draw[red!75!black, ->] (\x,\y) -- ++(0.26,0.0);
   }
-  \node[red!75!black, align=center, fill=white, inner sep=2pt] at (4.65,2.75)
+  \node[red!75!black, align=center, fill=white, inner sep=2pt] at (6.45,2.35)
     {attitude fiber\\over a reduced state};
   \draw[red!75!black, ->, thick] (2.55,1.75) -- (4.0,2.10);
   \draw[red!75!black, ->, thick] (2.45,1.35) -- (4.0,1.05);
@@ -506,7 +512,7 @@ fixed in space.
     \draw[thick] (0,0.65) rectangle (1.65,2.45);
     \draw[->, purple!75!black, thick]
       (0.18,0.92) .. controls (0.55,1.55) and (1.05,1.72) .. (1.42,2.25);
-    \node[purple!75!black, align=center, fill=white, inner sep=2pt] at (0.86,0.20)
+    \node[purple!75!black, align=center, fill=white, inner sep=2pt] at (2.36,1.05)
       {reconstruct \(R(t)\)\\from \(\dot R=R\widehat\Omega\)};
   \end{scope}
 \end{tikzpicture}
@@ -581,9 +587,9 @@ ellipsoid.
     {angular momentum\\sphere \(C=\norm M^2\)};
   \node[blue!70!black, align=center, fill=white, inner sep=2pt] at (2.75,1.75,3.28)
     {energy ellipsoid\\\(2H=M^TI^{-1}M\)};
-  \node[purple!80!black, fill=white, inner sep=2pt] at (3.45,-1.10)
+  \node[purple!80!black, fill=white, inner sep=2pt] at (4.45,-3.05,-0.55)
     {intersection trajectories};
-  \draw[purple!80!black, ->] (2.80,-0.90) -- (1.05,0.25);
+  \draw[purple!80!black, ->] (3.70,-2.68,-0.45) -- (1.15,-0.25,0);
 \end{tikzpicture}
 \caption{Rigid-body reduction in angular-momentum space. Conservation of
 \(\norm M^2\) confines the motion to a sphere, conservation of \(H\) confines it
@@ -631,8 +637,17 @@ the tip of \(\omega_{\mathrm{space}}\) lies in the fixed plane
 \]
 This plane is perpendicular to \(J\) and has distance \(2H/\norm J\) from the
 origin. It is tangent to the moving inertia ellipsoid at the instantaneous
-angular velocity. Thus the free rigid body can be pictured as the inertia
-ellipsoid rolling without slipping on the fixed invariable plane.
+angular velocity. Indeed, the tangent plane to
+\(\Omega^TI\Omega=2H\) has normal \(M=I\Omega\); after rotation to space the
+normal is \(J=RM\), the normal of \(\Pi_J\). The point of contact is
+\(\omega_{\mathrm{space}}=R\Omega\), and it lies in \(\Pi_J\) by the displayed
+identity \(J\cdot\omega_{\mathrm{space}}=2H\).
+
+The no-slip statement is also kinematic. The instantaneous axis of the rigid
+motion is \(\omega_{\mathrm{space}}\), so the point of the moving ellipsoid
+whose spatial position is the contact point has zero instantaneous velocity
+relative to the fixed plane. Thus the free rigid body can be pictured as the
+inertia ellipsoid rolling without slipping on the fixed invariable plane.
 
 \begin{figure}[htbp]
 \centering
@@ -670,9 +685,8 @@ spatial angular momentum \(J\); its trace is the herpolhode.}
 \label{fig:poinsot-construction}
 \end{figure}
 
-Poinsot's construction is not a separate solution method from the reduced
-equations. It is the same conservation of \(H\) and \(J\), viewed in angular
-velocity space rather than angular momentum space. Its value is conceptual: it
+Poinsot's construction is another geometric view of the same conservation of
+\(H\) and \(J\), drawn in angular-velocity space. Its value is conceptual: it
 makes clear why the reduced trajectory is a curve, why the invariable plane is
 fixed in space, and why body-frame quantities can move while the spatial
 angular momentum does not.
@@ -828,6 +842,10 @@ is a Casimir. Its level sets are the coadjoint orbits, which here are spheres.
 The Casimir is why the reduced phase space is foliated by angular-momentum
 spheres. Each sphere carries a genuine two-dimensional symplectic structure,
 and the rigid body restricted to one such sphere has one degree of freedom.
+Here a coadjoint orbit means the orbit of a covector
+\(M\in\mathfrak{so}(3)^*\) under the coadjoint action of \(\SO(3)\). After
+identifying \(\mathfrak{so}(3)^*\) with \(\R^3\), that action is ordinary
+rotation, so the nonzero orbits are spheres \(\norm M=\mathrm{constant}\).
 This is the reduced reason that the intersection curves in
 Figure~\ref{fig:rigid-body-reduced-geometry} are the phase curves of the
 system.
@@ -845,10 +863,9 @@ carry the commuting Hamiltonian flows.
 
 The three hypotheses have separate meanings. Independence says the level set
 has the expected dimension. Involution says the Hamiltonian flows generated by
-the integrals are compatible rather than fighting one another. Compactness says
-the flow coordinates eventually repeat, turning straight-line motion on
-\(\R^n\) into straight-line motion on a torus. Dropping any one of these
-assumptions changes the conclusion.
+the integrals commute. Compactness says the flow coordinates eventually repeat,
+turning straight-line motion on \(\R^n\) into straight-line motion on a torus.
+Dropping any one of these assumptions changes the conclusion.
 
 This is why the theorem should not be read backwards. Seeing a bounded-looking
 orbit or many conserved-looking quantities in a simulation does not by itself
@@ -939,16 +956,21 @@ M_f\), flow for times \(s=(s^1,\ldots,s^n)\) along the \(n\) vector fields:
   \exp(s^1X_{F_1})\cdots\exp(s^nX_{F_n})x_0.
 \]
 Because the flows commute, this defines an action of \(\R^n\) on \(M_f\).
-Independence of the vector fields makes the action locally free, so the
-coordinates \(s^i\) are local coordinates on \(M_f\). The only possible global
-identifications are translations
+Independence of the vector fields makes the action locally free. More
+concretely, the constant-rank theorem applied to the map
+\(s\mapsto\Phi_s(x_0)\) says that its derivative at \(s=0\) is an isomorphism
+onto \(T_{x_0}M_f\); hence the flow times \(s^i\) are local coordinates. The
+only possible global identifications are translations
 \[
   s\sim s+\lambda,\qquad \lambda\in\Lambda,
 \]
 where \(\Lambda\subset\R^n\) is the period lattice of the orbit. Compactness
-forces \(\Lambda\) to have rank \(n\): if the rank were smaller, the quotient
-\(\R^n/\Lambda\) would still contain at least one noncompact Euclidean
-direction. The action is locally free, so each orbit is open in the
+forces \(\Lambda\) to have rank \(n\). If \(\Lambda\) had rank \(k<n\), then
+after a linear change of basis
+\[
+  \R^n/\Lambda\simeq \mathbb T^k\times\R^{n-k},
+\]
+which is noncompact. The action is locally free, so each orbit is open in the
 \(n\)-manifold \(M_f\). Since \(M_f\) is connected, that open orbit is the
 whole level set. Hence
 \[
@@ -958,10 +980,10 @@ These are the invariant Liouville tori.
 \end{derivation}
 
 This argument is often the first place where the word ``torus'' becomes more
-than a picture. The torus is not assumed; it is forced by the existence of
-enough commuting flows on a compact regular level set. The angle variables
-introduced below are coordinates along these flows, and the action variables
-are the quantities that label which torus one is on.
+than a picture. Enough commuting flows on a compact regular level set force the
+level set to be a torus. The angle variables introduced below are coordinates
+along these flows, and the action variables are the quantities that label which
+torus one is on.
 
 \begin{figure}[htbp]
 \centering
@@ -984,9 +1006,9 @@ are the quantities that label which torus one is on.
   \node[align=center] at (2.1,-0.75)
     {flat model of a two-dimensional invariant torus\\
      \(\mathbb R^2/\Lambda\) with angle coordinates};
-  \node[purple!75!black, align=center, fill=white, inner sep=2pt] at (5.35,2.35)
+  \node[purple!75!black, align=center, fill=white, inner sep=2pt] at (1.45,2.45)
     {Hamiltonian flow\\has constant slope};
-  \draw[purple!75!black, ->] (4.65,2.17) -- (3.35,2.58);
+  \draw[purple!75!black, ->] (2.30,2.28) -- (2.85,2.24);
 \end{tikzpicture}
 \caption{A Liouville torus is locally a space of commuting flow times with
 periodic identifications. Action variables label the torus; angle variables
@@ -1133,6 +1155,19 @@ which is another form of \(\omega|_{M_I}=0\). Define
 \[
   \theta^j=\frac{\partial S}{\partial I_j}\bigg|_q.
 \]
+This generating function proves that the new coordinates are canonical. Since
+\[
+  \dd S=p_i\,\dd q^i+\theta^j\,\dd I_j,
+\]
+taking an exterior derivative gives
+\[
+  0=\dd p_i\wedge\dd q^i+\dd\theta^j\wedge\dd I_j.
+\]
+Thus
+\[
+  \dd q^i\wedge\dd p_i=\dd\theta^j\wedge\dd I_j,
+\]
+so the symplectic form takes canonical action-angle form.
 When one goes around the cycle \(\gamma_k\), the multivalued function \(S\)
 jumps by
 \[
@@ -1221,8 +1256,10 @@ negative-momentum branch, so the action is
     (1.0,0) .. controls (2.0,1.55) and (4.2,1.55) .. (5.3,0);
   \draw[blue!70!black, thick, ->]
     (5.3,0) .. controls (4.2,-1.55) and (2.0,-1.55) .. (1.0,0);
-  \node[blue!70!black] at (3.2,1.65) {\(+p(q,E)\)};
-  \node[blue!70!black] at (3.2,-1.65) {\(-p(q,E)\)};
+  \node[blue!70!black, fill=white, inner sep=1pt] at (3.2,1.95) {\(+p(q,E)\)};
+  \node[blue!70!black, fill=white, inner sep=1pt] at (3.2,-1.95) {\(-p(q,E)\)};
+  \draw[blue!70!black, ->] (3.2,1.78) -- (3.2,1.40);
+  \draw[blue!70!black, ->] (3.2,-1.78) -- (3.2,-1.40);
   \node[align=center, fill=white, inner sep=1pt] at (3.2,0.55)
     {enclosed area\\\(\displaystyle \oint p\,\dd q=2\pi I\)};
 \end{tikzpicture}
@@ -1373,6 +1410,10 @@ tori.
 conceptual step from rigid bodies to gauge descriptions of deformable bodies.
 \end{itemize}
 
+\paragraph{Questions to carry forward.}
+Which conserved quantities commute, and which merely coexist? What happens to a
+Liouville torus when a resonance is introduced? How much of rigid-body
+geometry survives when the body can change shape?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:rigid-integrability-chapter-end-labs}
@@ -1567,7 +1608,7 @@ The angle equations are
 It does not depend on the inertial direction of the angular momentum. This
 degeneracy is a symmetry, not chaos. In the nonsymmetric free rigid body the
 generic invariant sets are still Liouville tori, but the action integrals
-involve elliptic functions rather than the elementary chamber formula above.
+involve elliptic functions in place of the elementary chamber formula above.
 
 \section{Associated Demos}
 \label{sec:rigid-associated-demos}

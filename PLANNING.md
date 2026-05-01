@@ -12,9 +12,9 @@ deforming bodies, and finally fluids.
 
 The central message is:
 
-> A mechanical system is not just a set of equations. It is a space of possible
-> configurations, a variational principle, a phase-space geometry, and a set of
-> symmetries and obstructions that organize its motion.
+> A mechanical system consists of a space of possible configurations, a
+> variational principle, a phase-space geometry, and a set of symmetries and
+> obstructions that organize its motion.
 
 The course should be useful for advanced undergraduates, beginning graduate
 students, and self-directed readers who know vector calculus, ordinary
@@ -23,15 +23,15 @@ introduced as needed.
 
 Current snapshot, May 1, 2026:
 
-- The TeX notes compile to a roughly 150-page PDF with the title-page
+- The TeX notes compile to a roughly 160-page PDF with the title-page
   architectural abstract requested for the public-facing version.
 - The formerly separate Hamilton-Jacobi/adiabatic material has been removed or
   absorbed where it is actually used, so canonical perturbation theory now lives
   with the integrability-and-breakdown arc.
-- The notes contain 34 figures; the standard-map island-chain figure is now
-  data-backed by actual iterates rather than drawn schematically.
+- The notes contain 34 figures; the standard-map island-chain figure is
+  data-backed by actual iterates.
 - Worked derivations, exercises, and demo pointers now live at the ends of the
-  chapters they support, rather than in standalone concluding chapters.
+  chapters they support.
 - The Python laboratory contains 11 scripts; the seven substantial demos have
   Wolfram Language counterparts and a `mathematica-smoke` Makefile target.
 - The smoke-test suite currently covers the demos, including the helicopter
@@ -233,8 +233,7 @@ three-body problem.
 
 ### Arc E: Three-Body Dynamics
 
-The fifth arc develops celestial mechanics as its own subject rather than as a
-subsection of perturbation theory:
+The fifth arc develops celestial mechanics as its own subject:
 
 - full Newtonian three-body equations
 - center-of-mass reduction and Jacobi coordinates
@@ -447,8 +446,8 @@ Future version:
 
 ## 10. Notes Status And Core/Extended Pass
 
-The TeX notes are now an integrated mechanics draft rather than a skeleton.
-They are organized so that an instructor can teach a core route without asking
+The TeX notes are now an integrated mechanics draft. They are organized so that
+an instructor can teach a core route without asking
 students to read every advanced subsection on the first pass.
 
 Current source files:
@@ -480,7 +479,7 @@ Current source files:
   vorticity, circulation, and point vortices.
 
 Worked derivations, exercises, and demo pointers are placed at the ends of the
-chapters they support, rather than in standalone back-matter chapters.
+chapters they support.
 
 Core classroom pass:
 
@@ -510,7 +509,7 @@ Extended/project pass:
 - full three-body and asteroid-belt ejection statistics.
 - Orr-Sommerfeld stability, Rayleigh inflection criterion, and point-vortex
   Hamiltonian mechanics.
-- expanded beam/torsion formula catalog and elastic-mode problems.
+- expanded beam, torsion, and elastic-mode problems.
 - Shapere-Wilczek gauge curvature, two-rotor/helicopter holonomy, Cosserat
   media, and defect geometry.
 - the longer derivations in Chapter 8.
