@@ -44,6 +44,11 @@ different configurations and are related by the deformation gradient.  Each
 stress or strain tensor is introduced together with the space on which it acts
 and the boundary term that defines its mechanical meaning.
 
+Appendix~\ref{app:continuum-caveats} returns to these choices in a more
+technical register, including weak forms, boundary terms, incompressibility as
+a constraint, and the functional-analytic caveats behind existence and
+regularity statements.
+
 \begin{assumption}[Regular deformation map]
 Unless stated otherwise, \(\varphi(\cdot,t)\) is a smooth orientation-preserving
 embedding of the reference body into space:
@@ -559,6 +564,30 @@ The first Piola-Kirchhoff stress \(P\) measures force per reference area. The
 Cauchy stress \(\sigma\) measures force per current spatial area. The two
 stress tensors represent the same physical traction, but on different surface
 elements.
+
+Two additional stress measures are often useful in finite strain and will
+reappear in Appendix~\ref{app:continuum-caveats}. If the stored energy is
+written as \(W(F)=\widehat W(C)\), with \(C=F^TF\), the second
+Piola-Kirchhoff stress is the material tensor
+\[
+  S=2\frac{\partial \widehat W}{\partial C},
+  \qquad
+  P=F S .
+\]
+It is work-conjugate to the Green strain \(E=(C-I)/2\), because
+\[
+  P:\dot F=S:\dot E .
+\]
+The Kirchhoff stress is the spatial tensor
+\[
+  \tau=J\sigma=P F^T .
+\]
+Thus \(\sigma\) measures current traction per current area, \(P\) converts
+reference surface elements to spatial force, \(S\) pulls both slots back to the
+material description, and \(\tau\) is the volume-weighted spatial stress. These
+are not four different forces; they are four representations of the same stress
+power and traction balance.
+
 Throughout this section, capital indices and normals are material/reference
 objects, while lower-case indices and normals are spatial/current objects. In
 linearized elasticity the two descriptions coincide to leading order, but the

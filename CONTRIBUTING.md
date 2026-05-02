@@ -13,7 +13,7 @@ report the sampling distribution, random seed, time horizon, and event criteria.
 Please add:
 
 - a command-line interface with classroom-sized defaults;
-- a focused regression test in `tests/test_demo_smoke.py`;
+- a focused regression or demo-contract test in `tests/test_demo_contracts.py`;
 - a `Makefile` target if the demo generates a standard figure or data file;
 - a cross-reference from the relevant note section.
 
