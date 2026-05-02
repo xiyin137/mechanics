@@ -457,7 +457,7 @@ def test_deforming_body_gauge_small_loop_matches_curvature() -> None:
     db = 1.3e-4
     rotation = demo.rectangular_stroke(4.0, 1.0, 1.5, da, db)
     rotvec = demo.rotation_vector(rotation)
-    expected = demo.curvature_vector(4.0, 1.0, 1.5) * da * db
+    expected = -demo.curvature_vector(4.0, 1.0, 1.5) * da * db
     assert np.allclose(rotvec, expected, rtol=1.0e-5, atol=1.0e-12)
     assert np.linalg.norm(rotation.T @ rotation - np.eye(3)) < 1.0e-14
     assert abs(np.linalg.det(rotation) - 1.0) < 1.0e-14

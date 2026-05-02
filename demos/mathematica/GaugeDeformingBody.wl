@@ -49,7 +49,7 @@ ey = {0, 1, 0};
 ez = {0, 0, 1};
 aAlpha = (i1/(i0 + i1)) ez;
 aBeta = (i2/(i0 + i2)) ey;
-curvature = Cross[aAlpha, aBeta];
+curvature = -Cross[aAlpha, aBeta];
 
 segments = {
   -aAlpha deltaAlpha,
@@ -61,7 +61,7 @@ rotation = Fold[#1.MatrixExp[hat[#2]] &, IdentityMatrix[3], segments];
 angle = ArcCos[Clip[(Tr[rotation] - 1)/2, {-1, 1}]];
 skew = (rotation - Transpose[rotation])/2;
 rotvec = If[angle < 10^-8, vee[skew], angle/Sin[angle] vee[skew]];
-leadingRotvec = curvature deltaAlpha deltaBeta;
+leadingRotvec = -curvature deltaAlpha deltaBeta;
 
 Print["A_alpha=", N[aAlpha, 12]];
 Print["A_beta=", N[aBeta, 12]];

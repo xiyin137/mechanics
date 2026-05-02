@@ -472,12 +472,13 @@ and the factors must remain in time order because elements of \(G\) need not
 commute. Taking the mesh size to zero gives the displayed
 \(\mathcal P\exp\) formula.
 
-The curvature of the connection is
+With the reconstruction convention \(g^{-1}\dot g=-\mathcal A(\dot s)\), the
+finite-dimensional curvature used for shape holonomy is
 \[
   \boxed{
   \mathcal F
   =
-  \dd\mathcal A+\mathcal A\wedge\mathcal A,
+  \dd\mathcal A-\mathcal A\wedge\mathcal A,
   }
 \]
 or in components,
@@ -487,9 +488,12 @@ or in components,
   \partial_\alpha\mathcal A_\beta
   -
   \partial_\beta\mathcal A_\alpha
-  +
+  -
   [\mathcal A_\alpha,\mathcal A_\beta].
 \]
+This sign is tied to the minus sign in the reconstruction equation. The local
+frame connection used later for Cosserat and defect geometry follows the
+standard Maurer-Cartan convention \(F=\dd A+A\wedge A\).
 
 \begin{derivation}[Small-loop holonomy]
 Take shape coordinates \((s^1,s^2)\) and traverse a tiny rectangle based at
@@ -502,13 +506,13 @@ equation
 produces an infinitesimal group exponential. If \(\mathcal A\) were constant,
 the product would be the group commutator
 \[
-  e^{-\mathcal A_2\Delta s^2}
   e^{-\mathcal A_1\Delta s^1}
-  e^{\mathcal A_2\Delta s^2}
+  e^{-\mathcal A_2\Delta s^2}
   e^{\mathcal A_1\Delta s^1}
+  e^{\mathcal A_2\Delta s^2}
   =
   \exp\left(
-    -[\mathcal A_1,\mathcal A_2]\Delta s^1\Delta s^2
+    [\mathcal A_1,\mathcal A_2]\Delta s^1\Delta s^2
     +O(|\Delta s|^3)
   \right),
 \]
@@ -577,7 +581,7 @@ Thus curvature is the local density of geometric phase. Berry phase, Hannay
 angle, and falling-cat reorientation are all holonomies of connections over
 parameter or shape spaces, but the constructions differ. Berry (1984)
 introduced the quantum \(U(1)\) geometric phase; Hannay (1985) gave the
-classical adiabatic analogue on invariant tori; Shapere and Wilczek (1989)
+classical angle holonomy on invariant tori; Shapere and Wilczek (1989)
 developed the gauge-kinematic program for deformable bodies; and Montgomery
 (1993) gave the gauge-theoretic treatment of the falling cat. The common name
 is geometric phase; the underlying mechanisms differ as described above.
@@ -649,9 +653,9 @@ Therefore
 \[
   \mathcal F_{\alpha\beta}
   =
-  [\mathcal A_\alpha,\mathcal A_\beta]
+  -[\mathcal A_\alpha,\mathcal A_\beta]
   =
-  -ab\,e_x.
+  ab\,e_x.
 \]
 A small rectangular stroke with sides \(\Delta\alpha,\Delta\beta\), traversed
 first in the \(\alpha\) direction and then in the \(\beta\) direction, gives
@@ -674,6 +678,8 @@ first in the \(\alpha\) direction and then in the \(\beta\) direction, gives
 by the Baker-Campbell-Hausdorff formula. With the conventions above the
 leading rotation vector is
 \[
+  -\mathcal F_{\alpha\beta}\Delta\alpha\,\Delta\beta
+  =
   -ab\,\Delta\alpha\,\Delta\beta\,e_x;
 \]
 reversing the traversal reverses the sign. The essential content is the
@@ -1045,7 +1051,9 @@ The progression from rigid body to the gauge theory of deforming bodies is:
 \begin{aligned}
   \text{rigid body:}&\quad R(t),\quad R^{-1}\dot R,\\
   \text{elastic body:}&\quad \varphi(X,t),\quad F=\partial_X\varphi,\quad W(F),\\
-  \text{deformable body:}&\quad g(t),\ s(t),\quad g^{-1}\dot g=-\mathcal A(s)\dot s,\\
+  \text{deformable body:}&\quad g(t),\ s(t),\quad
+  g^{-1}\dot g=-\mathcal A(s)\dot s,\quad
+  \mathcal F=\dd\mathcal A-\mathcal A\wedge\mathcal A,\\
   \text{Cosserat continuum:}&\quad R(X,t),\quad R^{-1}\partial_A R,\\
   \text{defect theory:}&\quad A,\quad F=\dd A+A\wedge A,\quad T=\dd\theta+\omega\wedge\theta.
 \end{aligned}
@@ -1082,10 +1090,10 @@ is
 \[
   g_{\mathrm{loop}}
   =
-  \exp(-\mathcal A_2\Delta s^2)
   \exp(-\mathcal A_1\Delta s^1)
-  \exp(\mathcal A_2\Delta s^2)
+  \exp(-\mathcal A_2\Delta s^2)
   \exp(\mathcal A_1\Delta s^1)
+  \exp(\mathcal A_2\Delta s^2)
 \]
 plus the correction from the variation of \(\mathcal A_\alpha(s)\) across the
 loop. The Baker-Campbell-Hausdorff formula gives the commutator contribution,
@@ -1093,8 +1101,8 @@ while the spatial variation gives derivative terms.\footnote{We use only the
 leading commutator term
 \(\exp X\exp Y\exp(-X)\exp(-Y)=\exp([X,Y]+O(\|(X,Y)\|^3))\). Higher terms are
 higher nested commutators. In the displayed loop
-\(X=-\mathcal A_2\Delta s^2\) and
-\(Y=-\mathcal A_1\Delta s^1\), so \([X,Y]=-[\mathcal A_1,\mathcal A_2]\Delta
+\(X=-\mathcal A_1\Delta s^1\) and
+\(Y=-\mathcal A_2\Delta s^2\), so \([X,Y]=[\mathcal A_1,\mathcal A_2]\Delta
 s^1\Delta s^2\).} The result is
 \[
   g_{\mathrm{loop}}
@@ -1111,7 +1119,7 @@ where
   \mathcal F_{12}
   =
   \partial_1\mathcal A_2-\partial_2\mathcal A_1
-  +
+  -
   [\mathcal A_1,\mathcal A_2].
   }
 \]
@@ -1144,13 +1152,14 @@ zero-momentum connection for this laboratory model is
   \mathcal A_\beta=
   \frac{I_2}{I_0+I_2}e_y.
 \]
-The components are constant, so the only curvature comes from noncommutativity:
+The components are constant, so the only curvature comes from noncommutativity.
+With the reconstruction convention of this chapter,
 \[
   \mathcal F_{\alpha\beta}
   =
-  [\mathcal A_\alpha,\mathcal A_\beta]
+  -[\mathcal A_\alpha,\mathcal A_\beta]
   =
-  -\frac{I_1I_2}{(I_0+I_1)(I_0+I_2)}\,e_x.
+  \frac{I_1I_2}{(I_0+I_1)(I_0+I_2)}\,e_x.
 \]
 For a rectangular stroke of signed area
 \(\Delta\alpha\,\Delta\beta\), the leading rigid rotation is

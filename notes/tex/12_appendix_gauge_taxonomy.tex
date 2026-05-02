@@ -119,19 +119,22 @@ one-form transforms as
 \[
         A'
         =
-        \Ad_{h^{-1}}A+h^{-1}\dd h .
+        \Ad_{h^{-1}}A-h^{-1}\dd h .
 \]
-This formula explains the word ``gauge.''  The local coefficients of
-connection depend on the chosen frame, but geometric predictions do not.
-Holonomy around a closed shape loop changes by conjugation, and conjugacy
-invariants are frame-independent.
+The minus sign follows from the reconstruction convention
+\(\xi+A(s)\dot s=0\). If one instead defines the standard connection
+\(B=-A\), then \(B'=\Ad_{h^{-1}}B+h^{-1}\dd h\). This formula explains the
+word ``gauge.''  The local coefficients of connection depend on the chosen
+frame, but geometric predictions do not. Holonomy around a closed shape loop
+changes by conjugation, and conjugacy invariants are frame-independent.
 
 \section{Curvature And Small Loops}
 \label{sec:gauge-curvature-taxonomy}
 
-The curvature of a connection is the \(\mathfrak{g}\)-valued two-form
+For the reconstruction convention used in the finite-dimensional
+deforming-body chapter, the curvature is the \(\mathfrak{g}\)-valued two-form
 \[
-        F_A=\dd A+\frac{1}{2}[A\wedge A].
+        F_A=\dd A-\frac{1}{2}[A\wedge A].
 \]
 For a small oriented loop \(\Sigma\) in shape space, the leading geometric
 phase is
@@ -150,11 +153,12 @@ then
 \[
         F_{\alpha\beta}
         =
-        \pd_\alpha A_\beta-\pd_\beta A_\alpha+
+        \pd_\alpha A_\beta-\pd_\beta A_\alpha-
         [A_\alpha,A_\beta].
 \]
-The bracket term is the non-Abelian correction.  It vanishes for a translation
-group \(\R^m\), but not for rotations or rigid motions.
+The bracket term is the non-Abelian correction in this reconstruction sign
+convention.  It vanishes for a translation group \(\R^m\), but not for
+rotations or rigid motions.
 
 \section{Connection Types In These Notes}
 \label{sec:gauge-connection-types-table}

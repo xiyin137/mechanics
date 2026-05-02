@@ -128,7 +128,7 @@ Therefore
 \[
   u(\theta)=\frac{GM_\odot}{\ell^2}\left(1+e\cos(\theta-\varpi)\right),
 \]
-or
+equivalently
 \[
   \boxed{
   r(\theta)=\frac{a(1-e^2)}{1+e\cos(\theta-\varpi)}
@@ -341,7 +341,7 @@ The \(k=0\) mode is the average. For \(k\neq0\), the homological equation gives
 \[
   i(k\cdot\omega_0(I'))S_{1k}(I')=-H_{1k}(I'),
 \]
-or
+so
 \[
   \boxed{
   S_{1k}(I')
@@ -470,6 +470,10 @@ If \(|p/q-\sqrt2|\ge1\), the desired lower bound is immediate after decreasing
   |\eta|\geq \frac{A}{q^2}
 \]
 for some \(A>0\). Thus \(\sqrt2\) satisfies a Diophantine-type lower bound.
+The sharp bound above corresponds to the constant-type exponent \(\tau=1\);
+the same estimate implies the weaker KAM inequalities with any \(\tau>1\) after
+decreasing \(A\). This distinction matters because the measure estimate for
+two frequencies uses the strict condition \(\tau>N-1=1\).
 More generally, algebraic irrational numbers obey polynomial rational-
 approximation bounds. By contrast, numbers such as
 \[
@@ -545,14 +549,15 @@ Let
 \[
   H(I,\theta)=H_0(I)+\eps H_1(I,\theta)
 \]
-be a sufficiently smooth, analytic in the standard theorem, nearly integrable
-Hamiltonian on \(U\times\mathbb T^N\). Assume \(H_0\) is Kolmogorov
-nondegenerate. For
-sufficiently small \(|\eps|\), every unperturbed torus whose frequency is
-Diophantine with fixed constants \((\alpha,\tau)\) persists as a nearby
-invariant torus of the perturbed system, provided \(\eps\) is small enough
-relative to \(\alpha\). The perturbed tori fill phase space up to a set whose
-measure tends to zero as \(\eps\to0\).
+be a nearly integrable Hamiltonian on \(U\times\mathbb T^N\), analytic in the
+standard theorem, and assume that \(H_0\) is Kolmogorov nondegenerate. Fix
+\(\tau>N-1\). For each Diophantine constant \(\alpha>0\), if \(|\eps|\) is
+small enough relative to \(\alpha\), every unperturbed torus whose frequency
+satisfies the \((\alpha,\tau)\) Diophantine inequality persists as a nearby
+invariant torus of the perturbed system. For fixed \(\alpha\) the surviving
+family omits the \(O(\alpha)\) resonant set; choosing
+\(\alpha=\alpha(\eps)\to0\) slowly enough as \(\eps\to0\) gives a Cantor family
+whose complement has measure tending to zero.
 \end{proposition}
 
 The proof is not ordinary first-order perturbation theory. The first-order
@@ -573,7 +578,7 @@ The important scale warning is:
 so the coordinate change is small only when \(\eps/\alpha\) is small. A common
 lecture-note form is therefore: for \(|\eps|<\delta\alpha^2\), the tori whose
 frequencies satisfy the Diophantine inequality with constant \(\alpha\) persist
-and fill phase space up to \(O(\alpha)\) measure.
+and have a complement of \(O(\alpha)\) measure in the relevant action domain.
 
 The exponent and smallness conditions keep track of two competing estimates. If
 \(H_1\) is analytic in a strip of width \(r\), its Fourier coefficients satisfy

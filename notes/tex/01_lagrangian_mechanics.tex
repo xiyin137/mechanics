@@ -11,9 +11,10 @@ any particular coordinate chart.
 A pendulum moves on a circle, not on a line. A double pendulum lives on a
 torus. A rigid body lives on \(\SO(3)\), not in a box of nine independent
 matrix entries. Choosing the configuration space correctly is therefore not a
-matter of taste; it is the first physical idealization. A poor choice turns
-constraints into clutter. A good choice lets the variational principle see the
-geometry directly.
+matter of taste; it is the first physical idealization. If the chosen space
+contains redundant coordinates, constraints must later repair that redundancy.
+If the chosen space already reflects the physical degrees of freedom, the
+variational principle can act directly on the geometry of the problem.
 
 \begin{definition}[Finite-dimensional mechanical system]
 A regular finite-dimensional Lagrangian mechanical system consists of:
@@ -46,10 +47,11 @@ Hamiltonian mechanics. The
 variational principle separates coordinate choices from geometric structure and
 places forces, constraints, and conserved quantities in a common framework.
 
-The primitive object here is a path in configuration space, and the variational
-principle selects the physical path.  The phase-space viewpoint is developed in
-Chapter~\ref{chap:hamiltonian-phase-space}.  In that order, momenta and
-symplectic forms appear as consequences of the Legendre transform.
+The primary object here is a path in configuration space, and the variational
+principle selects the physical path. The phase-space viewpoint is developed in
+Chapter~\ref{chap:hamiltonian-phase-space}. In that order, momenta and
+symplectic forms appear as consequences of the endpoint variation and the
+Legendre transform.
 
 \paragraph{Derivation checkpoints.}
 Whenever this chapter differentiates an action, check three things before
@@ -276,7 +278,7 @@ space.
 
 The word ``metric'' here has physical content. It tells us how much kinetic
 energy a given velocity has, and it may depend on configuration. For a point
-particle in Cartesian coordinates \(g_{ij}\) is just \(m\delta_{ij}\). For a
+particle in Cartesian coordinates \(g_{ij}=m\delta_{ij}\). For a
 pendulum, double pendulum, or rigid body written in angles, the same kinetic
 energy becomes a metric on the configuration space. Christoffel symbols can
 appear for two distinct reasons that should not be confused. In flat Euclidean
@@ -615,7 +617,7 @@ Therefore
 \[
   u(\theta)=\frac{\mu k}{\ell^2}\left[1+e\cos(\theta-\theta_0)\right],
 \]
-or
+equivalently
 \[
   \boxed{
   \rho(\theta)=
@@ -997,7 +999,7 @@ The solution is
 \[
   u(\theta)=\frac{mk}{\ell^2}\left[1+e\cos(\theta-\theta_0)\right],
 \]
-or
+equivalently
 \[
   r(\theta)=\frac{\ell^2/(mk)}
   {1+e\cos(\theta-\theta_0)}.
@@ -1111,7 +1113,7 @@ where terms of order \(\epsilon\eta^2\) and higher are discarded. The small
 quantity \(\eta/u_0\) measures the radial oscillation amplitude, while
 \(\epsilon\) measures the departure from the Kepler force law; the displayed
 linear equation keeps the terms needed for the leading frequency shift.
-or
+Equivalently,
 \[
   \eta''+\kappa^2\eta=0,
   \qquad
@@ -1151,7 +1153,7 @@ The Euler-Lagrange equation is
 \[
   \frac{\dd}{\dd t}(e^{\gamma t}m\dot q)+e^{\gamma t}kq=0,
 \]
-or
+equivalently
 \[
   \boxed{
   m\ddot q+m\gamma\dot q+kq=0.
@@ -1314,7 +1316,7 @@ Thus either
 \[
   \theta=0,\pi,
 \]
-or
+or else
 \[
   \cos\theta=\frac{g}{a\omega^2}.
 \]
@@ -1432,7 +1434,7 @@ The equation of motion is
 \[
   \frac32MR^2\ddot\theta+MgR\sin\theta=0,
 \]
-or
+equivalently
 \[
   \frac32\ddot\theta+\frac{g}{R}\sin\theta=0.
 \]
@@ -1457,11 +1459,11 @@ Consider the central Lagrangian
 \]
 This is the geodesic Lagrangian for the Schwarzschild metric, derived by
 Schwarzschild in 1916, with horizon at \(r=R\), restricted to the equatorial
-plane, in units \(c=1\). Here the parameter is Schwarzschild coordinate time, so this is the reduced
-square-root Lagrangian for spatial motion rather than the reparametrization-
-invariant proper-time action. We treat it here as a classical central-force model whose
-effective-potential analysis already yields the correct innermost stable
-circular-orbit radius.
+plane, in units \(c=1\). Here the parameter is Schwarzschild coordinate time.
+The model is therefore the reduced square-root Lagrangian for spatial motion,
+not the reparametrization-invariant proper-time action. We use it as a
+classical central-force laboratory whose effective-potential analysis already
+yields the correct innermost stable circular-orbit radius.
 Define
 \[
   B=A-\frac{\dot r^2}{A}-r^2\dot\theta^2.

@@ -93,9 +93,9 @@ def connection_components(i0: float, i1: float, i2: float) -> tuple[np.ndarray, 
 
 
 def curvature_vector(i0: float, i1: float, i2: float) -> np.ndarray:
-    """Return the nonabelian curvature vector [A_alpha, A_beta]."""
+    """Return the reconstruction curvature dA - A wedge A for constant coefficients."""
     a_alpha, a_beta = connection_components(i0, i1, i2)
-    return np.cross(a_alpha, a_beta)
+    return -np.cross(a_alpha, a_beta)
 
 
 def helicopter_rotor_connection(
@@ -177,7 +177,7 @@ def holonomy_scaling(
         db = scale * delta_beta
         rotation = rectangular_stroke(i0, i1, i2, da, db, cycles)
         rotvec = rotation_vector(rotation)
-        leading = curvature * da * db * cycles
+        leading = -curvature * da * db * cycles
         error = rotvec - leading
         rows.append(
             {
@@ -335,7 +335,7 @@ def main() -> None:
     )
     rotvec = rotation_vector(rotation)
     area = args.delta_alpha * args.delta_beta
-    leading = curvature * area * args.cycles
+    leading = -curvature * area * args.cycles
 
     summary = build_summary(args, a_alpha, a_beta, curvature, leading, rotvec, rotation)
     if args.plot is not None:
