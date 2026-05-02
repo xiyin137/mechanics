@@ -159,7 +159,12 @@ of all possible instantaneous states, but it is also a coordinate system on the
 family of all classical histories. The caveat is that this identification uses
 existence and uniqueness of the equations of motion; singular potentials,
 collisions, constraints, or finite-time blowup can invalidate the global
-statement even when the local Hamiltonian equations make sense.
+statement even when the local Hamiltonian equations make sense. For example,
+the attractive Kepler Hamiltonian has regular equations away from \(r=0\), but
+a collision orbit reaches \(r=0\) in finite time unless one adds a separate
+regularization. Completeness is therefore a statement about the vector field on
+the chosen phase space, not a formal consequence of writing Hamilton's
+equations.
 
 \section{The Symplectic Form}
 \label{sec:symplectic-form}
@@ -169,9 +174,9 @@ Liouville one-form,
 \[
   \Theta=p_i\,\dd q^i.
 \]
-The terminology remembers Liouville's nineteenth-century role in the invariant
-volume and integration theory of Hamiltonian systems; the object itself is the
-tautological one-form on a cotangent bundle.
+The name credits Liouville's nineteenth-century work on volume preservation and
+integrability in Hamiltonian systems; the geometric object is the tautological
+one-form on \(T^*Q\).
 This formula is intrinsic under changes of coordinates on the base manifold
 \(Q\), although it is written in induced cotangent coordinates. If
 \(\tilde q^j=\tilde q^j(q)\) and the induced cotangent coordinates satisfy
@@ -191,6 +196,14 @@ Thus \(\Theta\) is the same one-form in every coordinate system on \(Q\).
 The canonical symplectic form is
 \[
   \omega=-\dd\Theta=\dd q^i\wedge\dd p_i.
+\]
+The sign comes from the antisymmetry of the wedge product:
+\[
+  -\dd(p_i\,\dd q^i)
+  =
+  -\dd p_i\wedge\dd q^i
+  =
+  \dd q^i\wedge\dd p_i.
 \]
 This sign convention fixes the later Hamiltonian equation
 \(\iota_{X_H}\omega=\dd H\). Some standard references, including Arnold's
@@ -233,7 +246,9 @@ Darboux's proof can be sketched as a local induction. Choose a function
 and extend \(p_1\) by requiring \(Y_1p_1=1\) along the \(Y_1\)-flow. Then
 \(\{q^1,p_1\}=1\), with the sign convention below. The common kernel of
 \(\dd q^1\) and \(\dd p_1\), modulo the two directions already constructed,
-carries a closed nondegenerate two-form of dimension \(2n-2\). Repeating the
+carries a nondegenerate two-form of dimension \(2n-2\). Closedness is inherited
+because restriction and quotient pullbacks commute with \(\dd\); this is the
+point at which \(\dd\omega=0\) enters the induction. Repeating the
 construction produces a coordinate chart in which
 \(\omega=\dd q^i\wedge\dd p_i\).
 The Poisson bracket can be expressed intrinsically by the bivector inverse to
@@ -281,10 +296,11 @@ The Hamiltonian vector field \(X_H\) is defined by
 \]
 Here \(\iota_X\) denotes interior contraction: if \(\omega\) is a two-form, then
 \((\iota_X\omega)(Y)=\omega(X,Y)\) for every vector field \(Y\).
-This coordinate-free language became standard in the twentieth-century
-geometric formulation of mechanics, with Lichnerowicz, Kirillov, and Souriau
-among the central figures. The formula is not an additional physical postulate;
-it is Hamilton's equations written without choosing canonical coordinates.
+The coordinate-free formulation became standard in the twentieth century
+through Lichnerowicz's symplectic-geometry program, Kirillov's coadjoint-orbit
+work, and Souriau's \emph{Structure des systemes dynamiques} (1970). The
+formula is not an additional physical postulate; it is Hamilton's equations
+written without choosing canonical coordinates.
 If
 \[
   X_H=A^i\frac{\partial}{\partial q^i}
@@ -334,8 +350,9 @@ Thus \(X_H\) is Hamilton's equation written geometrically.
     plot ({\x+3.35},{-sqrt(2*(2.35-1+cos(\x r)))});
   \draw[->, thick] (4.02,0.90) -- (4.60,0.60);
   \node[fill=white, inner sep=1pt] at (4.95,0.88) {\(X_H\)};
-  \node[blue!70!black, fill=white, inner sep=1pt] at (1.30,1.95)
+  \node[blue!70!black, fill=white, inner sep=1pt] at (1.25,2.28)
     {libration levels};
+  \node[fill=white, inner sep=1pt] at (3.35,-0.28) {\(0\)};
   \node[red!70!black, fill=white, inner sep=1pt] at (5.25,-2.10)
     {separatrix};
   \node[gray!65!black, fill=white, inner sep=1pt] at (1.25,-2.35)
@@ -459,7 +476,9 @@ Equivalently, the one-form \(p_i\dd q^i+Q^i\dd P_i\) is locally exact, because
   =
   0.
 \]
-The type-II generating function is this local potential.
+By the Poincare lemma, a closed one-form on a contractible coordinate patch is
+the differential of a local function. The type-II generating function is this
+local potential.
 Impose
 \[
   Q^i=\frac{\partial F}{\partial P_i}\bigg|_q,
@@ -531,12 +550,25 @@ numerical integrator creates a discrete map
 \]
 For long-time Hamiltonian problems, whether \(\Psi_{\Delta t}\) preserves a
 symplectic form or a modified Hamiltonian can matter more than the local order
-of the method. The pendulum, standard map, and asteroid demos are therefore
-experiments in preserving structure.
-This viewpoint is the basis of symplectic integration, developed in modern
-numerical form by Ruth's 1983 explicit symplectic schemes, the work of
-Channell-Scovel and Sanz-Serna, Yoshida's 1990 composition methods, and the
-backward-error viewpoint later systematized by Hairer, Lubich, and Wanner.
+of the method. More precisely, a symplectic method of order \(p\) often has a
+formal modified Hamiltonian
+\[
+  \widetilde H_{\Delta t}
+  =
+  H+\Delta t^p H_p+\Delta t^{p+1}H_{p+1}+\cdots
+\]
+whose exact time-\(\Delta t\) flow agrees with the numerical map up to the
+relevant asymptotic order. The series is generally asymptotic rather than
+convergent, but for analytic problems it explains why energy error often stays
+bounded over very long times instead of drifting monotonically. The pendulum,
+standard map, and asteroid demos are therefore experiments in preserving
+structure.
+Symplectic integrators were developed in modern numerical form in the 1980s
+and 1990s. Ruth (1983) gave the first explicit schemes; Channell-Scovel and
+Sanz-Serna systematized them; Yoshida (1990) constructed high-order composition
+methods. Hairer, Lubich, and Wanner later assembled the backward-error analysis
+that explains why these methods preserve a modified Hamiltonian over long
+times.
 
 The practical lesson is diagnostic. A good mechanics simulation reports not
 only a trajectory but also the quantities that the continuous problem says
@@ -548,23 +580,17 @@ problem.
 \section{What To Take Forward}
 \label{sec:hamiltonian-take-forward}
 
-The rest of the notes repeatedly reuse four lessons from this chapter.
+The rest of the notes repeatedly reuse three lessons from this chapter.
 \begin{itemize}
-\item The configuration space \(Q\) is part of the model. Choosing bad
-coordinates can obscure a simple system, but it cannot change the system.
-\item Boundary terms are information, not clutter. They identify canonical
-momenta, forces, and conserved quantities.
+\item The configuration space \(Q\) is part of the model, and boundary terms
+are information: they identify canonical momenta, forces, and conserved
+quantities.
 \item Symmetry produces conserved quantities through Noether's theorem, and
 those quantities are often the coordinates of a reduced problem.
 \item Hamiltonian mechanics is geometry on \(T^*Q\): the symplectic form
 determines Hamilton's equations, volume preservation, Poisson brackets, and the
 meaning of a canonical numerical method.
 \end{itemize}
-
-\paragraph{Questions to carry forward.}
-Which transformations preserve \(\omega\) itself? When does the Legendre
-transform fail? Which numerical errors change the geometry of phase space, and
-which ones only change the parametrized trajectory?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:hamiltonian-chapter-end-labs}
@@ -628,7 +654,7 @@ is a singular energy-surface condition. The velocity Hessian
   =
   m(m\dot x^2+2V)
 \]
-vanishes on this second branch. This example is a useful warning: a Lagrangian
+vanishes on this second branch. This example shows how a Lagrangian
 can produce familiar equations on a regular branch while being singular on
 another branch. Regularity is the hypothesis that lets the Legendre transform
 define a Hamiltonian system.
@@ -642,15 +668,15 @@ define a Hamiltonian system.
     plot (\x,{0.33*\x*\x*\x-0.9*\x});
   \draw[dashed, red!75!black] (-0.95,-1.9) -- (-0.95,1.9);
   \draw[dashed, red!75!black] (0.95,-1.9) -- (0.95,1.9);
-  \fill[red!75!black] (-0.95,0.57) circle (1.3pt)
-    node[above left, fill=white, inner sep=1pt] {\(W=0\)};
-  \fill[red!75!black] (0.95,-0.57) circle (1.3pt)
-    node[below right, fill=white, inner sep=1pt] {\(W=0\)};
+  \fill[red!75!black] (-0.95,0.57) circle (1.3pt);
+  \fill[red!75!black] (0.95,-0.57) circle (1.3pt);
+  \node[black, fill=white, inner sep=1pt] at (-1.38,1.72) {\(W=0\)};
+  \node[black, fill=white, inner sep=1pt] at (1.38,-1.72) {\(W=0\)};
   \draw[decorate, decoration={brace, amplitude=5pt}]
     (1.45,-0.57) -- (1.45,0.57);
-  \draw[->, gray!70] (2.52,0.45) -- (1.50,0.28);
-  \node[align=left, fill=white, inner sep=1.5pt] at (2.66,0.88)
-    {multiple \(\dot x\)\\for one \(p\)};
+  \draw[->, gray!70] (2.42,0.30) -- (1.50,0.28);
+  \node[align=left, fill=white, inner sep=1.5pt] at (2.52,0.88)
+    {same \(p\),\\multiple \(\dot x\)};
   \node[blue!70!black, align=center, fill=white, inner sep=2pt] at (2.05,1.45)
     {folded\\Legendre map};
 \end{tikzpicture}

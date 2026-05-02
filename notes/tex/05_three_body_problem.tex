@@ -1,42 +1,29 @@
 \chapter{The Three-Body Problem}
 \label{chap:three-body-problem}
 
-Two bodies under mutual gravity move on conic sections: ellipses, parabolas, or
-hyperbolas, with collision as a singular limiting case. Three bodies do not
-admit a comparable solution in elementary functions. Sundman gave a convergent
-series solution in 1912, away from triple collision, but that result does not
-restore practical integrability or the Kepler conic picture. Binary collisions
-can be regularized by changing variables and time scale. In the planar problem,
-the Levi-Civita 1903 change \(z=u^2\), together with a time rescaling
-\(\dd t=|u|^2\,\dd s\), turns the inverse-square collision singularity into a
-regular passage in the \(u\)-plane; Sundman's construction uses this kind of
-regularization together with analytic continuation and a global time
-reparametrization. Sundman announced the key regularization program in 1907 and
-published the convergent-series theorem in 1912. Triple collision is the
-obstruction left out of Sundman's
-global statement; in the three-body problem it is tied to the exceptional
-zero-angular-momentum collapse channel.
-Belorizky already emphasized in 1930 that Sundman's series converges far too
-slowly for practical computation. Adding one more gravitating body preserves
-the standard conservation laws of Newtonian mechanics but destroys generic
-integrability. What remains is a rich set of structures:
-rotating-triangle exact solutions, equilibrium points in the rotating frame,
-resonant islands, chaotic scattering, and long-time transport.
-The historical drama matters because it calibrates the claim: Poincare's work
-on the King Oscar problem exposed homoclinic tangles as a mechanism by which a
-deterministic Hamiltonian system can evade integration by additional first
-integrals.
-The prize essay was submitted for King Oscar II's 1889 competition and then
-substantially revised after Poincare discovered the error that led him to
-homoclinic intersections; the expanded account appeared in the
-\emph{Methodes nouvelles de la mecanique celeste} (1892--1899).
-Birkhoff's 1915 periodic-orbit work continued this program by making return
-maps and periodic orbits central tools in celestial mechanics.
-Painleve's 1895 singularity theorem clarifies a separate issue: in the
-Newtonian three-body problem, every finite-time singularity is caused by a
-collision. Xia's 1992 noncollision singularities for five bodies show that this
-is a special feature of low \(N\), not a general safety theorem for Newtonian
-gravity.
+Two bodies under mutual gravity trace conic sections: ellipses, parabolas,
+hyperbolas, and rectilinear collision orbits as degenerate limiting cases.
+Three bodies do not admit a comparable closed-form solution, a universal
+one-dimensional radial reduction, or generic integrability. What survives is a
+rich phase-space geometry: rotating-triangle exact solutions, equilibrium
+points in the rotating frame, resonant islands, chaotic scattering, and
+long-time transport.
+
+Sundman (1907 announcement, 1912 publication) constructed a convergent series
+solution away from triple collision, but the result is not a substitute for
+integrability. Binary collisions can be regularized by changing variables and
+time scale. In the planar problem, the Levi-Civita change
+\[
+  z=u^2,\qquad \dd t=|u|^2\,\dd s
+\]
+turns the inverse-square collision singularity into a regular passage in the
+\(u\)-plane: since \(|z|=|u|^2\), the singular potential \(1/|z|\) becomes
+\(1/|u|^2\), and multiplication by the Sundman time factor
+\(\dd t/\dd s=|u|^2\) cancels the leading pole. Sundman's construction combines
+this local regularization with analytic continuation and a global time
+reparametrization. Triple collision is the obstruction left out of the global
+statement, and Belorizky emphasized in 1930 that Sundman's series converges far
+too slowly for practical computation.
 
 This chapter connects every phenomenon back to a controlled reduction of
 Newton's law. We first formulate the full Newtonian three-body problem and
@@ -69,16 +56,27 @@ The reader should keep four levels separate:
 The later levels are controlled reductions chosen to isolate transport, escape
 channels, and resonance-driven loss in a teachable setting.
 
+\paragraph{Historical context.}
+Poincare's prize essay for King Oscar II's 1889 competition was substantially
+revised after he discovered an error; Weierstrass, on the prize jury, demanded
+a corrected version. The revision exposed homoclinic intersections and became
+the foundation of \emph{Methodes nouvelles de la mecanique celeste}
+(1892--1899). Birkhoff (1915) extended the program by making return maps and
+periodic orbits operational tools of celestial mechanics. Painleve's 1895
+singularity theorem clarified a separate issue: in the Newtonian three-body
+problem, every finite-time singularity is caused by a collision. Xia's 1992
+noncollision singularities for five bodies show that this is a special feature
+of low \(N\), not a general safety theorem for Newtonian gravity.
+
 \section{The Newtonian Three-Body Problem}
 \label{sec:newtonian-three-body-problem}
 
-Before specializing to a massless asteroid, it is useful to state the full
-three-body problem. This prevents a common misunderstanding: the restricted
-problem is not a different force law, but a controlled limit and coordinate
-choice inside the same Newtonian interaction. The full problem also explains
-why the two-body Kepler miracle is exceptional. Translation, rotation, and
-energy still give conserved quantities, but they no longer reduce the dynamics
-to a one-dimensional radial equation.
+The restricted problem will be derived as a limit of the Newtonian three-body
+problem; we therefore start with the full problem. The classical conserved
+quantities, momentum, angular momentum, and energy, survive, but they no longer
+reduce the dynamics to a one-dimensional radial equation. The restricted
+problem is not a different force law; it is a controlled limit and coordinate
+choice inside the same Newtonian interaction.
 
 Let \(q_i(t)\in\R^3\) be the inertial position of mass
 \(m_i>0\), and write
@@ -295,10 +293,9 @@ the centripetal force \(m\omega^2s/\sqrt3\) gives
 This is a genuine three-body orbit with fixed shape.
 \end{example}
 
-Lagrange found the equilateral family in his 1772 study of the three-body
-problem. The collinear central configurations below go back to Euler's 1767
-work and are the finite-mass ancestors of the collinear Lagrange points in the
-restricted problem.
+Lagrange found the equilateral family in 1772; the collinear configurations
+were Euler's, from 1767. Both are finite-mass ancestors of the Lagrange points
+in the restricted problem.
 
 \begin{example}[Euler collinear solutions]
 There are also central configurations with the three bodies on one line. The
@@ -329,8 +326,23 @@ each body differs from the common center-of-mass acceleration by
 \((q_2,q_1)\) and for \((q_3,q_2)\) eliminates the center-of-mass acceleration
 and leaves two expressions for the same \(\omega^2\). Equating them, clearing
 the denominators \(d^2\), \(x^2d^2\), and \((1+x)^2d^2\), and collecting powers
-of \(x\) gives the displayed quintic. The algebra is lengthy but has no
-new idea: \(x\) is the only shape variable, while \(d\) sets the overall scale.
+of \(x\) gives the displayed quintic. Explicitly, with the common factor
+\(G/d^2\) suppressed,
+\[
+\begin{aligned}
+  a_2-a_1
+  &=
+  -(m_1+m_2)
+  +m_3\left(\frac1{x^2}-\frac1{(1+x)^2}\right),\\
+  a_3-a_2
+  &=
+  m_1\left(1-\frac1{(1+x)^2}\right)
+  -\frac{m_2+m_3}{x^2}.
+\end{aligned}
+\]
+The central-configuration condition requires \(a_3-a_2=x(a_2-a_1)\). Multiplying
+this equation by \(x^2(1+x)^2\) produces the quintic above. Thus \(x\) is the
+only shape variable, while \(d\) sets the overall scale.
 \end{example}
 
 Section~\ref{sec:lab-three-body} turns the equal-mass equilateral solution into
@@ -338,11 +350,11 @@ a numerical laboratory. There the exact rotating triangle is used as the
 comparison orbit, and small perturbations of the initial velocities show how a
 central configuration can organize nearby motion without making the full
 three-body problem integrable.
-Much later, Chenciner and Montgomery found the figure-eight periodic orbit
-(2000), a striking equal-mass solution with zero angular momentum. It is not a
-central configuration, but pedagogically it reinforces the same lesson: special
-exact orbits can be beautiful without making the generic three-body problem
-integrable.
+Chenciner and Montgomery (2000) discovered the figure-eight periodic orbit:
+three equal masses chase one another along a single planar curve, with zero
+total angular momentum. It is not a central configuration, and like Lagrange's
+and Euler's solutions it does not make the generic three-body problem
+integrable. Special exact orbits can exist without integrability.
 
 \section{Circular Restricted Three-Body Problem}
 \label{sec:circular-restricted-three-body-problem}
@@ -350,9 +362,10 @@ integrable.
 The circular restricted three-body problem is the standard autonomous model
 behind the Sun-Jupiter-asteroid story. Two massive primaries move on circular
 Kepler orbits about their common center of mass, and a third body has zero
-mass, so it feels the primaries but does not affect them. Historically, this is
-the setting of Jacobi's integral (1836) and Hill's lunar restricted problem
-(1878). After choosing units
+mass, so it feels the primaries but does not affect them. This is the setting
+of Jacobi's integral (1836) and of Hill's lunar restricted problem (1878), and
+the setting in which Birkhoff's periodic-orbit program made return maps and
+periodic points operational. After choosing units
 in which
 \[
   G(m_1+m_2)=1,\qquad
@@ -444,7 +457,7 @@ equivalently inertial energy minus \(\omega L_z\) in dimensional variables.
   \draw[->] (0,-1.72) -- (0,1.74) node[above] {\(y\)};
   \coordinate (pone) at (-0.55,0);
   \coordinate (ptwo) at (1.05,0);
-  \coordinate (lone) at (0.55,0);
+  \coordinate (lone) at (0.62,0);
   \coordinate (ltwo) at (1.52,0);
   \coordinate (lthree) at (-1.62,0);
   \coordinate (lfour) at (0.25,1.386);
@@ -591,7 +604,11 @@ constraint, not a literal material boundary.
     \fill[white] (-0.75,0) ellipse (0.60 and 0.43);
     \fill[white] (0.88,0) ellipse (0.32 and 0.25);
     \fill[yellow!80!black] (-0.75,0) circle (2.8pt);
+    \node[yellow!45!black, below=4pt, fill=white, inner sep=1pt,
+      font=\small] at (-0.75,0) {\(P_1\)};
     \fill[orange!80!black] (0.88,0) circle (2.2pt);
+    \node[orange!80!black, below=4pt, fill=white, inner sep=1pt,
+      font=\small] at (0.88,0) {\(P_2\)};
     \draw[red!75!black, thick] (0.2,-0.09) -- (0.2,0.09);
     \node[red!75!black, above=3pt, fill=white, inner sep=1.5pt,
       font=\small] at (0.2,0.09) {\(L_1\)};
@@ -612,7 +629,11 @@ constraint, not a literal material boundary.
       .. controls (1.18,-0.40) and (0.78,-0.50) .. (0.28,-0.17)
       .. controls (-0.34,-0.66) and (-1.12,-0.62) .. (-1.28,0);
     \fill[yellow!80!black] (-0.75,0) circle (2.8pt);
+    \node[yellow!45!black, below=4pt, fill=white, inner sep=1pt,
+      font=\small] at (-0.75,0) {\(P_1\)};
     \fill[orange!80!black] (0.88,0) circle (2.2pt);
+    \node[orange!80!black, below=4pt, fill=white, inner sep=1pt,
+      font=\small] at (0.88,0) {\(P_2\)};
     \draw[red!75!black, thick] (0.2,-0.09) -- (0.2,0.09);
     \node[red!75!black, above left=4pt, fill=white, inner sep=1.5pt,
       font=\small] at (0.2,0.09) {\(L_1\)};
@@ -729,8 +750,16 @@ have characteristic polynomial
 \[
   \lambda^4+\lambda^2+\frac{27}{4}\mu(1-\mu)=0.
 \]
-All four eigenvalues are purely imaginary exactly when the two roots in
-\(\lambda^2\) are real and negative, which is equivalent to
+Put \(s=\lambda^2\). Then
+\[
+  s^2+s+\frac{27}{4}\mu(1-\mu)=0,
+  \qquad
+  s_\pm=
+  \frac{-1\pm\sqrt{1-27\mu(1-\mu)}}{2}.
+\]
+All four eigenvalues are purely imaginary exactly when the two roots
+\(s_\pm\) are real and negative. Since their sum is \(-1\) and their product
+is positive for \(0<\mu<1\), this is equivalent to the discriminant condition
 \[
   1-27\mu(1-\mu)\ge0.
 \]
@@ -742,11 +771,11 @@ Equivalently, for \(\mu\leq 1/2\),
   \approx 0.03852.
 \]
 The Sun-Jupiter value is about \(9.53\times10^{-4}\), far below this threshold.
-This is why Trojan motion near the triangular points is a natural classroom
-example of stable motion in a nontrivial three-body setting.
-The stability criterion is historically due to Gascheau (1843) and Routh
-(1875). Its Solar System relevance became visible with the discovery of Trojan
-asteroids such as 588 Achilles near Jupiter's triangular points in 1906.
+Trojan motion near the triangular points is therefore stable in this
+linearized nontrivial three-body setting.
+The stability criterion was derived by Gascheau (1843) and Routh (1875); its
+Solar System relevance was confirmed in 1906, when Max Wolf discovered the
+first Trojan asteroid, 588 Achilles, near Jupiter's \(L_4\).
 \end{remark}
 
 \subsection{Connection To The Asteroid-Belt Model}
@@ -882,7 +911,7 @@ the finite-time ejection probability estimate is
 \]
 \end{definition}
 
-\begin{definition}[Ejection criterion in the demo]
+\begin{remark}[Ejection criterion in the demo]
 The Python demo counts a particle as ejected if it reaches a large heliocentric
 radius or if its heliocentric two-body energy is positive after it has moved
 outside Jupiter's orbital scale. In the default configuration this means
@@ -895,15 +924,16 @@ with \(a_J=5.2044\,\mathrm{AU}\). The same run separately records close
 approaches to Jupiter, using the default threshold \(0.03\,\mathrm{AU}\), and
 collisions with the inner solar cutoff, using the default threshold
 \(0.02\,\mathrm{AU}\).
-\end{definition}
+\end{remark}
 
-An ejection probability is a finite-time statistic tied to a specified
-experiment. It depends on:
+\(\widehat P_{\mathrm{ej}}(T)\) is not a property of the three-body problem in
+isolation; it is a property of an experiment. Five inputs determine it:
 \[
   \text{model}+\text{initial ensemble}+\text{time horizon}
   +\text{numerical method}+\text{loss criterion}.
 \]
-That dependence should be reported, not hidden.
+The same physical question with different choices yields different numerical
+values.
 
 The demo also labels each semimajor-axis bin by its nearest low-order interior
 mean-motion resonance with Jupiter. The nominal resonance locations are
@@ -964,7 +994,10 @@ different class, ruling out generic additional analytic integrals in the
 perturbative setting. The obstruction is the same small-divisor mechanism seen
 in Chapter~\ref{chap:perturbation-chaos}: a formal integral must solve
 homological equations whose resonant denominators cannot be made to vanish
-generically.
+generically. These theorems are not identical statements with different names:
+Bruns and Painleve limit algebraic first integrals of the full problem, while
+Poincare explains why analytic integrability fails under generic perturbation
+of an integrable model.
 \item Jacobi coordinates remove center-of-mass motion and diagonalize the mass
 metric.  They reveal two coupled relative vectors, which is the simplest
 coordinate-level reason the two-body Kepler solution does not generalize.
@@ -982,12 +1015,6 @@ not an optional correction.
 observables. They become meaningful only when the ensemble, integration time,
 timestep, invariants, and loss criterion are stated.
 \end{itemize}
-
-\paragraph{Questions to carry forward.}
-Which structures come from exact Newtonian symmetries, and which come from the
-restricted approximation? How does the Jacobi constant shape escape channels?
-Which ejection statistics remain stable when the timestep, ensemble, or
-planetary mass is varied?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:three-body-chapter-end-labs}
@@ -1039,7 +1066,7 @@ The symmetric initial positions are
   \coordinate (r3) at (-0.625,-1.083);
   \draw[gray!70, thick] (r1) -- (r2) -- (r3) -- cycle;
   \fill[blue!70!black] (r1) circle (2pt)
-    node[right, fill=white, inner sep=1pt] {\(r_1\)};
+    node[above, fill=white, inner sep=1pt] {\(r_1\)};
   \fill[blue!70!black] (r2) circle (2pt)
     node[above left, fill=white, inner sep=1pt] {\(r_2\)};
   \fill[blue!70!black] (r3) circle (2pt)

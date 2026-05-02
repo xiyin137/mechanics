@@ -4,13 +4,16 @@
 \section{The Rigid Body As A Bridge To Integrability}
 \label{sec:rigid-why-central}
 
-The free rigid body is a nearly ideal teaching example. It is nonlinear, it
-lives naturally on the Lie group \(\SO(3)\), it has a reduced Hamiltonian
-description on angular momentum space, and it is completely integrable. At the
-same time, small modifications such as gravity acting on a heavy top lead toward
-nonintegrability and chaos. The classical integrable exceptions beyond the free
-body include Lagrange's symmetric heavy top and Kovalevskaya's 1888 top; their
-rarity is part of the lesson.
+The free rigid body is a compact model in which several central ideas meet. Its
+motion is nonlinear; its configuration space is the Lie group \(\SO(3)\); its
+reduced description is Hamiltonian on angular-momentum space; and it is
+completely integrable. At the same time, small modifications such as gravity
+acting on a heavy top lead toward nonintegrability and chaos. The classical
+integrable exceptions beyond the free body are Lagrange's symmetric heavy top
+(1788) and Kovalevskaya's top (1888), with other special cases requiring
+additional hypotheses. Husson's 1906 analysis made this rarity precise for the
+classical heavy top under its stated assumptions. Their rarity is part of the
+lesson.
 
 The most vivid symptom is the intermediate-axis flip. Spin a book about its
 longest or shortest principal axis and the rotation is stable; spin it about
@@ -32,16 +35,6 @@ where \(r(t)\in\R^3\) is the center-of-mass position and
 translation by working in the center-of-mass frame.
 \end{assumption}
 
-\paragraph{Roadmap.}
-The chapter moves from a concrete body to the general geometry of integrable
-systems. The first half explains the kinematics and dynamics of a free rigid
-body: rotations live on \(\SO(3)\), angular velocity lives in its Lie algebra,
-and the reduced motion lives on angular momentum spheres. The second half
-abstracts the lesson: enough independent commuting first integrals force
-regular compact level sets to be tori, and on those tori the motion is linear.
-The rigid body supplies the concrete model in which the theorem becomes
-visible.
-
 \paragraph{Three layers to keep separate.}
 Rigid-body mechanics mixes three descriptions that are often compressed into
 one line of notation. The kinematic layer says how \(R(t)\in\SO(3)\) defines
@@ -50,6 +43,11 @@ inertia tensor produce Euler's equations. The reduced Hamiltonian layer says
 why angular momentum spheres carry a Lie-Poisson flow. Each layer has its own
 variables and its own conserved quantities. Keeping the layers separate
 preserves the distinction between body components and spatial components.
+
+\paragraph{Roadmap.}
+The chapter first derives the free rigid body's kinematics, Euler equations,
+reduction, and stability, then abstracts the lesson into Liouville integrability
+and invariant tori.
 
 \section{The Rotation Group And Angular Velocity}
 \label{sec:rotation-group-angular-velocity}
@@ -272,6 +270,8 @@ Equivalently, using the spatial angular velocity \(\omega_{\mathrm{space}}\) and
 \[
   L=\frac12\sum_{a=1}^3 I_a(\hat e_a\cdot\omega_{\mathrm{space}})^2.
 \]
+Here \(L\) denotes the Lagrangian. Later symbols such as \(L_z\) denote angular
+momentum components; the subscripted notation is always specified locally.
 The spatial angular momentum is
 \[
   J_i=\frac{\partial L}{\partial (\omega_{\mathrm{space}})_i}
@@ -368,8 +368,9 @@ velocity \(R^{-1}\dot R\), so its allowed variation must come from an allowed
 variation of \(R\in\SO(3)\). The formula
 \(\delta\Omega=\dot\Sigma+\Omega\times\Sigma\) is the constraint that keeps the
 variation on the rotation group. Poincare introduced this reduced variational
-form in 1901; the modern symplectic-reduction setting is part of the
-Marsden-Weinstein framework.
+form in 1901; the modern geometric setting, where it appears as
+cotangent-bundle reduction by a Lie group, is the Marsden-Weinstein framework
+(1974).
 The reduced action is
 \[
   S[R]=\int_{t_0}^{t_1}\ell(\Omega)\,\dd t,
@@ -418,9 +419,9 @@ The term \(\Omega\times M\) is not an external torque. It is the correction
 that appears because \(M\) is expressed in the rotating body frame. In the
 space frame the angular momentum \(J=RM\) is constant; in the body frame the
 components of the same vector change because the axes themselves rotate.
-Euler derived these equations in his 1765 theory of rigid-body motion; the
-modern reduced variational form is the Euler-Poincare version of the same
-calculation.
+Euler derived these equations in 1765 in \emph{Theoria motus corporum
+solidorum}; the modern reduced variational form is the Euler-Poincare version
+of the same calculation.
 
 \section{Euler Equations In Principal Axes}
 \label{sec:euler-equations-principal}
@@ -525,10 +526,10 @@ fixed in space.
     \draw[red!75!black] (\x,\y) circle (0.26);
     \draw[red!75!black, ->] (\x,\y) -- ++(0.26,0.0);
   }
-  \node[red!75!black, align=center, fill=white, inner sep=2pt] at (5.00,2.82)
+  \node[red!75!black, align=center, fill=white, inner sep=2pt] at (5.25,2.98)
     {attitude fiber\\over a reduced state};
-  \draw[red!75!black, ->, thick] (2.55,1.75) -- (4.0,2.10);
-  \draw[red!75!black, ->, thick] (2.45,1.35) -- (4.0,1.05);
+  \draw[red!75!black, ->, thick] (2.55,1.82) .. controls (3.0,2.35) .. (4.0,2.10);
+  \draw[red!75!black, ->, thick] (2.45,1.28) .. controls (3.0,0.70) .. (4.0,1.05);
   \begin{scope}[xshift=4.1cm]
     \draw[thick] (0,0.55) rectangle (2.10,2.55);
     \draw[->, purple!75!black, thick]
@@ -608,9 +609,12 @@ ellipsoid.
     {angular momentum\\sphere \(C=\norm M^2\)};
   \node[blue!70!black, align=center, fill=white, inner sep=2pt] at (2.75,1.75,3.28)
     {energy ellipsoid\\\(2H=M^TI^{-1}M\)};
-  \node[purple!80!black, fill=white, inner sep=2pt] at (4.45,-3.05,-0.55)
+  \node[purple!80!black, fill=white, inner sep=2pt] at (4.65,-2.75,-0.55)
     {intersection trajectories};
-  \draw[purple!80!black, ->] (3.70,-2.68,-0.45) -- (1.15,-0.25,0);
+  \draw[purple!80!black, ->] (3.55,-2.48,-0.45) -- (1.15,-0.25,0);
+  \node[purple!80!black, align=center, fill=white, inner sep=1.5pt] at (-3.95,2.25,0.40)
+    {back branch\\(dashed)};
+  \draw[purple!80!black, ->] (-3.30,1.95,0.35) -- (-1.05,0.95,0.55);
 \end{tikzpicture}
 \caption{Rigid-body reduction in angular-momentum space. Conservation of
 \(\norm M^2\) confines the motion to a sphere, conservation of \(H\) confines it
@@ -626,9 +630,9 @@ representative ellipsoid with semi-axes
 \label{sec:poinsot-construction}
 
 The same invariants have a classical geometric interpretation in angular
-velocity space. Poinsot introduced this rolling picture in 1834; his names
-polhode and herpolhode are still the standard names for the body-space and
-space-space traces. Define the inertia ellipsoid
+velocity space. Poinsot introduced this rolling picture in 1834. His vocabulary
+survives: the body-frame trace is the polhode, and the spatial trace is the
+herpolhode. Define the inertia ellipsoid
 \[
   \mathcal E_H=\{\Omega:\Omega^TI\Omega=2H\}.
 \]
@@ -681,9 +685,9 @@ inertia ellipsoid rolling without slipping on the fixed invariable plane.
     \draw[blue!70!black] (1.65,0) arc (0:180:1.65 and 0.28);
     \draw[purple!75!black, thick]
       (-0.9,0.15) .. controls (-0.35,0.85) and (0.7,0.55) .. (1.05,-0.05);
-  \fill[purple!75!black] (0.18,0.55) circle (1.5pt)
-      node[below right] {\(\Omega\)};
-    \draw[->, red!75!black, thick] (0.18,0.55) -- (0.95,1.25);
+  \fill[purple!75!black] (0.18,0.55) circle (1.5pt);
+  \node[purple!75!black, fill=white, inner sep=1pt] at (-0.08,0.82) {\(\Omega\)};
+    \draw[->, red!75!black, thick] (0.18,0.55) -- (1.05,1.32);
     \node[red!75!black, fill=white, inner sep=1pt] at (1.25,1.42)
       {\(M=I\Omega\)};
     \node[blue!70!black] at (0,-1.25) {inertia ellipsoid \(\mathcal E_H\)};
@@ -766,9 +770,9 @@ about the third axis is stable.
 The geometric reason is that the energy restricted to a fixed angular momentum
 sphere has extrema at the smallest and largest inertia axes but a saddle at the
 intermediate axis.
-This instability is the mathematical core of the tennis-racket theorem, and of
-the Dzhanibekov effect observed in orbit in 1985; the underlying explanation is
-already present in Euler's rigid-body equations.
+This instability is the tennis-racket theorem; it was filmed by cosmonaut
+Vladimir Dzhanibekov on Salyut-7 in 1985. The mathematics is already in
+Euler's 1765 rigid-body equations.
 
 \begin{derivation}[Energy-Casimir stability test]
 The same conclusion can be read without solving the linearized equations. Work
@@ -868,9 +872,11 @@ for every observable \(F\). For the rigid body bracket,
 is a Casimir. Its level sets are the coadjoint orbits, which here are spheres.
 \end{definition}
 
-The Casimir is why the reduced phase space is foliated by angular-momentum
-spheres. Each sphere carries a genuine two-dimensional symplectic structure,
-and the rigid body restricted to one such sphere has one degree of freedom.
+Casimirs foliate the reduced phase space. For the rigid body,
+\(\norm M^2\) labels each angular-momentum sphere, and the Hamiltonian flow
+lives on these spheres. Each sphere carries a genuine two-dimensional
+symplectic structure, and the rigid body restricted to one such sphere has one
+degree of freedom.
 Here a coadjoint orbit means the orbit of a covector
 \(M\in\mathfrak{so}(3)^*\) under the coadjoint action of \(\SO(3)\). After
 identifying \(\mathfrak{so}(3)^*\) with \(\R^3\), that action is ordinary
@@ -925,9 +931,11 @@ regular level sets under discussion. The functions are said to be in
 involution.
 \end{definition}
 
-Historically, Liouville proved the analytic integration-by-quadratures part in
-1855; the modern torus formulation is usually called the Liouville-Arnold
-theorem, after Arnold's 1963 geometric statement.
+Liouville proved the analytic integration-by-quadratures part in 1855: once
+enough commuting integrals are present, the remaining motion can be obtained by
+quadratures. The modern compact-level-set formulation, due to Arnold (1963), is
+now called the Liouville-Arnold theorem; it identifies regular compact level
+sets as tori carrying linear flow.
 Jacobi's 1839 integration of geodesics on an ellipsoid is a classical early
 example beyond Kepler and the rigid body: the separated coordinates are not a
 coordinate trick but a sign of hidden commuting integrals.
@@ -1005,6 +1013,10 @@ Completeness is used here: without complete flows, this action would
 only be defined for small flow times, and the period-lattice quotient below
 would have no global meaning. Since \(M_f\) is compact and the vector fields
 are smooth, the flows on \(M_f\) are complete in the cases considered here.
+This is the standard escape lemma for ODEs: a maximal solution of a smooth
+vector field that remained defined only on a finite time interval would have
+compact closure, the vector field would be bounded there, and the local
+existence theorem would extend the solution past the endpoint.
 Independence of the vector fields makes the action locally free. More
 concretely, the constant-rank theorem applied to the map
 \(s\mapsto\Phi_s(x_0)\) says that its derivative at \(s=0\) is an isomorphism
@@ -1015,7 +1027,8 @@ only possible global identifications are translations
 \]
 where \(\Lambda\subset\R^n\) is the period lattice of the orbit. Compactness
 forces \(\Lambda\) to have rank \(n\). If \(\Lambda\) had rank \(k<n\), then
-after a linear change of basis
+the structure theorem for discrete subgroups of \(\R^n\) gives a linear basis
+in which \(\Lambda\) is generated by \(k\) independent period vectors, so
 \[
   \R^n/\Lambda\simeq \mathbb T^k\times\R^{n-k},
 \]
@@ -1028,9 +1041,8 @@ whole level set. Hence
 These are the invariant Liouville tori.
 \end{derivation}
 
-This argument is often the first place where the word ``torus'' becomes more
-than a picture. Enough commuting flows on a compact regular level set force the
-level set to be a torus. The angle variables introduced below are coordinates
+Enough commuting flows on a compact regular level set force the level set to be
+a torus. The angle variables introduced below are coordinates
 along these flows, and the action variables are the quantities that label which
 torus one is on.
 
@@ -1055,9 +1067,9 @@ torus one is on.
   \node[align=center, fill=white, inner sep=1.5pt] at (2.1,-0.72)
     {flat model of a two-dimensional invariant torus\\
      \(\mathbb R^2/\Lambda\) with angle coordinates};
-  \node[purple!75!black, align=center, fill=white, inner sep=2pt] at (4.85,2.72)
+  \node[purple!75!black, align=center, fill=white, inner sep=2pt] at (5.05,3.18)
     {Hamiltonian flow\\has constant slope};
-  \draw[purple!75!black, ->] (4.20,2.55) -- (3.20,2.48);
+  \draw[purple!75!black, ->] (4.70,2.98) -- (3.20,2.48);
 \end{tikzpicture}
 \caption{A Liouville torus is locally a space of commuting flow times with
 periodic identifications. Action variables label the torus; angle variables
@@ -1124,10 +1136,12 @@ On the invariant torus \(F_j=f_j\), \(\dd F_j=0\), so
 This coordinate proof is local on a chart where the projection of the torus to
 the \(q\)-coordinates has full rank. At caustics or turning sets that
 projection fails, the same Lagrangian conclusion remains true by the
-coordinate-free argument above, but the displayed function \(p(q,F)\) must be
-replaced by another local branch or another canonical chart. The torus itself
-does not become singular at a caustic; only this particular projection to
-configuration coordinates does.
+coordinate-free argument above: at a regular point the independent Hamiltonian
+fields \(X_{F_i}\) still span \(T_xM_f\), and their pairwise symplectic
+products are still \(\Poisson{F_i}{F_j}=0\). What fails at a caustic is only
+the choice of \(q\) as local coordinates on the torus. The displayed function
+\(p(q,F)\) must then be replaced by another local branch or another canonical
+chart.
 
 To prove the claim, differentiate the identities \(F_k(p(F,q),q)=F_k\) at
 fixed \(F\):
@@ -1326,7 +1340,7 @@ negative-momentum branch, so the action is
   \draw[blue!70!black, thick, ->]
     (5.3,0) .. controls (4.2,-1.55) and (2.0,-1.55) .. (1.0,0);
   \node[blue!70!black, fill=white, inner sep=1pt] at (3.2,1.95) {\(+p(q,E)\)};
-  \node[blue!70!black, fill=white, inner sep=1pt] at (3.2,-1.95) {\(-p(q,E)\)};
+  \node[blue!70!black, fill=white, inner sep=1pt] at (3.2,-2.12) {\(-p(q,E)\)};
   \draw[blue!70!black, ->] (3.2,1.78) -- (3.2,1.40);
   \draw[blue!70!black, ->] (3.2,-1.78) -- (3.2,-1.40);
   \node[align=center, fill=white, inner sep=1pt] at (3.2,0.55)
@@ -1456,35 +1470,18 @@ connection language of deformable bodies.
 \section{What To Take Forward}
 \label{sec:rigid-take-forward}
 
-The rigid-body chapter supplies both a model and a method. The model is the
-free body, whose motion is visible through energy ellipsoids, momentum
-spheres, Poinsot rolling, and attitude reconstruction. The method is more
-general: use symmetry to reduce, use conserved quantities to find invariant
-sets, and then ask whether those invariant sets are tori carrying linear
-motion.
-
 \begin{itemize}
-\item \(\SO(3)\) is a curved configuration space; Euler angles are useful local
-coordinates but not the system itself.
-\item Body angular momentum \(M\) and spatial angular momentum \(J\) encode the
-same vector in different frames. Confusing them hides the reduction.
+\item A rigid body lives on \(\SO(3)\), not in a global set of Euler angles.
+Body and spatial angular momentum describe the same vector in different frames,
+and the sign of the reduced Lie-Poisson bracket depends on that choice.
 \item The free rigid body is integrable because energy and angular momentum
-constraints reduce the motion to closed curves and tori.
-\item Liouville tori arise from commuting Hamiltonian flows, not from a lucky
-choice of variables. Action-angle coordinates are coordinates adapted to those
-tori.
-\item Action variables are period integrals of the canonical one-form. Their
-geometric definition explains why the coordinates are adapted to invariant
-tori.
-\item The operation \(R^T\dd R\) that defines rigid-body angular velocity is
-the finite-dimensional prototype of the connection forms used later for
-deformable bodies and Cosserat continua.
+confine the reduced motion to curves on angular-momentum spheres; after
+reconstruction these curves lift to invariant tori.
+\item Liouville tori are produced by commuting Hamiltonian flows, with action
+variables defined by period integrals of the canonical one-form. The operation
+\(R^T\dd R\) used here will reappear as the connection language of deformable
+bodies and Cosserat continua.
 \end{itemize}
-
-\paragraph{Questions to carry forward.}
-Which conserved quantities commute, and which merely coexist? What happens to a
-Liouville torus when a resonance is introduced? How much of rigid-body
-geometry survives when the body can change shape?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:rigid-integrability-chapter-end-labs}
@@ -1551,9 +1548,9 @@ Solving for the radial action,
   I_r=\frac{E}{2\omega}-\frac{|L|}{2}.
   }
 \]
-This formula is a useful reminder: action variables depend on the chosen basis
-of cycles. Cartesian actions and polar actions are related by an integral
-linear change of torus cycles, not by an arbitrary smooth coordinate change.
+This formula records the cycle-basis dependence of action variables. Cartesian
+actions and polar actions are related by an integral linear change of torus
+cycles, not by an arbitrary smooth coordinate change.
 
 \subsection{Symmetric Free Top: Actions And Dense Motion}
 \label{sec:detailed-symmetric-top-actions}
@@ -1590,8 +1587,11 @@ spherical coordinates. It says that \(p_\theta\) is not an independent
 constant; it is determined by \(J\), \(J_z=p_\phi\), \(M_3=p_\psi\), and
 \(\theta\).
 
-For the symmetric top, whose classical heavy-top version was analyzed by
-Lagrange in the eighteenth century,
+The convention \(I_1=I_2>I_3\) is the prolate convention: the moment about the
+symmetry axis is smaller than the transverse moments. An oblate symmetric top
+has the reversed inequality. The formulas below adapt by the same algebra with
+the corresponding chamber inequalities. For the symmetric top, whose classical
+heavy-top version was analyzed by Lagrange in 1788,
 \[
   H
   =
@@ -1655,9 +1655,22 @@ where
 \]
 This integral is the symplectic area on the angular-momentum sphere between
 the two latitude circles \(J_z=a\) and \(M_3=b\), divided by \(2\pi\). The
-Kirillov symplectic form on the radius-\(J\) angular-momentum sphere has the
-property that a cap of height \(h\) has symplectic area \(2\pi h\). The two
-fixed projections remove caps determined by \(|a|\) and \(|b|\); the remaining
+cap-area formula is elementary in spherical coordinates. Write the coadjoint
+sphere as \(M=Jn\), with
+\(n=(\sin\vartheta\cos\varphi,\sin\vartheta\sin\varphi,\cos\vartheta)\).
+The Kirillov form is
+\[
+  \omega_{\mathrm{KKS}}=J\sin\vartheta\,\dd\vartheta\wedge\dd\varphi,
+\]
+so the cap above \(M_z=c\), where \(\cos\vartheta=c/J\), has area
+\[
+  \int_0^{2\pi}\int_0^{\arccos(c/J)}
+  J\sin\vartheta\,\dd\vartheta\,\dd\varphi
+  =
+  2\pi(J-c).
+\]
+Thus a cap of height \(h=J-c\) has symplectic area \(2\pi h\). The two fixed
+projections remove caps determined by \(|a|\) and \(|b|\); the remaining
 nutation cycle has height \(J-\max\{|a|,|b|\}\). Hence
 \[
   \boxed{
@@ -1674,6 +1687,10 @@ projection is the body-axis component, and the same cycle convention gives
 conservation law; it records which projection of the angular momentum sphere
 sets the polar turning circle. The spin action \(I_\psi=M_3\) remains a
 separate action measuring rotation about the body's symmetry axis.
+On the chamber wall \(|J_z|=|M_3|\), the two polar circles touch the same
+turning latitude and the chosen nutation cycle changes its representative. The
+formula is continuous there, but the local action chart changes because the
+cycle basis used to describe the torus is changing.
 
 In action variables, this means
 \[
@@ -1693,24 +1710,57 @@ within a fixed chamber. The absolute values and maximum are the price paid for
 using Euler-angle cycles across coordinate singularities; once a chamber is
 chosen, the Hamiltonian is smooth in the corresponding local action variables.
 
-The angle equations are
+Let \(\alpha_j\) denote the angle variables conjugate to the action variables
+\(I_j=(I_\theta,I_\phi,I_\psi)\) in the chosen chamber. The angle equations are
 \[
   \dot\alpha_j=\frac{\partial H}{\partial I_j}.
 \]
-It does not depend on the inertial direction of the angular momentum. This
+The Hamiltonian does not depend on the inertial direction of the angular momentum. This
 degeneracy comes from the continuous symmetry of rotations about the spatial
 angular-momentum direction, not from chaotic dynamics. In the nonsymmetric free
 rigid body the generic invariant sets are still Liouville tori, but the action
 integrals involve elliptic functions in place of the elementary chamber formula
-above. Concretely, for \(I_1<I_2<I_3\) in a fixed energy chamber, the Euler
-equations reduce to
+above. Concretely, set
+\[
+  A=2H,\qquad B=J^2,
+\]
+and take \(I_1<I_2<I_3\). The two algebraic integrals
+\[
+  A=I_1\Omega_1^2+I_2\Omega_2^2+I_3\Omega_3^2,\qquad
+  B=I_1^2\Omega_1^2+I_2^2\Omega_2^2+I_3^2\Omega_3^2
+\]
+solve for \(\Omega_1^2\) and \(\Omega_3^2\) in terms of
+\(x=\Omega_2^2\):
+\[
+\begin{aligned}
+  \Omega_1^2
+  &=
+  \frac{B-AI_3-I_2(I_2-I_3)x}{I_1(I_1-I_3)},\\
+  \Omega_3^2
+  &=
+  \frac{AI_1-B-I_2(I_1-I_2)x}{I_3(I_1-I_3)}.
+\end{aligned}
+\]
+Substituting these expressions into
+\(I_2\dot\Omega_2=(I_3-I_1)\Omega_3\Omega_1\) gives a quartic polynomial in
+\(\Omega_2\). If the two relevant roots in the chosen energy chamber are
+ordered as \(a^2\le x\le b^2\), then the equation takes the form
 \[
   \dot\Omega_2^2
   =
   \frac{(I_3-I_2)(I_2-I_1)}{I_1I_3}
   (\Omega_2^2-a^2)(b^2-\Omega_2^2)
 \]
-for constants \(a,b\) determined by \(H\) and \(J^2\). Hence, after choosing
+with
+\[
+  \{a^2,b^2\}
+  =
+  \left\{
+  \frac{AI_3-B}{I_2(I_3-I_2)},
+  \frac{B-AI_1}{I_2(I_2-I_1)}
+  \right\},
+\]
+listed in the order appropriate to the chamber. Hence, after choosing
 the origin of time and a chamber in which \(a^2\le \Omega_2^2\le b^2\),
 \[
   \Omega_2(t)=b\,\operatorname{dn}(\nu(t-t_0),k),
@@ -1720,7 +1770,24 @@ the origin of time and a chamber in which \(a^2\le \Omega_2^2\le b^2\),
   k^2=1-\frac{a^2}{b^2},
 \]
 or an equivalent \(\operatorname{sn}/\operatorname{cn}\) parametrization
-depending on the chamber. The elementary symmetric-top formula is therefore a
+depending on the chamber. To check the \(\operatorname{dn}\) form directly,
+use
+\[
+  \frac{\dd}{\dd u}\operatorname{dn}(u,k)
+  =
+  -k^2\operatorname{sn}(u,k)\operatorname{cn}(u,k),
+\]
+together with
+\[
+  b^2\operatorname{dn}^2-a^2=b^2k^2\operatorname{cn}^2,
+  \qquad
+  b^2-b^2\operatorname{dn}^2=b^2k^2\operatorname{sn}^2.
+\]
+Then \(\dot\Omega_2^2\) equals the quartic above precisely when
+\[
+  \nu=b\sqrt{\frac{(I_3-I_2)(I_2-I_1)}{I_1I_3}}.
+\]
+The elementary symmetric-top formula is therefore a
 degenerate limit of the elliptic-function solution.
 
 \section{Associated Demos}

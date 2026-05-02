@@ -12,17 +12,16 @@ formulation, including
 Lagrange points and ejection statistics, is developed separately in
 Chapter~\ref{chap:three-body-problem}.
 
-Historically, this is the question that broke the dream of solving mechanics
-by writing enough first integrals. Poincare's 1890 negative theorem showed
-that generic perturbations of an integrable Hamiltonian need not admit
-additional analytic first integrals beyond the energy; his later work on the
-three-body problem exposed the stable-unstable manifold tangles behind this
-failure. The modern story is more nuanced than ``small perturbations make
-chaos.'' Kolmogorov, Arnold, and Moser found the survival theorem hidden inside
-the failure: sufficiently irrational invariant tori persist, while resonant
-regions become the sites of islands, separatrix splitting, and transport. The
-standard map is this chapter's compact laboratory; the asteroid problem is the
-gravitational setting we revisit once the perturbative mechanisms are clear.
+This question ended the program of solving mechanics by exhibiting enough first
+integrals. Poincare's 1890 negative theorem showed that generic perturbations
+of an integrable Hamiltonian need not admit additional analytic first integrals
+beyond the energy; his later work on the three-body problem exposed the
+stable-unstable manifold tangles behind this failure. Kolmogorov, Arnold, and
+Moser then identified the survival theorem inside the failure: sufficiently
+irrational invariant tori persist, while resonant regions become the sites of
+islands, separatrix splitting, and transport. The standard map is this
+chapter's compact laboratory; the asteroid problem is the gravitational setting
+we revisit once the perturbative mechanisms are clear.
 
 The precise Poincare statement is not that no special integral can ever occur.
 It is a generic obstruction theorem. In lecture-note form: for a nondegenerate
@@ -49,26 +48,17 @@ and transport. It is not intended as a high-precision Solar System ephemeris.
 \end{assumption}
 
 \paragraph{Roadmap.}
-The chapter begins with the Kepler problem because perturbation theory needs an
-integrable reference system. It then uses the action-angle machinery from
-Section~\ref{sec:action-angle-variables} in perturbative form:
-near-identity generating functions try to remove angle dependence, while small
-divisors explain why this attempt is delicate. Diophantine conditions then
-identify the tori for which the calculation can be controlled. The KAM theorem
-gives the positive result: many sufficiently irrational tori persist under
-small perturbation. The breakdown section gives the complementary mechanisms:
-resonant normal forms, island widths, resonance overlap, separatrix splitting,
-and cantori. The Poincare-map and standard-map sections then make these
-mechanisms concrete in two-dimensional return maps. These mechanisms become the
-interpretive language for the asteroid ejection experiment developed in the
-three-body chapter.
+The chapter uses Kepler motion as the integrable reference, canonical
+perturbation theory to expose small divisors, KAM theory for torus survival,
+and resonance geometry for torus breakdown.
 
-Numerical asteroid ejection probabilities are meaningful because the analytic
-and geometric levels explain where transport channels come from. The analytic
-level asks whether a formal canonical transformation can remove angle
-dependence. The geometric level asks which invariant tori, islands, and
-separatrices organize phase space. The numerical level asks how an ensemble
-moves through that geometry over a finite time.
+Three levels run through the discussion. The analytic level asks whether a
+near-identity canonical transformation can remove angle dependence. The
+geometric level asks which invariant tori, islands, and separatrices organize
+phase space. The numerical level asks how an ensemble moves through that
+geometry over a finite time. The asteroid ejection experiment in the next
+chapter is meaningful only because these levels explain where transport
+channels come from.
 
 \paragraph{How approximations are labelled.}
 Perturbation theory is useful only when the bookkeeping is explicit. In this
@@ -213,9 +203,9 @@ depends on the perturbation strength, eccentricity, and the order of the
 resonance. The point of marking the nominal location is to identify where slow
 angle combinations can form; the later chaos discussion explains what happens
 inside and near those zones.
-Historically, the missing-asteroid bands at these resonances are the Kirkwood
-gaps, identified empirically by Daniel Kirkwood in 1866 before modern
-Hamiltonian perturbation theory supplied the phase-space explanation.
+The missing-asteroid bands at these resonances are the Kirkwood gaps,
+identified empirically by Daniel Kirkwood in 1866 before modern Hamiltonian
+perturbation theory supplied the phase-space explanation.
 
 \begin{figure}[htbp]
 \centering
@@ -266,25 +256,24 @@ Now add a small generic perturbation:
 \]
 What happens to the invariant tori \(I=\text{constant}\)?
 
-Historically, two tempting answers were both too simple. One might hope that
-the perturbed system is still integrable after a clever change of variables.
-One might also expect that a generic perturbation destroys the tori and makes a
-typical orbit wander ergodically through the available energy surface. KAM
-theory gives the subtler answer: for small analytic perturbations, most
-sufficiently irrational tori persist, while resonant regions create islands,
-separatrices, and chaotic transport.
+Two tempting answers are both too simple. One might hope that the perturbed
+system remains integrable after a clever change of variables. One might also
+expect that a generic perturbation destroys the tori and makes a typical orbit
+wander ergodically through the available energy surface. KAM theory gives the
+actual answer: for small analytic perturbations, most sufficiently irrational
+tori persist, while resonant regions create islands, separatrices, and chaotic
+transport.
 
-The chronology is useful because several ideas are often conflated. Kolmogorov
-announced the KAM mechanism in 1954. The Fermi-Pasta-Ulam-Tsingou computations
-were run in 1953--1955 and published in 1955 as a striking challenge to naive
-ergodicity; the recurrence they observed is one finite-lattice manifestation of
-near-integrable dynamics, not itself the KAM theorem. Siegel's 1942 work on
-small divisors is an important predecessor. Moser's \(C^k\) theorem in 1962 and
-Arnold's analytic proof in 1963 made the survival mechanism into the modern KAM
-theorem, with later refinements including P\"oschel's 1982 invariant-torus
-theorems and Eliasson's 1988 normal-form work. These developments are parallel
-windows onto the same fact: small perturbations can leave most invariant tori
-intact while still allowing chaotic regions.
+Three things often get conflated. Kolmogorov sketched the survival mechanism in
+1954; the Fermi-Pasta-Ulam-Tsingou recurrence, computed in 1953--1955, was a
+parallel numerical surprise about near-integrable finite lattices, not a proof
+of KAM; the modern theorem is due to Moser's \(C^k\) theorem (1962) and
+Arnold's analytic proof (1963), built on Siegel's 1942 small-divisor work.
+P\"oschel (1982) and Eliasson (1988) supplied later refinements. Zabusky and
+Kruskal (1965) later connected FPUT recurrence to solitons in the KdV continuum
+limit; that is another near-integrable mechanism, not the KAM theorem itself.
+The chronological point is conceptual: small perturbations can leave most
+invariant tori intact while still allowing chaotic regions.
 
 \section{Canonical Perturbation Theory And Small Divisors}
 \label{sec:canonical-perturbation-small-divisors}
@@ -704,10 +693,18 @@ The theorem is difficult because all four moves must be made quantitatively at
 once. The conceptual message is simpler: sufficiently irrational frequencies
 avoid the worst resonances, while twist lets the torus move to the nearby
 frequency that the perturbed system actually supports.
+The smallness condition is often summarized schematically as
+\(|\eps|\lesssim \alpha^2\) for a fixed differentiability class and domain.
+The exponent is not a universal classroom constant, but it records the analytic
+loss in the Newton step: solving the homological equation costs a divisor
+\(|k\cdot\omega|^{-1}\), and controlling the transformed Hamiltonian after
+domain shrinkage costs another small-divisor margin. The perturbation must be
+small enough for the quadratic improvement of the Newton scheme to beat these
+losses.
 
-One useful way to read the theorem is as a filtered survival statement. Start
-with all invariant tori of the integrable system. Remove narrow neighborhoods
-of the low-order resonance surfaces \(k\cdot\omega=0\). The remaining set is
+Read the theorem as a filtered survival statement. Start with all invariant
+tori of the integrable system. Remove narrow neighborhoods of the low-order
+resonance surfaces \(k\cdot\omega=0\). The remaining set is
 not an interval of actions but a Cantor-like family: it is full of holes at all
 orders, yet the total measure of the holes can be made small. The KAM iteration
 then proves that each torus in this filtered family has a nearby perturbed
@@ -725,12 +722,11 @@ torus with conjugate quasiperiodic motion.
     4.05/0.040,4.66/0.035,5.25/0.040,5.96/0.040,6.45/0.035}
   {
     \draw[white, line width=5pt] (\x-\w,0) -- (\x+\w,0);
-    \draw[red!70!black, very thick] (\x-\w,0.15) -- (\x+\w,-0.15);
-    \draw[red!70!black, very thick] (\x-\w,-0.15) -- (\x+\w,0.15);
+    \fill[red!70!black] (\x-\w,-0.10) rectangle (\x+\w,0.10);
   }
-  \node[blue!70!black, align=center, fill=white, inner sep=2pt] at (1.70,0.88)
+  \node[blue!70!black, align=center, fill=white, inner sep=2pt] at (1.70,1.08)
     {Diophantine\\surviving labels};
-  \node[red!70!black, align=center, fill=white, inner sep=2pt] at (5.55,0.94)
+  \node[red!70!black, align=center, fill=white, inner sep=2pt] at (5.55,1.42)
     {resonant gaps\\and chaotic layers};
   \draw[decorate, decoration={brace, amplitude=4pt}, thick]
     (0.65,-0.58) -- (6.40,-0.58)
@@ -848,8 +844,14 @@ variables in which
 \[
   \psi=k\cdot\theta
 \]
-is one of the new angles. Let \(J\) be the action conjugate to \(\psi\), and
-let \(J_*=J(I_*)\). The remaining angles are fast away from secondary
+is one of the new angles. Because \(k\) is primitive, it can be completed to
+the first row of an integer unimodular matrix \(A\in\mathrm{GL}(N,\Z)\). Setting
+\(\Theta=A\theta\) and \(J=A^{-T}I\) preserves the canonical one-form:
+\[
+  I\cdot\dd\theta=J\cdot\dd\Theta.
+\]
+The first component of \(\Theta\) is \(\psi\), and the first component of
+\(J\) is the action conjugate to \(\psi\). Let \(J_*=J(I_*)\). The remaining angles are fast away from secondary
 resonances. Averaging over those fast angles leaves, to leading order,
 \[
   H_{\mathrm{res}}(\Delta J,\psi)
@@ -909,9 +911,10 @@ Solving gives the resonance half-width
   2\sqrt{\frac{\eps |V_k|}{|a_k|}}.
   }
 \]
-The full pendulum width in the resonant action is twice this value. The
-important scaling is \(\Delta J_{\max}=O(\sqrt{\eps})\), not \(O(\eps)\). A
-small perturbation can therefore carve visible resonant layers.
+The full pendulum width in the resonant action is twice this value. A
+perturbation of size \(\eps\) carves resonant layers of width
+\(\sqrt{\eps}\). The layer is therefore much wider than naive
+\(O(\eps)\)-counting predicts.
 
 \subsection{Chirikov Overlap}
 \label{subsec:chirikov-overlap}
@@ -957,7 +960,10 @@ alternate between elliptic and hyperbolic type around the annulus.
 \end{proposition}
 
 The hypothesis about opposite twist is the section-map version of being on
-opposite sides of a resonance. Elliptic points become island centers. Hyperbolic
+opposite sides of a resonance: one can choose an intermediate annular curve
+\(C'\) whose images under \(F^q\) are displaced in opposite angular directions
+on the two sides, forcing fixed points of the \(q\)-fold map between them.
+Elliptic points become island centers. Hyperbolic
 points have stable and unstable manifolds. If those manifolds coincide, they
 form a separatrix. If they split and intersect transversely, the separatrix is
 replaced by a homoclinic tangle.
@@ -1052,7 +1058,7 @@ golden-mean rotation number
 \]
 is the standard example because its continued fraction is
 \([1;1,1,1,\ldots]\), making it maximally poorly approximated among
-irrationals in the precise Hurwitz sense: every irrational \(x\) has
+irrationals in the precise sense of Hurwitz's theorem: every irrational \(x\) has
 infinitely many rationals \(p/q\) with
 \[
   \left|x-\frac pq\right|<\frac{1}{\sqrt5\,q^2},
@@ -1068,6 +1074,10 @@ number \(\rho\). If the KAM curve survives, this set is the curve itself. If
 the curve has broken, the set is a Cantor-like invariant set called a
 cantorus. Its gaps prevent it from being a continuous barrier, but small gaps
 can still make transport through the associated turnstile lobes very slow.
+This existence-and-order statement is a separate variational theorem, not a
+consequence of KAM: KAM proves persistence of sufficiently nonresonant smooth
+curves under small perturbations, while Aubry-Mather theory constructs ordered
+minimizing orbits even after the smooth curve has broken.
 One variational model is the Frenkel-Kontorova form of an exact twist map:
 orbits are critical sequences of an action
 \[
@@ -1155,9 +1165,11 @@ not be read as a proved theorem in the generality of its numerical use.
       .. controls (1.62,0.96) and (1.58,1.15) .. (1.42,1.36);
     \draw[red!75!black, thick, ->] (0.76,0.82) .. controls (0.87,0.95) .. (0.98,1.08);
     \draw[red!75!black, thick, ->] (1.50,1.26) .. controls (1.60,1.12) .. (1.70,0.98);
-    \foreach \x/\y in {0.40/0.55,0.75/1.55,1.20/0.75,1.75/1.42,2.25/0.62}
-      \fill[black!55] (\x,\y) circle (0.9pt);
-    \foreach \x/\y in {0.72/1.02,1.46/1.08,2.33/1.05}
+    \foreach \x/\y in {0.78/1.48,1.72/0.58}
+      \fill[red!75!black] (\x,\y) circle (1.2pt);
+    \draw[red!75!black, ->, thick] (0.78,1.48) -- (0.92,1.28);
+    \draw[red!75!black, ->, thick] (1.72,0.58) -- (1.58,0.78);
+    \foreach \x/\y in {0.72/1.02,1.46/1.08,2.20/1.05}
       \draw[blue!70!black, fill=white, thick] (\x,\y) circle (1.1pt);
     \node[align=center, text width=2.8cm] at (1.35,-0.70)
       {cantorus leaves gaps and slow turnstiles};
@@ -1443,6 +1455,7 @@ structure.
     font=\scriptsize,
     /tikz/every even column/.append style={column sep=0.35cm}
   },
+  legend image post style={mark size=1.2pt},
 ]
   \addplot[only marks, mark=*, mark size=0.23pt, blue!45]
     table[x=q,y=p] {data/standard_map_kam_K065.dat};
@@ -1460,7 +1473,7 @@ structure.
   \addplot[only marks, mark=x, mark size=3.0pt, line width=0.8pt, purple!75!black]
     coordinates {(0.000000,1.888577) (1.888577,1.888577) (4.394609,2.506032)};
   \addlegendentry{hyperbolic points}
-  \node[anchor=west, black!55, fill=white, inner sep=1pt] at (axis cs:5.00,2.53)
+  \node[anchor=west, black!55, fill=white, inner sep=1pt] at (axis cs:5.10,2.76)
     {\(p=2\pi/3\)};
 \end{axis}
 \end{tikzpicture}
@@ -1500,12 +1513,6 @@ The three-body problem in Chapter~\ref{chap:three-body-problem} is a principal
 physical arena for these ideas. It is not included here because its Newtonian
 reduction, restricted limit, Lagrange points, and asteroid-belt ensembles
 deserve a self-contained treatment.
-
-\paragraph{Questions to carry forward.}
-Which tori are protected by arithmetic, and which are exposed by resonance?
-How does a cantorus slow transport after a smooth barrier has broken? Which
-features in a finite simulation are KAM geometry, and which are numerical
-artifacts?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:perturbation-chaos-chapter-end-labs}
@@ -1705,6 +1712,8 @@ visible in a four-dimensional phase space.
       \fill[black!55] (\x,\y) circle (0.9pt);
     \node[anchor=west, fill=white, inner sep=1pt] at (0.22,1.58)
       {Poincare-section sketch};
+    \node[black!55, fill=white, inner sep=1pt] at (1.10,-1.25)
+      {gray = chaotic layer};
   \end{scope}
 \end{tikzpicture}
 \caption{Henon-Heiles laboratory. Configuration-space contours show the

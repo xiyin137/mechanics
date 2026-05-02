@@ -39,9 +39,10 @@ device, not an additional physical structure.
 \paragraph{Roadmap.}
 The chapter has three jobs. First, it derives the Euler-Lagrange equations from
 Hamilton's principle, including boundary terms, constraints, and Noether
-charges. Second, it treats Kepler motion and the rigid body as the first serious
-examples of the formalism. Third, it prepares the boundary momentum and energy
-concepts that become phase-space coordinates in Hamiltonian mechanics. The
+charges. Second, it treats Kepler motion and the rigid body as examples in
+which those ideas control a complete calculation. Third, it prepares the
+boundary momentum and energy concepts that become phase-space coordinates in
+Hamiltonian mechanics. The
 variational principle separates coordinate choices from geometric structure and
 places forces, constraints, and conserved quantities in a common framework.
 
@@ -67,16 +68,15 @@ derivative of \(S[q_\eps]\) vanishes for every admissible infinitesimal change
 of the path.
 
 \begin{remark}[Stationary, not necessarily least]
-Hamilton's principle, in Hamilton's 1834--1835 form, is a critical-point
-principle for the time integral of \(L=T-V\). The historical phrase
-``principle of least action'' is older and refers to related Maupertuis-Euler
-forms of action at fixed energy, especially Maupertuis' 1744 statement and
-Euler's variational development. In modern Lagrangian mechanics the action need
-not be a minimum; it may be a saddle or a maximum for some classes of
-variations. The catenoid soap film is the familiar variational counterexample:
-a stationary surface need not be the minimizing surface once the boundary data
-are large enough. The word stationary is therefore the accurate word: the first
-variation vanishes.
+Hamilton's principle, formulated in 1834--1835, is a critical-point principle
+for the time integral of \(L=T-V\). The older phrase ``principle of least
+action'' refers to a different functional: the action at fixed energy, due to
+Maupertuis (1744) and Euler. In modern Lagrangian mechanics the action need not
+be a minimum; it may be a saddle or a maximum for some classes of variations.
+The catenoid soap film is the familiar variational counterexample: a stationary
+surface need not be the minimizing surface once the boundary data are large
+enough. The word stationary is therefore the accurate word: the first variation
+vanishes.
 \end{remark}
 
 Let \(q_\eps(t)\) be a smooth one-parameter family of curves with
@@ -101,7 +101,7 @@ the Euler-Lagrange equations pointwise in time.
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[scale=1.0, >=Latex]
-  \draw[->] (-0.3,0) -- (7.2,0) node[right] {\(t\)};
+  \draw[->] (-0.3,0) -- (7.45,0) node[right] {\(t\)};
   \draw[->] (0,-0.2) -- (0,3.0) node[above] {configuration coordinate};
   \draw[densely dotted] (0.5,0) -- (0.5,2.75);
   \draw[densely dotted] (6.5,0) -- (6.5,2.75);
@@ -111,12 +111,12 @@ the Euler-Lagrange equations pointwise in time.
     node[midway,right, fill=white, inner sep=1pt] {\(\eta(t)\)};
   \draw[->, red!70!black] (4.7,2.0) -- (4.7,1.75);
   \fill (0.5,0.7) circle (2pt) node[below right, fill=white, inner sep=1pt] {\(q(t_0)\)};
-  \fill (6.5,2.35) circle (2pt) node[above left, fill=white, inner sep=1pt] {\(q(t_1)\)};
+  \fill (6.5,2.35) circle (2pt) node[above right, fill=white, inner sep=1pt] {\(q(t_1)\)};
   \node[below] at (0.5,0) {\(t_0\)};
   \node[below] at (6.5,0) {\(t_1\)};
   \node[blue, fill=white, inner sep=1pt] at (2.3,0.55) {\(q(t)\)};
-  \node[red, align=left, fill=white, inner sep=1.5pt] (varlabel) at (4.55,2.65)
-    {\(q_\eps(t)=q(t)+\eps\eta(t)\)\\\({}+O(\eps^2)\)};
+  \node[red, align=left, fill=white, inner sep=1.5pt] (varlabel) at (4.55,2.68)
+    {\(q_\eps(t)=q(t)+\eps\eta(t)+O(\eps^2)\)};
   \draw[red!70!black, ->] (varlabel.south west) -- (4.55,1.83);
 \end{tikzpicture}
 \caption{A fixed-endpoint variation changes the path in the interior while
@@ -217,21 +217,23 @@ and no singularity is reached.
 \section{Boundary Terms And Forces}
 \label{sec:boundary-forces}
 
-The integration-by-parts calculation also explains momenta. Without imposing
-fixed endpoints, the boundary contribution is
+Integration by parts also defines momentum. Without imposing fixed endpoints,
+the boundary contribution is
 \[
   \left[p_i\eta^i\right]_{t_0}^{t_1},
   \qquad
   p_i=\frac{\partial L}{\partial \dot q^i}.
 \]
 Thus \(p_i\) is the coefficient of endpoint displacement in the first variation
-of the action. This is a sharper definition than ``mass times velocity'', which
-is only true in special coordinates for special Lagrangians.
+of the action. This boundary-term definition reduces to ``mass times velocity''
+only in special coordinates for special Lagrangians.
 
 If nonconservative generalized forces \(Q_i(q,\dot q,t)\) are present, the
-Lagrange-d'Alembert principle adds virtual work to Hamilton's principle. The
-admissible virtual displacements are the same ones used in the variational
-problem, and the external force does virtual work \(Q_i\eta^i\). Thus
+Lagrange-d'Alembert principle adds virtual work to Hamilton's principle. This
+is the variational form of d'Alembert's 1743 virtual-work principle, later
+absorbed into Lagrange's analytic mechanics. The admissible virtual
+displacements are the same ones used in the variational problem, and the
+external force does virtual work \(Q_i\eta^i\). Thus
 \[
   \delta S+\int_{t_0}^{t_1}Q_i\eta^i\,\dd t=0,
 \]
@@ -243,10 +245,10 @@ which gives
   =
   Q_i.
 \]
-The present course focuses mainly on conservative and Hamiltonian systems, but
-this formula is useful when comparing with fluids and continua.
+This formula is also the bridge to continua, where the virtual work is supplied
+by tractions, pressure forces, or dissipative stresses.
 
-It is important that \(Q_i\) is a covector along the path, not necessarily a
+The generalized force \(Q_i\) is a covector along the path, not necessarily a
 Euclidean force vector. In Cartesian coordinates for a particle the distinction
 is invisible, but in generalized coordinates \(Q_i\eta^i\) is the virtual work
 done by the force under the virtual displacement \(\eta\). This is why the
@@ -266,13 +268,21 @@ Many mechanical systems have a Lagrangian of the form
 where \(g_{ij}\) is a positive-definite mass metric on \(Q\), and \(V\) is
 potential energy.
 
+\begin{remark}[Terminology]
+Here ``natural'' is conventional terminology: the kinetic energy is quadratic
+in velocity and the remaining term is a potential energy on configuration
+space.
+\end{remark}
+
 The word ``metric'' here has physical content. It tells us how much kinetic
 energy a given velocity has, and it may depend on configuration. For a point
 particle in Cartesian coordinates \(g_{ij}\) is just \(m\delta_{ij}\). For a
 pendulum, double pendulum, or rigid body written in angles, the same kinetic
-energy becomes a curved metric on the configuration space. The Christoffel
-symbols below are therefore inertial terms caused by coordinates on a curved
-configuration space, not new forces.
+energy becomes a metric on the configuration space. Christoffel symbols can
+appear for two distinct reasons that should not be confused. In flat Euclidean
+space written in curvilinear coordinates they are coordinate inertial terms; on
+a genuinely curved configuration space they also encode the curvature of the
+mass metric. In both cases they are not new applied forces.
 
 \begin{derivation}[Geodesic-plus-force equation]
 For the natural Lagrangian,
@@ -355,7 +365,8 @@ constraint to first order:
   \frac{\partial\Phi^a}{\partial q^i}\eta^i=0.
 \]
 The Euler-Lagrange residual therefore has to vanish only on vectors tangent to
-the constraint surface. Lagrange's multiplier rule says that a covector
+the constraint surface. The multiplier rule, in the form Lagrange used in
+\emph{Mecanique analytique} (1788), says that a covector
 vanishing on this tangent space is a linear combination of the constraint
 gradients. The linear-algebra statement is this: when the \(k\) one-forms
 \(\dd\Phi^a\) are independent, the tangent space is
@@ -366,6 +377,11 @@ and its annihilator is
 \[
   (T_qC)^0=\operatorname{span}\{\dd\Phi^1,\ldots,\dd\Phi^k\}.
 \]
+Indeed, the map \(A:T_qQ\to\R^k\), \(A(\eta)=(\dd\Phi^1(\eta),\ldots,
+\dd\Phi^k(\eta))\), has rank \(k\), so its dual map
+\(A^*(\lambda)=\lambda_a\dd\Phi^a\) has image equal to the annihilator of
+\(\ker A=T_qC\). This is the finite-dimensional fact behind the multiplier
+rule.
 Thus constraint regularity means the gradients of the constraints have
 constant rank \(k\) on the constraint surface. Under this assumption the
 constrained equations take the multiplier form
@@ -384,14 +400,14 @@ and the same physics is expressed with fewer coordinates.
 \section{Symmetry And Noether's Theorem}
 \label{sec:noether}
 
-Noether's theorem is the first place where the variational viewpoint pays a
-large dividend. Noether's 1918 theorem gave the general language that turns
-continuous symmetries of the action into conserved quantities. A symmetry is a
-transformation of the configuration space that leaves the action unchanged, or
-changes it only by an endpoint term. The infinitesimal version of that
-transformation is a vector field \(\xi_Q\) along which the action has zero
-interior first variation. The conserved quantity is the momentum paired with
-that vector field, corrected by the endpoint term when one is present.
+Continuous symmetries of the action produce conserved quantities. Noether's
+1918 theorem is the precise statement: every one-parameter group of symmetries
+gives a conserved Noether charge. A symmetry is a transformation of the
+configuration space that leaves the action unchanged, or changes it only by an
+endpoint term. The infinitesimal version of that transformation is a vector
+field \(\xi_Q\) along which the action has zero interior first variation. The
+conserved quantity is the momentum paired with that vector field, corrected by
+the endpoint term when one is present.
 
 \begin{definition}[Infinitesimal generator]
 Let a Lie group \(G\) act on \(Q\). For \(\xi\in\mathfrak g\), the infinitesimal
@@ -503,8 +519,8 @@ so angular momentum is conserved when \(V\) is rotationally invariant.
 \section{Basic Example: Kepler Motion From Central Forces}
 \label{sec:kepler-lagrangian}
 
-Kepler motion is the first serious payoff of cyclic coordinates, Noether's
-theorem, and reduction by symmetry.
+Kepler motion shows how cyclic coordinates, Noether's theorem, and reduction by
+symmetry turn a force law into the geometry of conic sections.
 
 \begin{assumption}[Kepler model]
 We study a particle of reduced mass \(\mu\) moving in \(\R^3\setminus\{0\}\)
@@ -553,15 +569,18 @@ chapter.
   \fill[blue!6] (0.624,-0.7) rectangle (2.52,-1.15);
   \draw[blue, thick, domain=0.36:6.1, samples=160]
     plot (\x,{1.1/(\x*\x)-2.2/\x});
-  \draw[dashed] (0,-0.7) -- (6.2,-0.7)
-    node[right, fill=white, inner sep=1pt] {bound \(E<0\)};
-  \draw[dashed] (0,0.45) -- (6.2,0.45)
-    node[right, fill=white, inner sep=1pt] {scattering \(E>0\)};
+  \draw[dashed] (0,-0.7) -- (6.2,-0.7);
+  \node[fill=white, inner sep=1pt] (boundlabel) at (5.3,-1.23) {bound \(E<0\)};
+  \draw[->, thin] (boundlabel.north west) -- (4.65,-0.7);
+  \draw[dashed] (0,0.45) -- (6.2,0.45);
+  \node[fill=white, inner sep=1pt] (scatlabel) at (4.85,0.92) {scattering \(E>0\)};
+  \draw[->, thin] (scatlabel.south west) -- (4.2,0.45);
   \node[blue, fill=white, inner sep=1.5pt] at (4.45,-1.05)
     {\(V_{\mathrm{eff}}(\rho)\)};
   \draw[densely dotted] (1.0,-1.1) -- (1.0,-1.58);
-  \fill (1.0,-1.1) circle (1.4pt)
-    node[above right, fill=white, inner sep=1pt] {minimum};
+  \fill (1.0,-1.1) circle (1.4pt);
+  \node[fill=white, inner sep=1pt] (minlabel) at (1.9,-0.18) {minimum};
+  \draw[->, thin] (minlabel.south west) -- (1.02,-1.05);
   \fill (0.624,-0.7) circle (1.3pt);
   \fill (2.52,-0.7) circle (1.3pt);
   \draw[<->, blue!70!black] (0.624,-1.58) -- (2.52,-1.58);
@@ -616,16 +635,16 @@ Section~\ref{sec:detailed-central-forces}; here it is introduced as the extra
 quantity that explains why the conic orientation does not precess in the ideal
 inverse-square problem.
 
-\begin{remark}[Bertrand's theorem and the Kepler accident]
+\begin{remark}[Bertrand's theorem and Kepler's hidden symmetry]
 Bertrand's theorem (1873) gives the sharp structural statement: among central
 force problems, only the inverse-square potential and the harmonic oscillator
 make all bounded orbits closed. The Laplace-Runge-Lenz vector is the
 inverse-square instance of this extra symmetry; in the negative-energy Kepler
 problem it enlarges the rotational \(\SO(3)\) symmetry to the hidden
-\(\SO(4)\) symmetry of bound motion. Historically, the vector is associated
-with Laplace's celestial-mechanics work; its modern symmetry role was clarified
-by Pauli's 1926 hydrogen-atom calculation and Fock's 1935 momentum-sphere
-formulation.
+\(\SO(4)\) symmetry of bound motion. The vector itself goes back to Laplace's
+celestial-mechanics work; Pauli (1926) used it in the hydrogen-atom
+calculation, and Fock (1935) gave the momentum-sphere interpretation that makes
+the \(\SO(4)\) explicit.
 \end{remark}
 
 \section{Basic Example: Rigid Body As A Lagrangian System}
@@ -636,8 +655,7 @@ a nonlinear Lie group. At the Lagrangian level, this already forces us to
 distinguish coordinates, frames, angular velocity, and kinetic energy. Later
 chapters return to the same system as a reduced Hamiltonian flow and as an
 integrable model, but the essential geometric data are visible already here.
-Euler's 1758 rigid-body equations are the historical source of the reduced
-equations derived below.
+The reduced equations derived below were first written by Euler in 1758.
 
 \begin{assumption}[Free rigid body]
 A material point \(X\) in the body frame is located at
@@ -673,7 +691,9 @@ A variation inside \(\SO(3)\) has the form
 \[
   \delta R=R\widehat\Sigma,
 \]
-where \(\Sigma(t_0)=\Sigma(t_1)=0\). This implies
+where \(\Sigma(t_0)=\Sigma(t_1)=0\). This is the left-trivialized form of a
+tangent vector to \(\SO(3)\): multiplication by \(R^{-1}\) identifies
+\(T_R\SO(3)\) with \(\mathfrak{so}(3)\). This implies
 \[
   \delta\Omega=\dot\Sigma+\Omega\times\Sigma.
 \]
@@ -697,6 +717,15 @@ and the hat map satisfies
 \[
   [\widehat\Omega,\widehat\Sigma]=\widehat{\Omega\times\Sigma}.
 \]
+On a test vector \(v\), this identity is
+\[
+  [\widehat\Omega,\widehat\Sigma]v
+  =
+  \Omega\times(\Sigma\times v)-\Sigma\times(\Omega\times v)
+  =
+  (\Omega\times\Sigma)\times v,
+\]
+which is the Jacobi identity for the cross product written as a commutator.
 This is the stated formula under the hat isomorphism.
 Let \(M=\partial L/\partial\Omega=I\Omega\). Then
 \[
@@ -727,44 +756,20 @@ In principal axes this is
 \]
 \end{derivation}
 
-This calculation should be read from configuration space upward. The rigid body
-can be introduced either from the Lagrangian on \(\SO(3)\) or from the reduced
-Lie-Poisson structure. Here we begin with the Lagrangian because the
-configuration, tangent constraint, and boundary terms are visible before
-reduction. The later reduced Hamiltonian picture is obtained by using the
-symmetry already visible in this variational formulation.
-
 \section{What To Take Forward}
 \label{sec:lagrangian-take-forward}
 
-The Lagrangian formalism begins with a configuration manifold \(Q\), a path
-\(q(t)\in Q\), and an action functional
-\[
-  S[q]=\int_{t_0}^{t_1} L(q,\dot q,t)\,\dd t .
-\]
-The Euler-Lagrange equations are the stationarity condition for variations with
-fixed endpoints. Their boundary term defines the conjugate momentum. Natural
-Lagrangians make the geometric content explicit: the kinetic energy is a
-Riemannian metric on \(Q\), the Christoffel symbols describe the inertial terms
-produced by curvilinear coordinates, and forces enter through potentials or
-through the Lagrange-d'Alembert principle.
-
-Constraints and symmetry are structural ingredients. Holonomic constraints
-replace \(Q\) by a constraint submanifold or introduce multipliers that measure
-constraint forces. Continuous symmetries produce conserved momenta through
-Noether's theorem. The Kepler problem illustrates how rotational symmetry and
-a hidden conserved Runge-Lenz vector organize the conic sections; the
-rigid body illustrates how a finite-dimensional system can already contain
-nontrivial geometry, body frames, inertia tensors, and reduced equations.
-
-The boundary term now points to the Hamiltonian formulation. The Legendre
-transform converts boundary momentum into a phase-space coordinate, and the same
-action principle becomes the symplectic Hamiltonian formalism.
-
-\paragraph{Questions to carry forward.}
-When does a boundary term become a new state variable? Which constraints should
-be solved by coordinates, and which should be kept as multipliers? Which
-symmetries survive after a change of variables?
+\begin{itemize}
+\item Hamilton's principle starts from a configuration manifold \(Q\), paths
+\(q(t)\in Q\), and an action \(S=\int L\,\dd t\). Stationarity gives the
+Euler-Lagrange equations, and the endpoint term defines conjugate momentum.
+\item Natural Lagrangians encode kinetic energy as a mass metric. Forces,
+constraints, and nonconservative virtual work enter as covectors, multipliers,
+or potentials, depending on how they act on virtual displacements.
+\item Noether's theorem turns continuous symmetries into conserved quantities.
+Kepler motion and the rigid body show how these quantities organize exact
+solutions and prepare the Legendre transform to Hamiltonian phase space.
+\end{itemize}
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:lagrangian-chapter-end-labs}
@@ -1102,6 +1107,10 @@ Linearizing in \(\eta\),
   =
   \frac{6m\epsilon u_0}{\ell^2}\eta,
 \]
+where terms of order \(\epsilon\eta^2\) and higher are discarded. The small
+quantity \(\eta/u_0\) measures the radial oscillation amplitude, while
+\(\epsilon\) measures the departure from the Kepler force law; the displayed
+linear equation keeps the terms needed for the leading frequency shift.
 or
 \[
   \eta''+\kappa^2\eta=0,
@@ -1121,10 +1130,10 @@ The periapse advance per radial cycle is the excess over \(2\pi\):
   \frac{6\pi m\epsilon u_0}{\ell^2}.
 \]
 Thus the \(1/r^3\) correction breaks the closed Kepler ellipse and produces
-precession. The same algebraic structure appears in the general-relativistic
-perihelion precession calculation that explained Mercury's anomalous advance in
-Einstein's 1915 analysis, although the present subsection uses only an
-effective classical central-force model.
+precession. The same algebraic structure appears in general relativity.
+Einstein used it in 1915 to explain Mercury's anomalous perihelion advance; the
+present subsection treats only a classical effective potential, but the
+calculation has the same shape.
 
 \subsection{Damped Oscillator From A Time-Dependent Lagrangian}
 \label{sec:lab-damped-oscillator}
@@ -1204,6 +1213,8 @@ The transformation has moved damping into a shifted oscillator frequency.
     plot (\x,{-1.10*exp(-0.25*\x)});
   \draw[blue!70!black, very thick, domain=0:8.0, samples=260]
     plot (\x,{1.10*exp(-0.25*\x)*cos(3.25*\x r)});
+  \draw[red!75!black, dashed] (0,1.10) -- (8.0,1.10);
+  \draw[red!75!black, dashed] (0,-1.10) -- (8.0,-1.10);
   \draw[red!75!black, thick, domain=0:8.0, samples=260]
     plot (\x,{1.10*cos(3.25*\x r)});
   \node[blue!70!black, fill=white, inner sep=1.5pt] (qlabel) at (5.35,-0.92) {\(q(t)\)};
@@ -1251,8 +1262,8 @@ The Lagrangian is
     \draw[thick] (0,0) -- (1.17,-1.17);
     \draw[->] (0,-0.75) arc (-90:-45:0.75);
     \node[fill=white, inner sep=1pt] at (0.55,-0.95) {\(\theta\)};
-    \draw[->, blue!70!black] (1.17,-1.17) -- (1.95,-1.17)
-      node[midway, below=2pt, fill=white, inner sep=1pt]
+    \draw[->, blue!70!black] (1.17,-1.17) -- (1.66,-1.17)
+      node[pos=0.75, below=2pt, fill=white, inner sep=1pt]
       {\(a\omega\sin\theta\)};
     \node[below, fill=white, inner sep=1pt] at (0,-1.72) {downward vertical};
     \node[fill=white, inner sep=1pt] at (0,-2.40) {bead on rotating vertical hoop};
@@ -1267,11 +1278,13 @@ The Lagrangian is
     \draw[blue!70!black, thick, domain=-3.1416:3.1416, samples=180]
       plot (\x,{-0.35*sin(\x r)*sin(\x r)-0.80*cos(\x r)});
     \draw[red!75!black, thick, domain=-3.1416:3.1416, samples=180]
-      plot (\x,{-1.25*sin(\x r)*sin(\x r)-0.28*cos(\x r)+0.35});
-    \node[blue!70!black, align=center, fill=white, inner sep=1.5pt] at (-2.30,1.15)
-      {\(\omega<\omega_c\)\\one minimum};
-    \node[red!75!black, align=center, fill=white, inner sep=1.5pt] at (2.25,1.15)
-      {\(\omega>\omega_c\)\\two minima};
+      plot (\x,{-1.45*sin(\x r)*sin(\x r)-0.25*cos(\x r)+0.48});
+    \draw[blue!70!black, thick] (-2.95,1.22) -- (-2.55,1.22);
+    \node[blue!70!black, align=left, fill=white, inner sep=1.5pt] at (-1.62,1.22)
+      {\(\omega<\omega_c\): one minimum};
+    \draw[red!75!black, thick] (-2.95,0.84) -- (-2.55,0.84);
+    \node[red!75!black, align=left, fill=white, inner sep=1.5pt] at (-1.58,0.84)
+      {\(\omega>\omega_c\): two minima};
   \end{scope}
 \end{tikzpicture}
 \caption{Rotating-hoop laboratory. The geometry fixes the kinetic term
@@ -1377,14 +1390,14 @@ The hoop leaves the cylinder at \(\theta=\pi/3\) from the top.
   \draw[->] (0,1.9) arc (90:45:1.9);
   \node[fill=white, inner sep=1pt] at (0.78,2.15) {\(\theta\)};
   \fill[black] (contact) circle (1.1pt);
-  \draw[black!60, densely dashed] (0.70,1.28) -- (1.28,0.70)
-    node[below right, fill=white, inner sep=1pt] {tangent};
-  \draw[->, red!75!black, very thick] (hoop) -- (2.25,2.25);
-  \node[red!75!black, fill=white, inner sep=1pt] at (2.42,2.28) {\(N\)};
+  \draw[black!60, densely dashed] (0.70,1.28) -- (1.28,0.70);
+  \node[fill=white, inner sep=1pt] at (0.58,0.70) {tangent};
+  \draw[->, red!75!black, very thick] (hoop) -- (2.35,2.35);
+  \node[red!75!black, fill=white, inner sep=1pt] at (2.55,2.45) {\(N\)};
   \draw[->, black!70, thick] (hoop) -- (1.65,0.75)
     node[below] {\(mg\)};
   \draw[->, blue!70!black, thick] (2.1,1.65) arc (0:65:0.45);
-  \node[blue!70!black, fill=white, inner sep=1pt] at (2.48,1.82) {\(\dot\phi\)};
+  \node[blue!70!black, fill=white, inner sep=1pt] at (2.36,1.42) {\(\dot\phi\)};
   \node[align=center] at (0,-1.95)
     {loss of contact occurs when the\\normal force reaches \(N=0\)};
   \node[fill=white, inner sep=1.5pt] at (-1.08,-1.12) {fixed cylinder \(R\)};
@@ -1442,9 +1455,9 @@ Consider the central Lagrangian
   A(r)=1-\frac{R}{r},
   \qquad r>R.
 \]
-This is the geodesic Lagrangian for the Schwarzschild metric (1916), with
-horizon at \(r=R\), restricted to the equatorial plane, in units \(c=1\). Here
-the parameter is Schwarzschild coordinate time, so this is the reduced
+This is the geodesic Lagrangian for the Schwarzschild metric, derived by
+Schwarzschild in 1916, with horizon at \(r=R\), restricted to the equatorial
+plane, in units \(c=1\). Here the parameter is Schwarzschild coordinate time, so this is the reduced
 square-root Lagrangian for spatial motion rather than the reparametrization-
 invariant proper-time action. We treat it here as a classical central-force model whose
 effective-potential analysis already yields the correct innermost stable
@@ -1460,8 +1473,9 @@ The conserved energy and angular momentum are
   L_z=\frac{mr^2\dot\theta}{\sqrt B}.
 \]
 The angular momentum follows from the cyclic coordinate \(\theta\). The energy
-is the conserved Beltrami quantity because this reduced Lagrangian has no
-explicit time dependence:
+is the autonomous-Lagrangian first integral traditionally called the Beltrami
+integral. It is conserved here because this reduced Lagrangian has no explicit
+time dependence:
 \[
   \dot r\,\frac{\partial L}{\partial\dot r}
   +
@@ -1471,6 +1485,9 @@ explicit time dependence:
   =
   \frac{mA}{\sqrt B}.
 \]
+Equivalently, it is the time-translation Noether charge
+\(\dot q^i\partial L/\partial\dot q^i-L\); after the Legendre transform the
+same expression is the Hamiltonian.
 Eliminating \(\dot\theta\) and \(B\) gives the radial equation in effective
 potential form:
 \[
@@ -1518,9 +1535,13 @@ an effective potential at fixed angular momentum.
   \draw[->] (0,0) -- (10.55,0) node[right] {\(r/R\)};
   \draw[->] (0,-0.25) -- (0,2.25) node[above] {\(U_{\mathrm{eff}}\)};
   \draw[dashed] (1.0,-0.15) -- (1.0,2.05);
+  \draw[densely dashed, red!55!black] (2.0,-0.15) -- (2.0,1.62);
   \draw[dashed] (3.0,-0.15) -- (3.0,2.05);
+  \draw[densely dashed, blue!55!black] (6.0,-0.15) -- (6.0,1.10);
   \node[below, fill=white, inner sep=1pt] at (1.0,-0.15) {\(R\)};
+  \node[below, fill=white, inner sep=1pt] at (2.0,-0.15) {\(2R\)};
   \node[below, fill=white, inner sep=1pt] at (3.0,-0.15) {\(3R\)};
+  \node[below, fill=white, inner sep=1pt] at (6.0,-0.15) {\(6R\)};
   \draw[red!75!black, thick, domain=1.25:10.0, samples=260]
     plot (\x,{1.50+5.5*(-1/\x+4/(\x*\x)-4/(\x*\x*\x))});
   \fill[red!75!black] (2.0,1.50) circle (1.3pt);
@@ -1531,14 +1552,14 @@ an effective potential at fixed angular momentum.
     {stable circular orbit};
   \draw[blue!70!black, thick, ->] (7.15,0.88) -- (6.12,1.06);
   \draw[red!75!black, thick, ->] (3.25,1.88) -- (2.05,1.52);
-  \node[align=center, fill=white, inner sep=1.5pt] at (5.3,-0.54)
+  \node[align=center, fill=white, inner sep=1.5pt] at (5.3,-0.72)
     {stability is the sign of \(U_{\mathrm{eff}}''(r_0)\)\\
      at fixed angular momentum};
 \end{tikzpicture}
 \caption{Effective-potential picture for the Schwarzschild-type laboratory.
 Circular orbits are critical points. The plotted curve is an affine rescaling of
-\(-1/r+4/r^2-4/r^3\), which has an inner maximum between \(3R/2\) and \(3R\)
-and an outer visible minimum with \(r_0>3R\).}
+\(-1/r+4/r^2-4/r^3\), whose circular-orbit extrema occur at \(r=2R\) and
+\(r=6R\): the inner extremum is unstable and the outer one is stable.}
 \label{fig:lab-schwarzschild-effective-potential}
 \end{figure}
 \FloatBarrier

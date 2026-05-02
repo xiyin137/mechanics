@@ -29,8 +29,8 @@ interpretation.
 
 The notes also distinguish three kinds of equality. A definition introduces a
 symbol, as in \(p_i=\partial L/\partial\dot q^i\). A convention fixes a choice
-that could have been made differently: writing \(\omega=-\dd\Theta\) first fixes
-the sign convention for the canonical symplectic form on \(T^*Q\). After that
+that could have been made differently: the sign convention for the canonical
+symplectic form on \(T^*Q\) is fixed by writing \(\omega=-\dd\Theta\). After that
 choice has been made, the same displayed relation is used as an identity inside
 that convention. An equation of motion holds only along physical trajectories,
 as in \(\dot p_i=-\partial H/\partial q^i\). Many confusions in mechanics come
@@ -82,11 +82,26 @@ means the matrix
 \[
   \frac{\partial^2L}{\partial \dot q^i\partial \dot q^j}
 \]
+is nonsingular. This rank condition is intrinsic. Under a point change of
+coordinates \(q=q(Q)\), velocities transform by
+\(\dot q^i=(\partial q^i/\partial Q^a)\dot Q^a\), and the velocity Hessian
+transforms by congruence,
+\[
+  W'_{ab}
+  =
+  \frac{\partial q^i}{\partial Q^a}
+  W_{ij}
+  \frac{\partial q^j}{\partial Q^b},
+  \qquad
+  W_{ij}=\frac{\partial^2L}{\partial\dot q^i\partial\dot q^j}.
+\]
+Since the Jacobian is invertible, \(W\) is nonsingular if and only if \(W'\)
 is nonsingular. Singular Lagrangians lead to constrained Hamiltonian systems and
-gauge theories. Dirac and Bergmann developed the standard formalism in the
-late 1940s and 1950s, beginning with Bergmann's constrained-field work and
-Dirac's 1950 Hamiltonian theory of constraints; it requires a separate
-treatment.
+gauge theories. The systematic theory of constrained Hamiltonian systems was
+developed by Bergmann (1949) and Dirac (1950). These notes name this boundary
+of the regular theory but do not develop the Dirac-Bergmann algorithm; the
+gauge and continuum chapters use constrained ideas only in settings where the
+relevant reduction is stated explicitly.
 \end{assumption}
 
 \begin{assumption}[Einstein summation]
@@ -129,10 +144,10 @@ instead of finitely many coordinates.
 \draw[arr] (ham) -- (chaos);
 \draw[arr] (chaos) -- (cont);
 \draw[arr] (cont) -- (lag);
-\draw[softarr, thin] (examples.north east) -- (lag.west);
-\draw[softarr, thin] (examples.south east) -- (cont.west);
-\draw[softarr, thin] (demos.north west) to[out=160,in=-20] (ham.south east);
-\draw[softarr, thin] (demos.south west) to[out=200,in=20] (chaos.north east);
+\draw[softarr, thin] (examples.north east) to[out=35,in=180] (lag.west);
+\draw[softarr, thin] (examples.south east) to[out=-25,in=180] (cont.west);
+\draw[softarr, thin] (demos.north west) to[out=160,in=-15] (ham.south east);
+\draw[softarr, thin] (demos.south west) to[out=205,in=15] (chaos.north east);
 \end{tikzpicture}
 \caption{The course loop. The central theories are connected by examples and
 computational diagnostics: exact models teach the geometry, while numerical
@@ -147,7 +162,7 @@ are used; here they mark the order in which the reader will meet them.
 \section{Units And Dimensions}
 \label{sec:units-dimensions}
 
-Dimensional consistency is treated as a mathematical constraint. In celestial
+Dimensional consistency is a constraint, not a convention. In celestial
 mechanics demos we often use astronomical units, years, and solar masses, so
 \[
   G = 4\pi^2
@@ -155,9 +170,15 @@ mechanics demos we often use astronomical units, years, and solar masses, so
 when the central mass is measured in solar masses. In rigid body mechanics,
 moments of inertia have dimensions \(ML^2\), angular velocity has dimension
 \(T^{-1}\), angular momentum has dimension \(ML^2T^{-1}\), and kinetic energy
-has dimension \(ML^2T^{-2}\).
+has dimension \(ML^2T^{-2}\). Outside the celestial-mechanics simulations the
+notes keep dimensional constants symbolic unless a nondimensional scale choice
+is stated locally. This convention makes every displayed equation checkable by
+units before it is interpreted dynamically.
 
-\section{How To Read The Figures}
+\section{How To Read Derivations, Figures, And Laboratories}
+\label{sec:how-to-read}
+
+\subsection*{Figures}
 \label{sec:read-figures}
 
 Figures in the notes are schematic unless explicitly generated from a numerical
@@ -166,17 +187,17 @@ For quantitative plots, the corresponding Python or Mathematica script should be
 treated as part of the figure caption: the model assumptions and numerical
 parameters matter.
 
-\section{How To Read Long Derivations}
+\subsection*{Derivations}
 \label{sec:read-long-derivations}
 
-Long derivations in mechanics have two layers. The first layer is formal:
+Read long derivations in mechanics on two levels. The first level is formal:
 differentiate an action, apply a balance law, invert a Legendre
-transform, or change coordinates. The second layer is structural: identify the
+transform, or change coordinates. The second level is structural: identify the
 conserved quantity, the reduced phase space, the constraint force, or the
 connection hidden in the algebra. The notes spell out both layers whenever the
-second layer is easy to miss.
+structural level is easy to miss.
 
-A useful way to read each derivation is to keep a small ledger:
+To read each derivation, keep a small ledger:
 \[
 \begin{array}{c|c}
 \text{input} & \text{output}\\
@@ -193,17 +214,19 @@ components, or interpreting a reduced equation as if no reduction had occurred.
 
 When a derivation contains a local coordinate calculation, the conclusion should
 be read as coordinate-independent only after the geometric object has been
-identified. For example, the symbols \(\Gamma^\ell{}_{ij}\), \(\lambda_a\),
-\(A_A\), and \(\omega^a{}_b\) are coordinate or frame components. The underlying
-objects are, respectively, a connection, a reaction covector or force, a
-principal connection, and torsion/curvature forms.
+identified. For example, the symbols \(\Gamma^\ell{}_{ij}\), \(A_A\), and
+\(\omega^a{}_b\) are coordinate or frame components of, respectively, a
+connection, a principal connection, and torsion/curvature forms. Constraint
+multipliers are slightly different: the scalars \(\lambda_a\) become a
+reaction covector only after being paired with the constraint one-forms,
+\(\lambda_a\,\dd\Phi^a\).
 
 A useful test is to cover the displayed equations and summarize the argument in
 sentences. When the prose summary breaks down, return to the model, space,
 principle, and interpretation before trying more algebra. Long derivations in
 these notes are meant to be reconstructible from those four pieces.
 
-\section{How To Use Chapter-End Laboratories}
+\subsection*{Laboratories}
 \label{sec:chapter-end-laboratories}
 
 The worked examples, exercises, and computational scripts are placed at the ends
@@ -212,17 +235,12 @@ that it can survive contact with a specific model: a coordinate change, a
 constraint force, a resonance, a pressure multiplier, a finite-time ejection
 criterion, or a gauge holonomy.
 
-Read each chapter-end laboratory with three questions in mind. What is the
-minimal model? Which calculation turns the model into a diagnostic quantity?
-What would fail if one of the assumptions were changed? These questions turn a
-worked example into a reusable method.
-
-For teaching, each laboratory can be split into three layers. The first layer is
-the statement of the model and assumptions; students should be able to write
-this before seeing the solution. The second layer is the derivation of a
-diagnostic equation, conserved quantity, reduced system, or numerical test. The
-third layer is interpretation: stability, bifurcation, transport, reaction
-force, pressure projection, ejection, or holonomy.
+Laboratories are checkpoints for the reading rule: state the model, name the
+variables, derive the diagnostic, and interpret what the diagnostic measures.
+For teaching, this gives three layers: assumptions first, diagnostic derivation
+second, and interpretation third. Stability, bifurcation, transport, reaction
+force, pressure projection, ejection, and holonomy are interpretations only
+after the model and diagnostic have been specified.
 
 In laboratory sections, figures introduce the geometry before the algebra and
 should be checked again after the final boxed result. A figure earns its place
@@ -256,11 +274,3 @@ experiment. The same rule applies in reverse when reading a demo: the code
 should reveal the equations it integrates, the units in which parameters are
 measured, the events it declares, and the invariants it monitors. A plot closes
 the argument after the model and diagnostics have been specified.
-
-\subsection*{What The Laboratories Practice}
-\label{sec:worked-lab-summary}
-
-The laboratories are not a second table of contents. They are checkpoints for
-the reading rule above: state the model, name the variables, derive the
-diagnostic, and then interpret what the diagnostic measures. Later chapters
-will supply the individual topics.

@@ -93,8 +93,7 @@ The observable content is therefore not the connection coefficient by itself.
 A different convention for body axes changes the coefficient, just as a
 different electromagnetic gauge changes the vector potential. What survives is
 the reconstructed rigid motion, especially the holonomy around a closed shape
-cycle and the curvature that controls small cycles. This is the sense in which
-the Shapere-Wilczek description is a gauge theory of deforming bodies.
+cycle and the curvature that controls small cycles.
 
 \subsection{Principal-Bundle Form Of The Split}
 \label{subsec:deforming-body-principal-bundle}
@@ -169,9 +168,8 @@ potential.  Under the change of section above it transforms as
   \Ad_{h^{-1}}\mathcal A-h^{-1}\dd h,
 \]
 which is exactly the inhomogeneous transformation law expected of a connection.
-The curvature and holonomy are developed below; the important point here is
-that a connection supplies a chosen horizontal subspace, so the phrase ``pure
-shape change'' has a specified meaning. The mechanical connection is the
+A connection supplies a chosen horizontal subspace, so the phrase ``pure shape
+change'' has a specified meaning. The mechanical connection is the
 particular connection selected by the kinetic-energy metric and the momentum
 value.
 
@@ -182,26 +180,26 @@ value.
   \draw[->] (0,-0.2) -- (0,4.1) node[above] {\(s^2\)};
   \draw[thick, blue, ->] (1.2,1.2) .. controls (2.8,3.4) and (5.0,3.1) .. (5.0,1.4);
   \draw[thick, blue, ->] (5.0,1.4) .. controls (3.9,0.4) and (2.2,0.3) .. (1.2,1.2);
-  \node[blue, fill=white, inner sep=2pt] at (3.05,3.70) {closed shape loop};
-  \begin{scope}[shift={(1.2,1.2)}, scale=0.36]
+  \node[blue, fill=white, inner sep=2pt] at (3.05,3.70) {shape loop};
+  \begin{scope}[shift={(1.2,1.2)}, scale=0.46]
     \draw[fill=gray!20, thick] (-0.8,0) ellipse (0.45 and 0.25);
     \draw[fill=gray!20, thick] (0.8,0) ellipse (0.45 and 0.25);
     \draw[thick] (-0.35,0) -- (0.35,0);
   \end{scope}
-  \begin{scope}[shift={(5.0,1.4)}, scale=0.36, rotate=-20]
+  \begin{scope}[shift={(5.0,1.4)}, scale=0.46, rotate=-45]
     \draw[fill=gray!20, thick] (-1.0,0) ellipse (0.55 and 0.18);
     \draw[fill=gray!20, thick] (1.0,0) ellipse (0.55 and 0.18);
-    \draw[thick] (-0.45,0) -- (0.45,0);
+    \draw[thick] (-0.45,0.05) -- (0.45,-0.05);
   \end{scope}
-  \begin{scope}[shift={(5.35,3.05)}, scale=0.36, rotate=45]
+  \begin{scope}[shift={(5.35,3.05)}, scale=0.46, rotate=70]
     \draw[fill=gray!20, thick] (-0.8,0) ellipse (0.45 and 0.25);
     \draw[fill=gray!20, thick] (0.8,0) ellipse (0.45 and 0.25);
-    \draw[thick] (-0.35,0) -- (0.35,0);
+    \draw[thick] (-0.35,0.05) -- (0.35,-0.05);
     \draw[red!80!black, thick, ->] (0.0,0.65) arc (90:300:0.45);
   \end{scope}
   \draw[red!80!black, thick, ->] (4.85,2.72) -- (5.18,2.92);
   \node[align=center, fill=white, inner sep=2pt] at (2.55,0.38)
-    {closed shape loop\\can have nonzero holonomy};
+    {same shape,\\rotated rigid frame};
   \node[red!80!black, align=center, fill=white, inner sep=2pt] at (5.62,2.28)
     {net rigid\\rotation};
 \end{tikzpicture}
@@ -225,7 +223,7 @@ necessity. It is appropriate for problems such as a freely falling cat or an
 isolated rotor device initialized with no angular momentum. With nonzero
 momentum, the same kinetic metric still defines a connection, but the
 reconstruction equation contains an additional momentum-driven drift. The
-zero-momentum case is the cleanest place to see geometric phase because the
+zero-momentum case isolates geometric phase because the
 entire rigid motion is produced by shape change.
 
 Let the body velocity in the moving frame be
@@ -294,7 +292,7 @@ The rigid velocity is then
   g^{-1}\dot g=-\mathcal A_\alpha(s)\dot s^\alpha.
   }
 \]
-This is the cleanest derivation of the gauge field: it is the rule that tells a
+This is the direct mechanical derivation of the gauge field: it is the rule that tells a
 zero-momentum deforming body how much rigid motion is forced by an infinitesimal
 shape change.
 
@@ -553,6 +551,10 @@ For a small loop enclosing area element
   \draw[blue!70!black, thick, ->] (c) -- (d);
   \draw[blue!70!black, thick, ->] (d) -- (a);
   \draw[red!75!black, thick, ->] (2.35,2.15) arc (210:-80:0.42);
+  \begin{scope}[shift={(0.22,0.18)}]
+    \draw[red!75!black, dashed, thick]
+      (1.35,1.25) -- (3.65,1.25) -- (3.65,2.55) -- (1.35,2.55) -- cycle;
+  \end{scope}
   \draw[red!75!black, ->] (4.55,2.78) -- (2.95,2.22);
   \node[red!75!black, align=left, fill=white, inner sep=2pt] at (5.72,3.02)
     {net rigid motion\\\(-\mathcal F_{12}\delta s^1\delta s^2\)};
@@ -567,14 +569,12 @@ rigid displacement proportional to the curvature through the enclosed area.}
 
 Thus curvature is the local density of geometric phase. Berry phase, Hannay
 angle, and falling-cat reorientation are all holonomies of connections over
-parameter or shape spaces, but the constructions differ. Berry's phase is a
-quantum \(U(1)\) holonomy, Hannay's angle is the classical adiabatic analogue
-on invariant tori, and the falling-cat effect is a generally nonabelian
-\(\SE(3)\) or \(\SO(3)\) holonomy on shape space with no adiabatic limit
-required. The historical anchors are Berry (1984), Hannay (1985), the
-Shapere-Wilczek geometric-phase program (1989), and Montgomery's gauge-theory
-treatment of the falling cat (1993). The common word is geometric phase, not
-identity of mechanisms.
+parameter or shape spaces, but the constructions differ. Berry (1984)
+introduced the quantum \(U(1)\) geometric phase; Hannay (1985) gave the
+classical adiabatic analogue on invariant tori; Shapere and Wilczek (1989)
+developed the gauge-kinematic program for deformable bodies; and Montgomery
+(1993) gave the gauge-theoretic treatment of the falling cat. The common name
+is geometric phase; the underlying mechanisms differ as described above.
 
 Flat connections can still produce frame changes along open paths, but a small
 closed loop detects curvature. The curvature is the local observable of the
@@ -647,17 +647,34 @@ Therefore
   =
   -ab\,e_x.
 \]
-A small rectangular stroke with sides \(\Delta\alpha,\Delta\beta\) produces a
-body rotation whose leading rotation vector is proportional to
+A small rectangular stroke with sides \(\Delta\alpha,\Delta\beta\), traversed
+first in the \(\alpha\) direction and then in the \(\beta\) direction, gives
 \[
-  ab\,\Delta\alpha\,\Delta\beta\,e_x
+\begin{aligned}
+  g_{\mathrm{loop}}
+  &=
+  \exp(-\mathcal A_\alpha\Delta\alpha)
+  \exp(-\mathcal A_\beta\Delta\beta)
+  \exp(\mathcal A_\alpha\Delta\alpha)
+  \exp(\mathcal A_\beta\Delta\beta)\\
+  &=
+  \exp\!\left(
+    [\mathcal A_\alpha,\mathcal A_\beta]
+    \Delta\alpha\,\Delta\beta
+    +O(\Delta^3)
+  \right),
+\end{aligned}
 \]
-up to the sign convention set by the direction of traversal and by
-\(g^{-1}\dot g=-\mathcal A(\dot s)\). The essential content is the holonomy: a
-closed loop in internal shape variables produces a rigid rotation even though
-the rotors return to their starting angles. Like the falling cat, this is a
-nonabelian \(\SO(3)\) holonomy over shape space, although the physical
-constraints and shape coordinates are different.
+by the Baker-Campbell-Hausdorff formula. With the conventions above the
+leading rotation vector is
+\[
+  -ab\,\Delta\alpha\,\Delta\beta\,e_x;
+\]
+reversing the traversal reverses the sign. The essential content is the
+holonomy: a closed loop in internal shape variables produces a rigid rotation
+even though the rotors return to their starting angles. Like the falling cat,
+this is a nonabelian \(\SO(3)\) holonomy over shape space, although the
+physical constraints and shape coordinates are different.
 
 \section{Swimming At Low Reynolds Number}
 \label{sec:low-reynolds-swimming}
@@ -699,6 +716,10 @@ condition on the swimmer surface, decay or wall conditions in the surrounding
 fluid, and the force/torque integrals of the hydrodynamic stress over the
 surface. Thus the connection is not inserted by hand; it is the
 finite-dimensional summary of a linear elliptic boundary-value problem.
+The Lorentz reciprocal theorem gives the symmetry of the Stokes resistance
+operator under the usual boundary conditions, which is why the rigid-motion
+resistance matrix is positive definite after quotienting out impossible rigid
+motions.
 
 A reciprocal one-parameter stroke encloses no area in shape space and produces
 no net motion: this is Purcell's 1977 scallop theorem in gauge language. In
@@ -824,10 +845,19 @@ can define \(R(X)\) by transporting a chosen initial frame from a base point to
 \(X\), and this \(R\) satisfies \(A=R^{-1}\dd R\). Path independence follows
 from applying Stokes' theorem to small spanning surfaces and using \(F=0\), then
 subdividing a homotopy between two paths into such small surfaces.
+Equivalently, the parallel transport around a small coordinate rectangle is
+\[
+  \exp\!\left(F_{AB}\,\Delta X^A\Delta X^B+O(\Delta^3)\right),
+\]
+so vanishing curvature removes the infinitesimal obstruction; simple
+connectedness then removes the global path-dependence obstruction.
 Nonzero curvature means that local frames cannot be integrated into a single
 smooth orientation field without singularities or defects. In defect theory,
-curvature is associated with disclinations, or rotational defects; classical
-continuum defect theory was developed by Kondo, Bilby, Kroner, and others.
+curvature is associated with disclinations, or rotational defects. More
+precisely, in three dimensions the disclination-density tensor is the Hodge
+dual of the curvature two-form, just as the dislocation-density tensor below is
+the Hodge dual of torsion. Classical continuum defect theory was developed in
+the 1950s and 1960s by Kondo, Bilby, Kroner, and others.
 
 To describe translational defects, introduce a local coframe \(\theta^a\), which
 measures material line elements in a local frame. The connection one-forms
@@ -844,7 +874,9 @@ With this notation, the torsion two-form is
 Torsion measures closure failure of infinitesimal parallelograms and is
 associated with dislocation density. In three spatial dimensions the vector
 defect-density fields often used in materials science are Hodge duals of these
-two-forms; for example \((*T^a)_i=\frac12\epsilon_i{}^{jk}T^a{}_{jk}\). In this
+two-forms; for example
+\((*F^a{}_b)_i=\frac12\epsilon_i{}^{jk}F^a{}_{b\,jk}\) and
+\((*T^a)_i=\frac12\epsilon_i{}^{jk}T^a{}_{jk}\). In this
 language:
 \[
 \begin{aligned}
@@ -900,8 +932,8 @@ orientation angle \(\theta(s)\). Its director is
 \[
   d_1=(\cos\theta,\sin\theta).
 \]
-The Cosserat brothers' 1909 theory introduced precisely this idea that a
-continuum point can carry an independent local frame, not only a position.
+Eugene and Francois Cosserat (1909) introduced the idea that a continuum point
+can carry an independent local frame, not only a position.
 Let
 \[
   d_2=(-\sin\theta,\cos\theta).
@@ -970,6 +1002,8 @@ condition \(M=0\) at the free end. With external forces and the constraint
 where \(n\) is internal force, \(f\) is applied force per length, and
 \(\ell\) is applied couple per length. These equations are the one-dimensional
 balance laws behind the reconstruction formulas above.
+In this planar notation \(d_1\times n\) denotes the scalar out-of-plane moment
+component; in a spatial Cosserat rod the same balance is vector-valued.
 They follow from the constrained variational functional
 \[
   \int_0^L
@@ -1017,12 +1051,6 @@ fourth attaches a local rigid body to every material point. The fifth allows
 the local frame and
 translation data to be incompatible, producing curvature and torsion as physical
 defect densities.
-
-\paragraph{Questions to carry forward.}
-Which rigid motion is physical, and which is a frame convention? How much
-holonomy is captured by curvature for a small loop, and what changes for a
-large loop? How does the finite-dimensional connection become a field theory
-over a material body?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:deforming-body-chapter-end-labs}
@@ -1102,9 +1130,8 @@ be attributed to a changed shape. It must come from the noncommuting
 connection components. This is the finite-dimensional version of geometric
 phase.
 
-The kinetic-energy calculation of
-Section~\ref{sec:two-rotor-deforming-body-model} gives the same zero-momentum
-connection for this laboratory model:
+As derived in Section~\ref{sec:two-rotor-deforming-body-model}, the
+zero-momentum connection for this laboratory model is
 \[
   \mathcal A_\alpha=
   \frac{I_1}{I_0+I_1}e_z,\qquad
@@ -1150,9 +1177,8 @@ shape.
     \node[align=center, fill=white, inner sep=1.5pt] at (2.05,3.35)
       {closed shape loop\\on the rotor torus};
   \end{scope}
-  \draw[gray!85, thick, ->] (4.30,2.62) --
-    (5.18,1.62);
-  \node[above, fill=white, inner sep=1pt] at (4.60,2.76)
+  \draw[gray!85, thick, ->] (4.22,2.78) .. controls (4.70,2.42) .. (5.12,1.78);
+  \node[above, fill=white, inner sep=1pt] at (4.35,2.98)
       {\([\mathcal A_\alpha,\mathcal A_\beta]\)};
   \begin{scope}[xshift=5.4cm]
     \draw[->, thick] (0,0) -- (1.6,0) node[right] {\(e_x\)};
@@ -1162,7 +1188,7 @@ shape.
       arc[start angle=90, end angle=-230, x radius=0.22, y radius=0.48];
     \node[red!75!black, fill=white, inner sep=1pt] at (1.40,0.55)
       {rotation about \(e_x\)};
-    \node[black!65, fill=white, inner sep=1pt] at (0.72,1.95)
+    \node[black!65, fill=white, inner sep=1pt] at (-0.55,1.85)
       {body-frame axes};
     \node[red!75!black, align=center, fill=white, inner sep=1.5pt] at (1.15,-1.62)
       {net body rotation\\from \([\mathcal A_\alpha,\mathcal A_\beta]\)};

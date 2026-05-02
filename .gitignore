@@ -99,6 +99,7 @@ data/*
 
 # Local review scratch files
 claude_review*.md
+deepseek_review*.md
 
 # Local/private planning and source-extraction ledgers
 PLANNING.md

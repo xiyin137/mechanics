@@ -74,7 +74,7 @@ Elasticity begins by comparing nearby material points before and after
 deformation. Local strain is measured by the derivative of the displacement
 map: two deformations that differ by a rigid translation have the same local
 strain. This is why the deformation gradient \(F\), and the metric-like tensor
-\(C=F^TF\), are the natural first objects.
+\(C=F^TF\), are introduced before stresses and constitutive laws.
 
 The deformation gradient is the local linearization of the deformation map:
 \[
@@ -110,7 +110,8 @@ measure. The Almansi strain, Biot strain, Hencky logarithmic strain, and the
 Seth-Hill family are also objective finite-strain measures; they agree to first
 order in small strain and differ in how they organize finite stretch.
 
-For small displacement
+For small displacements, the finite strain reduces to the symmetric gradient
+of the displacement. To see this, write
 \[
   \varphi(X,t)=X+\xi(X,t),
 \]
@@ -150,7 +151,7 @@ The infinitesimal strain is therefore
     \draw[red!75!black, ->] (1.96,1.60) -- (1.74,1.30);
     \node at (1.75,-0.55) {reference body \(B\)};
   \end{scope}
-  \draw[thick, ->] (3.8,1.35) -- node[above] {\(\varphi\)} (5.3,1.35);
+  \draw[thick, ->] (3.55,1.35) -- node[above] {\(\varphi(X,t)\)} (5.45,1.35);
   \begin{scope}[xshift=5.7cm]
     \draw[->] (-0.2,0) -- (3.7,0) node[right] {\(x^1\)};
     \draw[->] (0,-0.2) -- (0,2.7) node[above] {\(x^2\)};
@@ -268,7 +269,7 @@ record the intrinsic stretching that can store elastic energy.
     \draw[blue!70!black, ->] (0,0) -- (0,0.82);
     \node[align=center] at (0,-1.55) {material unit circle};
   \end{scope}
-  \draw[->, thick] (1.65,0.2) -- node[above] {\(U\)} (2.65,0.2);
+  \draw[->, thick] (1.45,0.2) -- node[above] {\(U\)} (2.85,0.2);
   \begin{scope}[xshift=4.2cm]
     \draw[->] (-1.35,0) -- (1.55,0) node[right] {\(E_1\)};
     \draw[->] (0,-1.15) -- (0,1.35) node[above] {\(E_2\)};
@@ -279,8 +280,8 @@ record the intrinsic stretching that can store elastic energy.
       node[midway, left] {\(\lambda_2\)};
     \node[align=center] at (0,-1.55) {stretch ellipse};
   \end{scope}
-  \draw[->, thick] (5.85,0.2) -- node[above] {\(R_{\mathrm p}\)} (6.9,0.2);
-  \begin{scope}[xshift=8.6cm, rotate=28]
+  \draw[->, thick] (5.70,0.2) -- node[above] {\(R_{\mathrm p}\)} (7.05,0.2);
+  \begin{scope}[xshift=8.6cm, rotate=36]
     \draw[green!50!black, thick] (0,0) ellipse (1.12 and 0.55);
     \draw[green!50!black, ->] (0,0) -- (1.12,0);
     \draw[green!50!black, ->] (0,0) -- (0,0.55);
@@ -288,7 +289,7 @@ record the intrinsic stretching that can store elastic energy.
   \begin{scope}[xshift=8.6cm]
     \draw[->] (-1.35,0) -- (1.55,0) node[right] {\(e_1\)};
     \draw[->] (0,-1.15) -- (0,1.35) node[above] {\(e_2\)};
-    \draw[red!70!black, very thick, ->] (0.78,-0.05) arc (-5:30:0.78);
+    \draw[red!70!black, very thick, ->] (0.78,-0.05) arc (-5:38:0.78);
     \node[red!70!black, fill=white, inner sep=1pt] at (1.42,0.98) {\(R_{\mathrm p}\)};
     \draw[red!70!black, ->] (1.22,0.82) -- (0.82,0.30);
     \node[align=center] at (0,-1.55) {image under \(F=R_{\mathrm p}U\)};
@@ -311,6 +312,10 @@ the statement that the stored energy factors through \(C\):
 \[
   W(F,X)=\widehat W(C,X).
 \]
+The qualifier ``ordinary'' matters: if the material carries additional internal
+directors or micro-rotations, as in Cosserat or liquid-crystal models, those
+variables must be transformed along with \(F\), and frame indifference is a
+statement about all of them together.
 The converse is immediate: if \(W(F,X)=\widehat W(F^TF,X)\), then
 \[
   W(QF,X)=\widehat W(F^TQ^TQF,X)=\widehat W(F^TF,X)=W(F,X).
@@ -460,9 +465,20 @@ Differentiating and eliminating \(\xi\) gives first-order equations for
 precisely \(\operatorname{curl}\operatorname{curl}e=0\). Once those equations
 are satisfied, \((\xi,\omega)\) may be transported along any path from \(X_0\).
 Path independence on a simply connected body follows from the same flatness
-condition. Changing the initial \(\xi(X_0)\) adds a translation, and changing
-\(\omega(X_0)\) adds an infinitesimal rotation. Thus the only freedom left by
-the compatible strain is the expected rigid motion.
+condition. Equivalently, the displacement can be reconstructed by the
+Volterra-Cesaro path integral
+\[
+  \xi_i(X)=\xi_i(X_0)
+  +
+  \int_{X_0}^{X}
+  \bigl(e_{ij}+\omega_{ij}\bigr)\,\dd X^j,
+\]
+where \(\omega_{ij}\) is transported along the same path by the first-order
+system implied by compatibility. Vanishing linearized curvature makes the
+integral path independent on a simply connected body. Changing the initial
+\(\xi(X_0)\) adds a translation, and changing \(\omega(X_0)\) adds an
+infinitesimal rotation. Thus the only freedom left by the compatible strain is
+the expected rigid motion.
 
 \section{Hyperelastic Action And Piola Stress}
 \label{sec:hyperelastic-action}
@@ -684,7 +700,10 @@ is
 \[
   W(e)=\frac{\lambda}{2}(\tr e)^2+\mu e_{ij}e_{ij},
 \]
-where \(\lambda,\mu\) are Lame moduli. The stress is
+where \(\lambda,\mu\) are Lame moduli. In this linearized section, the
+reference and spatial Euclidean frames have been identified to first order, so
+lower-case indices \(i,j\) are used for components of the displacement gradient
+and strain. The stress is
 \[
   \sigma_{ij}
   =
@@ -775,44 +794,46 @@ Thus the eigenvectors of the acoustic tensor split into one longitudinal
 polarization and two transverse polarizations in an isotropic solid.
 \end{derivation}
 
-The calculation is also a useful diagnostic for elastic constants. Stability
-of propagating plane waves requires \(c_P^2>0\) and \(c_S^2>0\), namely
-\(\mu>0\) and \(\lambda+2\mu>0\). This is strictly weaker than positive
-definiteness of the quadratic elastic energy, which gives
-\(\mu>0\) and \(K_{\mathrm{bulk}}=\lambda+\frac23\mu>0\). Wave-speed positivity
-therefore does not by itself imply the stronger energy convexity condition.
-In finite elasticity these distinctions become sharper. Positive wave speeds
-are related to strong ellipticity, or positivity of the second variation on
-rank-one perturbations \(a\otimes n\). Energy minimization requires stronger
-conditions, often expressed through rank-one convexity, quasiconvexity, or the
-more checkable sufficient condition of polyconvexity. These are not cosmetic
-terms: a stored energy can be frame indifferent and support real small-amplitude
-waves while still failing to be globally convex as a function of all entries of
-\(F\).
-The \(P\)- and \(S\)-wave names are not only formal: seismology uses precisely
-this longitudinal/transverse split, and Oldham's 1906 inference of Earth's core
-from the \(S\)-wave shadow zone is a memorable physical consequence of the same
-calculation.
+Wave-speed positivity is strictly weaker than energy convexity. Propagating
+plane waves require \(c_P^2>0\) and \(c_S^2>0\), namely
+\(\mu>0\) and \(\lambda+2\mu>0\). Positive definiteness of the quadratic
+elastic energy requires the stronger-looking but different conditions
+\(\mu>0\) and \(K_{\mathrm{bulk}}=\lambda+\frac23\mu>0\). The distinction
+foreshadows the hierarchy in finite elasticity: strong ellipticity tests the
+second variation on rank-one perturbations \(a\otimes n\), rank-one convexity
+and quasiconvexity are stronger global conditions, and polyconvexity is a
+checkable sufficient condition often used in existence theory. These are not
+cosmetic terms: a stored energy can be frame indifferent and support real
+small-amplitude waves while still failing to be globally convex as a function
+of all entries of \(F\).
+The Lame constants entered elasticity through nineteenth-century work on
+isotropic solids; the \(P\)- and \(S\)-wave names are seismological terminology
+for the same longitudinal/transverse split. Oldham (1906) used the \(S\)-wave
+shadow zone to infer that Earth has a fluid outer core.
 
 \section{Elastic Constants And Classical Boundary-Value Problems}
 \label{sec:elastic-constants-boundary-problems}
 
-The linear isotropic equations become physically useful only after the elastic
-constants and boundary conditions are tied to measurable experiments. This
-section collects the standard reductions that turn the tensor equation into
-one-dimensional laboratory formulas. They are not separate theories; they are
-controlled approximations of the same elastic body model. This section is also
-a notation checkpoint: \(E_{\mathrm Y}\), \(\nu_{\mathrm P}\), \(\lambda\),
-\(\mu\), and \(K_{\mathrm{bulk}}\) are not interchangeable names for stiffness.
-They measure different responses, and the boundary-value problems below show
-which modulus an experiment actually sees.
+Stiffness laws used in the lab,
+\[
+  F=\frac{E_{\mathrm Y}A_{\mathrm{cs}}}{L}\Delta L,
+  \qquad
+  T=\mu J_t\,\Theta',
+  \qquad
+  E_{\mathrm Y}I_{\mathrm{area}}w''''=q,
+\]
+are reductions of the same isotropic equations. This section derives the
+standard bar, shaft, and beam formulas and tracks which modulus each experiment
+measures. The notation \(E_{\mathrm Y}\), \(\nu_{\mathrm P}\), \(\lambda\),
+\(\mu\), and \(K_{\mathrm{bulk}}\) is therefore not interchangeable; each symbol
+names a different response.
 
-Saint-Venant's principle is the philosophical license behind many of the
-one-dimensional reductions below. Details of how a load is applied at an end are
-expected to decay over distances comparable to the cross-section size, so a
+Saint-Venant's principle gives the modelling justification behind many of the
+one-dimensional reductions below. Details of how a load is applied at an end
+are expected to decay over distances comparable to the cross-section size, so a
 slender body can have a robust interior bar, shaft, or beam solution even when
-the end fixtures are complicated. This is an asymptotic modelling principle, not
-an exact theorem for every geometry.
+the end fixtures are complicated. This is an asymptotic modelling principle,
+not an exact theorem for every geometry.
 
 \subsection{Moduli, Positivity, And Nearly Incompressible Solids}
 \label{subsec:elastic-moduli-positivity}
@@ -913,8 +934,8 @@ Equivalently,
   \sigma_{ij}=\lambda(\partial_k\xi_k)\delta_{ij}
   +\mu(\partial_i\xi_j+\partial_j\xi_i).
 \]
-This static Navier-Cauchy equation descends from Navier's 1821 molecular theory
-and Cauchy's continuum formulation of stress in the 1820s.
+This is the static Navier-Cauchy equation, due to Navier (1821) in a molecular
+formulation and Cauchy (1822) in the stress-tensor formulation.
 Boundary conditions are part of the problem statement. On a displacement
 boundary \(\partial B_D\), one prescribes
 \[
@@ -944,7 +965,7 @@ internal stress work equals external virtual work.
 The weak form also gives uniqueness in the standard coercive case. If the body
 has a nonempty displacement boundary, or if rigid translations and rotations
 are otherwise fixed, the quadratic elastic energy is strictly convex on the
-admissible displacement space. Korn's inequality is the missing analytic
+admissible displacement space. Korn's 1909 inequality is the missing analytic
 bridge:
 \[
   \|\xi\|_{H^1(B)}
@@ -961,7 +982,8 @@ After fixing the rigid part by displacement boundary conditions, zero mean
 translation and rotation, or another side condition, this becomes
 \(\|\xi\|_{H^1}\le C\|e(\xi)\|_{L^2}\). The inequality is an
 integration-by-parts statement that the skew part of \(\nabla\xi\) is controlled
-by the symmetric part once rigid rotations are excluded. With Korn's inequality,
+by the symmetric part once rigid rotations are excluded; modern proofs are
+standard in the Korn-Friedrichs theory of elasticity. With Korn's inequality,
 the bilinear elastic energy is coercive, and the Lax-Milgram theorem gives a
 unique weak solution for compatible loads. In a pure traction problem,
 uniqueness holds only modulo rigid motions, which must be removed by side
@@ -998,9 +1020,9 @@ The negative lateral strain is the definition of Poisson's ratio:
   =
   -\frac{\text{lateral strain}}{\text{axial strain}}.
 \]
-This simple formula is often the cleanest way to remember what Young's modulus
-measures: it is stress divided by axial strain in a uniaxial test with free
-lateral contraction.
+This formula identifies the experimental meaning of Young's modulus: it is
+stress divided by axial strain in a uniaxial test with free lateral
+contraction.
 The appearance of Poisson's ratio is also a historical caution: early
 ``rari-constant'' elasticity in the Cauchy-Poisson tradition overconstrained
 the moduli. Modern isotropic linear elasticity needs two independent elastic
@@ -1074,8 +1096,8 @@ rigidity and the stress distribution.
 \subsection{Euler-Bernoulli Beam Bending}
 \label{subsec:euler-bernoulli-beam}
 
-The Euler-Bernoulli model traces back to Daniel Bernoulli's elastic-energy
-viewpoint and Euler's 1744 elastica. Its assumptions are deliberate: later
+The model is due to Daniel Bernoulli's elastic-energy viewpoint, around 1742,
+and Euler's 1744 \emph{De curvis elasticis}. Its assumptions are deliberate: later
 Timoshenko theory restores shear deformation and rotary inertia when the beam
 is not sufficiently slender.
 As an asymptotic reduction from three-dimensional elasticity, it assumes a
@@ -1201,9 +1223,9 @@ It satisfies \(w(0)=w(L)=0\), zero bending moment at both supports, and
       {uniaxial bar\\\(\Delta L=F_{\mathrm{end}}L/(E_{\mathrm Y}A_{\mathrm{cs}})\)};
   \end{scope}
   \begin{scope}[xshift=5.7cm]
-    \draw[thick] (0,1.2) -- (0,0.25);
-    \foreach \y in {0.32,0.52,0.72,0.92,1.12}
-      \draw[thick] (-0.18,\y-0.12) -- (0,\y);
+    \draw[line width=1.0pt] (0,1.28) -- (0,0.15);
+    \foreach \y in {0.20,0.42,0.64,0.86,1.08,1.30}
+      \draw[line width=0.8pt] (-0.42,\y-0.22) -- (0,\y);
     \draw[blue!70!black, thick, domain=0:3.6, samples=100]
       plot (\x,{1.05-0.055*\x*\x*(3.6-\x/3)});
     \draw[red!75!black, thick, ->] (3.92,0.66) -- (3.92,-0.08);
@@ -1252,11 +1274,6 @@ show how continuum equations reduce to experimentally measurable stiffness
 laws. The same material description also has a frame-theoretic extension:
 once each material point is allowed its own local orientation, elastic
 kinematics becomes the material side of a gauge theory of deforming bodies.
-
-\paragraph{Questions to carry forward.}
-Which tensor lives in the reference configuration, and which lives in space?
-Which compatibility conditions distinguish an actual deformation from a strain
-field with defects? Which boundary term defines the stress being measured?
 
 \section{Chapter-End Laboratories And Exercises}
 \label{sec:elastic-body-chapter-end-labs}
