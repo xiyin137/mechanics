@@ -239,6 +239,71 @@ time step reduces discretization error.  Increasing the horizon changes the
 event being estimated.  These limits answer different questions and should not
 be conflated.
 
+\section{Bootstrap Intervals And Resonance Windows}
+\label{sec:three-body-bootstrap-resonance-windows}
+
+The binomial standard error is appropriate when one reports a single bin with
+independently sampled initial conditions.  For plots with many bins, a
+bootstrap interval gives a more flexible classroom diagnostic.  Given the
+sample
+\[
+        (a_i,X_i),\qquad i=1,\dots,N,
+\]
+where \(a_i\) is the initial semimajor axis and \(X_i\) is an ejection
+indicator, form bootstrap samples by drawing \(N\) pairs with replacement from
+the observed list.  For each resample compute the same binned ejection
+fractions.  The empirical \(16\)th and \(84\)th percentiles give a one-sigma
+style interval; the \(2.5\)th and \(97.5\)th percentiles give a rough
+\(95\) percent interval.  This estimates sampling variability of the chosen
+finite-time experiment.  It does not estimate model error, timestep error, or
+the uncertainty caused by using a planar restricted model.
+
+For a \(p:q\) interior mean-motion resonance with Jupiter, the nominal
+semimajor axis is
+\[
+        a_{p:q}=a_J\left(\frac{q}{p}\right)^{2/3}.
+\]
+A resonance-window comparison chooses a width \(\Delta a\) and compares three
+sets:
+\[
+        |a_0-a_{p:q}|<\Delta a,\qquad
+        \Delta a\le |a_0-a_{p:q}|<2\Delta a,\qquad
+        |a_0-a_{p:q}|\ge 2\Delta a .
+\]
+For a more dynamical diagnostic one also tracks a resonant angle.  In a planar
+restricted problem, a typical resonant angle for an interior asteroid
+resonance is
+\[
+        \phi_{p:q}=p\lambda_J-q\lambda-(p-q)\varpi ,
+\]
+where \(\lambda_J\) is Jupiter's mean longitude, \(\lambda\) is the asteroid's
+mean longitude, and \(\varpi\) is the asteroid periapse longitude.  Libration
+of \(\phi_{p:q}\) is stronger evidence of resonant behavior than proximity in
+initial semimajor axis alone.  The present demo labels bins by nominal
+locations; an upgraded project version can add resonant-angle time series.
+
+\section{Convergence Table Template}
+\label{sec:three-body-convergence-template}
+
+A serious numerical report should include a small convergence table.  The
+columns should separate the three main effects:
+\[
+\begin{array}{c|c|c|c|c}
+N & \Delta t & T & \widehat p_{\rm ej}(T) &
+\text{diagnostic}\\
+\hline
+N_0 & \Delta t_0 & T_0 & \cdots & \text{baseline}\\
+2N_0 & \Delta t_0 & T_0 & \cdots & \text{sampling change}\\
+N_0 & \Delta t_0/2 & T_0 & \cdots & \text{timestep change}\\
+N_0 & \Delta t_0 & 2T_0 & \cdots & \text{horizon change}
+\end{array}
+\]
+Only the second row tests Monte Carlo variance.  Only the third tests
+discretization.  The fourth row changes the physical event from ``ejected by
+\(T_0\)'' to ``ejected by \(2T_0\).''  This simple table prevents a common
+misreading of the asteroid lab: a longer run is not a more accurate estimate
+of the shorter-run probability.
+
 \section{Recommended Reporting Standard}
 \label{sec:three-body-reporting-standard}
 

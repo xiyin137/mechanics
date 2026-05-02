@@ -26,6 +26,19 @@ from pathlib import Path
 
 import numpy as np
 
+try:
+    from demos.python.common import add_output_args, add_preset_args, configure_standard_outputs, emit_summary, fill_defaults
+except ModuleNotFoundError:  # pragma: no cover - direct script execution
+    from common import add_output_args, add_preset_args, configure_standard_outputs, emit_summary, fill_defaults
+
+
+DEFAULTS = {"points": 160, "nu": 0.1, "mu": 1.0, "h": 1.0, "pipe_radius": 1.0}
+PRESETS = {
+    "quick": {"points": 16},
+    "lecture": {"points": 160},
+    "long": {"points": 600},
+}
+
 
 def _as_array(values: np.ndarray | float) -> np.ndarray:
     return np.asarray(values, dtype=float)
@@ -332,13 +345,24 @@ def save_plot(path: Path, *, points: int, nu: float, mu: float, h: float, radius
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--points", type=int, default=160, help="grid/profile points")
-    parser.add_argument("--nu", type=float, default=0.1, help="kinematic viscosity")
-    parser.add_argument("--mu", type=float, default=1.0, help="dynamic viscosity")
-    parser.add_argument("--h", type=float, default=1.0, help="channel height")
-    parser.add_argument("--pipe-radius", type=float, default=1.0, help="pipe radius")
+    add_preset_args(parser)
+    parser.add_argument("--points", type=int, default=None, help="grid/profile points")
+    parser.add_argument("--nu", type=float, default=None, help="kinematic viscosity")
+    parser.add_argument("--mu", type=float, default=None, help="dynamic viscosity")
+    parser.add_argument("--h", type=float, default=None, help="channel height")
+    parser.add_argument("--pipe-radius", type=float, default=None, help="pipe radius")
     parser.add_argument("--plot", type=Path, default=None, help="optional output PNG")
+    add_output_args(parser)
     args = parser.parse_args()
+    defaults = dict(DEFAULTS)
+    if args.quick:
+        defaults.update(PRESETS["quick"])
+    elif args.lecture:
+        defaults.update(PRESETS["lecture"])
+    elif args.long:
+        defaults.update(PRESETS["long"])
+    fill_defaults(args, defaults)
+    configure_standard_outputs(args, stem="navier_stokes_solutions", plot_name="navier_stokes_solutions.png")
     if args.points < 4:
         parser.error("--points must be at least 4")
     if args.nu <= 0.0:
@@ -352,12 +376,11 @@ def parse_args() -> argparse.Namespace:
     return args
 
 
-def main() -> None:
-    args = parse_args()
+def build_summary(args: argparse.Namespace) -> dict[str, object]:
     y = np.linspace(0.0, args.h, args.points)
-    r = np.linspace(0.0, args.pipe_radius, args.points)
     grid = np.linspace(0.0, 2.0 * math.pi, args.points)
     xx, yy = np.meshgrid(grid, grid)
+    channel_profile = couette_poiseuille_profile(y, h=args.h, mu=args.mu, pressure_gradient=1.0, upper_speed=0.5)
 
     channel_flux = couette_poiseuille_flux(
         h=args.h,
@@ -371,23 +394,52 @@ def main() -> None:
     stokes_far = stokes_first_problem(np.array([4.0]), 0.2, nu=args.nu)[0]
     residual = taylor_green_residual_norm(xx, yy, t=0.15, nu=args.nu)
     energy = taylor_green_energy_density(t=0.15, nu=args.nu)
+    return {
+        "model": "exact and reduced Navier-Stokes solutions",
+        "configuration": {
+            "points": args.points,
+            "nu": args.nu,
+            "mu": args.mu,
+            "h": args.h,
+            "pipe_radius": args.pipe_radius,
+        },
+        "channel_velocity_min": float(np.min(channel_profile)),
+        "channel_velocity_max": float(np.max(channel_profile)),
+        "channel_flux": channel_flux,
+        "pipe_center_velocity": float(pipe_poiseuille_profile(np.array([0.0]), radius=args.pipe_radius, mu=args.mu)[0]),
+        "pipe_wall_velocity": float(pipe_poiseuille_profile(np.array([args.pipe_radius]), radius=args.pipe_radius, mu=args.mu)[0]),
+        "pipe_flux": pipe_flux,
+        "stokes_first_wall_value": float(stokes_wall),
+        "stokes_first_far_value": float(stokes_far),
+        "taylor_green_energy_density": energy,
+        "taylor_green_residual_norm": residual,
+        "diagnostic_note": "The Taylor-Green residual is evaluated analytically at grid points.",
+        "outputs": {},
+    }
 
+
+def print_summary(summary: dict[str, object]) -> None:
+    config = summary["configuration"]
     print("Navier-Stokes exact-solution diagnostics")
-    print(f"points={args.points}")
-    print(f"channel_velocity_min={np.min(couette_poiseuille_profile(y, h=args.h, mu=args.mu, pressure_gradient=1.0, upper_speed=0.5)):.12g}")
-    print(f"channel_velocity_max={np.max(couette_poiseuille_profile(y, h=args.h, mu=args.mu, pressure_gradient=1.0, upper_speed=0.5)):.12g}")
-    print(f"channel_flux={channel_flux:.12g}")
-    print(f"pipe_center_velocity={pipe_poiseuille_profile(np.array([0.0]), radius=args.pipe_radius, mu=args.mu)[0]:.12g}")
-    print(f"pipe_wall_velocity={pipe_poiseuille_profile(np.array([args.pipe_radius]), radius=args.pipe_radius, mu=args.mu)[0]:.12g}")
-    print(f"pipe_flux={pipe_flux:.12g}")
-    print(f"stokes_first_wall_value={stokes_wall:.12g}")
-    print(f"stokes_first_far_value={stokes_far:.12g}")
-    print(f"taylor_green_energy_density={energy:.12g}")
-    print(f"taylor_green_residual_norm={residual:.12g}")
+    print(f"points={config['points']}")
+    print(f"channel_velocity_min={summary['channel_velocity_min']:.12g}")
+    print(f"channel_velocity_max={summary['channel_velocity_max']:.12g}")
+    print(f"channel_flux={summary['channel_flux']:.12g}")
+    print(f"pipe_center_velocity={summary['pipe_center_velocity']:.12g}")
+    print(f"pipe_wall_velocity={summary['pipe_wall_velocity']:.12g}")
+    print(f"pipe_flux={summary['pipe_flux']:.12g}")
+    print(f"stokes_first_wall_value={summary['stokes_first_wall_value']:.12g}")
+    print(f"stokes_first_far_value={summary['stokes_first_far_value']:.12g}")
+    print(f"taylor_green_energy_density={summary['taylor_green_energy_density']:.12g}")
+    print(f"taylor_green_residual_norm={summary['taylor_green_residual_norm']:.12g}")
+
+
+def main() -> None:
+    args = parse_args()
 
     if args.plot is not None:
         save_plot(args.plot, points=args.points, nu=args.nu, mu=args.mu, h=args.h, radius=args.pipe_radius)
-        print(f"wrote_plot={args.plot}")
+    emit_summary(build_summary(args), args, print_summary)
 
 
 if __name__ == "__main__":

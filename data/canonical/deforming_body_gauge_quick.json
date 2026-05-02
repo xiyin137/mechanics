@@ -1,0 +1,113 @@
+{
+  "A_alpha": [
+    0.0,
+    0.0,
+    0.2
+  ],
+  "A_beta": [
+    0.0,
+    0.2727272727272727,
+    0.0
+  ],
+  "bch_error_norm": 8.072020233722486e-07,
+  "bch_relative_error": 0.007399351880912279,
+  "configuration": {
+    "cycles": 1,
+    "delta_alpha": 0.05,
+    "delta_beta": 0.04,
+    "i0": 4.0,
+    "i1": 1.0,
+    "i2": 1.5
+  },
+  "curvature_vector": [
+    -0.05454545454545454,
+    0.0,
+    0.0
+  ],
+  "determinant_error": 0.0,
+  "holonomy_scaling": [
+    {
+      "area": 0.000125,
+      "bch_error_norm": 1.261271063434386e-08,
+      "bch_relative_error": 0.0018498642263704325,
+      "leading_rotation_vector": [
+        -6.818181818181819e-06,
+        0.0,
+        0.0
+      ],
+      "net_rotation_vector": [
+        -6.818166263644955e-06,
+        8.522712268400826e-09,
+        -9.297505213342108e-09
+      ],
+      "scale": 0.25
+    },
+    {
+      "area": 0.0005,
+      "bch_error_norm": 1.0090139863922458e-07,
+      "bch_relative_error": 0.003699717950104901,
+      "leading_rotation_vector": [
+        -2.7272727272727276e-05,
+        0.0,
+        0.0
+      ],
+      "net_rotation_vector": [
+        -2.7272478401451404e-05,
+        6.818133804816028e-08,
+        -7.43796709619117e-08
+      ],
+      "scale": 0.5
+    },
+    {
+      "area": 0.0011250000000000001,
+      "bch_error_norm": 3.4054060922534966e-07,
+      "bch_relative_error": 0.00554955066885755,
+      "leading_rotation_vector": [
+        -6.136363636363636e-05,
+        0.0,
+        0.0
+      ],
+      "net_rotation_vector": [
+        -6.136237646388848e-05,
+        2.3010999038180768e-07,
+        -2.510293040875546e-07
+      ],
+      "scale": 0.75
+    },
+    {
+      "area": 0.002,
+      "bch_error_norm": 8.072020233722486e-07,
+      "bch_relative_error": 0.007399351880912278,
+      "leading_rotation_vector": [
+        -0.0001090909090909091,
+        0.0,
+        0.0
+      ],
+      "net_rotation_vector": [
+        -0.000109086927234585,
+        5.454391815063688e-07,
+        -5.950255041879541e-07
+      ],
+      "scale": 1.0
+    }
+  ],
+  "interpretation": "helicopter rotor: lift rotor about body z, tail rotor about body y",
+  "leading_rotation_vector": [
+    -0.00010909090909090909,
+    0.0,
+    0.0
+  ],
+  "model": "finite-dimensional gauge kinematics of a deforming body",
+  "net_rotation_angle": 0.00010908991361594802,
+  "net_rotation_vector": [
+    -0.000109086927234585,
+    5.454391815063688e-07,
+    -5.950255041879541e-07
+  ],
+  "orthogonality_error": 1.1105415149261688e-16,
+  "outputs": {
+    "json": "data/canonical/deforming_body_gauge_quick.json"
+  },
+  "reconstruction_equation": "Omega = -A_alpha alpha_dot - A_beta beta_dot",
+  "shape_area_per_cycle": 0.002
+}

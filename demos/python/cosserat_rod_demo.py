@@ -12,6 +12,19 @@ from pathlib import Path
 
 import numpy as np
 
+try:
+    from demos.python.common import add_output_args, add_preset_args, configure_standard_outputs, emit_summary, fill_defaults
+except ModuleNotFoundError:  # pragma: no cover - direct script execution
+    from common import add_output_args, add_preset_args, configure_standard_outputs, emit_summary, fill_defaults
+
+
+DEFAULTS = {"length": 8.0, "points": 600, "base": 0.18, "amp": 0.55, "mode": 2}
+PRESETS = {
+    "quick": {"points": 40},
+    "lecture": {"points": 600},
+    "long": {"points": 4000},
+}
+
 
 def curvature_field(s: np.ndarray, length: float, base: float, amp: float, mode: int) -> np.ndarray:
     return base + amp * np.sin(2.0 * math.pi * mode * s / length)
@@ -82,15 +95,62 @@ def save_plot(path: Path, data: dict[str, np.ndarray]) -> None:
     plt.close(fig)
 
 
+def build_summary(args: argparse.Namespace, data: dict[str, np.ndarray]) -> dict[str, object]:
+    theta = data["theta"]
+    x = data["x"]
+    y = data["y"]
+    tangent_norm = np.sqrt(np.gradient(x, data["s"]) ** 2 + np.gradient(y, data["s"]) ** 2)
+    return {
+        "model": "planar Cosserat rod reconstruction",
+        "connection": "theta'(s) = kappa(s)",
+        "configuration": {
+            "length": args.length,
+            "points": args.points,
+            "base": args.base,
+            "amp": args.amp,
+            "mode": args.mode,
+        },
+        "frame_holonomy": float(theta[-1] - theta[0]),
+        "endpoint": [float(x[-1]), float(y[-1])],
+        "tangent_norm_max_error": float(np.max(np.abs(tangent_norm[1:-1] - 1.0))) if len(tangent_norm) > 2 else 0.0,
+        "curvature_mean": float(np.mean(data["kappa"])),
+        "curvature_min": float(np.min(data["kappa"])),
+        "curvature_max": float(np.max(data["kappa"])),
+        "outputs": {},
+    }
+
+
+def print_summary(summary: dict[str, object]) -> None:
+    config = summary["configuration"]
+    endpoint = summary["endpoint"]
+    print(f"length={config['length']}")
+    print(f"points={config['points']}")
+    print(f"frame_holonomy={summary['frame_holonomy']:.12g}")
+    print(f"endpoint_x={endpoint[0]:.12g}")
+    print(f"endpoint_y={endpoint[1]:.12g}")
+    print(f"tangent_norm_max_error={summary['tangent_norm_max_error']:.6e}")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--length", type=float, default=8.0)
-    parser.add_argument("--points", type=int, default=600)
-    parser.add_argument("--base", type=float, default=0.18)
-    parser.add_argument("--amp", type=float, default=0.55)
-    parser.add_argument("--mode", type=int, default=2)
+    add_preset_args(parser)
+    parser.add_argument("--length", type=float, default=None)
+    parser.add_argument("--points", type=int, default=None)
+    parser.add_argument("--base", type=float, default=None)
+    parser.add_argument("--amp", type=float, default=None)
+    parser.add_argument("--mode", type=int, default=None)
     parser.add_argument("--plot", type=Path, default=None)
+    add_output_args(parser)
     args = parser.parse_args()
+    defaults = dict(DEFAULTS)
+    if args.quick:
+        defaults.update(PRESETS["quick"])
+    elif args.lecture:
+        defaults.update(PRESETS["lecture"])
+    elif args.long:
+        defaults.update(PRESETS["long"])
+    fill_defaults(args, defaults)
+    configure_standard_outputs(args, stem="cosserat_rod", plot_name="cosserat_rod.png")
     if args.length <= 0.0:
         parser.error("--length must be > 0")
     if args.points < 2:
@@ -103,17 +163,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     data = reconstruct(args.length, args.points, args.base, args.amp, args.mode)
-    theta = data["theta"]
-    x = data["x"]
-    y = data["y"]
-    print(f"length={args.length}")
-    print(f"points={args.points}")
-    print(f"frame_holonomy={theta[-1] - theta[0]:.12g}")
-    print(f"endpoint_x={x[-1]:.12g}")
-    print(f"endpoint_y={y[-1]:.12g}")
     if args.plot is not None:
         save_plot(args.plot, data)
-        print(f"wrote_plot={args.plot}")
+    emit_summary(build_summary(args, data), args, print_summary)
 
 
 if __name__ == "__main__":

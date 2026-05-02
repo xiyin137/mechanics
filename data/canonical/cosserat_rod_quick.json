@@ -1,0 +1,23 @@
+{
+  "configuration": {
+    "amp": 0.55,
+    "base": 0.18,
+    "length": 8.0,
+    "mode": 2,
+    "points": 40
+  },
+  "connection": "theta'(s) = kappa(s)",
+  "curvature_max": 0.7295539489943634,
+  "curvature_mean": 0.18,
+  "curvature_min": -0.3695539489943633,
+  "endpoint": [
+    3.401042525853376,
+    6.240939053138672
+  ],
+  "frame_holonomy": 1.4399999999999997,
+  "model": "planar Cosserat rod reconstruction",
+  "outputs": {
+    "json": "data/canonical/cosserat_rod_quick.json"
+  },
+  "tangent_norm_max_error": 0.005374400242914579
+}

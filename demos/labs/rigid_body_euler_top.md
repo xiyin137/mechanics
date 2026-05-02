@@ -10,13 +10,16 @@ matrix remains in `SO(3)`.
 ## Run
 
 ```sh
-python demos/python/rigid_body_euler_top.py --plot figures/rigid_body_euler_top.png
+python demos/python/rigid_body_euler_top.py \
+  --lecture \
+  --plot figures/rigid_body_euler_top.png \
+  --json-output data/rigid_body_euler_top.json
 ```
 
 For a smoke run:
 
 ```sh
-python demos/python/rigid_body_euler_top.py --steps 50
+python demos/python/rigid_body_euler_top.py --quick --json
 ```
 
 ## Questions
@@ -32,4 +35,5 @@ python demos/python/rigid_body_euler_top.py --steps 50
 ## Expected Record
 
 Save the command, inertia parameters, initial angular velocity, maximum drift
-of the invariants, and a short explanation of the phase portrait.
+of the invariants, attitude orthogonality and determinant errors, and a short
+explanation of the phase portrait.

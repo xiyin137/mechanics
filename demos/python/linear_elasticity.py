@@ -19,6 +19,19 @@ from pathlib import Path
 
 import numpy as np
 
+try:
+    from demos.python.common import add_output_args, add_preset_args, configure_standard_outputs, emit_summary, fill_defaults
+except ModuleNotFoundError:  # pragma: no cover - direct script execution
+    from common import add_output_args, add_preset_args, configure_standard_outputs, emit_summary, fill_defaults
+
+
+DEFAULTS = {"points": 160, "young": 20.0, "poisson": 0.3, "rho": 1.0}
+PRESETS = {
+    "quick": {"points": 24},
+    "lecture": {"points": 160},
+    "long": {"points": 1000},
+}
+
 
 def _as_array(values: np.ndarray | float) -> np.ndarray:
     return np.asarray(values, dtype=float)
@@ -267,12 +280,23 @@ def save_plot(path: Path, *, points: int, young: float, poisson: float, rho: flo
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--points", type=int, default=160, help="profile/grid points")
-    parser.add_argument("--young", type=float, default=20.0, help="Young modulus")
-    parser.add_argument("--poisson", type=float, default=0.3, help="Poisson ratio")
-    parser.add_argument("--rho", type=float, default=1.0, help="mass density")
+    add_preset_args(parser)
+    parser.add_argument("--points", type=int, default=None, help="profile/grid points")
+    parser.add_argument("--young", type=float, default=None, help="Young modulus")
+    parser.add_argument("--poisson", type=float, default=None, help="Poisson ratio")
+    parser.add_argument("--rho", type=float, default=None, help="mass density")
     parser.add_argument("--plot", type=Path, default=None, help="optional output PNG")
+    add_output_args(parser)
     args = parser.parse_args()
+    defaults = dict(DEFAULTS)
+    if args.quick:
+        defaults.update(PRESETS["quick"])
+    elif args.lecture:
+        defaults.update(PRESETS["lecture"])
+    elif args.long:
+        defaults.update(PRESETS["long"])
+    fill_defaults(args, defaults)
+    configure_standard_outputs(args, stem="linear_elasticity", plot_name="linear_elasticity.png")
     if args.points < 8:
         parser.error("--points must be at least 8")
     if args.young <= 0.0:
@@ -284,8 +308,7 @@ def parse_args() -> argparse.Namespace:
     return args
 
 
-def main() -> None:
-    args = parse_args()
+def build_summary(args: argparse.Namespace) -> dict[str, object]:
     lam, mu = lame_from_young_poisson(args.young, args.poisson)
     recovered_young, recovered_poisson = young_poisson_from_lame(lam, mu)
     bulk = bulk_modulus(lam, mu)
@@ -296,29 +319,56 @@ def main() -> None:
     twist = torsion_twist(torque=0.008, length=1.0, mu=mu, polar_moment=polar_moment)
     tip = cantilever_tip_deflection(length=1.0, young=args.young, area_moment=2.0e-2, end_force=1.0)
     beam_residual = simply_supported_uniform_residual(young=args.young, area_moment=2.0e-2, load=1.0)
+    return {
+        "model": "linear isotropic elasticity formula diagnostics",
+        "configuration": {"points": args.points, "young": args.young, "poisson": args.poisson, "rho": args.rho},
+        "lambda": lam,
+        "mu": mu,
+        "bulk_modulus": bulk,
+        "recovered_young": recovered_young,
+        "recovered_poisson": recovered_poisson,
+        "moduli_round_trip_error": max(abs(recovered_young - args.young), abs(recovered_poisson - args.poisson)),
+        "p_wave_speed": cp,
+        "s_wave_speed": cs,
+        "bar_frequencies": frequencies.tolist(),
+        "axial_bar_elongation": elongation,
+        "circular_polar_moment": polar_moment,
+        "torsion_twist": twist,
+        "cantilever_tip_deflection": tip,
+        "simply_supported_uniform_residual": beam_residual,
+        "outputs": {},
+    }
 
+
+def print_summary(summary: dict[str, object]) -> None:
+    config = summary["configuration"]
+    frequencies = summary["bar_frequencies"]
     print("Linear elasticity diagnostics")
-    print(f"young={args.young:.12g}")
-    print(f"poisson={args.poisson:.12g}")
-    print(f"lambda={lam:.12g}")
-    print(f"mu={mu:.12g}")
-    print(f"bulk_modulus={bulk:.12g}")
-    print(f"recovered_young={recovered_young:.12g}")
-    print(f"recovered_poisson={recovered_poisson:.12g}")
-    print(f"p_wave_speed={cp:.12g}")
-    print(f"s_wave_speed={cs:.12g}")
+    print(f"young={config['young']:.12g}")
+    print(f"poisson={config['poisson']:.12g}")
+    print(f"lambda={summary['lambda']:.12g}")
+    print(f"mu={summary['mu']:.12g}")
+    print(f"bulk_modulus={summary['bulk_modulus']:.12g}")
+    print(f"recovered_young={summary['recovered_young']:.12g}")
+    print(f"recovered_poisson={summary['recovered_poisson']:.12g}")
+    print(f"moduli_round_trip_error={summary['moduli_round_trip_error']:.6e}")
+    print(f"p_wave_speed={summary['p_wave_speed']:.12g}")
+    print(f"s_wave_speed={summary['s_wave_speed']:.12g}")
     print(f"bar_frequency_1={frequencies[0]:.12g}")
     print(f"bar_frequency_2={frequencies[1]:.12g}")
     print(f"bar_frequency_3={frequencies[2]:.12g}")
-    print(f"axial_bar_elongation={elongation:.12g}")
-    print(f"circular_polar_moment={polar_moment:.12g}")
-    print(f"torsion_twist={twist:.12g}")
-    print(f"cantilever_tip_deflection={tip:.12g}")
-    print(f"simply_supported_uniform_residual={beam_residual:.12g}")
+    print(f"axial_bar_elongation={summary['axial_bar_elongation']:.12g}")
+    print(f"circular_polar_moment={summary['circular_polar_moment']:.12g}")
+    print(f"torsion_twist={summary['torsion_twist']:.12g}")
+    print(f"cantilever_tip_deflection={summary['cantilever_tip_deflection']:.12g}")
+    print(f"simply_supported_uniform_residual={summary['simply_supported_uniform_residual']:.12g}")
 
+
+def main() -> None:
+    args = parse_args()
     if args.plot is not None:
         save_plot(args.plot, points=args.points, young=args.young, poisson=args.poisson, rho=args.rho)
-        print(f"wrote_plot={args.plot}")
+    emit_summary(build_summary(args), args, print_summary)
 
 
 if __name__ == "__main__":

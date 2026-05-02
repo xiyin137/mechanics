@@ -12,15 +12,15 @@ curves act as barriers, and larger perturbations open transport channels.
 ```sh
 python demos/python/standard_map_torus_breakdown.py \
   --K 1.1 \
-  --steps 1500 \
-  --orbits 128 \
-  --plot figures/standard_map_torus_breakdown.png
+  --lecture \
+  --plot figures/standard_map_torus_breakdown.png \
+  --json-output data/standard_map_torus_breakdown.json
 ```
 
 For a faster run:
 
 ```sh
-python demos/python/standard_map_torus_breakdown.py --K 1.1 --steps 80 --orbits 12
+python demos/python/standard_map_torus_breakdown.py --quick --preset large --json
 ```
 
 ## Questions
@@ -36,4 +36,5 @@ python demos/python/standard_map_torus_breakdown.py --K 1.1 --steps 80 --orbits 
 ## Expected Record
 
 Report `K`, number of orbits, number of steps, the printed spread diagnostics,
-and one figure for at least two values of `K`.
+the diagnostic note about finite-time interpretation, and one figure for at
+least two values of `K`.

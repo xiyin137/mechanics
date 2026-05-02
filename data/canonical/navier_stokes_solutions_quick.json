@@ -1,0 +1,24 @@
+{
+  "channel_flux": 0.3333333333333333,
+  "channel_velocity_max": 0.5,
+  "channel_velocity_min": 0.0,
+  "configuration": {
+    "h": 1.0,
+    "mu": 1.0,
+    "nu": 0.1,
+    "pipe_radius": 1.0,
+    "points": 16
+  },
+  "diagnostic_note": "The Taylor-Green residual is evaluated analytically at grid points.",
+  "model": "exact and reduced Navier-Stokes solutions",
+  "outputs": {
+    "json": "data/canonical/navier_stokes_solutions_quick.json"
+  },
+  "pipe_center_velocity": 0.25,
+  "pipe_flux": 0.39269908169872414,
+  "pipe_wall_velocity": 0.0,
+  "stokes_first_far_value": 5.5072482372129405e-89,
+  "stokes_first_wall_value": 1.0,
+  "taylor_green_energy_density": 0.23544113339606218,
+  "taylor_green_residual_norm": 5.551115123125783e-17
+}

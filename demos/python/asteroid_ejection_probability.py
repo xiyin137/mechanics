@@ -23,7 +23,7 @@ import argparse
 import csv
 import json
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import numpy as np
@@ -55,6 +55,7 @@ DEFAULT_CONFIG = {
     "a_max": 3.75,
     "e_max": 0.08,
     "bins": 20,
+    "resonance_window": 0.05,
 }
 
 PRESET_CONFIG = {
@@ -81,6 +82,7 @@ class Config:
     sun_radius: float
     jupiter_close_radius: float
     include_indirect: bool
+    resonance_window: float
 
     @property
     def gm_sun(self) -> float:
@@ -110,7 +112,7 @@ def true_anomaly(mean_anomaly: np.ndarray, eccentricity: np.ndarray) -> np.ndarr
     return 2.0 * np.arctan2(numerator, denominator)
 
 
-def sample_initial_conditions(cfg: Config) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+def sample_initial_conditions(cfg: Config) -> tuple[np.ndarray, np.ndarray, dict[str, np.ndarray]]:
     """Sample heliocentric Keplerian initial data for test particles."""
     rng = np.random.default_rng(cfg.seed)
     a0 = rng.uniform(cfg.a_min, cfg.a_max, cfg.n)
@@ -132,7 +134,13 @@ def sample_initial_conditions(cfg: Config) -> tuple[np.ndarray, np.ndarray, np.n
     s = np.sin(periapse)
     pos = np.column_stack((c * x_orb - s * y_orb, s * x_orb + c * y_orb))
     vel = np.column_stack((c * vx_orb - s * vy_orb, s * vx_orb + c * vy_orb))
-    return pos, vel, a0
+    elements = {
+        "a": a0,
+        "eccentricity": e0,
+        "mean_anomaly": mean,
+        "periapse_longitude": periapse,
+    }
+    return pos, vel, elements
 
 
 def jupiter_position(t: float, cfg: Config) -> np.ndarray:
@@ -153,6 +161,71 @@ def nearest_resonance(a: float, a_jupiter: float) -> tuple[str, float]:
     locations = resonance_locations(a_jupiter)
     label, location = min(locations.items(), key=lambda item: abs(a - item[1]))
     return label, abs(a - location)
+
+
+def wrap_angle(angle: np.ndarray) -> np.ndarray:
+    return (angle + math.pi) % (2.0 * math.pi) - math.pi
+
+
+def circular_resultant(angle: np.ndarray) -> float:
+    if len(angle) == 0:
+        return float("nan")
+    return float(abs(np.mean(np.exp(1j * angle))))
+
+
+def resonance_angle_rows(elements: dict[str, np.ndarray], status: np.ndarray, cfg: Config) -> list[dict[str, float | int | str]]:
+    """Return finite-window diagnostics for the main interior resonances.
+
+    For an interior p:q resonance the pedagogical resonant angle used here is
+
+        phi = p lambda_J - q lambda - (p-q) varpi.
+
+    Jupiter starts at lambda_J=0 in this model.  The resultant length is near
+    zero for a phase-mixed sample and near one for a concentrated sample.
+    """
+
+    a0 = elements["a"]
+    mean = elements["mean_anomaly"]
+    periapse = elements["periapse_longitude"]
+    longitude = mean + periapse
+    rows: list[dict[str, float | int | str]] = []
+    for label, (p, q) in RESONANCE_RATIOS.items():
+        location = resonance_locations(cfg.a_jupiter)[label]
+        distance = np.abs(a0 - location)
+        inside = distance <= cfg.resonance_window
+        near = (distance > cfg.resonance_window) & (distance <= 2.0 * cfg.resonance_window)
+        phi = wrap_angle(-q * longitude - (p - q) * periapse)
+        for region_name, mask in (("inside", inside), ("near", near)):
+            count = int(np.count_nonzero(mask))
+            if count:
+                ejected = int(np.count_nonzero(mask & (status == EJECTED)))
+                lost = int(np.count_nonzero(mask & (status != ALIVE)))
+                ejection_fraction = ejected / count
+                loss_fraction = lost / count
+                resultant = circular_resultant(phi[mask])
+            else:
+                ejected = 0
+                lost = 0
+                ejection_fraction = float("nan")
+                loss_fraction = float("nan")
+                resultant = float("nan")
+            rows.append(
+                {
+                    "resonance": label,
+                    "p": p,
+                    "q": q,
+                    "location": float(location),
+                    "region": region_name,
+                    "window_au": cfg.resonance_window,
+                    "count": count,
+                    "ejected": ejected,
+                    "lost": lost,
+                    "ejection_fraction": ejection_fraction,
+                    "loss_fraction": loss_fraction,
+                    "phase_resultant": resultant,
+                }
+            )
+    return rows
 
 
 def binomial_standard_error(successes: int, count: int) -> float:
@@ -214,7 +287,7 @@ def classify_losses(
 
 
 def integrate(cfg: Config) -> dict[str, object]:
-    pos, vel, a0 = sample_initial_conditions(cfg)
+    pos, vel, elements = sample_initial_conditions(cfg)
     status = np.zeros(cfg.n, dtype=np.int8)
     steps = int(round(cfg.years / cfg.dt))
     t = 0.0
@@ -236,15 +309,16 @@ def integrate(cfg: Config) -> dict[str, object]:
         vel_now = vhalf - 0.5 * cfg.dt * acc_new
         classify_losses(t, pos, vel_now, status, cfg)
 
-    return summarize(a0, status, cfg, elapsed_years=t)
+    return summarize(elements, status, cfg, elapsed_years=t)
 
 
 def summarize(
-    a0: np.ndarray,
+    elements: dict[str, np.ndarray],
     status: np.ndarray,
     cfg: Config,
     elapsed_years: float,
 ) -> dict[str, object]:
+    a0 = elements["a"]
     total = len(status)
     ejected = int(np.count_nonzero(status == EJECTED))
     sun = int(np.count_nonzero(status == SUN_COLLISION))
@@ -322,10 +396,50 @@ def summarize(
             "ejection_radius": cfg.ejection_radius,
             "sun_radius": cfg.sun_radius,
             "jupiter_close_radius": cfg.jupiter_close_radius,
+            "resonance_window": cfg.resonance_window,
         },
         "resonance_locations": resonance_locations(cfg.a_jupiter),
+        "resonance_angle_rows": resonance_angle_rows(elements, status, cfg),
         "bin_rows": rows,
+        "sensitivity_mode": "none",
+        "outputs": {},
     }
+
+
+def scalar_run_row(label: str, cfg: Config) -> dict[str, float | int | str]:
+    summary = integrate(cfg)
+    return {
+        "case": label,
+        "n": int(summary["n"]),
+        "years": float(summary["configuration"]["years"]),
+        "dt": float(summary["configuration"]["dt"]),
+        "jupiter_mass_scale": cfg.m_jupiter / M_JUPITER if M_JUPITER else float("nan"),
+        "ejected": int(summary["ejected"]),
+        "lost": int(summary["ejected"]) + int(summary["sun_collision"]) + int(summary["jupiter_close"]),
+        "ejection_probability": float(summary["ejection_probability"]),
+        "ejection_standard_error": float(summary["ejection_standard_error"]),
+        "loss_probability": float(summary["loss_probability"]),
+        "loss_standard_error": float(summary["loss_standard_error"]),
+    }
+
+
+def sensitivity_rows(mode: str, cfg: Config) -> list[dict[str, float | int | str]]:
+    if mode == "none":
+        return []
+    if mode == "timestep":
+        return [
+            scalar_run_row(f"dt_x{factor:g}", replace(cfg, dt=cfg.dt * factor))
+            for factor in (0.5, 1.0, 2.0)
+        ]
+    if mode == "ensemble-size":
+        sizes = sorted({max(1, cfg.n // 2), max(1, cfg.n), max(1, 2 * cfg.n)})
+        return [scalar_run_row(f"n_{size}", replace(cfg, n=size)) for size in sizes]
+    if mode == "jupiter-mass":
+        return [
+            scalar_run_row(f"jupiter_mass_scale_{factor:g}", replace(cfg, m_jupiter=M_JUPITER * factor))
+            for factor in (0.0, 0.5, 1.0, 2.0, 5.0)
+        ]
+    raise ValueError(f"unknown sensitivity mode: {mode}")
 
 
 def write_csv(path: Path, rows: list[dict[str, float | int | str]]) -> None:
@@ -376,18 +490,25 @@ def save_plot(path: Path, rows: list[dict[str, float | int | str]]) -> None:
         0.0 if math.isnan(float(row["ejection_fraction"])) else row["ejection_fraction"]
         for row in rows
     ]
+    errors = [
+        0.0 if math.isnan(float(row["ejection_standard_error"])) else row["ejection_standard_error"]
+        for row in rows
+    ]
 
     fig, ax = plt.subplots(figsize=(9, 4.8))
-    ax.bar(centers, values, width=widths, align="center", edgecolor="black")
+    ax.bar(centers, values, width=widths, align="center", edgecolor="black", alpha=0.35, label="ejection fraction")
+    ax.errorbar(centers, values, yerr=errors, fmt="o", color="tab:blue", capsize=3.0, label="binomial s.e.")
     ax.set_xlabel("initial semimajor axis [AU]")
     ax.set_ylabel("ejection fraction")
     ax.set_title("Restricted Sun-Jupiter asteroid ejection estimate")
-    ax.set_ylim(0.0, 1.0)
+    ymax = max(values) if values else 0.0
+    ax.set_ylim(0.0, max(0.12, min(1.0, ymax + 0.12)))
 
     for label, a_res in resonance_locations(A_JUPITER).items():
         ax.axvline(a_res, color="tab:red", alpha=0.35, linewidth=1.0)
-        ax.text(a_res, 0.98, label, rotation=90, va="top", ha="right")
+        ax.text(a_res, ax.get_ylim()[1] * 0.96, label, rotation=90, va="top", ha="right")
 
+    ax.legend(loc="upper right", frameon=False)
     fig.tight_layout()
     fig.savefig(path, dpi=160)
     plt.close(fig)
@@ -414,6 +535,27 @@ def print_summary(summary: dict[str, object]) -> None:
             f"{row['loss_fraction']:.6f},{row['loss_standard_error']:.6f},"
             f"{row['nearest_resonance']},{row['resonance_distance']:.6f}"
         )
+    print()
+    print("resonance,region,count,ejected,lost,ejection_fraction,loss_fraction,phase_resultant")
+    for row in summary["resonance_angle_rows"]:
+        print(
+            f"{row['resonance']},{row['region']},{row['count']},"
+            f"{row['ejected']},{row['lost']},"
+            f"{row['ejection_fraction']:.6f},{row['loss_fraction']:.6f},"
+            f"{row['phase_resultant']:.6f}"
+        )
+    sensitivity = summary.get("sensitivity", {})
+    if sensitivity:
+        print()
+        print(f"sensitivity_mode={sensitivity['mode']}")
+        print("case,n,years,dt,jupiter_mass_scale,ejection_probability,ejection_standard_error,loss_probability,loss_standard_error")
+        for row in sensitivity["rows"]:
+            print(
+                f"{row['case']},{row['n']},{row['years']:.6g},{row['dt']:.6g},"
+                f"{row['jupiter_mass_scale']:.6g},"
+                f"{row['ejection_probability']:.6f},{row['ejection_standard_error']:.6f},"
+                f"{row['loss_probability']:.6f},{row['loss_standard_error']:.6f}"
+            )
 
 
 def apply_presets(args: argparse.Namespace) -> None:
@@ -455,7 +597,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ejection-radius", type=float, default=20.0, help="ejection radius in AU")
     parser.add_argument("--sun-radius", type=float, default=0.02, help="solar collision radius in AU")
     parser.add_argument("--jupiter-close-radius", type=float, default=0.03, help="close Jupiter encounter radius in AU")
+    parser.add_argument("--resonance-window", type=float, default=None, help="AU half-width for resonance-window diagnostics")
     parser.add_argument("--no-indirect", action="store_true", help="omit heliocentric indirect term")
+    parser.add_argument(
+        "--sensitivity",
+        choices=["none", "timestep", "ensemble-size", "jupiter-mass"],
+        default="none",
+        help="optional finite-time sensitivity sweep added to the summary",
+    )
     parser.add_argument("--csv", type=Path, default=None, help="write binned summary CSV")
     parser.add_argument("--json", action="store_true", help="print a machine-readable JSON summary instead of text")
     parser.add_argument("--json-output", type=Path, default=None, help="write a machine-readable JSON summary")
@@ -487,6 +636,8 @@ def parse_args() -> argparse.Namespace:
         parser.error("--sun-radius must be >= 0")
     if args.jupiter_close_radius < 0.0:
         parser.error("--jupiter-close-radius must be >= 0")
+    if args.resonance_window < 0.0:
+        parser.error("--resonance-window must be >= 0")
     return args
 
 
@@ -508,8 +659,16 @@ def main() -> None:
         sun_radius=args.sun_radius,
         jupiter_close_radius=args.jupiter_close_radius,
         include_indirect=not args.no_indirect,
+        resonance_window=args.resonance_window,
     )
     summary = integrate(cfg)
+    if args.sensitivity != "none":
+        summary["sensitivity_mode"] = args.sensitivity
+        summary["sensitivity"] = {
+            "mode": args.sensitivity,
+            "note": "Each row is a separate finite-time experiment; differences mix sampling, model, and timestep effects.",
+            "rows": sensitivity_rows(args.sensitivity, cfg),
+        }
     outputs: dict[str, str] = {}
     rows = summary["bin_rows"]
     if args.csv is not None:

@@ -30,14 +30,30 @@ python -m pytest
 
 ## Machine-Readable Runs
 
-The CR3BP and asteroid-ejection scripts can write JSON summaries:
+Every major Python demo can print JSON summaries:
+
+```sh
+python demos/python/hamiltonian_pendulum.py --quick --json
+python demos/python/rigid_body_euler_top.py --quick --json
+python demos/python/standard_map.py --quick --json
+python demos/python/standard_map_torus_breakdown.py --quick --json
+python demos/python/circular_restricted_three_body.py --quick --json
+python demos/python/asteroid_ejection_probability.py --quick --no-plot --json
+python demos/python/linear_elasticity.py --quick --json
+python demos/python/navier_stokes_solutions.py --quick --json
+python demos/python/deforming_body_gauge.py --quick --json
+python demos/python/cosserat_rod_demo.py --quick --json
+python demos/python/fluids_vorticity.py --quick --json
+```
+
+Selected runs can write persistent JSON and figures:
 
 ```sh
 python demos/python/circular_restricted_three_body.py \
   --preset sun-jupiter \
   --initial l4 \
   --quick \
-  --json-output data/cr3bp_sun_jupiter_quick.json
+  --output-dir data/cr3bp_sun_jupiter_quick
 
 python demos/python/asteroid_ejection_probability.py \
   --lecture \
@@ -58,9 +74,20 @@ python demos/python/asteroid_ejection_probability.py \
   --plot figures/ejection_demo.png
 ```
 
+For finite-time sensitivity checks in the asteroid lab:
+
+```sh
+python demos/python/asteroid_ejection_probability.py \
+  --quick \
+  --no-plot \
+  --sensitivity timestep \
+  --json
+```
+
 The JSON summaries are designed for lab records.  They include the model,
 configuration, integrator note, diagnostic quantities, output paths, and, for
-the asteroid ensemble, binomial standard errors.
+the asteroid ensemble, binomial standard errors, resonance-window diagnostics,
+and optional sensitivity rows.
 
 ## Numerical Diagnostics
 
@@ -77,7 +104,6 @@ the asteroid ensemble, binomial standard errors.
 
 ## Presets
 
-`--quick` is for smoke tests and in-class live runs.  `--lecture` on the
-asteroid script is a moderate run for a prepared lecture.  `--long` is reserved
-for larger sweeps and should be treated as a computational experiment rather
-than a default command.
+`--quick` is for smoke tests and in-class live runs.  `--lecture` is a moderate
+prepared demonstration.  `--long` is reserved for larger sweeps and should be
+treated as a computational experiment rather than a default command.

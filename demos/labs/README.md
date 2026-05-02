@@ -6,12 +6,16 @@ experiments that make a derivation visible.
 
 Suggested sequence:
 
-1. `rigid_body_euler_top.md`
-2. `standard_map_torus_breakdown.md`
-3. `circular_restricted_three_body.md`
-4. `asteroid_ejection_probability.md`
-5. `elasticity_and_navier_stokes.md`
-6. `deforming_body_gauge.md`
+1. `hamiltonian_pendulum.md`
+2. `rigid_body_euler_top.md`
+3. `standard_map_phase_portrait.md`
+4. `standard_map_torus_breakdown.md`
+5. `circular_restricted_three_body.md`
+6. `asteroid_ejection_probability.md`
+7. `elasticity_and_navier_stokes.md`
+8. `deforming_body_gauge.md`
+9. `cosserat_rod.md`
+10. `point_vortices.md`
 
 Each lab asks for the same basic record: command line, parameter values,
 diagnostic output, figure if relevant, and a short interpretation of what the

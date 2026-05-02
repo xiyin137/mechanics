@@ -1,0 +1,29 @@
+{
+  "configuration": {
+    "K": 1.1,
+    "orbits": 12,
+    "p0_center": 3.883222077450933,
+    "p0_width": 0.001,
+    "seed": 20260501,
+    "steps": 80
+  },
+  "diagnostic_note": "This is a finite-time transport probe, not a proof of torus destruction.",
+  "diagnostics": {
+    "max_abs_delta_p": 3.154602223114411,
+    "mean_abs_delta_p": 1.082843930973804,
+    "orbits": 12.0,
+    "p_span_final": 4.6563971619335875,
+    "p_span_initial": 0.0017288082135022975,
+    "p_span_max": 6.122310043903389,
+    "p_std_final": 1.4474288844404397,
+    "p_std_initial": 0.0005613866436446432,
+    "p_std_max": 1.7711653010879747,
+    "rotation_mean": 0.6129829159206471,
+    "rotation_std": 0.11339240219188332,
+    "steps": 80.0
+  },
+  "model": "standard map invariant-curve breakdown diagnostic",
+  "outputs": {
+    "json": "data/canonical/standard_map_torus_breakdown_quick.json"
+  }
+}

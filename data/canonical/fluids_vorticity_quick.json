@@ -1,0 +1,33 @@
+{
+  "angular_impulse_final": 0.0,
+  "angular_impulse_initial": 0.0,
+  "angular_impulse_max_abs_drift": 0.0,
+  "circulations": [
+    1.0,
+    -1.0
+  ],
+  "configuration": {
+    "dt": 0.005,
+    "initial_condition": "dipole",
+    "steps": 80
+  },
+  "hamiltonian_drift": 0.0,
+  "hamiltonian_final": -0.0,
+  "hamiltonian_initial": -0.0,
+  "hamiltonian_max_abs_drift": 0.0,
+  "impulse_final": [
+    0.0,
+    1.0
+  ],
+  "impulse_initial": [
+    0.0,
+    1.0
+  ],
+  "impulse_max_abs_drift": 0.0,
+  "integrator": "classical fourth-order Runge-Kutta",
+  "model": "Hamiltonian point vortices in the plane",
+  "outputs": {
+    "json": "data/canonical/fluids_vorticity_quick.json"
+  },
+  "vortices": 2
+}

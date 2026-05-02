@@ -25,15 +25,18 @@ For a script to count as a reproducible lab instrument, it should state:
 - the random seed when random sampling is used;
 - the output files it wrote.
 
-The two highest-value simulations expose machine-readable summaries:
+Every major Python demo supports the same diagnostic convention:
 
 ```sh
-python demos/python/circular_restricted_three_body.py --quick --json-output data/cr3bp_quick.json
-python demos/python/asteroid_ejection_probability.py --quick --json-output data/asteroid_quick.json --no-plot
+python demos/python/<demo>.py --quick --json
+python demos/python/<demo>.py --lecture --output-dir data/<demo>_lecture
 ```
 
 Use `--json` when a pure JSON summary on standard output is more useful than
-the human-readable report.
+the human-readable report.  Use `--json-output` when the run should leave a lab
+record without changing the text report.  For most demos, `--output-dir`
+creates a standard JSON file and, when plotting is inexpensive, a standard
+figure path.
 
 ## Highlighted Labs
 

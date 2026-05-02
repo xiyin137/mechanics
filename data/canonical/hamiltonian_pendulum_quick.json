@@ -1,0 +1,26 @@
+{
+  "configuration": {
+    "dt": 0.02,
+    "p0": 0.0,
+    "q0": 1.0,
+    "steps": 200
+  },
+  "elapsed_time": 4.0,
+  "energy_drift": -0.0038395927249675887,
+  "energy_final": 0.45585810140689265,
+  "energy_initial": 0.45969769413186023,
+  "energy_max_abs_drift": 0.0043705106269795735,
+  "equations": {
+    "p_dot": "-sin(q)",
+    "q_dot": "p"
+  },
+  "integrator": "symplectic Euler kick-drift",
+  "model": "Hamiltonian pendulum",
+  "outputs": {
+    "json": "data/canonical/hamiltonian_pendulum_quick.json"
+  },
+  "p_final": 0.5248109027369735,
+  "phase_region": "libration",
+  "q_final": -0.8205005587268199,
+  "separatrix_energy": 2.0
+}

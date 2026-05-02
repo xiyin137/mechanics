@@ -27,9 +27,21 @@ from typing import Iterable
 
 import numpy as np
 
+try:
+    from demos.python.common import add_output_args, add_preset_args, configure_standard_outputs, emit_summary, fill_defaults
+except ModuleNotFoundError:  # pragma: no cover - direct script execution
+    from common import add_output_args, add_preset_args, configure_standard_outputs, emit_summary, fill_defaults
+
 TWOPI = 2.0 * math.pi
 GOLDEN_ROTATION = (math.sqrt(5.0) - 1.0) / 2.0
 GOLDEN_P = TWOPI * GOLDEN_ROTATION
+K_PRESETS = {"small": 0.25, "near-critical": 0.95, "large": 1.1}
+DEFAULTS = {"K": 1.1, "orbits": 128, "steps": 1500, "seed": 20260501, "p0": GOLDEN_P, "width": 1.0e-3}
+RUN_PRESETS = {
+    "quick": {"orbits": 12, "steps": 80},
+    "lecture": {"orbits": 128, "steps": 1500},
+    "long": {"orbits": 512, "steps": 10000},
+}
 
 
 def iterate_cylinder(
@@ -225,24 +237,38 @@ def save_plot(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--K", type=float, default=1.1, help="standard-map kick strength")
-    parser.add_argument("--orbits", type=int, default=128, help="number of ensemble orbits")
-    parser.add_argument("--steps", type=int, default=1500, help="number of iterations")
-    parser.add_argument("--seed", type=int, default=20260501, help="random seed")
+    add_preset_args(parser)
+    parser.add_argument("--preset", choices=sorted(K_PRESETS), default=None, help="standard K preset")
+    parser.add_argument("--K", type=float, default=None, help="standard-map kick strength")
+    parser.add_argument("--orbits", type=int, default=None, help="number of ensemble orbits")
+    parser.add_argument("--steps", type=int, default=None, help="number of iterations")
+    parser.add_argument("--seed", type=int, default=None, help="random seed")
     parser.add_argument(
         "--p0",
         type=float,
-        default=GOLDEN_P,
+        default=None,
         help="center of initial momentum packet, default 2*pi times the golden rotation number",
     )
     parser.add_argument(
         "--width",
         type=float,
-        default=1.0e-3,
+        default=None,
         help="half-width of the initial momentum packet",
     )
     parser.add_argument("--plot", type=Path, help="optional output path for a PNG figure")
+    add_output_args(parser)
     args = parser.parse_args()
+    defaults = dict(DEFAULTS)
+    if args.quick:
+        defaults.update(RUN_PRESETS["quick"])
+    elif args.lecture:
+        defaults.update(RUN_PRESETS["lecture"])
+    elif args.long:
+        defaults.update(RUN_PRESETS["long"])
+    if args.preset is not None and args.K is None:
+        defaults["K"] = K_PRESETS[args.preset]
+    fill_defaults(args, defaults)
+    configure_standard_outputs(args, stem="standard_map_torus_breakdown", plot_name="standard_map_torus_breakdown.png")
     if args.orbits <= 0:
         parser.error("--orbits must be > 0")
     if args.steps < 0:
@@ -250,6 +276,34 @@ def parse_args() -> argparse.Namespace:
     if args.width < 0.0:
         parser.error("--width must be >= 0")
     return args
+
+
+def build_summary(args: argparse.Namespace, summary: dict[str, float]) -> dict[str, object]:
+    return {
+        "model": "standard map invariant-curve breakdown diagnostic",
+        "configuration": {
+            "K": args.K,
+            "orbits": args.orbits,
+            "steps": args.steps,
+            "seed": args.seed,
+            "p0_center": args.p0,
+            "p0_width": args.width,
+        },
+        "diagnostics": summary,
+        "diagnostic_note": "This is a finite-time transport probe, not a proof of torus destruction.",
+        "outputs": {},
+    }
+
+
+def print_summary(data: dict[str, object]) -> None:
+    config = data["configuration"]
+    summary = data["diagnostics"]
+    print("Standard-map invariant-curve breakdown diagnostic")
+    print(data["diagnostic_note"])
+    print(f"K={config['K']:g}, orbits={config['orbits']}, steps={config['steps']}, seed={config['seed']}")
+    print(f"p0_center={config['p0_center']:.12g}, p0_width={config['p0_width']:.3g}")
+    for key in sorted(summary):
+        print(f"{key}={summary[key]:.12g}")
 
 
 def main() -> None:
@@ -263,16 +317,9 @@ def main() -> None:
         p0_width=args.width,
     )
 
-    print("Standard-map invariant-curve breakdown diagnostic")
-    print("This is a finite-time transport probe, not a proof of torus destruction.")
-    print(f"K={args.K:g}, orbits={args.orbits}, steps={args.steps}, seed={args.seed}")
-    print(f"p0_center={args.p0:.12g}, p0_width={args.width:.3g}")
-    for key in sorted(summary):
-        print(f"{key}={summary[key]:.12g}")
-
     if args.plot:
         save_plot(args.plot, q_mod, p, args.K, summary)
-        print(f"wrote {args.plot}")
+    emit_summary(build_summary(args, summary), args, print_summary)
 
 
 if __name__ == "__main__":

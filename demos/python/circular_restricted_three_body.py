@@ -303,6 +303,7 @@ def build_summary(
             "RK4 is transparent for lecture use but is not symplectic; "
             "Jacobi drift should be monitored for long integrations."
         ),
+        "outputs": {},
     }
 
 
@@ -330,17 +331,37 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--periods", type=float, default=None, help="integration time in rotating-frame periods")
     parser.add_argument("--dt", type=float, default=None, help="time step in dimensionless units")
     parser.add_argument("--initial", choices=["l4", "l1", "asteroid"], default="l4")
-    parser.add_argument("--quick", action="store_true", help="use a short classroom/smoke-test integration unless overridden")
+    run_group = parser.add_mutually_exclusive_group()
+    run_group.add_argument("--quick", action="store_true", help="use a short classroom/smoke-test integration unless overridden")
+    run_group.add_argument("--lecture", action="store_true", help="use the standard lecture integration unless overridden")
+    run_group.add_argument("--long", action="store_true", help="use a longer project integration unless overridden")
     parser.add_argument("--plot", type=Path, default=None)
     parser.add_argument("--json", action="store_true", help="print a machine-readable JSON summary instead of text")
     parser.add_argument("--json-output", type=Path, default=None, help="write a machine-readable JSON summary")
+    parser.add_argument("--output-dir", type=Path, default=None, help="write standard JSON and plot outputs to this directory")
     args = parser.parse_args()
     if args.mu is None:
         args.mu = PRESET_MU[args.preset]
     if args.periods is None:
-        args.periods = 0.25 if args.quick else 3.0
+        if args.quick:
+            args.periods = 0.25
+        elif args.long:
+            args.periods = 25.0
+        else:
+            args.periods = 3.0
     if args.dt is None:
-        args.dt = 0.01 if args.quick else 0.0025
+        if args.quick:
+            args.dt = 0.01
+        elif args.long:
+            args.dt = 0.001
+        else:
+            args.dt = 0.0025
+    if args.output_dir is not None:
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        if args.json_output is None:
+            args.json_output = args.output_dir / "circular_restricted_three_body.json"
+        if args.plot is None:
+            args.plot = args.output_dir / "cr3bp_zero_velocity.png"
     if not (0.0 < args.mu <= 0.5):
         parser.error("--mu must satisfy 0 < mu <= 1/2")
     if args.periods < 0.0:

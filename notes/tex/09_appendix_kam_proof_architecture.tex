@@ -192,6 +192,67 @@ The twist condition is the assumption that this adjustment can be solved for
 uniquely.  Without it, KAM theorems still exist in modified forms, but some
 other nondegeneracy condition must replace it.
 
+\section{Isoenergetic And Map Versions}
+\label{sec:kam-isoenergetic-map-versions}
+
+The nondegeneracy condition depends on which object is being preserved.  The
+Kolmogorov theorem fixes a frequency vector and constructs a nearby invariant
+torus with that frequency.  In applications one often fixes an energy surface
+instead.  Then frequencies are meaningful only up to a common rescaling of
+time, because the orbit on a torus with frequency \(\omega\) and the orbit with
+frequency \(c\omega\), \(c>0\), have the same unparametrized winding direction.
+
+\begin{definition}[Isoenergetic nondegeneracy]
+The integrable Hamiltonian \(h(I)\) satisfies the isoenergetic nondegeneracy
+condition at \(I\) if
+\[
+        \det
+        \begin{pmatrix}
+        \pd_I^2h(I) & \nabla h(I)\\
+        \nabla h(I)^T & 0
+        \end{pmatrix}
+        \ne 0 .
+\]
+\end{definition}
+
+This condition says that, after restricting to an energy surface, the
+frequency direction still changes nontrivially with the actions.  It is the
+natural condition when the geometry of a fixed energy hypersurface is the main
+object.
+
+For a two-dimensional area-preserving twist map with coordinates \((\theta,I)\)
+and unperturbed form
+\[
+        I_{m+1}=I_m,\qquad
+        \theta_{m+1}=\theta_m+\Omega(I_m),
+\]
+the corresponding nondegeneracy condition is
+\[
+        \frac{\dd \Omega}{\dd I}\ne0 .
+\]
+This is the map version of twist.  It is what makes the standard map a useful
+laboratory: for \(K=0\),
+\[
+        p_{m+1}=p_m,\qquad q_{m+1}=q_m+p_m ,
+\]
+so the rotation number changes with \(p\).  KAM curves of the perturbed map are
+organized by their irrational rotation numbers.
+
+\begin{center}
+\begin{tabular}{p{0.25\textwidth} p{0.34\textwidth} p{0.29\textwidth}}
+\hline
+setting & preserved object & nondegeneracy condition\\
+\hline
+Hamiltonian flow, fixed frequency & torus with frequency \(\omega\) &
+\(\det \pd_I^2h\ne0\)\\
+Hamiltonian flow, fixed energy & frequency direction on an energy surface &
+bordered determinant above is nonzero\\
+area-preserving twist map & invariant curve with rotation number \(\rho\) &
+\(\dd\Omega/\dd I\ne0\)\\
+\hline
+\end{tabular}
+\end{center}
+
 \section{One KAM Step}
 \label{sec:one-kam-step}
 

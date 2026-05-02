@@ -1,0 +1,28 @@
+{
+  "configuration": {
+    "K": 0.95,
+    "orbits": 8,
+    "seed": 3,
+    "steps": 40
+  },
+  "diagnostic_note": "Finite rotation numbers over short times are descriptive diagnostics, not invariant-torus proofs.",
+  "finite_rotation_mean": 0.5312846894924603,
+  "finite_rotation_std": 0.11134635436877058,
+  "map": {
+    "p_next": "p + K sin(q) mod 2*pi",
+    "q_next": "q + p_next mod 2*pi"
+  },
+  "model": "standard map on the two-torus",
+  "outputs": {
+    "json": "data/canonical/standard_map_quick.json"
+  },
+  "p_range": [
+    0.04415607114487319,
+    6.271870005400468
+  ],
+  "points": 328,
+  "q_range": [
+    0.023022302655668625,
+    6.276796412835402
+  ]
+}

@@ -58,6 +58,25 @@ def test_python_demos_compile() -> None:
     run_python_demo("-m", "compileall", "-q", "demos/python")
 
 
+def test_major_python_demos_expose_help() -> None:
+    scripts = [
+        "asteroid_ejection_probability.py",
+        "circular_restricted_three_body.py",
+        "cosserat_rod_demo.py",
+        "deforming_body_gauge.py",
+        "fluids_vorticity.py",
+        "hamiltonian_pendulum.py",
+        "linear_elasticity.py",
+        "navier_stokes_solutions.py",
+        "rigid_body_euler_top.py",
+        "standard_map.py",
+        "standard_map_torus_breakdown.py",
+    ]
+    for script in scripts:
+        result = run_python_demo("demos/python/" + script, "--help")
+        assert "usage:" in result.stdout
+
+
 @pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
 def test_core_demos_run_small_cases() -> None:
     run_python_demo("demos/python/rigid_body_euler_top.py", "--steps", "20")
@@ -87,6 +106,28 @@ def test_asteroid_ejection_probability_runs_small_case() -> None:
         "--no-plot",
     )
     assert "ejection_probability=" in result.stdout
+
+
+@pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
+def test_core_demos_emit_quick_json() -> None:
+    cases = [
+        ("demos/python/hamiltonian_pendulum.py", ["--quick", "--json"], "model"),
+        ("demos/python/rigid_body_euler_top.py", ["--quick", "--json"], "energy_max_abs_drift"),
+        ("demos/python/standard_map.py", ["--quick", "--json"], "finite_rotation_mean"),
+        ("demos/python/standard_map_torus_breakdown.py", ["--quick", "--json"], "diagnostics"),
+        ("demos/python/circular_restricted_three_body.py", ["--quick", "--json"], "jacobi_max_abs_drift"),
+        ("demos/python/asteroid_ejection_probability.py", ["--quick", "--no-plot", "--json"], "ejection_standard_error"),
+        ("demos/python/linear_elasticity.py", ["--quick", "--json"], "moduli_round_trip_error"),
+        ("demos/python/deforming_body_gauge.py", ["--quick", "--json"], "bch_error_norm"),
+        ("demos/python/cosserat_rod_demo.py", ["--quick", "--json"], "frame_holonomy"),
+        ("demos/python/navier_stokes_solutions.py", ["--quick", "--json"], "taylor_green_residual_norm"),
+        ("demos/python/fluids_vorticity.py", ["--quick", "--json"], "hamiltonian_max_abs_drift"),
+    ]
+    for script, args, required_key in cases:
+        result = run_python_demo(script, *args)
+        data = json.loads(result.stdout)
+        assert required_key in data
+        assert "outputs" in data
 
 
 @pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
@@ -467,6 +508,7 @@ def test_asteroid_summary_probabilities_and_counts_are_consistent() -> None:
         sun_radius=0.02,
         jupiter_close_radius=0.03,
         include_indirect=True,
+        resonance_window=0.05,
     )
     summary = demo.integrate(cfg)
     status_total = (
@@ -501,9 +543,15 @@ def test_asteroid_summary_includes_right_bin_endpoint() -> None:
         sun_radius=0.02,
         jupiter_close_radius=0.03,
         include_indirect=True,
+        resonance_window=0.05,
     )
     status = np.array([demo.ALIVE, demo.EJECTED, demo.ALIVE], dtype=np.int8)
-    summary = demo.summarize(np.array([2.0, 2.5, 3.0]), status, cfg, elapsed_years=0.0)
+    elements = {
+        "a": np.array([2.0, 2.5, 3.0]),
+        "mean_anomaly": np.zeros(3),
+        "periapse_longitude": np.zeros(3),
+    }
+    summary = demo.summarize(elements, status, cfg, elapsed_years=0.0)
     assert sum(row["count"] for row in summary["bin_rows"]) == 3
     assert summary["bin_rows"][-1]["count"] == 2
 
@@ -527,6 +575,7 @@ def test_asteroid_zero_particles_is_well_defined() -> None:
         sun_radius=0.02,
         jupiter_close_radius=0.03,
         include_indirect=True,
+        resonance_window=0.05,
     )
     summary = demo.integrate(cfg)
     assert summary["n"] == 0
@@ -555,8 +604,10 @@ def test_asteroid_kepler_initial_conditions_match_orbital_elements() -> None:
         sun_radius=0.02,
         jupiter_close_radius=0.03,
         include_indirect=True,
+        resonance_window=0.05,
     )
-    pos, vel, a0 = demo.sample_initial_conditions(cfg)
+    pos, vel, elements = demo.sample_initial_conditions(cfg)
+    a0 = elements["a"]
     radius = np.linalg.norm(pos, axis=1)
     speed_sq = np.sum(vel * vel, axis=1)
     specific_energy = 0.5 * speed_sq - cfg.gm_sun / radius
@@ -588,6 +639,7 @@ def test_asteroid_acceleration_matches_finite_difference_potential() -> None:
         sun_radius=0.02,
         jupiter_close_radius=0.03,
         include_indirect=True,
+        resonance_window=0.05,
     )
     t = 0.3
     pos = np.array([2.4, 0.7])

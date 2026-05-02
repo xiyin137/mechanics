@@ -12,6 +12,26 @@ from pathlib import Path
 
 import numpy as np
 
+try:
+    from demos.python.common import add_output_args, add_preset_args, configure_standard_outputs, emit_summary, fill_defaults
+except ModuleNotFoundError:  # pragma: no cover - direct script execution
+    from common import add_output_args, add_preset_args, configure_standard_outputs, emit_summary, fill_defaults
+
+
+DEFAULTS = {
+    "I1": 1.0,
+    "I2": 2.0,
+    "I3": 3.0,
+    "omega0": [0.05, 1.0, 0.05],
+    "dt": 0.01,
+    "steps": 5000,
+}
+PRESETS = {
+    "quick": {"dt": 0.005, "steps": 200},
+    "lecture": {"dt": 0.01, "steps": 5000},
+    "long": {"dt": 0.002, "steps": 50000},
+}
+
 
 @dataclass(frozen=True)
 class RigidBody:
@@ -171,16 +191,91 @@ def save_plot(
     plt.close(fig)
 
 
+def principal_axis_stability(body: RigidBody) -> dict[str, str]:
+    moments = np.array([body.I1, body.I2, body.I3], dtype=float)
+    labels = ["axis_1", "axis_2", "axis_3"]
+    order = np.argsort(moments)
+    stability = {label: "stable" for label in labels}
+    stability[labels[int(order[1])]] = "unstable"
+    return stability
+
+
+def build_summary(
+    args: argparse.Namespace,
+    body: RigidBody,
+    time: np.ndarray,
+    omega: np.ndarray,
+    attitude: np.ndarray,
+) -> dict[str, object]:
+    energy, momentum_sq = invariants(omega, body)
+    J = spatial_momentum(omega, attitude, body)
+    orthogonality_error, determinant_error = attitude_errors(attitude)
+    spatial_momentum_drift = np.linalg.norm(J - J[0], axis=1)
+    return {
+        "model": "free rigid body Euler top",
+        "integrator": "RK4 for Euler equations plus exponential attitude reconstruction",
+        "configuration": {
+            "I1": body.I1,
+            "I2": body.I2,
+            "I3": body.I3,
+            "omega0": list(args.omega0),
+            "dt": args.dt,
+            "steps": args.steps,
+        },
+        "elapsed_time": float(time[-1]) if len(time) else 0.0,
+        "principal_axis_stability": principal_axis_stability(body),
+        "energy_initial": float(energy[0]),
+        "energy_final": float(energy[-1]),
+        "energy_drift": float(energy[-1] - energy[0]),
+        "energy_max_abs_drift": float(np.max(np.abs(energy - energy[0]))),
+        "momentum_sq_initial": float(momentum_sq[0]),
+        "momentum_sq_final": float(momentum_sq[-1]),
+        "momentum_sq_drift": float(momentum_sq[-1] - momentum_sq[0]),
+        "momentum_sq_max_abs_drift": float(np.max(np.abs(momentum_sq - momentum_sq[0]))),
+        "spatial_momentum_max_drift": float(np.max(spatial_momentum_drift)),
+        "attitude_orthogonality_error": orthogonality_error,
+        "attitude_determinant_error": determinant_error,
+        "omega_final": omega[-1].tolist(),
+        "outputs": {},
+    }
+
+
+def print_summary(summary: dict[str, object]) -> None:
+    print(f"steps={summary['configuration']['steps']}")
+    print(f"energy_initial={summary['energy_initial']:.12g}")
+    print(f"energy_final={summary['energy_final']:.12g}")
+    print(f"energy_drift={summary['energy_drift']:.6e}")
+    print(f"energy_max_abs_drift={summary['energy_max_abs_drift']:.6e}")
+    print(f"momentum_sq_initial={summary['momentum_sq_initial']:.12g}")
+    print(f"momentum_sq_final={summary['momentum_sq_final']:.12g}")
+    print(f"momentum_sq_drift={summary['momentum_sq_drift']:.6e}")
+    print(f"momentum_sq_max_abs_drift={summary['momentum_sq_max_abs_drift']:.6e}")
+    print(f"spatial_momentum_max_drift={summary['spatial_momentum_max_drift']:.6e}")
+    print(f"attitude_orthogonality_error={summary['attitude_orthogonality_error']:.6e}")
+    print(f"attitude_determinant_error={summary['attitude_determinant_error']:.6e}")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--I1", type=float, default=1.0)
-    parser.add_argument("--I2", type=float, default=2.0)
-    parser.add_argument("--I3", type=float, default=3.0)
-    parser.add_argument("--omega0", type=float, nargs=3, default=[0.05, 1.0, 0.05])
-    parser.add_argument("--dt", type=float, default=0.01)
-    parser.add_argument("--steps", type=int, default=5000)
+    add_preset_args(parser)
+    parser.add_argument("--I1", type=float, default=None)
+    parser.add_argument("--I2", type=float, default=None)
+    parser.add_argument("--I3", type=float, default=None)
+    parser.add_argument("--omega0", type=float, nargs=3, default=None)
+    parser.add_argument("--dt", type=float, default=None)
+    parser.add_argument("--steps", type=int, default=None)
     parser.add_argument("--plot", type=Path, default=None)
+    add_output_args(parser)
     args = parser.parse_args()
+    defaults = dict(DEFAULTS)
+    if args.quick:
+        defaults.update(PRESETS["quick"])
+    elif args.lecture:
+        defaults.update(PRESETS["lecture"])
+    elif args.long:
+        defaults.update(PRESETS["long"])
+    fill_defaults(args, defaults)
+    configure_standard_outputs(args, stem="rigid_body_euler_top", plot_name="rigid_body_euler_top.png")
     if min(args.I1, args.I2, args.I3) <= 0.0:
         parser.error("--I1, --I2, and --I3 must be > 0")
     if args.dt <= 0.0:
@@ -196,22 +291,10 @@ def main() -> None:
     time, omega, attitude = simulate_attitude(
         body, np.array(args.omega0, dtype=float), args.dt, args.steps
     )
-    energy, momentum_sq = invariants(omega, body)
-    J = spatial_momentum(omega, attitude, body)
-    orthogonality_error, determinant_error = attitude_errors(attitude)
-    print(f"steps={args.steps}")
-    print(f"energy_initial={energy[0]:.12g}")
-    print(f"energy_final={energy[-1]:.12g}")
-    print(f"energy_drift={energy[-1] - energy[0]:.6e}")
-    print(f"momentum_sq_initial={momentum_sq[0]:.12g}")
-    print(f"momentum_sq_final={momentum_sq[-1]:.12g}")
-    print(f"momentum_sq_drift={momentum_sq[-1] - momentum_sq[0]:.6e}")
-    print(f"spatial_momentum_max_drift={np.max(np.linalg.norm(J - J[0], axis=1)):.6e}")
-    print(f"attitude_orthogonality_error={orthogonality_error:.6e}")
-    print(f"attitude_determinant_error={determinant_error:.6e}")
     if args.plot is not None:
         save_plot(args.plot, time, omega, body, attitude)
-        print(f"wrote_plot={args.plot}")
+    summary = build_summary(args, body, time, omega, attitude)
+    emit_summary(summary, args, print_summary)
 
 
 if __name__ == "__main__":

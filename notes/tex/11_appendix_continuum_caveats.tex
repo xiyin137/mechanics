@@ -204,6 +204,67 @@ For inviscid flow, only impermeability
 is normally imposed.  Applying a no-slip condition to the Euler equation or an
 inviscid slip condition to a viscous wall problem changes the physical model.
 
+\section{Weak Forms In Elasticity}
+\label{sec:continuum-elasticity-weak-form}
+
+For linear elasticity on a reference domain \(\Omega\subset\R^3\), write the
+displacement as \(u:\Omega\to\R^3\) and the infinitesimal strain as
+\[
+        \varepsilon(u)=\frac{1}{2}\bigl(\nabla u+\nabla u^T\bigr).
+\]
+The strong static equation is
+\[
+        -\divergence\sigma=f,\qquad
+        \sigma=\mathbb{C}\varepsilon(u),
+\]
+with prescribed displacement on \(\Gamma_D\) and traction
+\(\sigma n=t\) on \(\Gamma_N\).  Let \(v\) be a test displacement vanishing on
+\(\Gamma_D\).  Multiplying by \(v\), integrating, and integrating by parts gives
+\[
+        \int_\Omega \sigma:\varepsilon(v)\,\dd x
+        =
+        \int_\Omega f\cdot v\,\dd x+
+        \int_{\Gamma_N}t\cdot v\,\dd S .
+\]
+This is the weak form.  The natural energy space is a Sobolev space
+\[
+        u\in H^1(\Omega;\R^3),\qquad
+        v\in H^1_0(\Omega;\R^3;\Gamma_D).
+\]
+The coercivity mechanism is Korn's inequality: modulo rigid motions, the
+\(H^1\)-size of \(u\) is controlled by the \(L^2\)-size of
+\(\varepsilon(u)\).  This is why strain, although it is only the symmetric part
+of \(\nabla u\), is enough to control displacement after boundary conditions
+remove free rigid motions.
+
+\section{Finite Elasticity And Convexity Caveats}
+\label{sec:finite-elasticity-convexity-caveats}
+
+In finite elasticity the stored energy \(W(F)\) must be frame indifferent:
+\[
+        W(RF)=W(F)\qquad R\in\SO(3).
+\]
+This symmetry is incompatible with ordinary convexity in \(F\) for realistic
+elastic energies.  The direct method in the calculus of variations therefore
+uses weaker notions.
+\[
+\begin{array}{ccl}
+\text{polyconvexity} &\Longrightarrow& \text{quasiconvexity}\\
+                    &\Longrightarrow& \text{rank-one convexity}\\
+                    &\Longrightarrow& \text{Legendre-Hadamard ellipticity}.
+\end{array}
+\]
+Polyconvexity means that \(W\) can be written as a convex function of
+\[
+        F,\qquad \operatorname{cof}F,\qquad \det F .
+\]
+Quasiconvexity is the condition tied directly to weak lower semicontinuity of
+the elastic energy.  Rank-one convexity tests convexity along lines
+\(F+s\,a\otimes b\), the infinitesimal directions relevant to localized
+gradients.  The main text uses finite-strain formulas classically; existence
+theory for minimizers requires these additional hypotheses plus coercivity and
+orientation preservation.
+
 \section{Navier-Stokes Assumptions}
 \label{sec:navier-stokes-assumptions}
 
@@ -226,6 +287,47 @@ of interest;
 The equation is local and deterministic.  Turbulence does not invalidate it as
 a model, but turbulent prediction may require statistical descriptions,
 resolution studies, or closure assumptions if one averages the equations.
+
+\section{Weak Form Of Incompressible Navier-Stokes}
+\label{sec:weak-navier-stokes}
+
+Let \(v\) be divergence-free and let \(w\) be a smooth divergence-free test
+field satisfying the homogeneous velocity boundary condition.  Multiplying
+Navier-Stokes by \(w\) and integrating gives
+\[
+        \rho\int_\Omega \pd_t v\cdot w\,\dd x
+        +
+        \rho\int_\Omega (v\cdot\nabla)v\cdot w\,\dd x
+        +
+        2\mu\int_\Omega D(v):D(w)\,\dd x
+        =
+        \int_\Omega \rho b\cdot w\,\dd x .
+\]
+The pressure term is absent because
+\[
+        \int_\Omega \nabla p\cdot w\,\dd x
+        =
+        \int_{\partial\Omega}p\,w\cdot n\,\dd S
+        -
+        \int_\Omega p\,\divergence w\,\dd x
+        =
+        0
+\]
+for the usual no-penetration or no-slip test spaces.  A Leray-Hopf weak
+solution in three dimensions satisfies the equation in this weak sense and the
+energy inequality
+\[
+        \frac{1}{2}\rho\norm{v(t)}_{L^2}^2
+        +
+        2\mu\int_0^t\norm{D(v(s))}_{L^2}^2\,\dd s
+        \le
+        \frac{1}{2}\rho\norm{v(0)}_{L^2}^2
+        +
+        \int_0^t\int_\Omega \rho b\cdot v\,\dd x\,\dd s .
+\]
+Weak existence is not the same as smooth uniqueness.  The three-dimensional
+global regularity problem asks whether smooth data always produce smooth
+solutions for all time; this remains outside the scope of these notes.
 
 \section{Energy Identities And Regularity}
 \label{sec:continuum-energy-regularity}

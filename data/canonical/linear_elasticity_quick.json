@@ -1,0 +1,30 @@
+{
+  "axial_bar_elongation": 0.125,
+  "bar_frequencies": [
+    14.049629462081453,
+    28.099258924162907,
+    42.14888838624436
+  ],
+  "bulk_modulus": 16.666666666666664,
+  "cantilever_tip_deflection": 0.8333333333333334,
+  "circular_polar_moment": 0.0003257203263241897,
+  "configuration": {
+    "points": 24,
+    "poisson": 0.3,
+    "rho": 1.0,
+    "young": 20.0
+  },
+  "lambda": 11.538461538461538,
+  "model": "linear isotropic elasticity formula diagnostics",
+  "moduli_round_trip_error": 0.0,
+  "mu": 7.692307692307692,
+  "outputs": {
+    "json": "data/canonical/linear_elasticity_quick.json"
+  },
+  "p_wave_speed": 5.188745216627708,
+  "recovered_poisson": 0.3,
+  "recovered_young": 20.0,
+  "s_wave_speed": 2.7735009811261455,
+  "simply_supported_uniform_residual": 0.0,
+  "torsion_twist": 3.192923241041111
+}

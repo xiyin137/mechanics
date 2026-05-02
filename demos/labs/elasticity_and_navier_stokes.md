@@ -9,15 +9,22 @@ exact laminar and unsteady solutions and checks residuals.
 ## Run
 
 ```sh
-python demos/python/linear_elasticity.py --plot figures/linear_elasticity.png
-python demos/python/navier_stokes_solutions.py --plot figures/navier_stokes_solutions.png
+python demos/python/linear_elasticity.py \
+  --lecture \
+  --plot figures/linear_elasticity.png \
+  --json-output data/linear_elasticity.json
+
+python demos/python/navier_stokes_solutions.py \
+  --lecture \
+  --plot figures/navier_stokes_solutions.png \
+  --json-output data/navier_stokes_solutions.json
 ```
 
 For smoke runs:
 
 ```sh
-python demos/python/linear_elasticity.py --points 12
-python demos/python/navier_stokes_solutions.py --points 12
+python demos/python/linear_elasticity.py --quick --json
+python demos/python/navier_stokes_solutions.py --quick --json
 ```
 
 ## Questions
@@ -28,9 +35,12 @@ python demos/python/navier_stokes_solutions.py --points 12
 3. Which assumptions reduce Navier-Stokes to the Couette-Poiseuille ordinary
    differential equation?
 4. Why does the Taylor-Green vortex give an exact residual check?
+5. Which elastic formula checks a static boundary-value problem, and which
+   fluid formula checks an unsteady diffusion problem?
 
 ## Expected Record
 
 Record the input parameters, boundary values or residuals checked by the
-scripts, and one comparison between an elastic boundary-value formula and a
-fluid exact solution.
+scripts, moduli round-trip error, Taylor-Green residual norm, and one
+comparison between an elastic boundary-value formula and a fluid exact
+solution.

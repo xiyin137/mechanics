@@ -12,6 +12,19 @@ from pathlib import Path
 
 import numpy as np
 
+try:
+    from demos.python.common import add_output_args, add_preset_args, configure_standard_outputs, emit_summary, fill_defaults
+except ModuleNotFoundError:  # pragma: no cover - direct script execution
+    from common import add_output_args, add_preset_args, configure_standard_outputs, emit_summary, fill_defaults
+
+
+DEFAULTS = {"ic": "dipole", "steps": 3000, "dt": 0.01}
+PRESETS = {
+    "quick": {"steps": 80, "dt": 0.005},
+    "lecture": {"steps": 3000, "dt": 0.01},
+    "long": {"steps": 30000, "dt": 0.002},
+}
+
 
 def velocity(positions: np.ndarray, gamma: np.ndarray, core: float = 1.0e-6) -> np.ndarray:
     n = len(gamma)
@@ -61,6 +74,10 @@ def initial_condition(name: str) -> tuple[np.ndarray, np.ndarray]:
             dtype=float,
         )
         return positions, gamma
+    if name == "like-signed-pair":
+        gamma = np.array([1.0, 1.0])
+        positions = np.array([[-0.5, 0.0], [0.5, 0.0]], dtype=float)
+        return positions, gamma
     raise ValueError(f"unknown initial condition: {name}")
 
 
@@ -108,13 +125,68 @@ def save_plot(path: Path, traj: np.ndarray, gamma: np.ndarray, energy: np.ndarra
     plt.close(fig)
 
 
+def vortex_impulse(positions: np.ndarray, gamma: np.ndarray) -> np.ndarray:
+    return np.array([np.sum(gamma * positions[:, 1]), -np.sum(gamma * positions[:, 0])], dtype=float)
+
+
+def angular_impulse(positions: np.ndarray, gamma: np.ndarray) -> float:
+    return float(np.sum(gamma * np.sum(positions * positions, axis=1)))
+
+
+def build_summary(args: argparse.Namespace, traj: np.ndarray, gamma: np.ndarray, energy: np.ndarray) -> dict[str, object]:
+    impulse = np.array([vortex_impulse(frame, gamma) for frame in traj])
+    angular = np.array([angular_impulse(frame, gamma) for frame in traj])
+    return {
+        "model": "Hamiltonian point vortices in the plane",
+        "integrator": "classical fourth-order Runge-Kutta",
+        "configuration": {"initial_condition": args.ic, "steps": args.steps, "dt": args.dt},
+        "vortices": int(len(gamma)),
+        "circulations": gamma.tolist(),
+        "hamiltonian_initial": float(energy[0]),
+        "hamiltonian_final": float(energy[-1]),
+        "hamiltonian_drift": float(energy[-1] - energy[0]),
+        "hamiltonian_max_abs_drift": float(np.max(np.abs(energy - energy[0]))),
+        "impulse_initial": impulse[0].tolist(),
+        "impulse_final": impulse[-1].tolist(),
+        "impulse_max_abs_drift": float(np.max(np.linalg.norm(impulse - impulse[0], axis=1))),
+        "angular_impulse_initial": float(angular[0]),
+        "angular_impulse_final": float(angular[-1]),
+        "angular_impulse_max_abs_drift": float(np.max(np.abs(angular - angular[0]))),
+        "outputs": {},
+    }
+
+
+def print_summary(summary: dict[str, object]) -> None:
+    config = summary["configuration"]
+    print(f"initial_condition={config['initial_condition']}")
+    print(f"vortices={summary['vortices']}")
+    print(f"steps={config['steps']}")
+    print(f"hamiltonian_initial={summary['hamiltonian_initial']:.12g}")
+    print(f"hamiltonian_final={summary['hamiltonian_final']:.12g}")
+    print(f"hamiltonian_drift={summary['hamiltonian_drift']:.6e}")
+    print(f"hamiltonian_max_abs_drift={summary['hamiltonian_max_abs_drift']:.6e}")
+    print(f"impulse_max_abs_drift={summary['impulse_max_abs_drift']:.6e}")
+    print(f"angular_impulse_max_abs_drift={summary['angular_impulse_max_abs_drift']:.6e}")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--ic", choices=["dipole", "four-vortex"], default="dipole")
-    parser.add_argument("--steps", type=int, default=3000)
-    parser.add_argument("--dt", type=float, default=0.01)
+    add_preset_args(parser)
+    parser.add_argument("--ic", choices=["dipole", "four-vortex", "like-signed-pair"], default=None)
+    parser.add_argument("--steps", type=int, default=None)
+    parser.add_argument("--dt", type=float, default=None)
     parser.add_argument("--plot", type=Path, default=None)
+    add_output_args(parser)
     args = parser.parse_args()
+    defaults = dict(DEFAULTS)
+    if args.quick:
+        defaults.update(PRESETS["quick"])
+    elif args.lecture:
+        defaults.update(PRESETS["lecture"])
+    elif args.long:
+        defaults.update(PRESETS["long"])
+    fill_defaults(args, defaults)
+    configure_standard_outputs(args, stem="fluids_vorticity", plot_name="point_vortices.png")
     if args.steps < 0:
         parser.error("--steps must be >= 0")
     if args.dt <= 0.0:
@@ -125,15 +197,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     traj, gamma, energy = simulate(args.steps, args.dt, scenario=args.ic)
-    print(f"initial_condition={args.ic}")
-    print(f"vortices={len(gamma)}")
-    print(f"steps={args.steps}")
-    print(f"hamiltonian_initial={energy[0]:.12g}")
-    print(f"hamiltonian_final={energy[-1]:.12g}")
-    print(f"hamiltonian_drift={energy[-1] - energy[0]:.6e}")
     if args.plot is not None:
         save_plot(args.plot, traj, gamma, energy, args.dt)
-        print(f"wrote_plot={args.plot}")
+    emit_summary(build_summary(args, traj, gamma, energy), args, print_summary)
 
 
 if __name__ == "__main__":

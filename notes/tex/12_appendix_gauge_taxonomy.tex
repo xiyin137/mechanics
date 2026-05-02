@@ -204,6 +204,34 @@ transport, and reduction.  The gauge-theory chapter focuses on deforming
 bodies because the finite-dimensional connection picture can be displayed
 there with the least analytic overhead.
 
+\section{Fluid Relabeling Versus Shape-Space Gauge Theory}
+\label{sec:fluid-relabeling-versus-shape-gauge}
+
+Fluid mechanics has a gauge-like symmetry that is easy to confuse with the
+Shapere-Wilczek mechanism.  In a material description, a fluid motion is a
+time-dependent diffeomorphism
+\[
+        \eta_t:\mathcal{B}\to\Omega .
+\]
+Relabeling particles by a volume-preserving diffeomorphism
+\(\psi:\mathcal{B}\to\mathcal{B}\) changes \(\eta_t\) to
+\(\eta_t\circ\psi\) without changing the Eulerian velocity field
+\[
+        v(x,t)=\dot\eta_t(\eta_t^{-1}(x)).
+\]
+The quotient by particle relabeling is therefore the passage from material
+labels to Eulerian fields.  Kelvin's circulation theorem can be understood as
+a consequence of this relabeling symmetry in the ideal-fluid variational
+principle.
+
+For a deforming swimmer or falling cat, the quotient has a different meaning.
+The base variables are shape variables \(s\), the fiber is a physical rigid
+motion \(g\in G\), and the connection reconstructs \(g(t)\) from a path in
+shape space.  The holonomy is an observable displacement or rotation.  Fluid
+relabeling removes unobservable labels; shape-space gauge theory reconstructs
+observable group motion from internal deformation.  Both use quotient
+geometry, but they answer different physical questions.
+
 \section{Common Pitfalls}
 \label{sec:gauge-common-pitfalls}
 
