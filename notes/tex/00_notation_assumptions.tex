@@ -1,4 +1,4 @@
-\chapter{Reading Rules And Standing Assumptions}
+\chapter{Reading Rules, Conventions, And Standing Assumptions}
 \label{chap:notation}
 
 \section{Purpose Of These Notes}
@@ -51,8 +51,33 @@ cotangent bundle; in continuum chapters, capital indices such as \(A,B\) label
 material coordinates and lower-case indices such as \(i,j\) label spatial
 coordinates.
 
+\section{Notation And Conventions}
+\label{sec:notation-conventions}
+
+A convention fixes how formulas are written or oriented. It is not a modelling
+assumption and does not restrict which motions, forces, or materials are being
+studied. The standing assumptions in the next section state genuine restrictions
+on regularity, endpoints, or invertibility.
+
+\begin{convention}[Einstein summation]
+Repeated upper/lower coordinate indices are summed unless stated otherwise:
+\[
+  p_i\dot q^i=\sum_{i=1}^{n}p_i\dot q^i.
+\]
+This is a notational convention. It abbreviates sums and keeps covariance and
+contravariance visible; it does not add a physical hypothesis. In Euclidean
+vector formulas, dots and cross products use the standard metric and
+orientation unless a different metric or orientation is specified locally.
+\end{convention}
+
 \section{Standing Mathematical Assumptions}
 \label{sec:standing-assumptions}
+
+The assumptions below are different in kind from the conventions above. They
+identify the regularity and nondegeneracy conditions under which the first
+derivations are valid. Later chapters replace or refine them when a model
+requires weaker smoothness, boundary work, constraints, singular Legendre
+transforms, or continuum fields.
 
 \begin{assumption}[Smoothness]
 Unless explicitly stated otherwise, all functions, curves, vector fields, and
@@ -102,15 +127,6 @@ developed by Bergmann (1949) and Dirac (1950). These notes name this boundary
 of the regular theory but do not develop the Dirac-Bergmann algorithm; the
 gauge and continuum chapters use constrained ideas only in settings where the
 relevant reduction is stated explicitly.
-\end{assumption}
-
-\begin{assumption}[Einstein summation]
-Repeated upper/lower coordinate indices are summed unless stated otherwise:
-\[
-  p_i\dot q^i=\sum_{i=1}^{n}p_i\dot q^i.
-\]
-In Euclidean vector formulas, dots and cross products use the standard metric
-and orientation.
 \end{assumption}
 
 \section{A Map Of The Course}
@@ -237,10 +253,10 @@ criterion, or a gauge holonomy.
 
 Laboratories are checkpoints for the reading rule: state the model, name the
 variables, derive the diagnostic, and interpret what the diagnostic measures.
-For teaching, this gives three layers: assumptions first, diagnostic derivation
-second, and interpretation third. Stability, bifurcation, transport, reaction
-force, pressure projection, ejection, and holonomy are interpretations only
-after the model and diagnostic have been specified.
+For teaching, this gives three layers: conventions and assumptions first,
+diagnostic derivation second, and interpretation third. Stability, bifurcation,
+transport, reaction force, pressure projection, ejection, and holonomy are
+interpretations only after the model and diagnostic have been specified.
 
 In laboratory sections, figures introduce the geometry before the algebra and
 should be checked again after the final boxed result. A figure earns its place
