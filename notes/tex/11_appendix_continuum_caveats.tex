@@ -1,0 +1,254 @@
+\chapter{Continuum Mechanics Caveats}
+\label{app:continuum-caveats}
+
+The continuum chapters use compact notation because the main text already
+derives the equations in detail.  This appendix gathers the assumptions that
+are easiest to blur: what is kinematics, what is balance law, what is
+constitutive law, which stress measure is being used, and where idealizations
+enter.  The goal is to prevent correct formulas from being read with the wrong
+meaning.
+
+\section{Three Layers: Kinematics, Balance, Constitutive Law}
+\label{sec:continuum-three-layers}
+
+A continuum theory is built in three logically distinct layers.
+
+\begin{enumerate}
+\item \emph{Kinematics} specifies the variables.  For a material body this may
+be a deformation map \(\varphi(X,t)\), deformation gradient
+\(F=\pd\varphi/\pd X\), velocity \(v(x,t)\), or director field.
+\item \emph{Balance laws} express conservation of mass, momentum, and angular
+momentum.  They hold for broad classes of materials before a particular
+stress-strain relation has been chosen.
+\item \emph{Constitutive laws} specify the material response, such as
+\(\sigma=-pI+2\mu D\) for a Newtonian incompressible fluid or
+\(P=\pd W/\pd F\) for a hyperelastic solid.
+\end{enumerate}
+
+Most mistakes in continuum mechanics come from mixing these layers.  For
+example, Cauchy's momentum equation
+\[
+        \rho\frac{D v}{D t}=\divergence\sigma+\rho b
+\]
+is a balance law.  The Navier-Stokes equation appears only after inserting a
+Newtonian constitutive law and, for the incompressible form, the constraint
+\(\divergence v=0\).
+
+\section{Reference And Spatial Descriptions}
+\label{sec:reference-spatial-descriptions}
+
+Let \(\mathcal{B}\) be a reference body with material point \(X\), and let
+\(\varphi_t:\mathcal{B}\to\R^3\) be the placement at time \(t\).  The spatial
+point is
+\[
+        x=\varphi(X,t).
+\]
+The deformation gradient is
+\[
+        F^i{}_A=\frac{\pd \varphi^i}{\pd X^A}.
+\]
+Here Latin indices \(i,j,\dots\) refer to spatial components, while capital
+indices \(A,B,\dots\) refer to material components.  The Jacobian
+\[
+        J=\det F
+\]
+measures local volume change.  If \(\rho_0(X)\) is the reference mass density
+and \(\rho(x,t)\) is the spatial density, conservation of mass gives
+\[
+        \rho(\varphi(X,t),t)J(X,t)=\rho_0(X).
+\]
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Stealth]
+\draw[thick] (-2.8,-0.9) .. controls (-2.2,-1.4) and (-1.1,-1.0) .. (-0.7,-0.2)
+    .. controls (-0.4,0.5) and (-1.0,1.1) .. (-2.0,1.0)
+    .. controls (-3.0,0.8) and (-3.3,-0.3) .. (-2.8,-0.9);
+\draw[thick] (2.0,-1.0) .. controls (3.0,-1.3) and (4.0,-0.7) .. (4.2,0.2)
+    .. controls (4.4,1.0) and (3.4,1.5) .. (2.3,1.1)
+    .. controls (1.4,0.8) and (1.1,-0.4) .. (2.0,-1.0);
+\fill (-2.0,0.2) circle (1.5pt) node[above left] {\(X\)};
+\fill (2.9,0.35) circle (1.5pt) node[above right] {\(x=\varphi(X,t)\)};
+\draw[->, thick] (-0.4,0.25) -- (1.55,0.25) node[midway, above] {\(\varphi_t\)};
+\draw[->] (-2.0,0.2) -- (-1.4,0.55) node[midway, above] {\(\delta X\)};
+\draw[->] (2.9,0.35) -- (3.72,0.78) node[midway, above] {\(F\delta X\)};
+\node at (-2.0,-1.55) {reference body \(\mathcal{B}\)};
+\node at (2.95,-1.55) {current body \(\varphi_t(\mathcal{B})\)};
+\end{tikzpicture}
+\caption{Material and spatial descriptions are connected by the placement
+\(\varphi_t\).  The deformation gradient \(F\) maps material tangent vectors
+to spatial tangent vectors.}
+\label{fig:continuum-reference-spatial-map}
+\end{figure}
+
+\section{Stress Measures}
+\label{sec:stress-measures-table}
+
+Different stress tensors answer different questions.
+
+\begin{center}
+\begin{tabular}{p{0.18\textwidth} p{0.28\textwidth} p{0.43\textwidth}}
+\hline
+symbol & name & meaning\\
+\hline
+\(\sigma\) & Cauchy stress & spatial traction per current area:
+\(t=\sigma n\)\\
+\(P\) & first Piola-Kirchhoff stress & spatial force per reference area;
+appears in \(\operatorname{Div}P+\rho_0 b=\rho_0\ddot\varphi\)\\
+\(S\) & second Piola-Kirchhoff stress & material stress work-conjugate to
+\(E=(C-I)/2\), where \(C=F^TF\)\\
+\(\tau=J\sigma\) & Kirchhoff stress & volume-weighted Cauchy stress, useful in
+finite strain\\
+\hline
+\end{tabular}
+\end{center}
+
+The standard Piola transform is
+\[
+        P=J\sigma F^{-T}.
+\]
+If the material is hyperelastic with stored energy density \(W(F)\) per
+reference volume, then
+\[
+        P=\frac{\pd W}{\pd F}.
+\]
+Objectivity requires
+\[
+        W(RF)=W(F)\qquad \text{for all }R\in\SO(3),
+\]
+so that the energy does not change under a superposed rigid rotation.
+
+\section{Incompressibility And Pressure}
+\label{sec:continuum-incompressibility-pressure}
+
+Incompressibility means different things in material and spatial language.  In
+finite elasticity it is
+\[
+        J=\det F=1.
+\]
+In Eulerian fluid mechanics it is
+\[
+        \divergence v=0.
+\]
+The second condition follows from differentiating the first along a material
+trajectory:
+\[
+        \dot J=J\,\divergence v.
+\]
+In both settings, pressure is a Lagrange multiplier for a constraint.  For an
+incompressible hyperelastic solid one writes
+\[
+        P=\frac{\pd W}{\pd F}-pJF^{-T}.
+\]
+For an incompressible Newtonian fluid one writes
+\[
+        \sigma=-pI+2\mu D,\qquad
+        D=\frac{1}{2}\bigl(\nabla v+\nabla v^T\bigr).
+\]
+The pressure is determined together with the velocity by the constraint and
+the boundary conditions; it is not supplied by an equation of state in the
+incompressible model.
+
+\section{Elastic Solids Versus Fluids}
+\label{sec:elastic-versus-fluid-caveats}
+
+The notes place elastic bodies before deforming bodies and fluids because
+elasticity makes the material reference configuration explicit.  Fluids can
+also be described materially, but their standard equations are Eulerian and
+their constitutive law does not remember a fixed rest shape.
+
+\begin{center}
+\begin{tabular}{p{0.27\textwidth} p{0.29\textwidth} p{0.29\textwidth}}
+\hline
+feature & elastic solid & Newtonian fluid\\
+\hline
+primary memory & deformation from reference body & instantaneous rate of
+strain\\
+typical constitutive variable & \(F\), \(C=F^TF\), or strain \(E\) &
+\(D=(\nabla v+\nabla v^T)/2\)\\
+stress response & elastic stress from stored energy & viscous stress plus
+pressure\\
+equilibrium equation & boundary-value problem for displacement & steady or
+unsteady velocity-pressure problem\\
+constraint pressure & enforces \(J=1\) when incompressible & enforces
+\(\divergence v=0\) when incompressible\\
+\hline
+\end{tabular}
+\end{center}
+
+The distinction is physical, not merely notational.  A solid can sustain shear
+stress at rest.  A Newtonian fluid at rest has stress \(-pI\); shear stress is
+proportional to rate of deformation.
+
+\section{Boundary Conditions Are Part Of The Model}
+\label{sec:continuum-boundary-conditions}
+
+The same differential equation can describe different physical problems under
+different boundary conditions.  For elasticity, common boundary conditions are
+prescribed displacement
+\[
+        u=u_0\quad \text{on }\Gamma_D
+\]
+and prescribed traction
+\[
+        P N=T_0\quad \text{on }\Gamma_N .
+\]
+For a viscous fluid at a fixed wall, the usual no-slip condition is
+\[
+        v=v_{\rm wall}.
+\]
+For inviscid flow, only impermeability
+\[
+        v\cdot n=v_{\rm wall}\cdot n
+\]
+is normally imposed.  Applying a no-slip condition to the Euler equation or an
+inviscid slip condition to a viscous wall problem changes the physical model.
+
+\section{Navier-Stokes Assumptions}
+\label{sec:navier-stokes-assumptions}
+
+The incompressible Navier-Stokes equation
+\[
+        \rho(\pd_t v+v\cdot\nabla v)
+        =
+        -\nabla p+\mu\Delta v+\rho b,\qquad
+        \divergence v=0,
+\]
+uses the following assumptions:
+\begin{enumerate}
+\item continuum approximation: fields are smooth enough on the length scales
+of interest;
+\item constant density \(\rho\) and viscosity \(\mu\);
+\item Newtonian, isotropic, frame-indifferent viscous stress;
+\item incompressibility;
+\item boundary and initial data compatible with \(\divergence v=0\).
+\end{enumerate}
+The equation is local and deterministic.  Turbulence does not invalidate it as
+a model, but turbulent prediction may require statistical descriptions,
+resolution studies, or closure assumptions if one averages the equations.
+
+\section{Energy Identities And Regularity}
+\label{sec:continuum-energy-regularity}
+
+For smooth incompressible flow on a domain with boundary conditions that remove
+boundary power, multiplying Navier-Stokes by \(v\) and integrating gives
+\[
+        \frac{\dd}{\dd t}\int \frac{1}{2}\rho |v|^2\,\dd x
+        =
+        -\int 2\mu D:D\,\dd x
+        +
+        \int \rho b\cdot v\,\dd x .
+\]
+The pressure term drops out because
+\[
+        \int v\cdot\nabla p\,\dd x
+        =
+        \int \divergence(pv)\,\dd x-\int p\,\divergence v\,\dd x.
+\]
+The second term is zero by incompressibility, and the first is a boundary flux.
+
+For weak solutions, the same calculation may become an inequality rather than
+an equality.  In three dimensions, global smoothness for arbitrary smooth data
+is a famous open problem.  The lecture-note derivations are therefore
+classical derivations: they are correct under the stated smoothness
+assumptions, while the functional-analytic theory requires additional care.

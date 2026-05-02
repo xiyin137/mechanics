@@ -1,0 +1,260 @@
+\chapter{Three-Body Numerics And Ejection Statistics}
+\label{app:three-body-numerics}
+
+This appendix records the numerical protocol behind the three-body
+demonstrations.  The purpose is pedagogical reproducibility.  A simulation in
+this repository should specify its equations, units, random sampling rule,
+time-step rule, diagnostic invariants, and statistical estimator.  Without
+these ingredients, an ejection probability is only a number; with them, it is a
+repeatable experiment whose limitations can be discussed.
+
+\section{Hierarchy Of Models}
+\label{sec:three-body-model-hierarchy}
+
+The notes use three related models.  Their variables and invariants are not
+identical, so the diagnostic printed by a code must match the model being
+integrated.
+
+\begin{center}
+\begin{tabular}{p{0.30\textwidth} p{0.34\textwidth} p{0.26\textwidth}}
+\hline
+model & degrees of freedom & main diagnostics\\
+\hline
+full Newtonian three-body problem &
+three massive bodies in inertial space, reduced by translation when desired &
+energy, total angular momentum, center-of-mass drift\\
+circular restricted three-body problem &
+two primaries on a prescribed circular orbit, massless particle in a rotating
+frame &
+Jacobi integral, zero-velocity curves, Lagrange point locations\\
+heliocentric Sun-Jupiter-asteroid ensemble &
+Sun and prescribed Jupiter, many noninteracting massless test particles &
+loss classification, binned ejection probability, resonance labels\\
+\hline
+\end{tabular}
+\end{center}
+
+The first model is autonomous and Hamiltonian.  The circular restricted model
+is autonomous only after passing to the rotating frame.  The heliocentric
+ensemble used for the asteroid lab is a time-dependent restricted model
+because Jupiter is prescribed as a moving source.
+
+\section{Units And Equations}
+\label{sec:three-body-numerical-units}
+
+The asteroid scripts use astronomical units, years, and solar masses:
+\[
+        G=4\pi^2,\qquad M_\odot=1 .
+\]
+For a test particle with heliocentric position \(r_i(t)\in\R^2\), velocity
+\(v_i(t)\), and prescribed Jupiter position \(r_J(t)\), the equation is
+\[
+        \ddot r_i
+        =
+        -GM_\odot \frac{r_i}{|r_i|^3}
+        -GM_J\frac{r_i-r_J}{|r_i-r_J|^3}
+        -GM_J\frac{r_J}{|r_J|^3}.
+\]
+The last term is the indirect acceleration that appears because the origin is
+attached to the Sun rather than to an inertial barycenter.  Omitting it changes
+the model, not merely the numerical method.  It is therefore exposed as an
+explicit code option.
+
+The CR3BP scripts use nondimensional rotating-frame units.  The total primary
+mass is \(1\), the primary separation is \(1\), and the rotating frame has
+angular velocity \(1\).  If \(\mu\) is the smaller-primary mass fraction, the
+primaries sit at
+\[
+        r_1=(-\mu,0),\qquad r_2=(1-\mu,0).
+\]
+The rotating-frame particle state is \((x,y,\dot x,\dot y)\), and
+\[
+        \ddot x-2\dot y=\Omega_x,\qquad
+        \ddot y+2\dot x=\Omega_y,
+\]
+where
+\[
+        \Omega(x,y)=
+        \frac{x^2+y^2}{2}
+        +\frac{1-\mu}{r_1(x,y)}
+        +\frac{\mu}{r_2(x,y)} .
+\]
+The Jacobi integral is
+\[
+        C=2\Omega(x,y)-\dot x^2-\dot y^2 .
+\]
+The printed value of \(\max_t |C(t)-C(0)|\) is a numerical error diagnostic.
+
+\section{Initial Ensembles}
+\label{sec:three-body-initial-ensembles}
+
+For the asteroid ejection laboratory, the ensemble is defined by independent
+draws
+\[
+        a_0\sim U(a_{\min},a_{\max}),\qquad
+        e_0\sim U(0,e_{\max}),\qquad
+        M_0\sim U(0,2\pi),\qquad
+        \varpi_0\sim U(0,2\pi).
+\]
+Here \(a_0\) is the initial semimajor axis, \(e_0\) is eccentricity, \(M_0\)
+is mean anomaly, and \(\varpi_0\) is periapse angle.  The eccentric anomaly
+\(E\) solves Kepler's equation
+\[
+        M_0=E-e_0\sin E.
+\]
+The true anomaly \(f\) is then
+\[
+        f
+        =
+        2\arctan\left(
+        \frac{\sqrt{1+e_0}\sin(E/2)}
+             {\sqrt{1-e_0}\cos(E/2)}
+        \right),
+\]
+and the heliocentric Kepler data are
+\[
+        p=a_0(1-e_0^2),\qquad
+        r=\frac{p}{1+e_0\cos f},
+\]
+\[
+        (x_{\rm orb},y_{\rm orb})=(r\cos f,r\sin f),
+        \qquad
+        (v_{x,{\rm orb}},v_{y,{\rm orb}})
+        =
+        \sqrt{\frac{GM_\odot}{p}}(-\sin f,e_0+\cos f).
+\]
+A rotation by \(\varpi_0\) places the orbit in the reference plane.  The
+random seed is part of the experiment.  Two reported probabilities are
+comparable only when the sampling law, seed policy, time horizon, and loss
+thresholds are stated.
+
+\section{Loss Classification}
+\label{sec:three-body-loss-classification}
+
+At each diagnostic time the particle is classified as alive or lost.  The
+current demo uses three absorbing loss classes:
+\[
+\begin{array}{lll}
+\text{ejected} &:& |r|>R_{\rm ej}\quad \text{or}\quad
+E_{\rm Kep}>0 \text{ and } |r|>a_J,\\[2mm]
+\text{solar collision} &:& |r|<R_\odot,\\[1mm]
+\text{Jupiter close encounter} &:& |r-r_J|<R_J^{\rm close}.
+\end{array}
+\]
+The Kepler energy used in the first line is
+\[
+        E_{\rm Kep}=\frac{1}{2}|v|^2-\frac{GM_\odot}{|r|}.
+\]
+This energy is not an invariant of the perturbed problem.  It is used only as
+a practical escape indicator.  The ejection radius and close-encounter radius
+therefore must be printed with the output.
+
+\section{Time Integration And Invariant Drift}
+\label{sec:three-body-time-integration-protocol}
+
+For a separable autonomous Hamiltonian \(H(p,q)=T(p)+V(q)\), the velocity
+Verlet method
+\[
+\begin{aligned}
+        p_{m+1/2}&=p_m-\frac{\Delta t}{2}\nabla V(q_m),\\
+        q_{m+1}&=q_m+\Delta t\,\pd_pT(p_{m+1/2}),\\
+        p_{m+1}&=p_{m+1/2}-\frac{\Delta t}{2}\nabla V(q_{m+1})
+\end{aligned}
+\]
+is symplectic and time reversible.  The asteroid demo uses the same
+kick-drift-kick idea in a time-dependent restricted field.  Since the
+prescribed Jupiter field depends on time, the map is best understood as a
+transparent second-order classroom integrator rather than as a final
+high-precision celestial mechanics method.
+
+The CR3BP demo uses classical fourth-order Runge-Kutta.  RK4 is useful because
+the formula is easy to inspect, but it is not symplectic and does not preserve
+the Jacobi integral exactly.  For long-time transport claims, a structure-aware
+method and a convergence study are mandatory.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    box/.style={draw, rounded corners=2pt, align=center, minimum width=2.8cm, minimum height=0.85cm},
+    arrow/.style={-{Stealth[length=2.5mm]}, thick}
+]
+\node[box] (model) at (0,0) {equations\\ and units};
+\node[box] (sample) at (3.4,0) {initial\\ ensemble};
+\node[box] (integrate) at (6.8,0) {time\\ integration};
+\node[box] (classify) at (10.2,0) {loss\\ classification};
+\node[box] (estimate) at (6.8,-1.9) {probability\\ estimator};
+\node[box] (diagnose) at (3.4,-1.9) {invariant\\ diagnostics};
+\draw[arrow] (model) -- (sample);
+\draw[arrow] (sample) -- (integrate);
+\draw[arrow] (integrate) -- (classify);
+\draw[arrow] (classify) -- (estimate);
+\draw[arrow] (integrate) -- (diagnose);
+\draw[arrow] (diagnose) -- (estimate);
+\end{tikzpicture}
+\caption{A reproducible three-body numerical experiment reports model,
+sampling law, integrator, diagnostics, loss rules, and statistical estimator.}
+\label{fig:three-body-numerical-pipeline}
+\end{figure}
+
+\section{Ejection Probability As A Statistical Estimator}
+\label{sec:ejection-probability-estimator}
+
+Let \(X_i\) be the indicator that asteroid \(i\) is ejected by time \(T\):
+\[
+        X_i=
+        \begin{cases}
+        1,&\text{particle \(i\) is ejected by time \(T\)},\\
+        0,&\text{otherwise}.
+        \end{cases}
+\]
+The Monte Carlo estimator is
+\[
+        \widehat p_{\rm ej}(T)=\frac{1}{N}\sum_{i=1}^N X_i .
+\]
+For independent samples from the specified initial ensemble,
+\[
+        \mathbb{E}\widehat p_{\rm ej}=p_{\rm ej},\qquad
+        \operatorname{Var}(\widehat p_{\rm ej})
+        =
+        \frac{p_{\rm ej}(1-p_{\rm ej})}{N}.
+\]
+The plug-in standard error is
+\[
+        \widehat{\operatorname{se}}
+        =
+        \sqrt{\frac{\widehat p_{\rm ej}(1-\widehat p_{\rm ej})}{N}} .
+\]
+The same formula applies to a semimajor-axis bin after replacing \(N\) by the
+number of particles in that bin.  Bins with few particles have large sampling
+error and should not be overinterpreted.
+
+There are three different limits:
+\[
+        N\to\infty,\qquad
+        \Delta t\to0,\qquad
+        T\to\infty .
+\]
+Increasing the number of particles reduces sampling noise.  Decreasing the
+time step reduces discretization error.  Increasing the horizon changes the
+event being estimated.  These limits answer different questions and should not
+be conflated.
+
+\section{Recommended Reporting Standard}
+\label{sec:three-body-reporting-standard}
+
+A publication-quality classroom run should report:
+\begin{enumerate}
+\item the exact command line or configuration file;
+\item the model equations, including whether the indirect term is included;
+\item \(N\), \(T\), \(\Delta t\), random seed, and initial sampling law;
+\item all loss thresholds;
+\item global loss counts and binned counts;
+\item binomial standard errors for probabilities;
+\item an invariant-drift or convergence diagnostic appropriate to the model;
+\item plots with resonance markers, bin widths, and axis units.
+\end{enumerate}
+
+The flagship asteroid script now follows this standard closely enough that its
+text, CSV, and JSON outputs can be used as lab records.  A more advanced
+version could add symplectic extended-phase integration, adaptive encounter
+handling, and comparison against a high-accuracy reference integrator.

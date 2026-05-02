@@ -24,6 +24,7 @@ problem-specific splitting integrator.
 from __future__ import annotations
 
 import argparse
+import json
 import math
 import os
 from dataclasses import dataclass
@@ -35,6 +36,12 @@ import numpy as np
 M_SUN = 1.0
 M_JUPITER = 9.543e-4
 SUN_JUPITER_MU = M_JUPITER / (M_SUN + M_JUPITER)
+EARTH_MOON_MU = 0.012150585609624
+PRESET_MU = {
+    "sun-jupiter": SUN_JUPITER_MU,
+    "earth-moon": EARTH_MOON_MU,
+    "equal-mass": 0.5,
+}
 TWOPI = 2.0 * math.pi
 
 
@@ -48,8 +55,8 @@ class LagrangePoints:
 
 
 def validate_mu(mu: float) -> None:
-    if not (0.0 < mu < 0.5):
-        raise ValueError("mu must satisfy 0 < mu < 1/2")
+    if not (0.0 < mu <= 0.5):
+        raise ValueError("mu must satisfy 0 < mu <= 1/2")
 
 
 def primary_positions(mu: float) -> tuple[np.ndarray, np.ndarray]:
@@ -231,16 +238,111 @@ def save_plot(path: Path, time: np.ndarray, states: np.ndarray, mu: float) -> No
     plt.close(fig)
 
 
+def json_ready(value: object) -> object:
+    if isinstance(value, dict):
+        return {str(key): json_ready(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [json_ready(item) for item in value]
+    if isinstance(value, np.ndarray):
+        return json_ready(value.tolist())
+    if isinstance(value, np.integer):
+        return int(value)
+    if isinstance(value, np.floating):
+        return float(value)
+    return value
+
+
+def write_json(path: Path, data: dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w") as handle:
+        json.dump(json_ready(data), handle, indent=2, sort_keys=True, allow_nan=False)
+        handle.write("\n")
+
+
+def build_summary(
+    *,
+    preset: str,
+    mu: float,
+    initial: str,
+    periods: float,
+    dt: float,
+    time: np.ndarray,
+    states: np.ndarray,
+    points: LagrangePoints,
+    jacobi: np.ndarray,
+    drift: float,
+) -> dict[str, object]:
+    return {
+        "model": "circular restricted three-body problem",
+        "units": {
+            "total_primary_mass": 1.0,
+            "primary_separation": 1.0,
+            "rotating_frame_angular_velocity": 1.0,
+        },
+        "preset": preset,
+        "mu": mu,
+        "initial_condition": initial,
+        "periods": periods,
+        "dt": dt,
+        "steps": int(len(time) - 1),
+        "elapsed_time": float(time[-1]) if len(time) else 0.0,
+        "lagrange_points": {
+            "L1": [points.l1, 0.0],
+            "L2": [points.l2, 0.0],
+            "L3": [points.l3, 0.0],
+            "L4": list(points.l4),
+            "L5": list(points.l5),
+        },
+        "initial_state": states[0].tolist(),
+        "final_state": states[-1].tolist(),
+        "jacobi_initial": float(jacobi[0]) if len(jacobi) else None,
+        "jacobi_final": float(jacobi[-1]) if len(jacobi) else None,
+        "jacobi_max_abs_drift": drift,
+        "integrator": "classical fourth-order Runge-Kutta",
+        "diagnostic_note": (
+            "RK4 is transparent for lecture use but is not symplectic; "
+            "Jacobi drift should be monitored for long integrations."
+        ),
+    }
+
+
+def print_summary(summary: dict[str, object]) -> None:
+    points = summary["lagrange_points"]
+    print(f"mu={summary['mu']:.12g}")
+    print(f"preset={summary['preset']}")
+    print(f"L1=({points['L1'][0]:.12g}, 0)")
+    print(f"L2=({points['L2'][0]:.12g}, 0)")
+    print(f"L3=({points['L3'][0]:.12g}, 0)")
+    print(f"L4=({points['L4'][0]:.12g}, {points['L4'][1]:.12g})")
+    print(f"L5=({points['L5'][0]:.12g}, {points['L5'][1]:.12g})")
+    print(f"initial_state={summary['initial_state']}")
+    print(f"steps={summary['steps']}")
+    print(f"elapsed_time={summary['elapsed_time']:.12g}")
+    print(f"jacobi_initial={summary['jacobi_initial']:.12g}")
+    print(f"jacobi_max_abs_drift={summary['jacobi_max_abs_drift']:.12g}")
+    print(f"final_state={summary['final_state']}")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mu", type=float, default=SUN_JUPITER_MU, help="smaller-primary mass fraction")
-    parser.add_argument("--periods", type=float, default=3.0, help="integration time in rotating-frame periods")
-    parser.add_argument("--dt", type=float, default=0.0025, help="time step in dimensionless units")
+    parser.add_argument("--preset", choices=sorted(PRESET_MU), default="sun-jupiter", help="primary system preset")
+    parser.add_argument("--mu", type=float, default=None, help="override smaller-primary mass fraction")
+    parser.add_argument("--periods", type=float, default=None, help="integration time in rotating-frame periods")
+    parser.add_argument("--dt", type=float, default=None, help="time step in dimensionless units")
     parser.add_argument("--initial", choices=["l4", "l1", "asteroid"], default="l4")
+    parser.add_argument("--quick", action="store_true", help="use a short classroom/smoke-test integration unless overridden")
     parser.add_argument("--plot", type=Path, default=None)
+    parser.add_argument("--json", action="store_true", help="print a machine-readable JSON summary instead of text")
+    parser.add_argument("--json-output", type=Path, default=None, help="write a machine-readable JSON summary")
     args = parser.parse_args()
-    if not (0.0 < args.mu < 0.5):
-        parser.error("--mu must satisfy 0 < mu < 1/2")
+    if args.mu is None:
+        args.mu = PRESET_MU[args.preset]
+    if args.periods is None:
+        args.periods = 0.25 if args.quick else 3.0
+    if args.dt is None:
+        args.dt = 0.01 if args.quick else 0.0025
+    if not (0.0 < args.mu <= 0.5):
+        parser.error("--mu must satisfy 0 < mu <= 1/2")
     if args.periods < 0.0:
         parser.error("--periods must be >= 0")
     if args.dt <= 0.0:
@@ -255,23 +357,38 @@ def main() -> None:
     time, states = integrate(args.mu, state0, args.dt, args.periods)
     jacobi = jacobi_constant(states, args.mu)
     drift = float(np.max(np.abs(jacobi - jacobi[0]))) if len(jacobi) else 0.0
-
-    print(f"mu={args.mu:.12g}")
-    print(f"L1=({points.l1:.12g}, 0)")
-    print(f"L2=({points.l2:.12g}, 0)")
-    print(f"L3=({points.l3:.12g}, 0)")
-    print(f"L4=({points.l4[0]:.12g}, {points.l4[1]:.12g})")
-    print(f"L5=({points.l5[0]:.12g}, {points.l5[1]:.12g})")
-    print(f"initial_state={state0.tolist()}")
-    print(f"steps={len(time) - 1}")
-    print(f"elapsed_time={time[-1]:.12g}")
-    print(f"jacobi_initial={float(jacobi[0]):.12g}")
-    print(f"jacobi_max_abs_drift={drift:.12g}")
-    print(f"final_state={states[-1].tolist()}")
+    summary = build_summary(
+        preset=args.preset,
+        mu=args.mu,
+        initial=args.initial,
+        periods=args.periods,
+        dt=args.dt,
+        time=time,
+        states=states,
+        points=points,
+        jacobi=jacobi,
+        drift=drift,
+    )
+    outputs: dict[str, str] = {}
 
     if args.plot is not None:
         save_plot(args.plot, time, states, args.mu)
-        print(f"wrote_plot={args.plot}")
+        outputs["plot"] = str(args.plot)
+    if args.json_output is not None:
+        outputs["json"] = str(args.json_output)
+    if outputs:
+        summary["outputs"] = outputs
+    if args.json_output is not None:
+        write_json(args.json_output, summary)
+
+    if args.json:
+        print(json.dumps(json_ready(summary), indent=2, sort_keys=True, allow_nan=False))
+    else:
+        print_summary(summary)
+        if args.plot is not None:
+            print(f"wrote_plot={args.plot}")
+        if args.json_output is not None:
+            print(f"wrote_json={args.json_output}")
 
 
 if __name__ == "__main__":

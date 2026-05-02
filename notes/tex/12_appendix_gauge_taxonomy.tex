@@ -1,0 +1,230 @@
+\chapter{Gauge Theory Taxonomy For Deforming Bodies}
+\label{app:gauge-taxonomy}
+
+The deforming-body chapter uses gauge language because a body can change shape
+while a symmetry group moves it through space.  This appendix separates the
+main connection concepts that appear in rigid-body reconstruction, swimming,
+elastic frames, and Cosserat media.  The common pattern is a split between
+``where the body is'' and ``what shape the body has.''
+
+\section{Principal-Bundle Kinematics}
+\label{sec:gauge-principal-bundle-kinematics}
+
+Let \(Q\) be the configuration space of a body and let a Lie group \(G\) act
+freely on \(Q\).  For a rigid body in space, \(G=\SE(3)\) or \(G=\SO(3)\).
+For a planar swimmer, \(G=\SE(2)\).  The quotient
+\[
+        S=Q/G
+\]
+is the shape space.  Locally one may write a configuration as
+\[
+        q=(g,s),\qquad g\in G,\quad s\in S.
+\]
+The body velocity is
+\[
+        \xi=g^{-1}\dot g\in\mathfrak{g}
+\]
+for a left-trivialized convention.  A connection is a rule that assigns a
+group velocity to a shape velocity:
+\[
+        \xi + A(s)\dot s =0
+\]
+for zero-momentum or force-free motion.  The sign is conventional; what matters
+is that \(A\) is a \(\mathfrak{g}\)-valued one-form on shape space.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.0]
+\draw[thick] (-3.0,-0.8) rectangle (3.0,1.0);
+\draw[thick] (-2.2,-2.0) rectangle (2.2,-1.2);
+\node at (0,1.25) {configuration space \(Q\)};
+\node at (0,-2.3) {shape space \(S=Q/G\)};
+\draw[->, thick] (0,-0.8) -- (0,-1.2) node[midway, right] {\(\pi\)};
+\draw[thick, blue] (-2.3,0.05) .. controls (-1.2,0.8) and (1.1,0.8) .. (2.2,0.05);
+\draw[thick, red] (-1.5,-1.62) .. controls (-0.5,-1.35) and (0.6,-1.9) .. (1.5,-1.62);
+\draw[->, thick] (-1.1,-1.45) -- (-0.4,-1.43);
+\draw[->, thick, blue] (-0.4,0.53) -- (0.35,0.55);
+\node[blue] at (2.55,0.35) {horizontal lift};
+\node[red] at (1.85,-1.42) {shape path};
+\draw[->] (-2.45,0.1) -- (-2.45,0.7) node[midway,left] {\(G\)-fiber};
+\end{tikzpicture}
+\caption{A connection chooses horizontal lifts of shape-space motion.  The
+failure of a lifted loop to close in \(Q\) is the geometric phase or holonomy.}
+\label{fig:gauge-principal-bundle}
+\end{figure}
+
+\section{Mechanical Connection}
+\label{sec:mechanical-connection-taxonomy}
+
+Suppose the kinetic energy defines a metric on \(Q\) and the \(G\)-action is a
+symmetry.  The momentum map \(J:TQ\to\mathfrak{g}^*\) measures motion along the
+group directions.  The mechanical connection is the projection that declares a
+velocity horizontal when its group momentum vanishes:
+\[
+        J(q,\dot q)=0.
+\]
+In local variables \((g,s)\), the kinetic energy has the schematic form
+\[
+        T
+        =
+        \frac{1}{2}
+        \begin{pmatrix}\xi\\ \dot s\end{pmatrix}^T
+        \begin{pmatrix}
+        \mathcal{I}(s) & \mathcal{K}(s)\\
+        \mathcal{K}(s)^T & \mathcal{M}(s)
+        \end{pmatrix}
+        \begin{pmatrix}\xi\\ \dot s\end{pmatrix}.
+\]
+The group momentum is
+\[
+        \Pi=\frac{\pd T}{\pd \xi}
+        =
+        \mathcal{I}(s)\xi+\mathcal{K}(s)\dot s .
+\]
+At zero momentum,
+\[
+        \xi=-\mathcal{I}(s)^{-1}\mathcal{K}(s)\dot s.
+\]
+Thus
+\[
+        A(s)=\mathcal{I}(s)^{-1}\mathcal{K}(s).
+\]
+This is the inertial connection used for falling cats, deforming rigid
+assemblies, and the finite-dimensional examples in the main text.
+
+\section{Local Connection For Swimming}
+\label{sec:local-connection-swimming}
+
+At low Reynolds number, inertia is negligible.  The governing equations are
+force and torque balance with a linear relation between body velocity and
+hydrodynamic force.  In local coordinates one again obtains
+\[
+        \xi=-A_{\rm Stokes}(s)\dot s,
+\]
+but the origin of \(A_{\rm Stokes}\) is not kinetic energy.  It is the
+resistance problem for the surrounding fluid.  The same gauge geometry appears
+because group motion is reconstructed from shape motion, but the physical
+inner product and the equations that define horizontality are different.
+
+\section{Gauge Transformation}
+\label{sec:gauge-transformation-taxonomy}
+
+A local trivialization \(q=(g,s)\) is a choice of body frame over shape space.
+Changing the frame by a smooth map \(h:S\to G\) gives
+\[
+        g'=g h(s).
+\]
+For the left-trivialized velocity \(\xi=g^{-1}\dot g\), the connection
+one-form transforms as
+\[
+        A'
+        =
+        \Ad_{h^{-1}}A+h^{-1}\dd h .
+\]
+This formula explains the word ``gauge.''  The local coefficients of
+connection depend on the chosen frame, but geometric predictions do not.
+Holonomy around a closed shape loop changes by conjugation, and conjugacy
+invariants are frame-independent.
+
+\section{Curvature And Small Loops}
+\label{sec:gauge-curvature-taxonomy}
+
+The curvature of a connection is the \(\mathfrak{g}\)-valued two-form
+\[
+        F_A=\dd A+\frac{1}{2}[A\wedge A].
+\]
+For a small oriented loop \(\Sigma\) in shape space, the leading geometric
+phase is
+\[
+        g_{\rm hol}
+        =
+        \exp\left(-\int_\Sigma F_A+O(\operatorname{area}^{3/2})\right)
+\]
+when noncommutativity is weak over the loop.  In two shape variables
+\((\alpha,\beta)\), if
+\[
+        A=A_\alpha(\alpha,\beta)\,\dd\alpha+
+          A_\beta(\alpha,\beta)\,\dd\beta,
+\]
+then
+\[
+        F_{\alpha\beta}
+        =
+        \pd_\alpha A_\beta-\pd_\beta A_\alpha+
+        [A_\alpha,A_\beta].
+\]
+The bracket term is the non-Abelian correction.  It vanishes for a translation
+group \(\R^m\), but not for rotations or rigid motions.
+
+\section{Connection Types In These Notes}
+\label{sec:gauge-connection-types-table}
+
+\begin{center}
+\begin{tabular}{p{0.26\textwidth} p{0.30\textwidth} p{0.34\textwidth}}
+\hline
+connection & horizontality condition & typical use\\
+\hline
+mechanical connection & zero group momentum \(J=0\) & falling cat, internal
+rotors, deforming inertial bodies\\
+Stokes or local swimming connection & zero net force and torque in viscous
+flow & low-Reynolds swimming and crawling\\
+material frame connection & comparison of frames attached to a continuum &
+elastic directors, rods, shells\\
+spin connection & covariant differentiation of orthonormal frames & curved
+surfaces and continuum frame fields\\
+Cosserat connection & director rotation along a material coordinate & rods and
+micropolar continua\\
+defect connection & incompatible local frames or coframes & disclinations,
+dislocations, torsion, curvature\\
+\hline
+\end{tabular}
+\end{center}
+
+These objects share gauge transformation laws, but they are not the same
+physical connection.  The defining horizontal condition must always be stated.
+
+\section{Relation To Elasticity And Fluids}
+\label{sec:gauge-relation-elastic-fluid}
+
+Elasticity uses a deformation gradient \(F\) and may also use local directors.
+Gauge language enters when one compares material frames across the body or
+separates a rigid group motion from internal shape.  A Cosserat rod, for
+example, has a centerline \(r(s)\) and an orthonormal frame
+\((d_1(s),d_2(s),d_3(s))\).  The strain vector \(\kappa(s)\) is defined by
+\[
+        \pd_s d_a=\kappa\times d_a .
+\]
+This is a one-dimensional connection along the rod.
+
+Fluids use the diffeomorphism group more directly.  In ideal fluid mechanics,
+particle relabeling symmetry leads to Kelvin circulation and the Euler
+equation.  In viscous fluid mechanics, dissipation breaks the purely
+Hamiltonian picture, but geometric structures remain useful for vorticity,
+transport, and reduction.  The gauge-theory chapter focuses on deforming
+bodies because the finite-dimensional connection picture can be displayed
+there with the least analytic overhead.
+
+\section{Common Pitfalls}
+\label{sec:gauge-common-pitfalls}
+
+\begin{enumerate}
+\item Do not identify gauge dependence with physical ambiguity.  Coordinates
+and frames are choices; holonomy and reconstructed motion are physical after a
+frame convention is fixed.
+\item Do not use the mechanical connection for a low-Reynolds swimmer unless
+the kinetic-energy metric is actually the relevant physics.  The Stokes
+connection comes from resistance, not inertia.
+\item Do not infer zero phase from zero instantaneous group velocity in one
+frame.  A closed shape loop can produce net motion through curvature.
+\item Do not ignore noncommutativity for rotations.  For \(G=\SO(3)\) or
+\(\SE(3)\), the bracket term in \(F_A\) and the ordering of finite motions
+matter.
+\item Do not call every internal coordinate a gauge variable.  The gauge group
+is a redundancy or symmetry acting along fibers; shape variables label the
+base.
+\end{enumerate}
+
+The conceptual payoff is that the rigid body, deforming body, elastic director
+field, and swimmer are not isolated examples.  They are different realizations
+of a common reconstruction problem: shape motion plus a connection determines
+motion in a symmetry group.

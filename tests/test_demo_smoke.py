@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import importlib.util
+import json
 import os
 import subprocess
 import sys
@@ -86,6 +87,49 @@ def test_asteroid_ejection_probability_runs_small_case() -> None:
         "--no-plot",
     )
     assert "ejection_probability=" in result.stdout
+
+
+@pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
+def test_asteroid_ejection_probability_writes_json(tmp_path: Path) -> None:
+    output = tmp_path / "asteroid_summary.json"
+    result = run_python_demo(
+        "demos/python/asteroid_ejection_probability.py",
+        "--n",
+        "12",
+        "--years",
+        "0.2",
+        "--dt",
+        "0.05",
+        "--bins",
+        "4",
+        "--no-plot",
+        "--json-output",
+        str(output),
+    )
+    data = json.loads(output.read_text())
+    assert "wrote_json=" in result.stdout
+    assert data["model"]["name"] == "planar restricted Sun-Jupiter-asteroid ensemble"
+    assert data["configuration"]["dt"] == pytest.approx(0.05)
+    assert "ejection_standard_error" in data
+    assert "ejection_standard_error" in data["bin_rows"][0]
+
+
+@pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
+def test_cr3bp_json_stdout_and_file_are_machine_readable(tmp_path: Path) -> None:
+    output = tmp_path / "cr3bp_summary.json"
+    result = run_python_demo(
+        "demos/python/circular_restricted_three_body.py",
+        "--quick",
+        "--json",
+        "--json-output",
+        str(output),
+    )
+    stdout_data = json.loads(result.stdout)
+    file_data = json.loads(output.read_text())
+    assert stdout_data["model"] == "circular restricted three-body problem"
+    assert file_data["preset"] == "sun-jupiter"
+    assert "jacobi_max_abs_drift" in stdout_data
+    assert "L4" in stdout_data["lagrange_points"]
 
 
 @pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
@@ -639,7 +683,9 @@ def test_asteroid_csv_and_png_outputs_are_written(tmp_path: Path) -> None:
         "ejected",
         "lost",
         "ejection_fraction",
+        "ejection_standard_error",
         "loss_fraction",
+        "loss_standard_error",
         "nearest_resonance",
         "resonance_distance",
     }

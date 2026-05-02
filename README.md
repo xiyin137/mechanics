@@ -14,6 +14,7 @@ can be studied through the same geometric language.
 - `notes/tex`: TeX source for the integrated course notes.
 - `demos/python`: runnable Python simulations and numerical experiments.
 - `demos/mathematica`: Wolfram Language scripts for symbolic and numerical demos.
+- `demos/labs`: public laboratory guides attached to selected chapters.
 - `references`: public reference shelf and bibliography notes.
 - `syllabus`: course map and module sequence.
 - `tests`: smoke and numerical-behavior tests for the demo code.
@@ -68,14 +69,14 @@ python -m pip install -r requirements.txt
 Run the highlighted asteroid ejection probability demo:
 
 ```sh
-python demos/python/asteroid_ejection_probability.py --n 256 --years 200 --dt 0.02 --seed 7 --plot figures/ejection_demo.png
+python demos/python/asteroid_ejection_probability.py --lecture --seed 7 --output-dir data/asteroid_lecture --plot figures/ejection_demo.png
 ```
 
 Run the circular restricted three-body demo with Jacobi-drift diagnostics and
 zero-velocity curves:
 
 ```sh
-python demos/python/circular_restricted_three_body.py --periods 3 --dt 0.0025 --plot figures/cr3bp_zero_velocity.png
+python demos/python/circular_restricted_three_body.py --preset sun-jupiter --periods 3 --dt 0.0025 --plot figures/cr3bp_zero_velocity.png --json-output data/cr3bp_zero_velocity.json
 ```
 
 The Makefile alias for this figure is:
@@ -118,7 +119,7 @@ python demos/python/asteroid_ejection_probability.py --n 128 --years 50 --dt 0.0
 Run a faster smoke version:
 
 ```sh
-python demos/python/asteroid_ejection_probability.py --n 24 --years 2 --dt 0.05 --no-plot
+python demos/python/asteroid_ejection_probability.py --quick --no-plot
 ```
 
 Run all smoke tests:
@@ -167,3 +168,5 @@ licensed under CC BY-SA 4.0. See `LICENSE` for the split-license details.
 - Simulations should preserve geometric structure when the model calls for it.
 - The repository should remain readable as source, not only as rendered output.
 - Advanced topics should be connected to concrete systems throughout.
+- Reproducible numerical labs should state their model, units, parameters,
+  diagnostics, and output files.

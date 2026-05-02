@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import math
 from dataclasses import dataclass
 from pathlib import Path
@@ -44,6 +45,23 @@ ALIVE = 0
 EJECTED = 1
 SUN_COLLISION = 2
 JUPITER_CLOSE = 3
+
+DEFAULT_CONFIG = {
+    "n": 512,
+    "years": 100.0,
+    "dt": 0.02,
+    "seed": 1,
+    "a_min": 2.05,
+    "a_max": 3.75,
+    "e_max": 0.08,
+    "bins": 20,
+}
+
+PRESET_CONFIG = {
+    "quick": {"n": 32, "years": 2.0, "dt": 0.05, "bins": 6},
+    "lecture": {"n": 256, "years": 100.0, "dt": 0.02, "bins": 16},
+    "long": {"n": 2048, "years": 1000.0, "dt": 0.01, "bins": 32},
+}
 
 
 @dataclass(frozen=True)
@@ -135,6 +153,13 @@ def nearest_resonance(a: float, a_jupiter: float) -> tuple[str, float]:
     locations = resonance_locations(a_jupiter)
     label, location = min(locations.items(), key=lambda item: abs(a - item[1]))
     return label, abs(a - location)
+
+
+def binomial_standard_error(successes: int, count: int) -> float:
+    if count <= 0:
+        return float("nan")
+    p = successes / count
+    return math.sqrt(p * (1.0 - p) / count)
 
 
 def acceleration(t: float, pos: np.ndarray, cfg: Config) -> np.ndarray:
@@ -239,11 +264,15 @@ def summarize(
             loss = int(np.count_nonzero(in_bin & (status != ALIVE)))
             frac = ej / count
             loss_frac = loss / count
+            frac_se = binomial_standard_error(ej, count)
+            loss_frac_se = binomial_standard_error(loss, count)
         else:
             ej = 0
             loss = 0
             frac = float("nan")
             loss_frac = float("nan")
+            frac_se = float("nan")
+            loss_frac_se = float("nan")
         center = 0.5 * (lo + hi)
         nearest_label, resonance_distance = nearest_resonance(center, cfg.a_jupiter)
         rows.append(
@@ -254,7 +283,9 @@ def summarize(
                 "ejected": ej,
                 "lost": loss,
                 "ejection_fraction": frac,
+                "ejection_standard_error": frac_se,
                 "loss_fraction": loss_frac,
+                "loss_standard_error": loss_frac_se,
                 "nearest_resonance": nearest_label,
                 "resonance_distance": resonance_distance,
             }
@@ -268,7 +299,31 @@ def summarize(
         "jupiter_close": jupiter,
         "alive": alive,
         "ejection_probability": ejected / total if total else 0.0,
+        "ejection_standard_error": binomial_standard_error(ejected, total) if total else 0.0,
         "loss_probability": (ejected + sun + jupiter) / total if total else 0.0,
+        "loss_standard_error": binomial_standard_error(ejected + sun + jupiter, total) if total else 0.0,
+        "model": {
+            "name": "planar restricted Sun-Jupiter-asteroid ensemble",
+            "units": {"distance": "AU", "time": "years", "mass": "solar masses"},
+            "m_sun": cfg.m_sun,
+            "m_jupiter": cfg.m_jupiter,
+            "a_jupiter": cfg.a_jupiter,
+            "include_indirect": cfg.include_indirect,
+            "integrator": "kick-drift-kick style restricted-field integrator",
+        },
+        "configuration": {
+            "seed": cfg.seed,
+            "years": cfg.years,
+            "dt": cfg.dt,
+            "a_min": cfg.a_min,
+            "a_max": cfg.a_max,
+            "e_max": cfg.e_max,
+            "bins": cfg.bins,
+            "ejection_radius": cfg.ejection_radius,
+            "sun_radius": cfg.sun_radius,
+            "jupiter_close_radius": cfg.jupiter_close_radius,
+        },
+        "resonance_locations": resonance_locations(cfg.a_jupiter),
         "bin_rows": rows,
     }
 
@@ -279,6 +334,29 @@ def write_csv(path: Path, rows: list[dict[str, float | int | str]]) -> None:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))
         writer.writeheader()
         writer.writerows(rows)
+
+
+def json_ready(value: object) -> object:
+    if isinstance(value, dict):
+        return {str(key): json_ready(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [json_ready(item) for item in value]
+    if isinstance(value, np.ndarray):
+        return json_ready(value.tolist())
+    if isinstance(value, np.integer):
+        return int(value)
+    if isinstance(value, np.floating):
+        value = float(value)
+    if isinstance(value, float):
+        return None if math.isnan(value) or math.isinf(value) else value
+    return value
+
+
+def write_json(path: Path, data: dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w") as handle:
+        json.dump(json_ready(data), handle, indent=2, sort_keys=True, allow_nan=False)
+        handle.write("\n")
 
 
 def save_plot(path: Path, rows: list[dict[str, float | int | str]]) -> None:
@@ -323,38 +401,70 @@ def print_summary(summary: dict[str, object]) -> None:
     print(f"jupiter_close={summary['jupiter_close']}")
     print(f"alive={summary['alive']}")
     print(f"ejection_probability={summary['ejection_probability']:.6f}")
+    print(f"ejection_standard_error={summary['ejection_standard_error']:.6f}")
     print(f"loss_probability={summary['loss_probability']:.6f}")
+    print(f"loss_standard_error={summary['loss_standard_error']:.6f}")
     print()
-    print("a_low,a_high,count,ejected,lost,ejection_fraction,loss_fraction,nearest_resonance,resonance_distance")
+    print("a_low,a_high,count,ejected,lost,ejection_fraction,ejection_standard_error,loss_fraction,loss_standard_error,nearest_resonance,resonance_distance")
     for row in summary["bin_rows"]:
         print(
             f"{row['a_low']:.4f},{row['a_high']:.4f},{row['count']},"
             f"{row['ejected']},{row['lost']},"
-            f"{row['ejection_fraction']:.6f},{row['loss_fraction']:.6f},"
+            f"{row['ejection_fraction']:.6f},{row['ejection_standard_error']:.6f},"
+            f"{row['loss_fraction']:.6f},{row['loss_standard_error']:.6f},"
             f"{row['nearest_resonance']},{row['resonance_distance']:.6f}"
         )
 
 
+def apply_presets(args: argparse.Namespace) -> None:
+    defaults = dict(DEFAULT_CONFIG)
+    if args.quick:
+        defaults.update(PRESET_CONFIG["quick"])
+    elif args.lecture:
+        defaults.update(PRESET_CONFIG["lecture"])
+    elif args.long:
+        defaults.update(PRESET_CONFIG["long"])
+
+    for key, value in defaults.items():
+        if getattr(args, key) is None:
+            setattr(args, key, value)
+
+    if args.output_dir is not None:
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        if args.csv is None:
+            args.csv = args.output_dir / "asteroid_ejection_bins.csv"
+        if args.json_output is None:
+            args.json_output = args.output_dir / "asteroid_ejection_summary.json"
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--n", type=int, default=512, help="number of asteroids")
-    parser.add_argument("--years", type=float, default=100.0, help="integration horizon")
-    parser.add_argument("--dt", type=float, default=0.02, help="time step in years; elapsed time is rounded to whole steps")
-    parser.add_argument("--seed", type=int, default=1, help="random seed")
-    parser.add_argument("--a-min", type=float, default=2.05, help="minimum initial semimajor axis")
-    parser.add_argument("--a-max", type=float, default=3.75, help="maximum initial semimajor axis")
-    parser.add_argument("--e-max", type=float, default=0.08, help="maximum initial eccentricity")
-    parser.add_argument("--bins", type=int, default=20, help="semimajor-axis bins")
+    preset_group = parser.add_mutually_exclusive_group()
+    preset_group.add_argument("--quick", action="store_true", help="short classroom/smoke-test configuration unless overridden")
+    preset_group.add_argument("--lecture", action="store_true", help="moderate lecture-demo configuration unless overridden")
+    preset_group.add_argument("--long", action="store_true", help="larger long-horizon configuration unless overridden")
+    parser.add_argument("--n", type=int, default=None, help="number of asteroids")
+    parser.add_argument("--years", type=float, default=None, help="integration horizon")
+    parser.add_argument("--dt", type=float, default=None, help="time step in years; elapsed time is rounded to whole steps")
+    parser.add_argument("--seed", type=int, default=None, help="random seed")
+    parser.add_argument("--a-min", type=float, default=None, help="minimum initial semimajor axis")
+    parser.add_argument("--a-max", type=float, default=None, help="maximum initial semimajor axis")
+    parser.add_argument("--e-max", type=float, default=None, help="maximum initial eccentricity")
+    parser.add_argument("--bins", type=int, default=None, help="semimajor-axis bins")
     parser.add_argument("--jupiter-mass-scale", type=float, default=1.0, help="scale Jupiter mass")
     parser.add_argument("--ejection-radius", type=float, default=20.0, help="ejection radius in AU")
     parser.add_argument("--sun-radius", type=float, default=0.02, help="solar collision radius in AU")
     parser.add_argument("--jupiter-close-radius", type=float, default=0.03, help="close Jupiter encounter radius in AU")
     parser.add_argument("--no-indirect", action="store_true", help="omit heliocentric indirect term")
     parser.add_argument("--csv", type=Path, default=None, help="write binned summary CSV")
+    parser.add_argument("--json", action="store_true", help="print a machine-readable JSON summary instead of text")
+    parser.add_argument("--json-output", type=Path, default=None, help="write a machine-readable JSON summary")
+    parser.add_argument("--output-dir", type=Path, default=None, help="write standard CSV and JSON outputs to this directory")
     plot_group = parser.add_mutually_exclusive_group()
     plot_group.add_argument("--plot", type=Path, default=None, help="save binned ejection plot")
     plot_group.add_argument("--no-plot", action="store_true", help="do not make a plot")
     args = parser.parse_args()
+    apply_presets(args)
     if args.n < 0:
         parser.error("--n must be >= 0")
     if args.years < 0.0:
@@ -400,15 +510,31 @@ def main() -> None:
         include_indirect=not args.no_indirect,
     )
     summary = integrate(cfg)
-    print_summary(summary)
-
+    outputs: dict[str, str] = {}
     rows = summary["bin_rows"]
     if args.csv is not None:
         write_csv(args.csv, rows)
-        print(f"wrote_csv={args.csv}")
+        outputs["csv"] = str(args.csv)
     if args.plot is not None:
         save_plot(args.plot, rows)
-        print(f"wrote_plot={args.plot}")
+        outputs["plot"] = str(args.plot)
+    if args.json_output is not None:
+        outputs["json"] = str(args.json_output)
+    if outputs:
+        summary["outputs"] = outputs
+    if args.json_output is not None:
+        write_json(args.json_output, summary)
+
+    if args.json:
+        print(json.dumps(json_ready(summary), indent=2, sort_keys=True, allow_nan=False))
+    else:
+        print_summary(summary)
+        if args.csv is not None:
+            print(f"wrote_csv={args.csv}")
+        if args.plot is not None:
+            print(f"wrote_plot={args.plot}")
+        if args.json_output is not None:
+            print(f"wrote_json={args.json_output}")
 
 
 if __name__ == "__main__":
