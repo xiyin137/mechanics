@@ -19,11 +19,13 @@ time scale. In the planar problem, the Levi-Civita change
 turns the inverse-square collision singularity into a regular passage in the
 \(u\)-plane: since \(|z|=|u|^2\), the singular potential \(1/|z|\) becomes
 \(1/|u|^2\), and multiplication by the Sundman time factor
-\(\dd t/\dd s=|u|^2\) cancels the leading pole. Sundman's construction combines
-this local regularization with analytic continuation and a global time
-reparametrization. Triple collision is the obstruction left out of the global
-statement, and Belorizky emphasized in 1930 that Sundman's series converges far
-too slowly for practical computation.
+\(\dd t/\dd s=|u|^2\) cancels the leading pole. Equivalently, in the fixed-energy
+Jacobi form, multiplying the Kepler expression \(T-GMm/|z|-E\) by \(|u|^2\)
+turns the singular potential term into the smooth constant \(-GMm\). Sundman's
+construction combines this local regularization with analytic continuation and
+a global time reparametrization. Triple collision is the obstruction left out
+of the global statement, and Belorizky emphasized in 1930 that Sundman's series
+converges far too slowly for practical computation.
 
 This chapter connects every phenomenon back to a controlled reduction of
 Newton's law. We first formulate the full Newtonian three-body problem and
@@ -192,7 +194,13 @@ gives the diagonal form
 The absence of cross terms is the point of Jacobi coordinates: the mass metric
 has been diagonalized after translations are separated.
 
-The attraction potential \(U=-V\) becomes
+It is useful in celestial mechanics to write the attractive potential with a
+positive sign,
+\[
+  U=-V>0.
+\]
+With this convention the Hamiltonian is kinetic minus attraction, \(H=T-U\).
+The attraction potential becomes
 \[
 \begin{aligned}
   U(\rho_1,\rho_2)
@@ -226,7 +234,13 @@ In the center-of-mass frame define the moment of inertia
   =
   \mu_1\norm{\rho_1}^2+\mu_2\norm{\rho_2}^2 .
 \]
-Differentiate twice:
+Differentiate once:
+\[
+  \dot I_{\mathrm{cm}}
+  =
+  2\sum_i m_i q_i\cdot\dot q_i,
+\]
+and then again:
 \[
   \ddot I_{\mathrm{cm}}
   =
@@ -237,9 +251,9 @@ degree \(-1\), Euler's theorem gives
 \[
   \sum_i q_i\cdot\frac{\partial U}{\partial q_i}=-U.
 \]
-Using \(H=T-U\) gives
+Using \(H=T-U\) gives the two equivalent forms
 \[
-  \boxed{\ddot I_{\mathrm{cm}}=4H+2U.}
+  \boxed{\ddot I_{\mathrm{cm}}=4T-2U=4H+2U.}
 \]
 This identity is a diagnostic for the size of the configuration. For a bounded
 noncollisional motion, the long-time average of \(\ddot I_{\mathrm{cm}}\)
@@ -442,6 +456,8 @@ equivalently
   \ddot r+2\hat z\times\dot r=\nabla\Omega_{\mathrm{eff}}(r).
   }
 \]
+The last step moves the centrifugal term \(-r\) to the right-hand side and uses
+\(\nabla[\frac12(x^2+y^2)]=r\).
 In components,
 \[
   \boxed{
@@ -483,8 +499,8 @@ equivalently inertial energy minus \(\omega L_z\) in dimensional variables.
     \draw[red!75!black, thick] (\pt) ++(-0.08,0.08) -- ++(0.16,-0.16);
     \node[red!75!black, \anchor=3pt] at (\pt) {\(\lab\)};
   }
-  \draw[blue!60!black, ->] (1.20,0.45) arc (20:95:1.05);
-  \node[blue!60!black, fill=white, inner sep=1pt] at (1.70,1.18)
+  \draw[blue!60!black, ->] (1.28,-0.92) arc (-35:35:1.05);
+  \node[blue!60!black, fill=white, inner sep=1pt] at (1.78,-1.18)
     {rotating frame};
 \end{tikzpicture}
 \caption{Circular restricted three-body geometry in rotating barycentric

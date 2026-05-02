@@ -109,11 +109,12 @@ the Euler-Lagrange equations pointwise in time.
   \draw[densely dotted] (6.5,0) -- (6.5,2.75);
   \draw[thick, blue] plot[smooth] coordinates {(0.5,0.7) (1.8,1.25) (3.2,1.0) (4.7,2.0) (6.5,2.35)};
   \draw[thick, red, dashed] plot[smooth] coordinates {(0.5,0.7) (1.8,1.55) (3.2,1.25) (4.7,1.75) (6.5,2.35)};
-  \draw[->, red] (3.2,1.0) -- (3.2,1.25)
-    node[midway,right, fill=white, inner sep=1pt] {\(\eta(t)\)};
+  \draw[->, red] (3.2,1.0) -- (3.2,1.25);
+  \node[red, fill=white, inner sep=1pt] at (3.58,1.18) {\(\eta(t)\)};
   \draw[->, red!70!black] (4.7,2.0) -- (4.7,1.75);
   \fill (0.5,0.7) circle (2pt) node[below right, fill=white, inner sep=1pt] {\(q(t_0)\)};
-  \fill (6.5,2.35) circle (2pt) node[above right, fill=white, inner sep=1pt] {\(q(t_1)\)};
+  \fill (6.5,2.35) circle (2pt);
+  \node[below left, fill=white, inner sep=1pt] at (6.44,2.28) {\(q(t_1)\)};
   \node[below] at (0.5,0) {\(t_0\)};
   \node[below] at (6.5,0) {\(t_1\)};
   \node[blue, fill=white, inner sep=1pt] at (2.3,0.55) {\(q(t)\)};
@@ -572,12 +573,12 @@ chapter.
   \draw[blue, thick, domain=0.36:6.1, samples=160]
     plot (\x,{1.1/(\x*\x)-2.2/\x});
   \draw[dashed] (0,-0.7) -- (6.2,-0.7);
-  \node[fill=white, inner sep=1pt] (boundlabel) at (5.3,-1.23) {bound \(E<0\)};
-  \draw[->, thin] (boundlabel.north west) -- (4.65,-0.7);
+  \node[fill=white, inner sep=1pt] (boundlabel) at (5.55,-1.34) {bound \(E<0\)};
+  \draw[->, thin] (boundlabel.north west) -- (4.85,-0.7);
   \draw[dashed] (0,0.45) -- (6.2,0.45);
   \node[fill=white, inner sep=1pt] (scatlabel) at (4.85,0.92) {scattering \(E>0\)};
   \draw[->, thin] (scatlabel.south west) -- (4.2,0.45);
-  \node[blue, fill=white, inner sep=1.5pt] at (4.45,-1.05)
+  \node[blue, fill=white, inner sep=1.5pt] at (4.75,-0.42)
     {\(V_{\mathrm{eff}}(\rho)\)};
   \draw[densely dotted] (1.0,-1.1) -- (1.0,-1.58);
   \fill (1.0,-1.1) circle (1.4pt);
@@ -586,7 +587,7 @@ chapter.
   \fill (0.624,-0.7) circle (1.3pt);
   \fill (2.52,-0.7) circle (1.3pt);
   \draw[<->, blue!70!black] (0.624,-1.58) -- (2.52,-1.58);
-  \node[blue!70!black, fill=white, inner sep=1.5pt] at (1.57,-1.86)
+  \node[blue!70!black, fill=white, inner sep=1.5pt] at (1.70,-1.86)
     {allowed radial interval};
   \node[align=center, fill=white, inner sep=2pt] at (2.65,2.05)
     {centrifugal barrier\\near \(\rho=0\)};
@@ -1221,7 +1222,10 @@ The transformation has moved damping into a shifted oscillator frequency.
     plot (\x,{1.10*cos(3.25*\x r)});
   \node[blue!70!black, fill=white, inner sep=1.5pt] (qlabel) at (5.35,-0.92) {\(q(t)\)};
   \draw[blue!70!black, ->] (qlabel.north) -- (5.25,-0.18);
-  \node[red!75!black, fill=white, inner sep=1.5pt] at (5.85,1.24) {\(s=e^{\gamma t/2}q\)};
+  \node[red!75!black, fill=white, inner sep=1.5pt] at (5.85,1.24)
+    {\(s=e^{\gamma t/2}q\)};
+  \node[red!75!black, fill=white, inner sep=1pt] at (1.18,1.24)
+    {constant envelope};
   \node[align=center, fill=white, inner sep=1.5pt] at (4.1,-1.78)
     {rescaling absorbs the exponential damping envelope};
 \end{tikzpicture}
@@ -1281,11 +1285,11 @@ The Lagrangian is
       plot (\x,{-0.35*sin(\x r)*sin(\x r)-0.80*cos(\x r)});
     \draw[red!75!black, thick, domain=-3.1416:3.1416, samples=180]
       plot (\x,{-1.45*sin(\x r)*sin(\x r)-0.25*cos(\x r)+0.48});
-    \draw[blue!70!black, thick] (-2.95,1.22) -- (-2.55,1.22);
-    \node[blue!70!black, align=left, fill=white, inner sep=1.5pt] at (-1.62,1.22)
+    \draw[blue!70!black, thick] (0.62,1.22) -- (1.02,1.22);
+    \node[blue!70!black, align=left, fill=white, inner sep=1.5pt] at (2.02,1.22)
       {\(\omega<\omega_c\): one minimum};
-    \draw[red!75!black, thick] (-2.95,0.84) -- (-2.55,0.84);
-    \node[red!75!black, align=left, fill=white, inner sep=1.5pt] at (-1.58,0.84)
+    \draw[red!75!black, thick] (0.62,0.84) -- (1.02,0.84);
+    \node[red!75!black, align=left, fill=white, inner sep=1.5pt] at (2.02,0.84)
       {\(\omega>\omega_c\): two minima};
   \end{scope}
 \end{tikzpicture}

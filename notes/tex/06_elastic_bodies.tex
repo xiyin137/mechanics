@@ -61,7 +61,7 @@ or self-intersection matters; otherwise the local stress derivations use only
 nonsingularity of \(F\).
 \end{assumption}
 
-\begin{assumption}[Reference versus spatial densities]
+\begin{definition}[Reference versus spatial densities]
 The reference density \(\rho_0(X)\) is mass per reference volume. The spatial
 density \(\rho(x,t)\) is mass per current volume. Conservation of mass for a
 material volume gives
@@ -70,7 +70,7 @@ material volume gives
 \]
 Thus \(J\) converts volume elements and \(\rho_0\) converts kinetic energy,
 momentum balance, and stress work back to the fixed material domain \(B\).
-\end{assumption}
+\end{definition}
 
 \section{Deformation Gradient And Strain}
 \label{sec:deformation-gradient-strain}
@@ -104,8 +104,7 @@ The Green strain is
 The names are part of the logic: Cauchy's finite-deformation tensors and
 Green's strain organize deformation by comparing metrics, not by subtracting
 points. Truesdell and Noll later made the objectivity requirements systematic
-in modern continuum mechanics.
-It vanishes for every rigid motion
+in modern continuum mechanics. The Green strain vanishes for every rigid motion
 \[
   \varphi(X)=a+QX,\qquad Q\in\SO(3),
 \]
@@ -156,7 +155,8 @@ The infinitesimal strain is therefore
     \draw[red!75!black, ->] (1.96,1.60) -- (1.74,1.30);
     \node at (1.75,-0.55) {reference body \(B\)};
   \end{scope}
-  \draw[thick, ->] (3.55,1.35) -- node[above] {\(\varphi(X,t)\)} (5.45,1.35);
+  \draw[thick, ->] (3.55,1.35) -- (5.45,1.35);
+  \node[fill=white, inner sep=1pt] at (4.50,1.62) {\(\varphi(X,t)\)};
   \begin{scope}[xshift=5.7cm]
     \draw[->] (-0.2,0) -- (3.7,0) node[right] {\(x^1\)};
     \draw[->] (0,-0.2) -- (0,2.7) node[above] {\(x^2\)};
@@ -166,8 +166,8 @@ The infinitesimal strain is therefore
       .. controls (0.45,1.95) and (0.25,1.05) .. (0.55,0.55);
     \coordinate (x) at (1.55,1.15);
     \draw[black, fill=black] (x) circle (1.6pt);
-    \node[fill=white, inner sep=1pt] at (2.75,0.42) {\(x=\varphi(X)\)};
-    \draw[black!55, ->] (2.42,0.55) -- (1.67,1.05);
+    \node[fill=white, inner sep=1pt] at (2.88,0.34) {\(x=\varphi(X)\)};
+    \draw[black!55, ->] (2.42,0.50) -- (1.68,1.04);
     \draw[red!75!black, thick, ->] (x) -- ++(1.05,0.62);
     \node[red!75!black, fill=white, inner sep=1pt] at (2.74,1.98)
       {\(\delta x=F\delta X\)};

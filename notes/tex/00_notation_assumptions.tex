@@ -42,7 +42,8 @@ an arbitrary admissible curve. After the first variation is set to zero, it is
 a physical trajectory. Before a constraint is solved, a multiplier is an
 unknown reaction force. After a reduction is performed, the same multiplier may
 have disappeared from the reduced equation while still existing in the original
-force balance. The text marks these stage changes explicitly.
+force balance. The text calls attention to these stage changes because many
+formulas in mechanics change their logical role as a derivation proceeds.
 
 Notation is introduced where it first does work. If a standard symbol is reused,
 the local definition governs the current section or chapter. Upper/lower
@@ -148,22 +149,17 @@ instead of finitely many coordinates.
   smallbox/.style={draw, rounded corners=2pt, align=center, minimum width=2.8cm,
   minimum height=0.8cm, fill=gray!8},
   arr/.style={-{Latex[length=2.5mm]}, thick},
-  softarr/.style={-{Latex[length=2.2mm]}, thick, gray!70}
 ]
 \node[box] (lag) at (0,2.1) {Lagrangian mechanics\\configuration, action, variation};
 \node[box] (ham) at (5.5,2.1) {Hamiltonian mechanics\\phase space, symplectic form\\canonical maps};
 \node[box] (chaos) at (5.5,-1.25) {Integrability and chaos\\actions, tori, transport};
 \node[box] (cont) at (0,-1.25) {Continuum bodies\\fields, stress, frames};
 \node[smallbox] (examples) at (-2.75,0.42) {Kepler and rigid body\\first exact models};
-\node[smallbox] (demos) at (8.05,0.42) {Demos and diagnostics\\drift, sections, probability};
+\node[smallbox] (demos) at (8.45,0.42) {Demos and diagnostics\\drift, sections, probability};
 \draw[arr] (lag) -- (ham);
 \draw[arr] (ham) -- (chaos);
 \draw[arr] (chaos) -- (cont);
 \draw[arr] (cont) -- (lag);
-\draw[softarr, thin] (examples.north east) to[out=35,in=180] (lag.west);
-\draw[softarr, thin] (examples.south east) to[out=-25,in=180] (cont.west);
-\draw[softarr, thin] (demos.north west) to[out=160,in=-15] (ham.south east);
-\draw[softarr, thin] (demos.south west) to[out=205,in=15] (chaos.north east);
 \end{tikzpicture}
 \caption{The course loop. The central theories are connected by examples and
 computational diagnostics: exact models teach the geometry, while numerical

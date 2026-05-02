@@ -1,9 +1,9 @@
 \chapter{Gauge Theory Of Deforming Bodies}
 \label{chap:deforming-body}
 
-A cat falls. It rights itself in mid-air without any external torque. Its
-angular momentum can remain zero while its orientation changes, because the cat
-cycles through internal shapes. Related geometric-phase mechanisms appear in
+A falling cat can reorient in mid-air without any external torque. Its angular
+momentum can remain zero while its orientation changes, because the body cycles
+through internal shapes. Related geometric-phase mechanisms appear in
 low-Reynolds swimming, astronaut reorientation, and the rotor laboratory below:
 closed loops in shape space produce rigid motions in physical space, although
 the constraints and shape variables differ from one system to another.
@@ -201,7 +201,6 @@ value.
     \draw[fill=gray!20, thick] (-0.8,0) ellipse (0.45 and 0.25);
     \draw[fill=gray!20, thick] (0.8,0) ellipse (0.45 and 0.25);
     \draw[thick] (-0.35,0.05) -- (0.35,-0.05);
-    \draw[red!80!black, thick, ->] (0.0,0.65) arc (90:300:0.45);
   \end{scope}
   \draw[red!80!black, thick, ->] (4.85,2.72) -- (5.18,2.92);
   \node[align=center, fill=white, inner sep=2pt] at (2.55,0.38)
@@ -468,9 +467,12 @@ reconstruction steps. If \(0=t_0<t_1<\cdots<t_N=T\), then
   g(t_j)\exp\left(-\mathcal A_{\alpha}(s(t_j))
   \dot s^\alpha(t_j)\Delta t_j\right),
 \]
-and the factors must remain in time order because elements of \(G\) need not
-commute. Taking the mesh size to zero gives the displayed
-\(\mathcal P\exp\) formula.
+and the factors are appended chronologically on the right of the current
+configuration. Thus the finite product for \(g(T)\) is
+\(\exp X_0\exp X_1\cdots\exp X_{N-1}\), with earlier steps written farther to
+the left in this reconstruction convention. The factors must remain in this
+order because elements of \(G\) need not commute. Taking the mesh size to zero
+gives the displayed \(\mathcal P\exp\) formula.
 
 With the reconstruction convention \(g^{-1}\dot g=-\mathcal A(\dot s)\), the
 finite-dimensional curvature used for shape holonomy is
@@ -1131,7 +1133,8 @@ below is a concrete instance of this constant-connection case.
 \subsection{Helicopter Rotor Model As A Gauge Connection}
 \label{sec:lab-helicopter-gauge}
 
-A toy helicopter model makes the Shapere-Wilczek connection finite-dimensional.
+A finite-dimensional helicopter-rotor model makes the Shapere-Wilczek
+connection explicit.
 This subsection does not introduce a second theory. It takes the connection
 coefficients already derived in Section~\ref{sec:two-rotor-deforming-body-model}
 and uses them as a worked laboratory: the shape coordinates are the two rotor
@@ -1226,7 +1229,7 @@ from curvature.
 \item \path{demos/python/deforming_body_gauge.py}: finite-dimensional
 two-rotor gauge holonomy.
 \item \path{demos/mathematica/GaugeDeformingBody.wl}, a finite-dimensional
-gauge-connection toy model.
+gauge-connection laboratory.
 \item Suggested extension: a low-Reynolds swimmer whose connection is computed
 from a Stokes boundary-value problem.
 \end{itemize}

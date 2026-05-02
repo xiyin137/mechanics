@@ -68,10 +68,13 @@ and \(\rho(x,t)\) is the spatial density, conservation of mass gives
     .. controls (4.4,1.0) and (3.4,1.5) .. (2.3,1.1)
     .. controls (1.4,0.8) and (1.1,-0.4) .. (2.0,-1.0);
 \fill (-2.0,0.2) circle (1.5pt) node[above left] {\(X\)};
-\fill (2.9,0.35) circle (1.5pt) node[above right] {\(x=\varphi(X,t)\)};
+\fill (2.9,0.35) circle (1.5pt);
+\node[fill=white, inner sep=1pt] at (3.58,1.18) {\(x=\varphi(X,t)\)};
+\draw[thin, ->] (3.34,1.02) -- (2.96,0.45);
 \draw[->, thick] (-0.4,0.25) -- (1.55,0.25) node[midway, above] {\(\varphi_t\)};
 \draw[->] (-2.0,0.2) -- (-1.4,0.55) node[midway, above] {\(\delta X\)};
-\draw[->] (2.9,0.35) -- (3.72,0.78) node[midway, above] {\(F\delta X\)};
+\draw[->] (2.9,0.35) -- (3.72,0.78);
+\node[fill=white, inner sep=1pt] at (4.05,0.55) {\(F\delta X\)};
 \node at (-2.0,-1.55) {reference body \(\mathcal{B}\)};
 \node at (2.95,-1.55) {current body \(\varphi_t(\mathcal{B})\)};
 \end{tikzpicture}
@@ -176,9 +179,9 @@ constraint pressure & enforces \(J=1\) when incompressible & enforces
 \end{tabular}
 \end{center}
 
-The distinction is physical, not merely notational.  A solid can sustain shear
-stress at rest.  A Newtonian fluid at rest has stress \(-pI\); shear stress is
-proportional to rate of deformation.
+The distinction is physical.  A solid can sustain shear stress at rest.  A
+Newtonian fluid at rest has stress \(-pI\); shear stress is proportional to
+rate of deformation.
 
 \section{Boundary Conditions Are Part Of The Model}
 \label{sec:continuum-boundary-conditions}

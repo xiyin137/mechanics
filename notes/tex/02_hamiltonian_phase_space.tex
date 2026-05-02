@@ -238,7 +238,7 @@ the Hamiltonian determine a unique vector field. In canonical coordinates
   -I_n & 0
   \end{pmatrix}.
 \]
-Darboux's proof can be sketched as a local induction. Choose a function
+Darboux's proof can be outlined as a local induction. Choose a function
 \(q^1\) with nonzero differential and define \(Y_1\) by
 \(\iota_{Y_1}\omega=-\dd q^1\). Nondegeneracy makes \(Y_1\) unique, and
 \(\dd q^1(Y_1)=\omega(Y_1,Y_1)=0\), so \(Y_1\) is tangent to the level sets of
@@ -580,13 +580,14 @@ problem.
 \section{What To Take Forward}
 \label{sec:hamiltonian-take-forward}
 
-The rest of the notes repeatedly reuse three lessons from this chapter.
+The rest of the notes repeatedly reuse three lessons sharpened in this
+chapter.
 \begin{itemize}
-\item The configuration space \(Q\) is part of the model, and boundary terms
-are information: they identify canonical momenta, forces, and conserved
-quantities.
-\item Symmetry produces conserved quantities through Noether's theorem, and
-those quantities are often the coordinates of a reduced problem.
+\item The Legendre transform is a structural step, not a change of notation:
+it is valid only where velocities can be recovered from momenta.
+\item The canonical one-form records the endpoint momentum information from
+the Lagrangian action; its exterior derivative is the symplectic form that
+controls Hamiltonian evolution.
 \item Hamiltonian mechanics is geometry on \(T^*Q\): the symplectic form
 determines Hamilton's equations, volume preservation, Poisson brackets, and the
 meaning of a canonical numerical method.
@@ -670,9 +671,11 @@ define a Hamiltonian system.
   \draw[dashed, red!75!black] (0.95,-1.9) -- (0.95,1.9);
   \fill[red!75!black] (-0.95,0.57) circle (1.3pt);
   \fill[red!75!black] (0.95,-0.57) circle (1.3pt);
-  \node[black, fill=white, inner sep=1pt] at (-1.38,1.72) {\(W=0\)};
-  \node[black, fill=white, inner sep=1pt] at (1.38,-1.72) {\(W=0\)};
-  \draw[decorate, decoration={brace, amplitude=5pt}]
+  \node[black, fill=white, inner sep=1pt] (wleft) at (-1.45,1.72) {\(W=0\)};
+  \node[black, fill=white, inner sep=1pt] (wright) at (1.55,-1.72) {\(W=0\)};
+  \draw[thin, ->] (wleft.south) -- (-0.95,1.15);
+  \draw[thin, ->] (wright.north west) -- (0.95,-1.15);
+  \draw[decorate, decoration={brace, amplitude=6pt}, thick]
     (1.45,-0.57) -- (1.45,0.57);
   \draw[->, gray!70] (2.42,0.30) -- (1.50,0.28);
   \node[align=left, fill=white, inner sep=1.5pt] at (2.52,0.88)

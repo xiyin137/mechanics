@@ -4,13 +4,13 @@
 \section{What Is A Fluid?}
 \label{sec:what-is-fluid}
 
-A simple Newtonian fluid is a continuum that has lost its memory of a reference
-shear. Push a finger through honey: the displaced material moves, stretches,
-and eventually fills in behind the finger, but no permanent shear strain is
-stored. Pull the finger out and the honey does not snap back. This is a
-constitutive idealization, not the definition of every material called a fluid:
-viscoelastic fluids, Bingham fluids, granular media, and superfluids require
-different constitutive structures.
+A Newtonian fluid does not assign stress to a static shear strain relative to a
+preferred reference shape. Push a finger through honey: the displaced material
+moves, stretches, and eventually fills in behind the finger, but no permanent
+shear strain is stored. Pull the finger out and the honey does not snap back.
+This is a constitutive idealization, not the definition of every material
+called a fluid: viscoelastic fluids, Bingham fluids, granular media, and
+superfluids require different constitutive structures.
 
 This is why the Eulerian description is convenient for many fluid problems. We
 observe fields at fixed points in space: velocity, density, pressure, and
@@ -1559,9 +1559,9 @@ resulting point-vortex bracket as the model.
   \draw[dashed] (-0.65,-0.35) -- (0.65,0.35);
   \draw[<->] (-0.95,-1.02) -- (0.35,-0.32);
   \node[fill=white, inner sep=1pt] at (-0.12,-1.30) {fixed separation \(d\)};
-  \draw[blue, thick, ->] (-0.95,-0.96) -- (-1.43,-0.08);
-  \draw[blue, thick, ->] (0.95,-0.26) -- (0.47,0.62);
-  \draw[blue, dashed, thick, ->] (-0.25,1.48) -- (-0.78,2.08);
+  \draw[blue, thick, ->] (-1.02,-0.62) -- (-1.50,0.26);
+  \draw[blue, thick, ->] (0.28,0.08) -- (-0.20,0.96);
+  \draw[blue, dashed, thick, ->] (-0.25,1.48) -- (-0.73,2.36);
   \node[blue, align=center, fill=white, inner sep=1pt] at (0.62,1.82)
     {common\\translation};
 \end{tikzpicture}

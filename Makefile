@@ -3,7 +3,7 @@ WOLFRAM ?= /Applications/Wolfram.app/Contents/MacOS/WolframKernel
 PYCACHE ?= .pycache-build
 MPLCACHE ?= .matplotlib-cache
 
-.PHONY: smoke test mathematica-smoke asteroid-demo asteroid-accelerated-demo cr3bp-demo cr3bp-zerovel-demo rigid-body-demo standard-map-demo torus-breakdown-demo standard-map-breakdown-demo pendulum-demo fluids-demo navier-stokes-demo elasticity-demo rod-demo notes clean
+.PHONY: smoke test mathematica-smoke asteroid-demo asteroid-accelerated-demo cr3bp-demo cr3bp-zerovel-demo rigid-body-demo standard-map-demo torus-breakdown-demo standard-map-breakdown-demo henon-heiles-demo pendulum-demo fluids-demo navier-stokes-demo elasticity-demo rod-demo notes clean
 
 smoke:
 	env PYTHONPYCACHEPREFIX=$(PYCACHE) $(PYTHON) -m compileall -q demos/python
@@ -57,6 +57,11 @@ standard-map-breakdown-demo: torus-breakdown-demo
 
 figures/standard_map_torus_breakdown.png: demos/python/standard_map_torus_breakdown.py | figures
 	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) MPLBACKEND=Agg $(PYTHON) demos/python/standard_map_torus_breakdown.py --K 1.1 --steps 1500 --orbits 128 --plot figures/standard_map_torus_breakdown.png
+
+henon-heiles-demo: figures/henon_heiles_poincare.png
+
+figures/henon_heiles_poincare.png: demos/python/henon_heiles_poincare.py | figures
+	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) MPLBACKEND=Agg $(PYTHON) demos/python/henon_heiles_poincare.py --lecture --plot figures/henon_heiles_poincare.png
 
 pendulum-demo: figures/hamiltonian_pendulum.png
 

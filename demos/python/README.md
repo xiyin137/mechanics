@@ -37,6 +37,7 @@ python demos/python/hamiltonian_pendulum.py --quick --json
 python demos/python/rigid_body_euler_top.py --quick --json
 python demos/python/standard_map.py --quick --json
 python demos/python/standard_map_torus_breakdown.py --quick --json
+python demos/python/henon_heiles_poincare.py --quick --json
 python demos/python/circular_restricted_three_body.py --quick --json
 python demos/python/asteroid_ejection_probability.py --quick --no-plot --json
 python demos/python/linear_elasticity.py --quick --json
@@ -95,6 +96,8 @@ and optional sensitivity rows.
   determinant drift.
 - Hamiltonian pendulum and standard-map runs illustrate structure-preserving
   behavior and area preservation.
+- Henon-Heiles runs generate genuine Poincare sections on \(y=0,\ p_y>0\) and
+  report energy drift for the velocity-Verlet integration.
 - CR3BP runs report Jacobi drift.  RK4 is transparent, but it is not a
   structure-preserving long-time integrator.
 - Asteroid ensemble runs report loss counts, ejection probability, loss

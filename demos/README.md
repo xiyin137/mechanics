@@ -44,6 +44,7 @@ figure path.
 | --- | --- | --- |
 | rigid-body invariants and reconstruction | `python/rigid_body_euler_top.py` | Integrability and the Rigid Body |
 | standard-map torus breakdown | `python/standard_map_torus_breakdown.py` | Perturbation, KAM, and Breakdown |
+| Henon-Heiles Poincare sections | `python/henon_heiles_poincare.py` | Perturbation, KAM, and Breakdown |
 | CR3BP and zero-velocity curves | `python/circular_restricted_three_body.py` | The Three-Body Problem |
 | asteroid ejection probability | `python/asteroid_ejection_probability.py` | The Three-Body Problem |
 | elastic constants and boundary formulas | `python/linear_elasticity.py` | Elastic Bodies |

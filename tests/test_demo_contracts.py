@@ -66,6 +66,7 @@ def test_major_python_demos_expose_help() -> None:
         "deforming_body_gauge.py",
         "fluids_vorticity.py",
         "hamiltonian_pendulum.py",
+        "henon_heiles_poincare.py",
         "linear_elasticity.py",
         "navier_stokes_solutions.py",
         "rigid_body_euler_top.py",
@@ -83,6 +84,7 @@ def test_core_demos_run_small_cases() -> None:
     run_python_demo("demos/python/hamiltonian_pendulum.py", "--steps", "20")
     run_python_demo("demos/python/standard_map.py", "--orbits", "3", "--steps", "5")
     run_python_demo("demos/python/standard_map_torus_breakdown.py", "--orbits", "4", "--steps", "8")
+    run_python_demo("demos/python/henon_heiles_poincare.py", "--quick")
     run_python_demo("demos/python/fluids_vorticity.py", "--steps", "10")
     run_python_demo("demos/python/navier_stokes_solutions.py", "--points", "12")
     run_python_demo("demos/python/linear_elasticity.py", "--points", "12")
@@ -115,6 +117,7 @@ def test_core_demos_emit_quick_json() -> None:
         ("demos/python/rigid_body_euler_top.py", ["--quick", "--json"], "energy_max_abs_drift"),
         ("demos/python/standard_map.py", ["--quick", "--json"], "finite_rotation_mean"),
         ("demos/python/standard_map_torus_breakdown.py", ["--quick", "--json"], "diagnostics"),
+        ("demos/python/henon_heiles_poincare.py", ["--quick", "--json"], "sections"),
         ("demos/python/circular_restricted_three_body.py", ["--quick", "--json"], "jacobi_max_abs_drift"),
         ("demos/python/asteroid_ejection_probability.py", ["--quick", "--no-plot", "--json"], "ejection_standard_error"),
         ("demos/python/linear_elasticity.py", ["--quick", "--json"], "moduli_round_trip_error"),

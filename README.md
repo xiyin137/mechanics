@@ -97,6 +97,19 @@ The Makefile alias for this figure is:
 make standard-map-breakdown-demo
 ```
 
+Run the Henon-Heiles Poincare-section demo used for the numerical section
+figure in the perturbation chapter:
+
+```sh
+python demos/python/henon_heiles_poincare.py --lecture --plot figures/henon_heiles_poincare.png
+```
+
+The Makefile alias for this figure is:
+
+```sh
+make henon-heiles-demo
+```
+
 Run the exact Navier-Stokes solution demo:
 
 ```sh

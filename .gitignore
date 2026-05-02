@@ -37,6 +37,7 @@ dist/
 # Matplotlib / local render caches
 .matplotlib-cache/
 .tmp_pdf_pages/
+tmp/
 
 # TeX build products
 *.acn
