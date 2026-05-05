@@ -3,7 +3,7 @@ WOLFRAM ?= /Applications/Wolfram.app/Contents/MacOS/WolframKernel
 PYCACHE ?= .pycache-build
 MPLCACHE ?= .matplotlib-cache
 
-.PHONY: smoke test mathematica-smoke asteroid-demo asteroid-accelerated-demo asteroid-normal-form-demo binary-capture-demo three-body-benchmark-demo lidov-kozai-demo cr3bp-demo cr3bp-zerovel-demo rigid-body-demo heavy-top-demo standard-map-demo torus-breakdown-demo standard-map-breakdown-demo henon-heiles-demo pendulum-demo fluids-demo navier-stokes-demo elasticity-demo rod-demo notes clean
+.PHONY: smoke test mathematica-smoke asteroid-demo asteroid-accelerated-demo asteroid-normal-form-demo binary-capture-demo three-body-benchmark-demo lidov-kozai-demo cr3bp-demo cr3bp-zerovel-demo rigid-body-demo heavy-top-demo standard-map-demo homoclinic-tangle-demo torus-breakdown-demo standard-map-breakdown-demo henon-heiles-demo pendulum-demo fluids-demo navier-stokes-demo elasticity-demo rod-demo notes clean
 
 smoke:
 	env PYTHONPYCACHEPREFIX=$(PYCACHE) $(PYTHON) -m compileall -q demos/python
@@ -45,10 +45,10 @@ binary-capture-demo: figures/binary_capture_scattering.png
 figures/binary_capture_scattering.png: demos/python/binary_capture_scattering.py | figures data
 	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) $(PYTHON) demos/python/binary_capture_scattering.py --quick --plot figures/binary_capture_scattering.png --json-output data/binary_capture_scattering_quick.json
 
-three-body-benchmark-demo: figures/three_body_benchmark_quick.png
+three-body-benchmark-demo: figures/three_body_asteroid_loss_quick.png figures/three_body_binary_scattering_quick.png
 
-figures/three_body_benchmark_quick.png: demos/python/three_body_benchmark_studies.py demos/python/asteroid_ejection_probability.py demos/python/binary_capture_scattering.py | figures data
-	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) $(PYTHON) demos/python/three_body_benchmark_studies.py --quick --plot figures/three_body_benchmark_quick.png --json-output data/three_body_benchmark_quick.json
+figures/three_body_asteroid_loss_quick.png figures/three_body_binary_scattering_quick.png figures/three_body_benchmark_quick.png: demos/python/three_body_benchmark_studies.py demos/python/asteroid_ejection_probability.py demos/python/binary_capture_scattering.py | figures data
+	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) $(PYTHON) demos/python/three_body_benchmark_studies.py --quick --plot figures/three_body_benchmark_quick.png --asteroid-plot figures/three_body_asteroid_loss_quick.png --binary-plot figures/three_body_binary_scattering_quick.png --json-output data/three_body_benchmark_quick.json
 
 lidov-kozai-demo: figures/lidov_kozai.png
 
@@ -76,6 +76,11 @@ standard-map-demo: figures/standard_map.png
 
 figures/standard_map.png: demos/python/standard_map.py | figures
 	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) $(PYTHON) demos/python/standard_map.py --K 0.95 --plot figures/standard_map.png
+
+homoclinic-tangle-demo: figures/standard_map_homoclinic_tangle.png
+
+figures/standard_map_homoclinic_tangle.png: demos/python/standard_map_homoclinic_tangle.py | figures data
+	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) MPLBACKEND=Agg $(PYTHON) demos/python/standard_map_homoclinic_tangle.py --quick --plot figures/standard_map_homoclinic_tangle.png --json-output data/standard_map_homoclinic_tangle_quick.json
 
 torus-breakdown-demo: figures/standard_map_torus_breakdown.png
 

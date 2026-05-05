@@ -215,6 +215,7 @@
     "configuration": {
       "b_max": 1.5,
       "dt": 0.015,
+      "orientation_convention": "Before subtracting the total center of mass, the binary center of mass is at the origin. The incoming body starts at (-8 a_bin, b) in the quick run and moves initially in the +x direction. The binary separation vector has random phase: a_bin*(cos phi, sin phi), with phi uniform on [0, 2*pi).",
       "samples_per_v_inf": 16,
       "v_infs": [
         0.35,
@@ -274,6 +275,8 @@
   },
   "model": "three-body benchmark statistical studies",
   "outputs": {
+    "asteroid_plot": "figures/canonical/three_body_asteroid_loss_quick.png",
+    "binary_plot": "figures/canonical/three_body_binary_scattering_quick.png",
     "json": "data/canonical/three_body_benchmark_quick.json",
     "plot": "figures/canonical/three_body_benchmark_quick.png"
   },

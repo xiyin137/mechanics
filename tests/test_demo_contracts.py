@@ -75,6 +75,7 @@ def test_major_python_demos_expose_help() -> None:
         "navier_stokes_solutions.py",
         "rigid_body_euler_top.py",
         "standard_map.py",
+        "standard_map_homoclinic_tangle.py",
         "standard_map_torus_breakdown.py",
         "three_body_benchmark_studies.py",
     ]
@@ -89,6 +90,7 @@ def test_core_demos_run_small_cases() -> None:
     run_python_demo("demos/python/hamiltonian_pendulum.py", "--steps", "20")
     run_python_demo("demos/python/heavy_symmetric_top.py", "--quick")
     run_python_demo("demos/python/standard_map.py", "--orbits", "3", "--steps", "5")
+    run_python_demo("demos/python/standard_map_homoclinic_tangle.py", "--samples", "16", "--iterates", "2")
     run_python_demo("demos/python/standard_map_torus_breakdown.py", "--orbits", "4", "--steps", "8")
     run_python_demo("demos/python/henon_heiles_poincare.py", "--quick")
     run_python_demo("demos/python/fluids_vorticity.py", "--steps", "10")
@@ -127,6 +129,7 @@ def test_core_demos_emit_quick_json() -> None:
         ("demos/python/heavy_symmetric_top.py", ["--quick", "--json"], "diagnostics"),
         ("demos/python/rigid_body_euler_top.py", ["--quick", "--json"], "energy_max_abs_drift"),
         ("demos/python/standard_map.py", ["--quick", "--json"], "finite_rotation_mean"),
+        ("demos/python/standard_map_homoclinic_tangle.py", ["--quick", "--json"], "linearization"),
         ("demos/python/standard_map_torus_breakdown.py", ["--quick", "--json"], "diagnostics"),
         ("demos/python/henon_heiles_poincare.py", ["--quick", "--json"], "sections"),
         ("demos/python/circular_restricted_three_body.py", ["--quick", "--json"], "jacobi_max_abs_drift"),
@@ -273,6 +276,27 @@ def test_standard_map_cylinder_zero_k_has_constant_momentum() -> None:
     assert np.allclose(p, p0[None, :])
     assert np.allclose(q_lift, q0[None, :] + expected_steps * p0[None, :])
     assert np.allclose(q_mod, q_lift % demo.TWOPI)
+
+
+@pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
+def test_standard_map_homoclinic_inverse_step_recovers_forward_step() -> None:
+    np = pytest.importorskip("numpy")
+    demo = load_demo_module("standard_map_homoclinic_tangle.py")
+    q = np.array([-2.4, -0.2, 0.7, 2.5])
+    p = np.array([-1.1, 0.4, 1.2, 2.1])
+    q_next, p_next = demo.standard_map_step(q, p, K=1.8)
+    q_back, p_back = demo.standard_map_inverse_step(q_next, p_next, K=1.8)
+    assert np.allclose(q_back, demo.centered_mod(q))
+    assert np.allclose(p_back, demo.centered_mod(p))
+
+
+@pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
+def test_standard_map_homoclinic_fixed_point_eigendata_is_hyperbolic() -> None:
+    demo = load_demo_module("standard_map_homoclinic_tangle.py")
+    eigendata = demo.fixed_point_eigendata(1.8)
+    assert eigendata["unstable_eigenvalue"] > 1.0
+    assert 0.0 < eigendata["stable_eigenvalue"] < 1.0
+    assert eigendata["unstable_eigenvalue"] * eigendata["stable_eigenvalue"] == pytest.approx(1.0)
 
 
 @pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")

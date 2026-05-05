@@ -32,6 +32,10 @@ env PYTHONPYCACHEPREFIX=.pycache-build \
   --json-output data/canonical/standard_map_quick.json
 
 env PYTHONPYCACHEPREFIX=.pycache-build \
+  python demos/python/standard_map_homoclinic_tangle.py --quick \
+  --json-output data/canonical/standard_map_homoclinic_tangle_quick.json
+
+env PYTHONPYCACHEPREFIX=.pycache-build \
   python demos/python/standard_map_torus_breakdown.py --quick \
   --json-output data/canonical/standard_map_torus_breakdown_quick.json
 
@@ -42,6 +46,10 @@ env PYTHONPYCACHEPREFIX=.pycache-build \
 env PYTHONPYCACHEPREFIX=.pycache-build \
   python demos/python/lidov_kozai.py --quick \
   --json-output data/canonical/lidov_kozai_quick.json
+
+env PYTHONPYCACHEPREFIX=.pycache-build \
+  python demos/python/asteroid_resonance_normal_form.py --quick \
+  --json-output data/canonical/asteroid_resonance_normal_form_quick.json
 
 env PYTHONPYCACHEPREFIX=.pycache-build \
   python demos/python/asteroid_ejection_probability.py --quick --no-plot \

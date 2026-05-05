@@ -2,16 +2,23 @@
 \label{app:continuum-caveats}
 
 The continuum chapters use compact notation because the main text already
-derives the equations in detail.  This appendix gathers the assumptions that
-are easiest to blur: what is kinematics, what is balance law, what is
-constitutive law, which stress measure is being used, and where idealizations
-enter.  The goal is to prevent correct formulas from being read with the wrong
-meaning.
+derives the equations in detail.  This appendix separates the logical roles
+that are easiest to blur: what is kinematics, what is balance law, what is
+constitutive law, which stress measure is being used, what is a regularity
+hypothesis, and where physical idealizations enter.  The goal is to prevent
+correct formulas from being read with the wrong meaning.
 
 \section{Three Layers: Kinematics, Balance, Constitutive Law}
 \label{sec:continuum-three-layers}
 
 A continuum theory is built in three logically distinct layers.
+
+\paragraph{Local notation.}
+This appendix uses \(X\) for material coordinates, \(x\) for spatial
+coordinates, \(F\) for deformation gradient, \(\sigma\) for Cauchy stress,
+\(P\) for first Piola-Kirchhoff stress, and \(D\) for the symmetric
+strain-rate tensor in fluids.  The same letters may have had narrower meanings
+in earlier chapters; the continuum meaning is restated where needed.
 
 \begin{enumerate}
 \item \emph{Kinematics} specifies the variables.  For a material body this may
@@ -268,8 +275,8 @@ gradients.  The main text uses finite-strain formulas classically; existence
 theory for minimizers requires these additional hypotheses plus coercivity and
 orientation preservation.
 
-\section{Navier-Stokes Assumptions}
-\label{sec:navier-stokes-assumptions}
+\section{Navier-Stokes Model Ingredients}
+\label{sec:navier-stokes-model-ingredients}
 
 The incompressible Navier-Stokes equation
 \[
@@ -278,14 +285,16 @@ The incompressible Navier-Stokes equation
         -\nabla p+\mu\Delta v+\rho b,\qquad
         \divergence v=0,
 \]
-uses the following assumptions:
+combines the following ingredients:
 \begin{enumerate}
-\item continuum approximation: fields are smooth enough on the length scales
+\item a continuum approximation, with fields smooth enough on the length scales
 of interest;
-\item constant density \(\rho\) and viscosity \(\mu\);
-\item Newtonian, isotropic, frame-indifferent viscous stress;
-\item incompressibility;
-\item boundary and initial data compatible with \(\divergence v=0\).
+\item material parameters specialized to constant density \(\rho\) and viscosity
+\(\mu\);
+\item a constitutive assumption: Newtonian, isotropic, frame-indifferent
+viscous stress;
+\item the incompressibility constraint \(\divergence v=0\);
+\item boundary and initial data compatible with that constraint.
 \end{enumerate}
 The equation is local and deterministic.  Turbulence does not invalidate it as
 a model, but turbulent prediction may require statistical descriptions,
@@ -306,6 +315,16 @@ Navier-Stokes by \(w\) and integrating gives
         =
         \int_\Omega \rho b\cdot w\,\dd x .
 \]
+Here \(v(x,t)\) is the unknown velocity, \(w(x)\) is an arbitrary admissible
+test velocity, \(b(x,t)\) is body force per unit mass, and
+\[
+        D(v)=\frac12\bigl(\nabla v+(\nabla v)^T\bigr)
+\]
+is the symmetric strain-rate tensor.  The test space is deliberately
+restricted: \(w\) has zero divergence and satisfies the same homogeneous
+normal or no-slip boundary condition used by the velocity problem.  The weak
+equation must hold for every such \(w\), and the pressure is recovered
+afterward as the multiplier that enforces \(\divergence v=0\).
 The pressure term is absent because
 \[
         \int_\Omega \nabla p\cdot w\,\dd x
@@ -328,6 +347,11 @@ energy inequality
         +
         \int_0^t\int_\Omega \rho b\cdot v\,\dd x\,\dd s .
 \]
+The inequality sign is important.  For smooth solutions and boundary
+conditions with no boundary power, the corresponding identity is an equality.
+For Leray-Hopf weak solutions, the weak limit may lose kinetic energy into
+unresolved small scales, so the formulation requires dissipation no smaller
+than the viscous term displayed above but does not assert exact equality.
 Weak existence is not the same as smooth uniqueness.  The three-dimensional
 global regularity problem asks whether smooth data always produce smooth
 solutions for all time; this remains outside the scope of these notes.
@@ -356,4 +380,4 @@ For weak solutions, the same calculation may become an inequality rather than
 an equality.  In three dimensions, global smoothness for arbitrary smooth data
 is a famous open problem.  The lecture-note derivations are therefore
 classical derivations: they are correct under the stated smoothness
-assumptions, while the functional-analytic theory requires additional care.
+hypotheses, while the functional-analytic theory requires additional care.

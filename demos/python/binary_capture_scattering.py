@@ -282,6 +282,13 @@ def summarize(cfg: Config) -> dict[str, object]:
             "b_max": cfg.b_max,
             "start_distance": cfg.start_distance,
             "impact_parameter_sampling": "uniform in area" if cfg.uniform_area else "uniform in signed impact parameter",
+            "orientation_convention": (
+                "Before subtracting the total center of mass, the binary center of mass is at the origin; "
+                "the binary separation vector from body 1 to body 2 is a_binary*(cos phase, sin phase) "
+                "with phase uniform on [0, 2*pi); the incoming body starts at (-start_distance, b) "
+                "and initially moves in the +x direction. The signed impact parameter b is the initial "
+                "y-offset of the incoming body relative to the binary center of mass."
+            ),
         },
         "integration": {
             "years": cfg.years,

@@ -20,6 +20,14 @@ is the shape space.  Locally one may write a configuration as
 \[
         q=(g,s),\qquad g\in G,\quad s\in S.
 \]
+
+\paragraph{Local notation.}
+In this appendix \(Q\) is a configuration space, \(G\) a symmetry group,
+\(S\) a shape space, \(g\) a group element, \(s\) a shape coordinate, and
+\(\xi=g^{-1}\dot g\) a body velocity.  The connection one-form \(A\) in this
+appendix is gauge data, not the Laplace-Runge-Lenz vector and not an
+electromagnetic vector potential.
+
 The body velocity is
 \[
         \xi=g^{-1}\dot g\in\mathfrak{g}
@@ -136,6 +144,13 @@ deforming-body chapter, the curvature is the \(\mathfrak{g}\)-valued two-form
 \[
         F_A=\dd A-\frac{1}{2}[A\wedge A].
 \]
+The bracketed wedge is defined so that
+\([A\wedge A]_{\alpha\beta}=2[A_\alpha,A_\beta]\). Equivalently, the component
+formula below is the convention being used. This is the same convention used in
+Chapter~\ref{chap:deforming-body} for
+\(\mathcal F=\dd\mathcal A-\frac12[\mathcal A\wedge\mathcal A]\); the factor
+\(\frac12\) is the wedge-symmetrization factor, not a change of sign or a
+different curvature.
 For a small oriented loop \(\Sigma\) in shape space, the leading geometric
 phase is
 \[
@@ -241,8 +256,9 @@ geometry, but they answer different physical questions.
 
 \begin{enumerate}
 \item Do not identify gauge dependence with physical ambiguity.  Coordinates
-and frames are choices; holonomy and reconstructed motion are physical after a
-frame convention is fixed.
+and frames are choices; a chosen frame gives a representative holonomy, while
+frame-independent statements are its conjugacy-invariant content and the
+reconstructed motion relative to specified boundary frames.
 \item Do not use the mechanical connection for a low-Reynolds swimmer unless
 the kinetic-energy metric is actually the relevant physics.  The Stokes
 connection comes from resistance, not inertia.

@@ -13,3 +13,8 @@ Before adding a canonical figure, record:
   companion.
 
 Generated scratch figures belong in `figures/`, not here.
+
+Several canonical quick-run figures are also included directly in the TeX
+notes as numerical companions to schematic derivations.  When one of those
+figures changes, rebuild `notes/tex/main.pdf` and the repository-root
+`main.pdf` before committing.

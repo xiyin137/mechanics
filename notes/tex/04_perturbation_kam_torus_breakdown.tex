@@ -98,6 +98,13 @@ with the specific Hamiltonian
   \qquad r=\norm r.
 \]
 
+\paragraph{Local notation.}
+The vector \(r\) is the relative position, while \(r=\norm r\) denotes its
+length after the formula is reduced to a radial expression.  The reduced mass
+\(\mu\) belongs to the two-body Hamiltonian, whereas the later symbol
+\(\mu_\odot=GM_\odot\) is the solar gravitational parameter in a
+per-unit-mass asteroid model.
+
 \begin{derivation}[Kepler orbit equation]
 The angular momentum per unit mass is
 \[
@@ -161,6 +168,13 @@ written in action-angle form:
   \qquad
   \dot\theta=\omega(I).
 \]
+
+\paragraph{Local notation.}
+Here \(I\) denotes a vector of action variables and \(\theta\) denotes the
+corresponding angle variables.  These are not the rigid-body inertia tensor and
+not the Euler polar angle.  The frequency vector is
+\(\omega(I)=\partial H_0/\partial I\).
+
 For a near-integrable Hamiltonian,
 \[
   H(I,\theta)=H_0(I)+\eps H_1(I,\theta),
@@ -199,6 +213,21 @@ The action conjugate to the fast Kepler phase is
 \[
   \boxed{\Lambda=\sqrt{\mu_\odot a}.}
 \]
+This normalization is fixed by the Kepler action integral, not by dimensional
+guesswork.  For a planar ellipse with angular-momentum action
+\(G_{\rm D}=\sqrt{\mu_\odot a(1-e^2)}\), the radial action is
+\[
+  J_r
+  =
+  \frac{1}{2\pi}\oint p_r\,\dd r
+  =
+  \sqrt{\mu_\odot a}-G_{\rm D}.
+\]
+The action conjugate to the mean anomaly is the sum
+\(J_r+G_{\rm D}\), because the radial oscillation and angular advance combine
+into one closed Kepler period.  Thus \(J_r+G_{\rm D}=\sqrt{\mu_\odot a}\),
+which is the \(\Lambda\) displayed above.  The longer calculation below keeps
+\(J_r\) explicit in order to introduce the eccentricity action.
 Solving for \(a=\Lambda^2/\mu_\odot\) gives
 \[
   \boxed{
@@ -360,6 +389,12 @@ Near resonance, phase combinations that normally average out become slow and
 can accumulate over long times.
 \end{definition}
 
+\paragraph{Local notation.}
+The vector \(k\) labels an integer Fourier mode or integer frequency
+combination.  In celestial mean-motion resonances, the symbols \(p:q\) label
+the ratio of mean motions \(n/n_J\); they are resonance integers, not canonical
+momenta.
+
 For mean-motion resonance with Jupiter, a \(p:q\) resonance means
 \[
   \frac{n}{n_J}\approx \frac{p}{q}.
@@ -477,6 +512,14 @@ resonant Hamiltonian of the form
   \eps B_{p:q}(\Gamma_*)\cos\phi
   +\cdots .
 \]
+
+\paragraph{Local notation.}
+The action \(J\) in this subsection is the resonant action produced by the
+canonical change of variables; it is unrelated to angular momentum \(J\) in the
+rigid-body chapter.  The quantity \(I_J\) is the dummy action conjugate to
+Jupiter's imposed phase in the autonomous extension.  The coefficient
+\(B_{p:q}\) is a Fourier coefficient of the disturbing function after averaging.
+
 Here \(J\) is the resonant action measuring displacement from the exact
 commensurability, \(J_*\) is its resonant value, \(A\) is the local curvature of
 the frequency mismatch, and \(B_{p:q}\) is the relevant disturbing-function
@@ -508,6 +551,13 @@ real celestial-mechanics calculation must compute the coefficient multiplying
 the resonant cosine.  We do this for the first-order interior \(2:1\)
 resonance, because it is the cleanest example and it appears in the asteroid
 demo.
+
+\paragraph{Local notation.}
+In this subsection \(\alpha=a/a_J\) is a semimajor-axis ratio, \(e\) is the
+asteroid eccentricity, \(M\) is mean anomaly, \(\lambda=M+\varpi\) is mean
+longitude, and \(\varpi\) is longitude of periapse.  The calligraphic
+\(\mathcal R\) is the disturbing function per unit \(Gm_J/a_J\), not a
+configuration-space region.
 
 Use units \(a_J=1\) temporarily, and write
 \[
@@ -611,6 +661,30 @@ isolated resonance.  Its status is nevertheless different from the
 \(\eta e^r\) model: the coefficient is now computed from the disturbing
 function rather than inserted as a placeholder.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\textwidth]{../../figures/canonical/asteroid_resonance_normal_form_quick.png}
+\caption{Numerical companion to the resonant normal-form calculation, generated
+by \protect\path{demos/python/asteroid_resonance_normal_form.py}.  The left panel uses
+semimajor axis \(a\) in astronomical units on the horizontal axis; the
+vertical resonance markers are the nominal interior Jovian resonances
+\(a_{p:q}=a_J(q/p)^{2/3}\), and the Jupiter marker identifies \(a_J\), not an
+asteroid data point.  The two middle panels both use eccentricity \(e\) on the
+horizontal axis but deliberately use different vertical scales.  The upper
+middle panel shows the illustrative normal-form half-widths in dimensionless
+action units for the placeholder model \(B_r(e)=\eta e^r\).  The lower middle
+panel shows only the quantitative \(2:1\) half-width in astronomical units,
+obtained from the disturbing-function coefficient \(C_{2:1}\) in the text.
+Their heights should not be compared across panels: the separation is meant to
+avoid mixing model action units with AU.  The right panel is the universal
+pendulum normal form: the horizontal axis is the resonant angle
+\(\phi\in[-\pi,\pi]\), the vertical axis is its conjugate momentum \(P\) in
+normalized units, and the curve is the separatrix.  The panels should be read
+as location, model-scaling, physical-width, and phase-portrait views of the
+same resonance calculation, not as an asteroid trajectory.}
+\label{fig:asteroid-resonance-normal-form-numerical}
+\end{figure}
+
 \section{Perturbing An Integrable System}
 \label{sec:perturbing-integrable-system}
 
@@ -633,6 +707,13 @@ Now add a small generic perturbation:
   \qquad
   0<\eps\ll 1.
 \]
+
+\paragraph{Local notation.}
+The domain \(U\) is an open set of actions, \(\mathbb T^N\) is the
+\(N\)-torus of angles, and \(\eps\) is the dimensionless perturbation strength.
+The question is local in the action-angle chart; global obstructions such as
+singular tori and collisions are outside this local model.
+
 What happens to the invariant tori \(I=\text{constant}\)?
 
 Two tempting answers are both incomplete. One might hope that the perturbed
@@ -665,6 +746,19 @@ type-II generating function
 \[
   S(I',\theta)=I'\cdot\theta+\eps S_1(I',\theta)+\eps^2S_2+\cdots.
 \]
+
+\paragraph{Local notation.}
+The primed variables \((I',\theta')\) are the new action-angle variables after
+the near-identity canonical transformation.  The unprimed \((I,\theta)\) are
+the old variables.  The Fourier vector \(k\) below runs over \(\Z^N\), and the
+mode \(k=0\) is the torus average.  The unperturbed term
+\(I'\cdot\theta\) is the identity transformation: if \(\eps=0\), then
+\(I=I'\) and \(\theta'=\theta\).  The function \(S_1\) is the first attempted
+correction.  The word ``canonical'' matters because a general change of
+variables can simplify the formula for \(H\) while destroying Hamilton's
+equations; a generating function preserves the symplectic structure by
+construction.
+
 The transformation is
 \[
   I_i=\frac{\partial S}{\partial \theta_i},
@@ -705,6 +799,12 @@ left side is zero. Therefore
 \[
   f_1(I')=\langle H_1(I',\theta)\rangle_\theta.
 \]
+This averaging step is the first place where the geometry of the torus enters.
+The operator \(\omega_0\cdot\partial_\theta\) differentiates along the
+unperturbed flow on a torus.  A derivative along a closed or quasiperiodic
+flow has zero average, so only the oscillatory part of \(H_1\) can be removed
+by choosing \(S_1\).  The averaged part remains in the normal form as the first
+frequency correction.
 
 Expand the perturbation in Fourier modes:
 \[
@@ -751,6 +851,13 @@ Small divisors can be overcome when the numerators decay rapidly. If
   |\operatorname{Im}\theta_i|<\sigma
   \qquad\text{for each angle component }i.
 \]
+
+\paragraph{Local notation.}
+The width \(\sigma\) measures how far the angle variables can be analytically
+continued into complex values.  The norm \(|k|_1=|k_1|+\cdots+|k_N|\) is used
+only to state a simple Fourier estimate; other equivalent integer norms change
+constants but not the small-divisor logic.
+
 Shifting the Fourier integral into the complex strip gives the estimate
 \[
   |H_{1k}(I)|\leq C(I)e^{-\sigma |k|_1},
@@ -887,6 +994,14 @@ the non-Diophantine set can be made to have arbitrarily small measure by taking
 \section{KAM Theorem: Statement And Sketch}
 \label{sec:kam-theorem-sketch}
 
+The symbols in the theorem statement are the same as in canonical perturbation
+theory.  \(I\in U\subset\R^N\) is an action vector, \(\theta\in\mathbb T^N\)
+is an angle vector, \(H_0(I)\) is the integrable Hamiltonian, \(H_1(I,\theta)\)
+is the perturbing Hamiltonian, and \(\eps\) measures perturbation size.  The
+constants \(\alpha\) and \(\tau\) belong to the Diophantine inequality:
+\(\alpha\) measures the distance from resonances and \(\tau\) controls how that
+distance is allowed to shrink as \(|k|\) grows.
+
 At this point the perturbation problem has two competing facts. Analyticity
 makes high Fourier modes small, which helps the perturbation series. Small
 divisors make near-resonant modes large, which threatens the perturbation
@@ -910,13 +1025,13 @@ tori survive for small \(\eps\), low-order resonances open into island chains,
 separatrices split, and gaps between surviving tori become possible transport
 channels. The rest of the chapter is organized around this mixed picture.
 
-\begin{assumption}[Kolmogorov nondegeneracy]
+\begin{hypothesis}[Kolmogorov nondegeneracy]
 The integrable Hamiltonian \(H_0(I)\) has a locally nondegenerate frequency map:
 \[
   \det\left(\frac{\partial^2H_0}{\partial I_i\partial I_j}\right)\neq0.
 \]
 Equivalently, nearby actions give genuinely different frequency vectors.
-\end{assumption}
+\end{hypothesis}
 
 \begin{proposition}[KAM theorem, lecture-note form]
 Let
@@ -925,11 +1040,14 @@ Let
 \]
 be a nearly integrable Hamiltonian on \(U\times\mathbb T^N\), analytic in the
 standard theorem, and assume that \(H_0\) is Kolmogorov nondegenerate. Fix
-\(\tau>N-1\). For each Diophantine constant \(\alpha>0\), if \(|\eps|\) is
-small enough relative to \(\alpha\), every unperturbed torus whose frequency
-satisfies the \((\alpha,\tau)\) Diophantine inequality persists as a nearby
-invariant torus of the perturbed system. For fixed \(\alpha\) the surviving
-family omits the \(O(\alpha)\) resonant set; choosing
+\(\tau>N-1\). On any compact action subdomain \(U'\Subset U\), for each
+Diophantine constant \(\alpha>0\), if \(|\eps|\) is small enough relative to
+\(\alpha\) and to the distance from \(U'\) to \(\partial U\), each unperturbed
+torus in \(U'\) whose frequency satisfies the \((\alpha,\tau)\) Diophantine
+inequality has a nearby invariant torus of the perturbed system. The
+frequency, not the original action label, is the clean invariant label in this
+Kolmogorov form. For fixed \(\alpha\) the surviving family omits the
+\(O(\alpha)\) resonant set; choosing
 \(\alpha=\alpha(\eps)\to0\) slowly enough as \(\eps\to0\) gives a Cantor family
 whose complement has measure tending to zero.
 \end{proposition}
@@ -1136,13 +1254,14 @@ torus with conjugate quasiperiodic motion.
 \end{tikzpicture}
 \caption{KAM survival is Cantor-like. Resonant action labels are removed in
 thin layers around \(k\cdot\omega=0\); the surviving Diophantine labels are
-nowhere all of the line, but their total measure approaches the integrable
-measure as \(\eps\to0\).}
+not a continuous interval, but their total measure approaches the integrable
+measure as \(\eps\to0\) when the Diophantine threshold is allowed to shrink with
+the perturbation size.}
 \label{fig:kam-cantor-survival}
 \end{figure}
 
-The theorem does not say that every torus survives. Resonant tori are destroyed
-or reorganized into lower-dimensional structures. Nor does it say that all
+The theorem does not say that every torus survives. Resonant tori generically
+break, bifurcate, or reorganize into lower-dimensional structures. Nor does it say that all
 surviving tori are visible in a given numerical section. In systems with
 \(N=2\), surviving
 one-dimensional invariant curves on a Poincare section can block transport. In
@@ -1151,6 +1270,13 @@ through resonance channels.
 
 \section{Breakdown Of Invariant Tori}
 \label{sec:breakdown-invariant-tori}
+
+Local notation for this section follows the action-angle convention of the
+KAM discussion.  The actions are \(I\), the angles are \(\theta\), the
+unperturbed Hamiltonian is \(H_0(I)\), the unperturbed frequency is
+\(\omega_0(I)=\partial H_0/\partial I\), and \(k\in\Z^N\) is an integer
+Fourier or resonance vector.  A subscript star, as in \(I_*\), means that the
+quantity is evaluated at a resonant torus.
 
 KAM theory is a survival theorem, but a mechanics course also has to explain
 which structures lie outside its hypotheses. A surviving irrational torus is a
@@ -1179,7 +1305,7 @@ new slow dynamics.
 The word ``breakdown'' can mean several related things, so we state the
 geometric setting carefully.
 
-\begin{assumption}[Two-degree-of-freedom reduction]
+\begin{setting}[Two-degree-of-freedom reduction]
 When discussing transport barriers, assume either:
 \begin{enumerate}
 \item a Hamiltonian flow with two degrees of freedom, restricted to one fixed
@@ -1194,7 +1320,7 @@ where \(I_{\mathrm{ann}}\subset\R\) is an interval.
 \end{enumerate}
 In either case the section is two-dimensional, and a surviving invariant torus
 appears as a one-dimensional invariant curve.
-\end{assumption}
+\end{setting}
 
 An invariant curve on the annulus is a set
 \[
@@ -1351,13 +1477,25 @@ The pendulum normal form explains the local shape of one resonant layer. The
 Poincare-Birkhoff theorem explains why rational invariant curves of
 area-preserving twist maps break into periodic orbits.
 
+For a map of an annulus with action-angle coordinates \((I,\theta)\), the
+twist condition means that the unperturbed rotation number changes with
+action:
+\[
+  \frac{\dd \Omega}{\dd I}\neq0
+\]
+on the annulus under discussion.  Equivalently, nearby invariant curves rotate
+by different amounts under one iterate.  This local monotonicity is the map
+version of the nondegenerate Hessian condition used earlier for Hamiltonian
+flows.
+
 \begin{proposition}[Poincare-Birkhoff theorem, informal form]
 Let \(F\) be an area-preserving twist map of an annulus. If a rational
 invariant curve of rotation number \(p/q\) is destroyed by a perturbation while
 nearby boundary curves twist in opposite directions under \(F^q\), then
-\(F^q\) has at least \(2q\) fixed points in the resonant annulus, equivalently
-at least two \(q\)-periodic orbits of \(F\). Generically these periodic points
-alternate between elliptic and hyperbolic type around the annulus.
+\(F\) has at least two \(q\)-periodic orbits in the resonant annulus. Equivalently,
+counting the \(q\) points on each primitive orbit, \(F^q\) has at least \(2q\)
+fixed points. Generically these periodic points alternate between elliptic and
+hyperbolic type around the annulus.
 \end{proposition}
 
 The hypothesis about opposite twist is the section-map version of being on
@@ -1399,10 +1537,11 @@ stable and unstable manifolds become two different curves:
   W^u&=\text{unstable manifold of the hyperbolic orbit}.
   \end{aligned}
 \]
-If \(W^s\) and \(W^u\) cross transversely once, area preservation forces an
-infinite sequence of further intersections. The resulting homoclinic tangle is
-the geometric core of deterministic chaos: strips of phase space are stretched,
-folded, and reinserted near the saddle.
+If \(W^s\) and \(W^u\) cross transversely once, the lambda-lemma mechanism for a
+two-dimensional invertible map produces an infinite sequence of further
+intersections. The resulting homoclinic tangle is the geometric core of
+deterministic chaos: strips of phase space are stretched, folded, and reinserted
+near the saddle.
 
 One first-order way to measure separatrix splitting is the Melnikov function
 (Melnikov, 1963). The homoclinic-tangle picture itself goes back to Poincare's
@@ -1447,6 +1586,27 @@ dynamics uses the Smale-Birkhoff homoclinic theorem: a transverse homoclinic
 point of an area-preserving map implies a horseshoe on an invariant set. The
 Melnikov calculation supplies the transverse intersection hypothesis; the
 Smale-Birkhoff theorem supplies the rigorous chaos conclusion.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\textwidth]{../../figures/canonical/standard_map_homoclinic_tangle_quick.png}
+\caption{Stable and unstable manifolds for the hyperbolic fixed point
+\((q,p)=(0,0)\) of the standard map, generated by
+\protect\path{demos/python/standard_map_homoclinic_tangle.py}.  Both panels use
+the centered torus coordinates \((q,p)\in[-\pi,\pi)\times[-\pi,\pi)\), and the
+map is \(p_{n+1}=p_n+K\sin q_n,\ q_{n+1}=q_n+p_{n+1}\) modulo \(2\pi\), with
+\(K=1.8\) chosen so the splitting and folds are visible at lecture-note scale.
+The black cross is the hyperbolic fixed point.  The red curves approximate
+\(W^u\), the unstable manifold, by forward iterates of a tiny segment tangent
+to the unstable eigenvector of the linearized map.  The blue curves approximate
+\(W^s\), the stable manifold, by inverse iterates of a tiny segment tangent to
+the stable eigenvector.  The left panel shows the computed manifold branches on
+the torus; the right panel restricts the view to a smaller square so the
+transverse red-blue crossings and folds of the homoclinic tangle are easier to
+see.  These are finite numerical images of local tangent segments, not a
+complete global parametrization of \(W^s\cup W^u\).}
+\label{fig:standard-map-homoclinic-tangle}
+\end{figure}
 
 \subsection{Cantori And Partial Barriers}
 \label{subsec:cantori-partial-barriers}
@@ -1608,6 +1768,12 @@ Poincare introduced this return-map viewpoint in the \emph{Methodes nouvelles};
 it is one of the reasons that modern Hamiltonian chaos is usually drawn on a
 section before it is described in full phase space.
 
+\paragraph{Local notation.}
+The section \(S\) below is a transverse surface inside a fixed energy surface,
+and \(T:S\to S\) is the first-return map.  The symbol \(T\) in this section is
+a map, not kinetic energy.  The iterate \(T^q\) means applying the return map
+\(q\) times.
+
 This is why maps are so useful in a chapter about flows. A continuous orbit can
 hide its organization in time; a section records each return to a transverse
 surface and turns invariant tori into curves, resonances into island chains,
@@ -1651,8 +1817,9 @@ for the unperturbed return map \(T\). A concrete period-three resonance is
 \]
 Let \(C\subset S\) be the invariant curve obtained by intersecting this
 resonant torus with the section. Nearby invariant curves \(C_-\) and \(C_+\)
-have slightly different rotation numbers. With the usual twist assumption,
-\(T^3\) rotates points one way on \(C_-\) and the opposite way on \(C_+\).
+have slightly different rotation numbers. With the twist condition
+\(\dd\Omega/\dd I\neq0\), \(T^3\) rotates points one way on \(C_-\) and the
+opposite way on \(C_+\).
 
 Now perturb the Hamiltonian:
 \[
@@ -1726,6 +1893,13 @@ The standard map is
   q_{n+1} &= q_n+p_{n+1}\pmod{2\pi}.
 \end{aligned}
 \]
+
+\paragraph{Local notation.}
+The integer \(n\) is an iterate label, \(K\) is the kick strength, \(q\) is an
+angle, and \(p\) is the conjugate momentum-like coordinate of the map.  On the
+cylinder \(p\) is real and unwrapped; on the compact two-torus portrait both
+\(q\) and \(p\) are reduced modulo \(2\pi\).
+
 This map is often called the Chirikov standard map. It emerged from kicked
 rotor and resonance-overlap models in the 1960s, and Chirikov's 1979 review made
 it the canonical laboratory for the transition from invariant curves to global
@@ -1819,10 +1993,10 @@ For example, at \(\theta=\pi/3\),
   p=\frac{2\pi}{3}+\frac{K}{2\sqrt3}+O(K^2),
 \]
 which is the initial condition singled out in the corresponding numerical
-exercise. At the next order, area preservation forces the radial displacement
-on \(C'\) to have alternating zeros. These become the six period-three points:
-three elliptic island centers and three hyperbolic points with separatrix
-structure.
+exercise. At the next order, the area-preserving twist-map argument behind
+Poincare-Birkhoff forces the radial displacement on \(C'\) to have alternating
+zeros. These become the six period-three points: three elliptic island centers
+and three hyperbolic points with separatrix structure.
 \end{example}
 
 \begin{figure}[htbp]
@@ -1879,10 +2053,15 @@ structure.
 \end{axis}
 \end{tikzpicture}
 \caption{Actual iterates of the standard map on the compact two-torus at
-\(K=0.65\). Blue points lie on quasiperiodic invariant curves away from the
+\(K=0.65\).  Both axes are angles modulo \(2\pi\): the horizontal coordinate
+is \(\theta\) and the vertical coordinate is \(p\), plotted in the square
+\([0,2\pi)\times[0,2\pi)\).  Each dot is one iterate of
+\(p_{n+1}=p_n+K\sin\theta_n,\ \theta_{n+1}=\theta_n+p_{n+1}\), reduced modulo
+\(2\pi\). Blue points lie on quasiperiodic invariant curves away from the
 resonance, red points trace orbits near the elliptic period-three island chain,
 gray points sample the local separatrix layer, and purple crosses mark the
-hyperbolic period-three orbit.}
+hyperbolic period-three orbit.  The dashed line \(p=2\pi/3\) is a reference
+line for the resonant rotation number, not a trajectory.}
 \label{fig:standard-map-island-chain}
 \end{figure}
 
@@ -1936,6 +2115,13 @@ Consider the one-angle time-periodic perturbation model
   =
   \frac12I^2+\epsilon\cos(n\theta-\nu t).
 \]
+
+\paragraph{Local notation.}
+In this exercise \(I\) is the action conjugate to the angle \(\theta\), the
+integer \(n\) labels the harmonic in the perturbation, and \(\nu\) is the
+external driving frequency.  The variable \(E_t\) introduced below is the
+momentum conjugate to time in the autonomous extended phase space.
+
 The unperturbed frequency is
 \[
   \dot\theta=I.
@@ -2020,6 +2206,14 @@ Henon-Heiles Hamiltonian is
   =
   H_0+\lambda_{\mathrm{HH}}H_1,
 \]
+
+\paragraph{Local notation.}
+The phase-space coordinates are \((x,y,p_x,p_y)\).  The parameter
+\(\lambda_{\mathrm{HH}}\) controls the nonlinear perturbation and is written
+with a subscript to avoid confusion with the angle \(\lambda\) used in
+celestial mechanics.  The Poincare sections later in the exercise fix one
+coordinate and plot the remaining conjugate pair at each crossing.
+
 with
 \[
   H_0=
@@ -2137,8 +2331,12 @@ visible in a four-dimensional phase space.
 \end{axis}
 \end{tikzpicture}
 \caption{Numerical Poincare sections of the Henon-Heiles flow on
-\(y=0,\ p_y>0\). Each plotted point is an upward section crossing from a
-velocity-Verlet integration of the Hamiltonian in the text. The dashed red
+\(y=0,\ p_y>0\), generated from the data files written by
+\protect\path{demos/python/henon_heiles_poincare.py}.  In each panel the horizontal
+axis is \(x\) and the vertical axis is \(p_x\), both in the nondimensional
+units of the Hamiltonian in the text.  The integration records one point each
+time the orbit crosses the section upward; \(p_y\) is then determined by the
+fixed energy and is not an independent plotted coordinate.  The dashed red
 circle is the kinematic boundary \(x^2+p_x^2=2E\) on the section, where
 \(p_y=0\). At \(E=1/12\) the section is dominated by deformed invariant
 curves; by \(E=1/8\) a chaotic sea coexists with surviving islands and smaller
@@ -2163,6 +2361,10 @@ phase-space organization: invariant curves, resonance islands, and chaotic
 layers. Which of these can block global radial transport in action?
 \item Explain why Liouville volume preservation is compatible with chaos. Which
 property of the dynamics changes when invariant tori break?
+\item In Figure~\ref{fig:asteroid-resonance-normal-form-numerical}, identify
+which curve is a genuine \(2:1\) disturbing-function calculation and which
+curves are order-of-eccentricity scaling models.  How would the half-width
+change if Jupiter's mass were multiplied by \(25\)?
 \end{enumerate}
 
 \section{Associated Demos}
@@ -2171,6 +2373,7 @@ property of the dynamics changes when invariant tori break?
 The associated torus-breakdown and finite-dimensional chaos demos are:
 \begin{itemize}
 \item \path{demos/python/asteroid_resonance_normal_form.py}
+\item \path{demos/python/standard_map_homoclinic_tangle.py}
 \item \path{demos/python/standard_map_torus_breakdown.py}
 \item \path{demos/python/henon_heiles_poincare.py}
 \item \path{demos/mathematica/StandardMapTorusBreakdown.wl}

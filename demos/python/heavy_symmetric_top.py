@@ -203,11 +203,16 @@ def save_plot(path: Path, summary: dict[str, object], cfg: Config) -> None:
     t = np.array([row["t"] for row in trajectory])
     theta = np.array([row["theta"] for row in trajectory])
     energy0 = float(summary["diagnostics"]["energy_initial"])
+    theta_turn_min = summary["diagnostics"].get("turning_theta_min_grid")
+    theta_turn_max = summary["diagnostics"].get("turning_theta_max_grid")
 
     fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(10.5, 4.4))
     ax0.plot(theta_grid, potential, color="0.25")
     ax0.axhline(energy0, color="tab:red", linestyle="--", label="energy")
     ax0.axvline(cfg.theta0, color="tab:blue", alpha=0.65, label="initial theta")
+    if theta_turn_min is not None and theta_turn_max is not None:
+        ax0.axvline(float(theta_turn_min), color="tab:green", linestyle=":", linewidth=1.4, label="turning points")
+        ax0.axvline(float(theta_turn_max), color="tab:green", linestyle=":", linewidth=1.4)
     accessible = potential[potential <= energy0]
     if len(accessible):
         margin = max(0.08, 0.18 * max(1.0, float(np.ptp(accessible))))
@@ -218,9 +223,14 @@ def save_plot(path: Path, summary: dict[str, object], cfg: Config) -> None:
     ax0.legend(frameon=False)
 
     ax1.plot(t, theta, color="tab:blue")
+    if theta_turn_min is not None and theta_turn_max is not None:
+        ax1.axhline(float(theta_turn_min), color="tab:green", linestyle=":", linewidth=1.4, label="turning points")
+        ax1.axhline(float(theta_turn_max), color="tab:green", linestyle=":", linewidth=1.4)
     ax1.set_xlabel("time")
     ax1.set_ylabel(r"$\theta(t)$")
     ax1.set_title("Nutation")
+    if theta_turn_min is not None and theta_turn_max is not None:
+        ax1.legend(frameon=False)
     fig.tight_layout()
     fig.savefig(path, dpi=160)
     plt.close(fig)

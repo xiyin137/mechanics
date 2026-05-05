@@ -93,7 +93,7 @@ def connection_components(i0: float, i1: float, i2: float) -> tuple[np.ndarray, 
 
 
 def curvature_vector(i0: float, i1: float, i2: float) -> np.ndarray:
-    """Return the reconstruction curvature dA - A wedge A for constant coefficients."""
+    """Return the component vector of dA - 1/2[A wedge A] for constant coefficients."""
     a_alpha, a_beta = connection_components(i0, i1, i2)
     return -np.cross(a_alpha, a_beta)
 

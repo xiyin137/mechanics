@@ -56,6 +56,14 @@ The rotation group is
 \[
   \SO(3)=\{R\in\R^{3\times 3}:R^TR=I,\ \det R=1\}.
 \]
+
+\paragraph{Local notation.}
+The attitude matrix \(R(t)\) maps body components to space components.  The
+symbol \(\Omega\) denotes angular velocity written in the moving body frame,
+while \(\omega_{\mathrm{space}}\) denotes the same angular velocity written in
+fixed space axes.  The hat map sends a vector \(a\in\R^3\) to the skew matrix
+\(\widehat a\) satisfying \(\widehat a\,v=a\times v\).
+
 The matrix \(R\) has columns equal to the three orthonormal body axes
 \(\hat e_1,\hat e_2,\hat e_3\) as seen in space:
 \[
@@ -64,6 +72,14 @@ The matrix \(R\) has columns equal to the three orthonormal body axes
 Thus a point of configuration space is not a triple of unconstrained vectors;
 it is an orthonormal oriented frame. The condition \(R^TR=I\) gives six
 constraints on nine matrix entries, leaving three degrees of freedom.
+
+The convention in this chapter is that \(R\) maps body components to space
+components.  If a material point has fixed body-coordinate vector \(X\), its
+space position relative to the center of mass is \(x=RX\).  The columns of
+\(R\) are therefore the moving body axes drawn in the fixed space frame.  This
+is an active placement convention.  Using the inverse convention would transpose
+several formulas and change signs in the body angular velocity; the physical
+motion would be the same, but the components would be labelled differently.
 
 The spatial angular velocity \(\omega_{\mathrm{space}}\) is defined by the fact that every body
 axis instantaneously rotates according to
@@ -110,7 +126,9 @@ The spatial angular velocity \(\omega_{\mathrm{space}}\) satisfies
 This space/body distinction is one of the main sources of sign errors in rigid
 body mechanics. The vector \(\omega_{\mathrm{space}}\) is expressed in fixed
 space axes, while \(\Omega\) is expressed in the moving body axes. They describe
-the same instantaneous rotation, but derivatives of body components must also
+the same instantaneous rotation.  The matrix \(R^T\dot R\) measures the change
+seen by an observer riding with the body, while \(\dot R R^T\) measures the
+same change in space axes.  Derivatives of body components must therefore also
 differentiate the moving frame. Euler's equation is where this bookkeeping
 becomes dynamical.
 
@@ -156,6 +174,13 @@ One can parametrize a dense open set of \(\SO(3)\) by Euler angles
   \qquad
   0\leq \phi<2\pi,\quad 0\leq \theta\leq \pi,\quad 0\leq \psi<2\pi.
 \]
+
+\paragraph{Local notation.}
+The angles \(\phi,\theta,\psi\) are coordinates on a chart of \(\SO(3)\), not
+three globally defined functions on all of \(\SO(3)\).  The same letter
+\(\theta\) will later be used for action-angle coordinates in an abstract
+integrable system; here it is only the Euler polar angle.
+
 For the Euler-angle convention used below, the body axes are
 \[
 \begin{aligned}
@@ -232,6 +257,14 @@ where \(\rho(X)\) is the mass density. A point \(X\) has velocity
 \[
   \dot x=\dot R X=R\widehat\Omega X=R(\Omega\times X).
 \]
+
+\paragraph{Local notation.}
+Here \(B\) is the material region occupied by the rigid body in body
+coordinates, \(X\) labels a material point, and \(\rho(X)\) is mass density.
+The inertia tensor \(I_{ij}\) and its principal values \(I_1,I_2,I_3\) are
+properties of the mass distribution.  They should not be confused with the
+action variables \(I_j\) introduced later in this chapter.
+
 Since \(R\) preserves Euclidean lengths,
 \[
   \norm{\dot x}^2=\norm{\Omega\times X}^2.
@@ -296,6 +329,14 @@ unreduced phase space of a rigid body with fixed center of mass is
 \[
   T^*\SO(3).
 \]
+
+\paragraph{Local notation.}
+This section temporarily returns to the generic Hamiltonian notation
+\((q^i,p_i)\) for coordinates and canonical momenta on \(T^*\SO(3)\).  The
+body angular momenta \(M_a\) are fiber coordinates produced by trivializing the
+cotangent bundle with the group structure; they are useful, but they are not
+canonical momenta conjugate to the coordinates \(q^i\).
+
 If \(q^i\), \(i=1,2,3\), are any nondegenerate local coordinates on
 \(\SO(3)\), the canonical momenta are
 \[
@@ -360,6 +401,13 @@ Under the hat isomorphism this becomes
 \[
   \delta\Omega=\dot\Sigma+\Omega\times\Sigma.
 \]
+
+\paragraph{Local notation.}
+The vector \(\Sigma(t)\) is the infinitesimal body-frame rotation used to
+describe the variation.  It is not an independent physical angular velocity;
+it is a bookkeeping variable for \(\delta R\).  The reduced Lagrangian is
+written \(\ell(\Omega)\) below to distinguish it from the full Lagrangian
+\(L(R,\dot R)\).
 
 \begin{derivation}[Euler-Poincare equation for the free rigid body]
 This derivation differs from the ordinary Euler-Lagrange calculation because
@@ -434,6 +482,13 @@ With \(M_i=I_i\Omega_i\), Euler's equations are
   I_3\dot\Omega_3 &= (I_1-I_2)\Omega_1\Omega_2.
 \end{aligned}
 \]
+
+\paragraph{Local notation.}
+The components \(M_i\) and \(\Omega_i\) are measured in principal body axes.
+The scalar \(C=\norm M^2\) introduced below is a Casimir of the reduced
+Lie-Poisson bracket; it is not a new energy.  The Hamiltonian \(H\) is kinetic
+energy in the free-body problem.
+
 These equations are autonomous and quadratic. They conserve the kinetic energy
 \[
   H=\frac12(I_1\Omega_1^2+I_2\Omega_2^2+I_3\Omega_3^2)
@@ -472,6 +527,14 @@ is known, the attitude is recovered from the reconstruction equation
   \dot R=R\widehat\Omega,\qquad R(0)=R_0.
   }
 \]
+
+\paragraph{Local notation.}
+The reconstructed attitude \(R(t)\) is the rotation matrix itself, while
+\(M(t)\) is the body-frame angular momentum already obtained from Euler's
+equations.  The spatial angular momentum is \(J(t)=R(t)M(t)\).  The symbol
+\(\mathcal P\) in the path-ordered exponential is an ordering operation, not a
+phase space.
+
 This is a linear equation on the group along the already-computed reduced
 motion. In general its solution is a path-ordered exponential,
 \[
@@ -573,6 +636,11 @@ and
 Thus it is the intersection of an angular momentum sphere and an energy
 ellipsoid.
 
+\paragraph{Local notation.}
+The space called \(M\)-space is \(\mathfrak{so}(3)^*\cong\R^3\) with coordinates
+\((M_1,M_2,M_3)\).  The curve drawn in this section is a reduced trajectory;
+it is not yet the full attitude motion on \(T^*\SO(3)\).
+
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[
@@ -638,6 +706,14 @@ herpolhode. Define the inertia ellipsoid
 \[
   \mathcal E_H=\{\Omega:\Omega^TI\Omega=2H\}.
 \]
+
+\paragraph{Local notation.}
+The vector \(\Omega\) is the body angular velocity, while
+\(\omega_{\mathrm{space}}=R\Omega\) is its spatial representation.  The
+invariable plane \(\Pi_J\) is fixed in space because \(J=RM\) is conserved.
+The polhode and herpolhode are curves traced by angular velocity, not by a
+material point of the body.
+
 At a point \(\Omega\) on this ellipsoid, the normal vector is proportional to
 \[
   \nabla_\Omega(\Omega^TI\Omega)=2I\Omega=2M.
@@ -728,6 +804,13 @@ Assume
 \[
   I_1<I_2<I_3.
 \]
+
+\paragraph{Local notation.}
+The perturbations \(\alpha_i(t)\) and \(\eta_i\) below are small components
+near a principal-axis rotation.  They are not Euler angles.  The ordering
+\(I_1<I_2<I_3\) fixes which axis is called intermediate; reversing labels
+would relabel the conclusion.
+
 A steady rotation about a principal axis is a solution. For example,
 \[
   \Omega(t)=(\Omega_0,0,0)
@@ -835,6 +918,13 @@ not with canonical coordinates. The Lie-Poisson bracket is
   =
   -M\cdot\left(\nabla F(M)\times\nabla G(M)\right).
 \]
+
+\paragraph{Local notation.}
+The functions \(F\) and \(G\) are observables of the reduced angular momentum
+\(M\).  The gradient \(\nabla F\) is the ordinary Euclidean gradient after
+identifying \(\mathfrak{so}(3)^*\) with \(\R^3\).  This reduced bracket differs
+from the canonical bracket on \(T^*\SO(3)\).
+
 In coordinate functions this says
 \[
   \Poisson{M_i}{M_j}=-\epsilon_{ijk}M_k.
@@ -918,6 +1008,14 @@ Thus
 \[
   L=T-V.
 \]
+The symbols in this example are local to the heavy top.  The constants
+\(I_1=I_2\) and \(I_3\) are principal moments of inertia, \(m\) is the mass,
+\(g\) is gravitational acceleration, and \(\ell\) is the distance from the
+fixed point to the center of mass.  The angles \(\phi,\theta,\psi\) are Euler
+angles; \(p_\phi\) and \(p_\psi\) are their conjugate momenta.  Later in the
+chapter \(I\) will also denote action variables, so the subscripted inertia
+notation \(I_1,I_2,I_3\) should be kept separate from actions.
+
 The coordinates \(\phi\) and \(\psi\) are cyclic.  Their conjugate momenta are
 \[
   p_\psi=I_3(\dot\psi+\dot\phi\cos\theta),
@@ -1033,8 +1131,35 @@ The last conservation law uses \(I_1=I_2\) and the fact that \(\chi\) is the
 symmetry axis.  Without axial symmetry, \(M\cdot\chi\) would not be conserved,
 and the effective-potential reduction would disappear.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.96\textwidth]{../../figures/canonical/heavy_symmetric_top_quick.png}
+\caption{Numerical heavy-top laboratory generated by
+\protect\path{demos/python/heavy_symmetric_top.py}.  The left panel has horizontal
+axis \(\theta\), the polar angle between the body symmetry axis and the
+vertical, and vertical axis \(U_{\rm eff}(\theta)\) in the nondimensional
+units of the script.  The conserved momenta \(p_\phi\) and \(p_\psi\) are held
+fixed; the dashed horizontal line is the conserved reduced energy, and the
+vertical marker is the initial value of \(\theta\).  Intersections of the
+energy line with \(U_{\rm eff}\) are the nutation turning points; the green
+dotted vertical lines mark those angles.  The right panel uses the same reduced
+model: its horizontal axis is nondimensional time and its vertical axis is the
+numerically integrated angle \(\theta(t)\).  The green dotted horizontal lines
+are the same turning-point angles, now drawn as reference levels for
+\(\theta(t)\).  Thus the two panels are not independent experiments; they are
+the potential picture and the corresponding time trace for one reduced
+heavy-top problem.}
+\label{fig:heavy-top-numerical-lab}
+\end{figure}
+
 \section{Liouville Integrability And Invariant Tori}
 \label{sec:liouville-tori}
+
+The notation changes slightly in this section.  The phase space is denoted
+\(P\), its dimension is \(2n\), the commuting integrals are
+\(F_1=H,F_2,\ldots,F_n\), and \(M_f\) denotes their common level set.  The
+letter \(I\) will later denote action variables; it is not the inertia tensor
+of the rigid body in this section.
 
 The rigid-body calculations above show a pattern: conservation laws confine
 motion to lower-dimensional sets, and the reduced flow on those sets can be
@@ -1051,7 +1176,7 @@ turning straight-line motion on \(\R^n\) into straight-line motion on a torus.
 Connectedness says one is discussing a single component of the common level
 set; otherwise the theorem applies component by component. Completeness of the
 commuting flows is the dynamical hypothesis that lets the \(\R^n\)-action be
-followed for all flow times. Dropping any one of these assumptions changes the
+followed for all flow times. Dropping any one of these hypotheses changes the
 conclusion.
 
 This is why the theorem should not be read backwards. Seeing a bounded-looking
@@ -1097,7 +1222,7 @@ individual components \(J_1,J_2,J_3\) do not commute with one another. This is
 the rigid-body example used throughout this chapter.
 \end{example}
 
-\begin{assumption}[Regular compact level set]
+\begin{hypothesis}[Regular compact level set]
 Fix constants \(f=(f_1,\ldots,f_n)\) and define
 \[
   M_f=\{x\in P: F_i(x)=f_i,\ i=1,\ldots,n\},
@@ -1105,9 +1230,9 @@ Fix constants \(f=(f_1,\ldots,f_n)\) and define
 where \(P\) is the \(2n\)-dimensional phase space. We assume that the
 differentials \(\dd F_i\) are independent on \(M_f\) and that \(M_f\) is
 compact and connected.
-\end{assumption}
+\end{hypothesis}
 
-The regularity assumption says that \(M_f\) is a smooth \(n\)-dimensional
+The regularity hypothesis says that \(M_f\) is a smooth \(n\)-dimensional
 submanifold. Its tangent vectors \(v\in T_xM_f\) are those satisfying
 \[
   \dd F_i(v)=0
@@ -1166,20 +1291,29 @@ Independence of the vector fields makes the action locally free. More
 concretely, the constant-rank theorem applied to the map
 \(s\mapsto\Phi_s(x_0)\) says that its derivative at \(s=0\) is an isomorphism
 onto \(T_{x_0}M_f\); hence the flow times \(s^i\) are local coordinates. The
-only possible global identifications are translations
+same argument applies at every point of \(M_f\), so each \(\R^n\)-orbit is an
+open subset of \(M_f\). The complement of any orbit is a union of other open
+orbits. Since \(M_f\) is connected, there can be only one orbit: the commuting
+flows act transitively on the level-set component under discussion.
+
+The stabilizer of \(x_0\) consists of the flow times that return \(x_0\) to
+itself. It is a discrete subgroup \(\Lambda\subset\R^n\), called the period
+lattice, and the only global identifications are translations
 \[
   s\sim s+\lambda,\qquad \lambda\in\Lambda,
 \]
-where \(\Lambda\subset\R^n\) is the period lattice of the orbit. Compactness
-forces \(\Lambda\) to have rank \(n\). If \(\Lambda\) had rank \(k<n\), then
+by elements of this lattice. Thus the transitive orbit identifies
+\[
+  M_f\simeq \R^n/\Lambda .
+\]
+Compactness of \(M_f\) now forces \(\Lambda\) to have rank \(n\). If
+\(\Lambda\) had rank \(k<n\), then
 the structure theorem for discrete subgroups of \(\R^n\) gives a linear basis
 in which \(\Lambda\) is generated by \(k\) independent period vectors, so
 \[
   \R^n/\Lambda\simeq \mathbb T^k\times\R^{n-k},
 \]
-which is noncompact. The action is locally free, so each orbit is open in the
-\(n\)-manifold \(M_f\). Since \(M_f\) is connected, that open orbit is the
-whole level set. Hence
+which is noncompact. Hence
 \[
   M_f\simeq \R^n/\Lambda\simeq \mathbb T^n.
 \]
@@ -1248,7 +1382,10 @@ If the equations can be solved locally for
 \[
   p_i=p_i(q,F),
 \]
-then
+then the matrix \(\partial F_k/\partial p_j\) is invertible on the chart being
+used.  This is a local rank condition, not an additional integrability
+hypothesis: it merely says that this particular canonical chart projects the
+torus regularly to the \(q\)-coordinates. On such a chart,
 \[
 \begin{aligned}
   \omega
@@ -1332,6 +1469,20 @@ Choose a basis of one-cycles \(\gamma_1,\ldots,\gamma_n\) on an invariant torus
 \[
   I_j=\frac{1}{2\pi}\oint_{\gamma_j} p_i\,\dd q^i.
 \]
+
+\paragraph{Local notation.}
+The \(I_j\) in this section are action variables.  They label invariant tori
+and are unrelated to the principal moments of inertia \(I_1,I_2,I_3\) used in
+the rigid-body sections.  The cycles \(\gamma_j\) form a basis of the first
+homology of the torus, so changing that basis changes the numerical action
+coordinates by an integral linear transformation.  The orientation of each
+cycle fixes the sign of the corresponding action.  In a one-degree-of-freedom
+factor, we orient the closed orbit as the positive boundary of the region it
+encloses in the \((q,p)\) plane, using the area form \(\dd q\wedge \dd p\);
+with this convention \(I=(2\pi)^{-1}\oint p\,\dd q\) is positive for bounded
+oscillations and tends to zero as the enclosed region shrinks to a stable
+equilibrium.
+
 Actions are therefore not arbitrary constants of integration. They are
 phase-space areas measured around the independent cycles of the torus. This is
 why they are insensitive to small deformations of the cycle on a fixed torus.
@@ -1363,7 +1514,7 @@ classical use is not quantization, but the same periods are the coordinates that
 survive canonical perturbation theory; in one degree of freedom, the relation
 between action and period is also the classical seed of WKB quantization.
 Thus \(I_j\) depends on the torus, not on the representative loop. Under
-regularity assumptions, the \(I_j\) can replace the original integrals \(F_j\)
+regularity hypotheses, the \(I_j\) can replace the original integrals \(F_j\)
 as labels for nearby tori.
 
 To find conjugate angles, construct a local generating function
@@ -1445,6 +1596,12 @@ theory uses
 as a coordinate labelling a closed orbit or invariant torus. The
 common ingredient is the canonical one-form \(p_i\,\dd q^i\), whose periods are
 the action variables.
+
+\paragraph{Local notation.}
+In this one-degree-of-freedom discussion \(q\) and \(p\) are canonical
+coordinates, \(E\) is the fixed energy, and \(q_-(E),q_+(E)\) are the turning
+points where \(p=0\).  The symbol \(\omega(E)\) at the end of the derivation is
+a frequency, not the symplectic form.
 
 The abstract definition
 \[
@@ -1560,6 +1717,12 @@ The full rigid body with fixed center of mass has three degrees of freedom. On
 are mutually Poisson commuting when \(J_3\) is a fixed spatial component of
 angular momentum and \(J^2=\norm{J}^2\). For regular values, their common level
 set is a three-torus.
+
+\paragraph{Local notation.}
+Here \(J\) is spatial angular momentum and \(J_3\) is its component along a
+chosen fixed space axis.  The body angular momentum is \(M=R^TJ\).  The
+three-torus is a regular common level set in the full phase space, while the
+closed intersection curve in \(M\)-space is its reduced shadow.
 
 The phrase ``regular values'' hides the familiar exceptional motions. Principal
 axis rotations and separatrix-level motions are not generic tori: the level set
@@ -1730,6 +1893,26 @@ The total angular momentum satisfies the standard Euler-angle identity
   +
   p_\psi^2.
 \]
+This identity follows directly from the same Euler-angle convention used for
+the heavy top.  The body components of angular momentum are
+\[
+\begin{aligned}
+  M_1
+  &=
+  p_\theta\cos\psi
+  +
+  \frac{p_\phi-p_\psi\cos\theta}{\sin\theta}\sin\psi,\\
+  M_2
+  &=
+  -p_\theta\sin\psi
+  +
+  \frac{p_\phi-p_\psi\cos\theta}{\sin\theta}\cos\psi,\\
+  M_3&=p_\psi .
+\end{aligned}
+\]
+The dependence on the spin angle \(\psi\) is only a rotation in the
+\((M_1,M_2)\)-plane.  Therefore the cross terms cancel in
+\(J^2=M_1^2+M_2^2+M_3^2\), leaving the displayed formula.
 This equation is the rigid-body analogue of the angular-momentum identity in
 spherical coordinates. It says that \(p_\theta\) is not an independent
 constant; it is determined by \(J\), \(J_z=p_\phi\), \(M_3=p_\psi\), and
@@ -1971,3 +2154,7 @@ integrating the Lagrange top's effective one-dimensional nutation problem and
 reconstructing the cyclic Euler angles.  It is the most direct numerical check
 that the heavy symmetric top is integrable for a different reason than the
 free asymmetric top: axial symmetry supplies the extra conserved momentum.
+Use Figure~\ref{fig:heavy-top-numerical-lab} as the diagnostic checklist: the
+turning points in the potential plot, the extrema of \(\theta(t)\), and the
+reported energy drift must agree before the precession and spin reconstruction
+are trusted.

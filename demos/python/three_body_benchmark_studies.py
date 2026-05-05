@@ -227,6 +227,11 @@ def run_binary_benchmark(cfg: BenchmarkConfig) -> dict[str, object]:
             "dt": cfg.binary_dt,
             "b_max": cfg.binary_b_max,
             "v_infs": list(cfg.binary_v_infs),
+            "orientation_convention": (
+                "Before subtracting the total center of mass, the binary center of mass is at the origin. "
+                "The incoming body starts at (-8 a_bin, b) in the quick run and moves initially in the +x direction. "
+                "The binary separation vector has random phase: a_bin*(cos phi, sin phi), with phi uniform on [0, 2*pi)."
+            ),
         },
         "rows": rows,
     }
@@ -278,7 +283,7 @@ def write_json(path: Path, data: dict[str, object]) -> None:
         handle.write("\n")
 
 
-def save_plot(path: Path, summary: dict[str, object]) -> None:
+def configure_matplotlib() -> object:
     import os
 
     os.environ.setdefault("MPLCONFIGDIR", str(Path(".matplotlib-cache")))
@@ -288,38 +293,139 @@ def save_plot(path: Path, summary: dict[str, object]) -> None:
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    path.parent.mkdir(parents=True, exist_ok=True)
+    return plt
+
+
+def draw_asteroid_loss_panel(ax: object, summary: dict[str, object]) -> None:
     bins = summary["asteroid"]["bin_rows"]
-    binary_rows = summary["binary_scattering"]["rows"]
+    asteroid_cfg = summary["asteroid"]["configuration"]
+    asteroid_summary = summary["asteroid"]["summary"]
 
     centers = [0.5 * (row["a_low"] + row["a_high"]) for row in bins]
     widths = [row["a_high"] - row["a_low"] for row in bins]
     losses = [row["loss_fraction"] for row in bins]
     loss_errors = [row["loss_standard_error"] for row in bins]
 
-    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(11, 4.4))
-    ax0.bar(centers, losses, width=widths, edgecolor="black", alpha=0.35)
-    ax0.errorbar(centers, losses, yerr=loss_errors, fmt="o", color="tab:blue", capsize=3)
+    ax.bar(
+        centers,
+        losses,
+        width=widths,
+        color="#8bb9d6",
+        edgecolor="#2f4f5f",
+        linewidth=0.9,
+        alpha=0.72,
+        label=r"bin fraction",
+        zorder=2,
+    )
+    ax.errorbar(
+        centers,
+        losses,
+        yerr=loss_errors,
+        fmt="o",
+        color="#0b4f8a",
+        ecolor="#0b4f8a",
+        markersize=4.8,
+        capsize=3,
+        label="estimate ± SE",
+        zorder=4,
+        clip_on=False,
+    )
     for row in summary["asteroid"]["resonance_rows"]:
-        ax0.axvline(row["location"], color="tab:red", alpha=0.25)
-        ax0.text(row["location"], 0.98, row["resonance"], rotation=90, va="top", ha="right", transform=ax0.get_xaxis_transform())
-    ax0.set_xlabel("initial semimajor axis [AU]")
-    ax0.set_ylabel("finite-time loss fraction")
-    ax0.set_title("Accelerated asteroid benchmark")
-    ax0.set_ylim(0.0, max(0.2, min(1.0, max(losses, default=0.0) + 0.15)))
+        ax.axvline(row["location"], color="tab:red", alpha=0.25)
+        ax.text(
+            row["location"],
+            0.98,
+            row["resonance"],
+            rotation=90,
+            va="top",
+            ha="right",
+            transform=ax.get_xaxis_transform(),
+        )
+    ax.set_xlabel("initial semimajor axis [AU]")
+    ax.set_ylabel("finite-time loss fraction by bin")
+    ax.set_title(
+        "Restricted asteroid loss\n"
+        f"Jupiter mass x{asteroid_cfg['jupiter_mass_scale']:g}, "
+        f"N={asteroid_summary['total_particles']}, T={asteroid_cfg['years']:g} yr"
+    )
+    ax.axhline(0.0, color="0.20", linewidth=0.8, zorder=1)
+    ax.set_ylim(-0.03, max(0.2, min(1.0, max(losses, default=0.0) + 0.15)))
+    ax.legend(frameon=False, loc="upper left", fontsize=8)
+
+
+def draw_binary_scattering_panel(ax: object, summary: dict[str, object]) -> None:
+    binary_rows = summary["binary_scattering"]["rows"]
+    binary_cfg = summary["binary_scattering"]["configuration"]
 
     v = [row["v_inf"] for row in binary_rows]
     sigma = [row["capture_or_exchange_cross_section"] for row in binary_rows]
     frac = [row["capture_or_exchange_fraction"] for row in binary_rows]
-    line_sigma = ax1.plot(v, sigma, "o-", color="tab:green", label="cross section")[0]
-    ax1.set_xlabel(r"$v_\infty$")
-    ax1.set_ylabel("capture/exchange cross section")
-    ax1b = ax1.twinx()
-    line_fraction = ax1b.plot(v, frac, "s--", color="tab:purple", label="fraction")[0]
-    ax1b.set_ylabel("fraction")
-    ax1.set_title("Binary-single scattering benchmark")
-    ax1.legend(handles=[line_sigma, line_fraction], frameon=False, loc="upper right")
-    fig.tight_layout()
+    line_sigma = ax.plot(v, sigma, "o-", color="tab:green", label="cross section")[0]
+    ax.set_xlabel(r"$v_\infty$")
+    ax.set_ylabel(r"area cross section $\sigma_{\rm cap/exch}$")
+    axb = ax.twinx()
+    line_fraction = axb.plot(v, frac, "s--", color="tab:purple", label="fraction")[0]
+    axb.set_ylabel("capture/exchange fraction")
+    ax.set_title(
+        "Binary-single scattering\n"
+        f"N={binary_cfg['samples_per_v_inf']} per speed, "
+        rf"$b_{{\max}}$={binary_cfg['b_max']:g}, T={binary_cfg['years']:g}"
+    )
+    ax.legend(handles=[line_sigma, line_fraction], frameon=False, loc="upper right")
+
+
+def save_asteroid_plot(path: Path, summary: dict[str, object]) -> None:
+    plt = configure_matplotlib()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig, ax = plt.subplots(1, 1, figsize=(7.2, 5.0))
+    draw_asteroid_loss_panel(ax, summary)
+    fig.text(
+        0.5,
+        0.01,
+        "Accelerated restricted Sun-Jupiter-asteroid stress test; not a Solar-System probability.",
+        ha="center",
+        fontsize=9,
+    )
+    fig.tight_layout(rect=(0.0, 0.06, 1.0, 1.0))
+    fig.savefig(path, dpi=160)
+    plt.close(fig)
+
+
+def save_binary_plot(path: Path, summary: dict[str, object]) -> None:
+    plt = configure_matplotlib()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig, ax = plt.subplots(1, 1, figsize=(7.2, 5.0))
+    draw_binary_scattering_panel(ax, summary)
+    fig.text(
+        0.5,
+        0.01,
+        "Finite-horizon binary-single classifier; capture/exchange is ensemble and stopping-rule dependent.",
+        ha="center",
+        fontsize=9,
+    )
+    fig.tight_layout(rect=(0.0, 0.06, 1.0, 1.0))
+    fig.savefig(path, dpi=160)
+    plt.close(fig)
+
+
+def save_plot(path: Path, summary: dict[str, object]) -> None:
+    plt = configure_matplotlib()
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(12.2, 5.0))
+    draw_asteroid_loss_panel(ax0, summary)
+    ax0.set_title("A. " + ax0.get_title())
+    draw_binary_scattering_panel(ax1, summary)
+    ax1.set_title("B. " + ax1.get_title())
+    fig.suptitle("Two independent three-body statistical benchmarks", y=0.98)
+    fig.text(
+        0.5,
+        0.01,
+        "Panels share the same estimator-and-diagnostics workflow; they are not two views of one simulation.",
+        ha="center",
+        fontsize=9,
+    )
+    fig.tight_layout(rect=(0.0, 0.06, 1.0, 0.92))
     fig.savefig(path, dpi=160)
     plt.close(fig)
 
@@ -355,6 +461,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--json", action="store_true", help="print JSON summary")
     parser.add_argument("--json-output", type=Path, default=None, help="write JSON summary")
     parser.add_argument("--plot", type=Path, default=None, help="write benchmark plot")
+    parser.add_argument("--asteroid-plot", type=Path, default=None, help="write asteroid-loss benchmark plot")
+    parser.add_argument("--binary-plot", type=Path, default=None, help="write binary-scattering benchmark plot")
     args = parser.parse_args()
     if args.quick:
         args.asteroid_n = min(args.asteroid_n, 48)
@@ -401,6 +509,12 @@ def main() -> None:
     if args.plot is not None:
         save_plot(args.plot, summary)
         outputs["plot"] = str(args.plot)
+    if args.asteroid_plot is not None:
+        save_asteroid_plot(args.asteroid_plot, summary)
+        outputs["asteroid_plot"] = str(args.asteroid_plot)
+    if args.binary_plot is not None:
+        save_binary_plot(args.binary_plot, summary)
+        outputs["binary_plot"] = str(args.binary_plot)
     if args.json_output is not None:
         outputs["json"] = str(args.json_output)
     if outputs:
@@ -423,6 +537,10 @@ def main() -> None:
             )
         if args.plot is not None:
             print(f"wrote_plot={args.plot}")
+        if args.asteroid_plot is not None:
+            print(f"wrote_asteroid_plot={args.asteroid_plot}")
+        if args.binary_plot is not None:
+            print(f"wrote_binary_plot={args.binary_plot}")
         if args.json_output is not None:
             print(f"wrote_json={args.json_output}")
 

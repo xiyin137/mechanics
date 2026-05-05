@@ -5,15 +5,27 @@ This appendix records the numerical protocol behind the three-body
 demonstrations.  The purpose is pedagogical reproducibility.  A simulation in
 this repository should specify its equations, units, random sampling rule,
 time-step rule, diagnostic invariants, and statistical estimator.  Without
-these ingredients, an ejection probability is only a number; with them, it is a
-repeatable experiment whose limitations can be discussed.
+these ingredients, an ejection probability is not a reproducible observable;
+with them, it is a repeatable experiment whose limitations can be discussed.
 
 \section{Hierarchy Of Models}
 \label{sec:three-body-model-hierarchy}
 
-The notes use three related models.  Their variables and invariants are not
+The notes use four related models.  Their variables and invariants are not
 identical, so the diagnostic printed by a code must match the model being
 integrated.
+
+\paragraph{Local notation.}
+For asteroid ensembles the state is \(r_i,v_i\).  For the CR3BP the
+rotating-frame state is \(x,y,\dot x,\dot y\).  For full Newtonian
+binary-single scattering the barycentric state is \(q_i,\dot q_i\).  The same
+letter \(r\) can therefore mean different coordinate choices in different
+model rows; each section restates the convention before giving equations.
+The direct Cartesian demos in this repository are planar unless explicitly
+stated otherwise: \(r_i,q_i\in\R^2\) and the CR3BP state is
+\((x,y,\dot x,\dot y)\).  The general Newtonian equations can equally be read
+with \(q_i\in\R^3\), and the Lidov--Kozai demo is a spatial hierarchical-triple
+calculation after secular reduction, not a planar Cartesian integration.
 
 \begin{center}
 \begin{tabular}{p{0.30\textwidth} p{0.34\textwidth} p{0.26\textwidth}}
@@ -21,17 +33,21 @@ integrated.
 model & degrees of freedom & main diagnostics\\
 \hline
 full Newtonian three-body problem &
-three massive bodies in inertial space, reduced by translation when desired &
+three massive bodies in inertial space; spatial \(q_i\in\R^3\) in general,
+planar \(q_i\in\R^2\) as an invariant reduction; translation may be removed &
 energy, total angular momentum, center-of-mass drift\\
 circular restricted three-body problem &
-two primaries on a prescribed circular orbit, massless particle in a rotating
-frame &
+two primaries on a prescribed circular orbit; planar rotating-frame state
+\((x,y,\dot x,\dot y)\) in these scripts &
 Jacobi integral, zero-velocity curves, Lagrange point locations\\
 heliocentric Sun-Jupiter-asteroid ensemble &
-Sun and prescribed Jupiter, many noninteracting massless test particles &
+Sun and prescribed Jupiter, many noninteracting planar massless test particles
+with \(r_i,v_i\in\R^2\) &
 loss classification, binned ejection probability, resonance labels\\
 binary-single scattering ensemble &
-one bound pair and one incoming body in inertial barycentric coordinates &
+one bound pair and one incoming body in planar inertial barycentric
+coordinates in the present benchmark; spatial scattering is a different
+ensemble &
 binding-energy outcome classification, capture/exchange fractions, cross
 sections\\
 \hline
@@ -53,8 +69,16 @@ The asteroid scripts use astronomical units, years, and solar masses:
 \[
         G=4\pi^2,\qquad M_\odot=1 .
 \]
+
+\paragraph{Local notation.}
+In these units \(r_i(t)\) is heliocentric asteroid position, \(v_i(t)\) its
+velocity, and \(r_J(t)\) Jupiter's prescribed position.  In the scattering
+paragraphs, \(q_i(t)\) are inertial barycentric positions of massive bodies,
+and \(E_{ij}\) is the instantaneous two-body binding energy of pair \(ij\).
+
 For a test particle with heliocentric position \(r_i(t)\in\R^2\), velocity
-\(v_i(t)\), and prescribed Jupiter position \(r_J(t)\), the equation is
+\(v_i(t)\in\R^2\), and prescribed Jupiter position \(r_J(t)\in\R^2\), the
+equation is
 \[
         \ddot r_i
         =
@@ -93,7 +117,11 @@ The Jacobi integral is
 The printed value of \(\max_t |C(t)-C(0)|\) is a numerical error diagnostic.
 
 For binary-single scattering demos, the natural inertial coordinates are
-barycentric.  The equations are the full Newtonian equations
+barycentric.  In the present script \(q_i(t)\in\R^2\), so the binary orbit and
+incoming trajectory are coplanar.  The same formula with \(q_i(t)\in\R^3\)
+would define the spatial scattering problem, whose ensemble must also sample
+three-dimensional impact geometry and binary-plane orientation.  The equations
+are the Newtonian equations
 \[
   \ddot q_i
   =
@@ -200,7 +228,10 @@ For \(R_0\gg a_{\rm bin}\), this reduces to the familiar monopole estimate
 The planar demo uses signed impact parameters for the trajectories but reports
 the conventional axisymmetric area cross section.  Thus uniform-in-area
 sampling estimates \(\int_0^{b_{\max}}2\pi b\,P(b)\,\dd b\), while uniform
-sampling in \(b\) requires the corresponding \(2\pi b\) weight.
+sampling in \(b\) requires the corresponding \(2\pi b\) weight.  This is an
+area-weighted planar scattering convention, not a full spatial sampling of a
+two-component impact vector and an incoming direction relative to the binary
+plane.
 
 \section{Loss Classification}
 \label{sec:three-body-loss-classification}
@@ -294,6 +325,63 @@ sampling law, integrator, diagnostics, loss rules, and statistical estimator.}
 \label{fig:three-body-numerical-pipeline}
 \end{figure}
 
+\section{How The Benchmark Figures Are Produced}
+\label{sec:three-body-benchmark-figure-protocol}
+
+Figures~\ref{fig:three-body-asteroid-loss-benchmark}
+and~\ref{fig:three-body-binary-scattering-benchmark} in the main chapter are
+made by \path{demos/python/three_body_benchmark_studies.py}.  They are two
+separate images because the script does not use the same bodies, units, initial
+data, or event classifiers in the two experiments.  The shared feature is the
+reporting discipline: each image exposes an ensemble, a finite integration
+horizon, a classifier, and an estimator.
+
+For the asteroid-loss figure, the script:
+\begin{enumerate}
+\item builds the planar restricted Sun-Jupiter-asteroid configuration in AU,
+years, and solar masses;
+\item multiplies Jupiter's mass by the stated stress-test factor;
+\item samples Keplerian asteroid elements from the ensemble in
+Section~\ref{sec:three-body-initial-ensembles};
+\item converts those elements to heliocentric Cartesian states;
+\item integrates the restricted equations with the kick-drift-kick update;
+\item applies the absorbing loss rules in Section~\ref{sec:three-body-loss-classification};
+\item aggregates loss counts in initial-semimajor-axis bins and attaches
+nominal resonance markers.
+\end{enumerate}
+The plotted bar height in a bin is \(N_{\rm loss}/N_{\rm bin}\), not a
+continuous probability density.  The vertical error bar is the plug-in binomial
+standard error for that bin.
+
+For the binary-single scattering figure, the script:
+\begin{enumerate}
+\item constructs a circular binary in planar barycentric Newtonian units;
+\item chooses an incoming mass, a grid of asymptotic speeds \(v_\infty\), and a
+maximum impact parameter \(b_{\max}\);
+\item samples binary phase and impact parameter, using uniform-in-area sampling
+unless stated otherwise; before the total center-of-mass subtraction the binary
+center of mass is at the origin, the circular binary rotates counterclockwise
+in the \(x\)-\(y\) plane, the incoming body starts at
+\((-8a_{\rm bin},b)\) in the quick run and moves initially in the \(+x\)
+direction, and the binary separation vector is
+\(a_{\rm bin}(\cos\phi,\sin\phi)\) with \(\phi\) uniform on \([0,2\pi)\);
+\item chooses a finite launch speed whose energy corresponds to the stated
+\(v_\infty\);
+\item integrates the planar Newtonian three-body equations;
+\item classifies the stopping-time outcome using pair binding energies;
+\item plots the capture-or-exchange fraction and the area-normalized planar
+scattering cross section
+\(\pi b_{\max}^2(N_{\rm cap}+N_{\rm exch})/N\).
+\end{enumerate}
+Because the calculation is conservative, ``capture'' here means finite-horizon
+binding by the classifier.  It is not a proof of permanent capture.
+
+The quick-run defaults are intentionally small so that the figures can be
+regenerated during tests.  Their purpose is to expose the pipeline, not to
+settle an astrophysical value.  A research-grade run would enlarge the ensemble,
+refine \(\Delta t\), vary the stopping rule, repeat seeds, monitor invariant
+drift more strictly, and report convergence tables.
+
 \section{Ejection Probability As A Statistical Estimator}
 \label{sec:ejection-probability-estimator}
 
@@ -326,6 +414,24 @@ The same formula applies to a semimajor-axis bin after replacing \(N\) by the
 number of particles in that bin.  Bins with few particles have large sampling
 error and should not be overinterpreted.
 
+The formula above is the large-sample Wald estimate.  It is transparent, which
+is why it is useful in a first classroom run, but it behaves poorly when a bin
+has zero events or when \(n_b\) is small.  A more stable interval for a bin
+with \(e_b\) events in \(n_b\) trials is the Wilson interval.  For nominal
+normal quantile \(z\), define \(\widehat p_b=e_b/n_b\) and
+\[
+  D=1+\frac{z^2}{n_b},
+  \qquad
+  c=\frac{\widehat p_b+z^2/(2n_b)}{D},
+  \qquad
+  r=\frac{z}{D}
+  \sqrt{\frac{\widehat p_b(1-\widehat p_b)}{n_b}
+  +\frac{z^2}{4n_b^2}} .
+\]
+Then \([c-r,c+r]\) is the Wilson interval.  The notes and scripts report the
+simpler standard error because it is easy to read next to a bar plot, but a
+student report with sparse bins should prefer Wilson or bootstrap intervals.
+
 There are three different limits:
 \[
         N\to\infty,\qquad
@@ -349,8 +455,11 @@ single terminal probability because it shows whether losses happen in an early
 burst or through a long tail.  Kaplan-Meier machinery is unnecessary unless the
 experiment introduces censoring beyond the finite integration horizon.
 
-The binary-scattering analogue is an outcome fraction or a cross section.  For
-uniform sampling in area on \(0\le b\le b_{\max}\),
+The binary-scattering analogue is an outcome fraction or a cross section.  In
+the planar benchmark, trajectories are labelled by a signed impact parameter
+in the binary plane, but the reported cross section uses the conventional
+axisymmetric area measure associated with the radial variable \(b=|b_{\rm
+signed}|\).  For uniform sampling in area on \(0\le b\le b_{\max}\),
 \[
   \widehat\sigma_{\rm cap}
   =
@@ -360,9 +469,27 @@ uniform sampling in area on \(0\le b\le b_{\max}\),
   =
   \pi b_{\max}^2\frac{N_{\rm exch}}{N}.
 \]
-These formulas estimate the cross section for the chosen \(v_\infty\), binary
-elements, stopping rule, and classifier.  They should not be quoted without
-those inputs.
+These formulas estimate the area-normalized planar scattering cross section for
+the chosen \(v_\infty\), binary elements, stopping rule, and classifier.  They
+should not be quoted without those inputs.  A full spatial scattering survey
+would also state the distribution of incoming directions, impact-parameter
+vectors, and binary-plane orientations.
+
+The more general importance-sampling formula is worth recording because it
+prevents a common normalization mistake.  Suppose \(b\) is sampled from a
+probability density \(q(b)\) on \([0,b_{\max}]\).  If \(X_A\) is the indicator
+for outcome \(A\), then
+\[
+  \widehat\sigma_A
+  =
+  \frac1N\sum_{i=1}^N
+  \frac{2\pi b_i}{q(b_i)}X_{A,i}.
+\]
+Uniform-in-area sampling has \(q(b)=2b/b_{\max}^2\), so the weight is the
+constant \(\pi b_{\max}^2\).  Uniform-in-\(b\) sampling has
+\(q(b)=1/b_{\max}\), so the weight is \(2\pi b_{\max}b_i\).  The two sampling
+rules are both valid, but they estimate the same physical cross section only
+after the correct weights are used.
 
 \section{Bootstrap Intervals And Resonance Windows}
 \label{sec:three-body-bootstrap-resonance-windows}
@@ -432,7 +559,7 @@ record.
 The JSON output of a binary-scattering demo should contain:
 \[
 \begin{array}{ll}
-\texttt{model} & \text{Newtonian three-body masses and units},\\
+\texttt{model} & \text{Newtonian three-body masses, units, and dimension},\\
 \texttt{ensemble} & \text{binary elements, }v_\infty,b_{\max},
   \text{ sampling rule},\\
 \texttt{integration} & \text{step size, horizon, and stopping criteria},\\
@@ -467,6 +594,23 @@ discretization.  The fourth row changes the physical event from ``ejected by
 \(T_0\)'' to ``ejected by \(2T_0\).''  This simple table prevents a common
 misreading of the asteroid lab: a longer run is not a more accurate estimate
 of the shorter-run probability.
+
+For an ensemble study, a stronger table repeats the baseline over several
+seeds:
+\[
+\begin{array}{c|c|c|c}
+\text{seed set} & N_{\rm total} & \widehat p_{\rm loss}(T) &
+\text{largest invariant drift}\\
+\hline
+\{s_1\} & N_0 & \cdots & \cdots\\
+\{s_1,s_2,s_3\} & 3N_0 & \cdots & \cdots\\
+\{s_1,\ldots,s_6\} & 6N_0 & \cdots & \cdots
+\end{array}
+\]
+If the estimate moves by more than its sampling error as seeds are added, the
+ensemble is still too small or the loss process is concentrated in rare
+initial conditions.  That is useful information, not a failure of the
+experiment.
 
 \section{Recommended Reporting Standard}
 \label{sec:three-body-reporting-standard}

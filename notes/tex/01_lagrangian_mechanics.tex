@@ -30,12 +30,21 @@ The action of an admissible curve is
 \]
 \end{definition}
 
-\begin{assumption}[Coordinate patch for derivations]
+\begin{setting}[Coordinate patch for derivations]
 Derivations in this chapter are written in one coordinate chart
 \((q^1,\ldots,q^n)\). The equations obtained are tensorial or intrinsic when
 the objects used to build them are intrinsic. Coordinates are a calculation
 device, not an additional physical structure.
-\end{assumption}
+\end{setting}
+
+The notation \(q(t)\) should be read as a point of \(Q\) depending on time, not
+as a column vector until a chart has been chosen.  In a chart the same motion is
+represented by component functions \(q^i(t)\), and the velocity is represented
+by \(\dot q^i(t)\).  The action is therefore not a functional of arbitrary
+Euclidean functions in the first instance; it is a functional on curves in the
+configuration space.  This distinction becomes essential for rigid bodies,
+constraints, and later for continua, where a careless coordinate choice can
+hide the actual degrees of freedom.
 
 \paragraph{Roadmap.}
 The chapter has three jobs. First, it derives the Euler-Lagrange equations from
@@ -60,7 +69,7 @@ are imposed, and which boundary terms survive. Whenever it invokes a symmetry,
 check whether the symmetry acts on configuration space and whether the action
 is invariant up to an allowed boundary term. These checks are small, but they
 prevent the most common mistakes: using an inadmissible virtual displacement or
-calling a quantity conserved before verifying the symmetry hypothesis.
+calling a quantity conserved before verifying the relevant symmetry condition.
 
 \section{Variations And The Euler-Lagrange Equations}
 \label{sec:euler-lagrange}
@@ -68,6 +77,23 @@ calling a quantity conserved before verifying the symmetry hypothesis.
 What does it mean for the action to be stationary? It means that the first
 derivative of \(S[q_\eps]\) vanishes for every admissible infinitesimal change
 of the path.
+
+\paragraph{Local notation.}
+Throughout this section \(q(t)\) is a path in the configuration manifold \(Q\),
+and \(q^i(t)\) are its components in a chosen local coordinate chart.  The
+index \(i=1,\ldots,n\) labels configuration coordinates, and repeated upper and
+lower \(i\)-indices are summed.  The symbol \(\eps\) labels a family of nearby
+paths; it is not a physical time or a small parameter in the Lagrangian itself.
+
+\begin{postulate}[Hamilton's principle for prescribed endpoints]
+For the basic Lagrangian formalism used in this section, the physical path with
+given endpoint configurations \(q(t_0)\) and \(q(t_1)\) is a stationary point
+of the action with respect to all smooth variations that keep those endpoints
+fixed.  This is a postulate of the variational description.  It is not a
+claim that the physical system has an intrinsic tendency to keep endpoints
+fixed; rather, it defines the boundary-value problem whose stationary curves
+are being studied.
+\end{postulate}
 
 \begin{remark}[Stationary, not necessarily least]
 Hamilton's principle, formulated in 1834--1835, is a critical-point principle
@@ -88,7 +114,7 @@ Let \(q_\eps(t)\) be a smooth one-parameter family of curves with
   \qquad
   \eta^i(t)=\left.\frac{\partial q_\eps^i(t)}{\partial \eps}\right|_{\eps=0}.
 \]
-For fixed-endpoint variations we impose
+For the fixed-endpoint variational postulate we impose
 \[
   \eta(t_0)=0,\qquad \eta(t_1)=0.
 \]
@@ -182,7 +208,7 @@ of every \(\eta^i\) vanishes. Hence
 \end{derivation}
 
 \begin{proof}[Fundamental lemma used above]
-Under the standing smoothness assumptions on \(L\), \(q\), and the variation,
+Under the standing smoothness hypothesis on \(L\), \(q\), and the variation,
 the bracketed coefficient in the variation formula is continuous. The lemma
 therefore applies with \(f\) equal to that coefficient. Let \(f(t)\) be
 continuous on \((t_0,t_1)\), and suppose
@@ -231,6 +257,12 @@ Thus \(p_i\) is the coefficient of endpoint displacement in the first variation
 of the action. This boundary-term definition reduces to ``mass times velocity''
 only in special coordinates for special Lagrangians.
 
+\paragraph{Local notation.}
+Here \(p_i\) is the covector conjugate to \(q^i\), while \(\eta^i=\delta q^i\)
+is an allowed virtual displacement.  The product \(p_i\eta^i\) is a scalar
+endpoint contribution to the action variation.  The generalized force \(Q_i\)
+introduced below is also a covector, so \(Q_i\eta^i\) is virtual work.
+
 If nonconservative generalized forces \(Q_i(q,\dot q,t)\) are present, the
 Lagrange-d'Alembert principle adds virtual work to Hamilton's principle. This
 is the variational form of d'Alembert's 1743 virtual-work principle, later
@@ -270,6 +302,12 @@ Many mechanical systems have a Lagrangian of the form
 \]
 where \(g_{ij}\) is a positive-definite mass metric on \(Q\), and \(V\) is
 potential energy.
+
+\paragraph{Local notation.}
+The matrix \(g_{ij}(q)\) lowers indices and \(g^{ij}(q)\) denotes its inverse.
+The symbols \(\Gamma^\ell_{jk}\) below are Christoffel symbols of this mass
+metric.  They are connection coefficients in the chosen coordinates, so they
+do not transform as tensor components by themselves.
 
 \begin{remark}[Terminology]
 Here ``natural'' is conventional terminology: the kinetic energy is quadratic
@@ -367,6 +405,13 @@ constraint to first order:
 \[
   \frac{\partial\Phi^a}{\partial q^i}\eta^i=0.
 \]
+
+\paragraph{Local notation.}
+The label \(a=1,\ldots,k\) counts independent constraint equations, while
+\(i=1,\ldots,n\) counts ambient configuration coordinates.  The multipliers
+\(\lambda_a(t)\) introduced below are unknown functions of time whose role is
+to enforce \(\Phi^a(q(t),t)=0\) along the motion.
+
 The Euler-Lagrange residual therefore has to vanish only on vectors tangent to
 the constraint surface. The multiplier rule, in the form Lagrange used in
 \emph{Mecanique analytique} (1788), says that a covector
@@ -386,8 +431,8 @@ Indeed, the map \(A:T_qQ\to\R^k\), \(A(\eta)=(\dd\Phi^1(\eta),\ldots,
 \(\ker A=T_qC\). This is the finite-dimensional fact behind the multiplier
 rule.
 Thus constraint regularity means the gradients of the constraints have
-constant rank \(k\) on the constraint surface. Under this assumption the
-constrained equations take the multiplier form
+constant rank \(k\) on the constraint surface. Under this regularity hypothesis,
+the constrained equations take the multiplier form
 \[
   \frac{\dd}{\dd t}\frac{\partial L}{\partial \dot q^i}
   -
@@ -403,14 +448,27 @@ and the same physics is expressed with fewer coordinates.
 \section{Symmetry And Noether's Theorem}
 \label{sec:noether}
 
-Continuous symmetries of the action produce conserved quantities. Noether's
-1918 theorem is the precise statement: every one-parameter group of symmetries
-gives a conserved Noether charge. A symmetry is a transformation of the
-configuration space that leaves the action unchanged, or changes it only by an
-endpoint term. The infinitesimal version of that transformation is a vector
-field \(\xi_Q\) along which the action has zero interior first variation. The
-conserved quantity is the momentum paired with that vector field, corrected by
-the endpoint term when one is present.
+Continuous symmetries of the action produce conserved quantities. In the form
+used in this section, Noether's 1918 theorem applies to transformations of
+configuration variables that leave the time coordinate itself fixed. The
+infinitesimal displacement of \(q\) may nevertheless depend explicitly on time:
+a Galilean boost changes a path by \(\delta x=vt\), even though it does not
+change the time label \(t\). A symmetry leaves the action unchanged, or changes
+it only by an endpoint term. The conserved quantity is the momentum paired with
+the infinitesimal displacement, corrected by the endpoint term when one is
+present. More general versions of Noether's theorem also allow transformations
+of time and fields; those require the extended formalism introduced later when
+the Hamiltonian and the action are treated on phase space.
+
+\paragraph{Local notation.}
+In this section \(G\) is a Lie group acting on configuration space \(Q\),
+\(\mathfrak g\) is its Lie algebra, and \(\xi\in\mathfrak g\) is an
+infinitesimal symmetry parameter.  The vector field \(\xi_Q\) is the induced
+motion of points of \(Q\).  When a symmetry is explicitly time-dependent, we
+write this displacement as \(\xi_Q(q,t)\); it is still vertical, meaning that
+it changes \(q\) at the same time \(t\).  The scalar \(B_\xi\) records a
+possible endpoint term, and \(J_\xi\) is the corresponding conserved Noether
+charge.
 
 \begin{definition}[Infinitesimal generator]
 Let a Lie group \(G\) act on \(Q\). For \(\xi\in\mathfrak g\), the infinitesimal
@@ -419,15 +477,18 @@ generator is the vector field
   \xi_Q(q)=\left.\frac{\dd}{\dd s}\right|_{s=0}\exp(s\xi)\cdot q.
 \]
 In coordinates, write \(\xi_Q=\xi_Q^i(q)\partial/\partial q^i\).
+The later proof also applies to explicitly time-dependent vertical
+displacements \(\xi_Q(q,t)\), which should be read as infinitesimal
+transformations of paths rather than as time-independent actions on \(Q\).
 \end{definition}
 
-\begin{assumption}[Lagrangian symmetry]
+\begin{definition}[Lagrangian symmetry]
 The action of \(G\) is a symmetry if
 \[
   L(g\cdot q,\,T_qg\cdot \dot q,\,t)=L(q,\dot q,t)
 \]
 for all \(g\in G\), \(q\in Q\), and \(\dot q\in T_qQ\).
-\end{assumption}
+\end{definition}
 
 Some important symmetries preserve the action only up to an endpoint term. If
 the infinitesimal variation of the Lagrangian has the form
@@ -442,17 +503,19 @@ quantity is then
 \]
 Galilean boosts of a free particle are the standard example: the Lagrangian is
 not strictly invariant, but its change is a total time derivative, and the
-boost charge includes the corresponding boundary term.
+boost charge includes the corresponding boundary term.  In that example
+\(\xi_Q=t\,\partial_x\) depends on time, which is why the vertical
+time-dependent formulation is needed.
 
 \begin{proposition}[Noether theorem]
 For every \(\xi\in\mathfrak g\), the quantity
 \[
   J_\xi(q,\dot q)
   =
-  \frac{\partial L}{\partial \dot q^i}\xi_Q^i(q)
+  \frac{\partial L}{\partial \dot q^i}\xi_Q^i(q,t)
   -B_\xi(q,t)
   =
-  p_i\xi_Q^i(q)-B_\xi(q,t)
+  p_i\xi_Q^i(q,t)-B_\xi(q,t)
 \]
 is conserved along solutions of the Euler-Lagrange equations whenever
 \(\delta_\xi L=\dd B_\xi/\dd t\). For a strict symmetry, \(B_\xi=0\).
@@ -465,7 +528,7 @@ Differentiate the symmetry condition along \(g=\exp(s\xi)\) at \(s=0\):
   \frac{\partial L}{\partial q^i}\xi_Q^i
   +
   \frac{\partial L}{\partial \dot q^i}
-  \frac{\dd}{\dd t}\xi_Q^i(q(t)).
+  \frac{\dd}{\dd t}\xi_Q^i(q(t),t).
 \]
 Along an Euler-Lagrange solution,
 \[
@@ -503,9 +566,10 @@ Here \(B=mvx\), and the Noether charge is
 \[
   J=p\,vt-mvx=mv(\dot x\,t-x).
 \]
-Removing the arbitrary boost parameter gives the conserved center-of-mass
-quantity \(m(x-\dot x\,t)\). The Lagrangian was not invariant as a function,
-but the action changed only by an endpoint term.
+Removing the arbitrary boost parameter gives \(m(\dot x\,t-x)\); its negative
+\(m(x-\dot x\,t)\) is the conventional conserved center-of-mass quantity for a
+free particle. The Lagrangian was not invariant as a function, but the action
+changed only by an endpoint term.
 \end{example}
 
 \begin{example}[Translation and rotation]
@@ -524,6 +588,21 @@ so angular momentum is conserved when \(V\) is rotationally invariant.
 
 Kepler motion shows how cyclic coordinates, Noether's theorem, and reduction by
 symmetry turn a force law into the geometry of conic sections.
+
+\paragraph{Local notation.}
+This section uses \(r\) first as a vector, \(r=x_1-x_2\), and then uses
+\(\rho=\norm r\) for its length once the motion has been reduced to a plane.
+The reduced mass is \(\mu=m_1m_2/(m_1+m_2)\), the coupling is
+\(k=Gm_1m_2\), and \(\ell\) denotes the conserved angular momentum conjugate to
+the polar angle \(\theta\).
+
+The calculation proceeds in three reductions.  First the two-body problem is
+written in the relative coordinate \(r=x_1-x_2\), so the center of mass is no
+longer visible.  Second rotational invariance confines the motion to a fixed
+plane perpendicular to the angular momentum.  Third the cyclic polar angle
+\(\theta\) is replaced by its conserved momentum \(\ell\), leaving a
+one-dimensional radial problem.  The conic-section formula is not guessed; it
+is the result of these successive reductions.
 
 \begin{assumption}[Kepler model]
 We study a particle of reduced mass \(\mu\) moving in \(\R^3\setminus\{0\}\)
@@ -629,6 +708,13 @@ The parameter \(e\) is the eccentricity. The conic is an ellipse, parabola, or
 hyperbola according as \(e<1\), \(e=1\), or \(e>1\).
 \end{derivation}
 
+The orbit equation uses \(\theta\) as the independent variable, so it describes
+the shape of the orbit, not the rate at which the particle moves along it. The
+time parametrization is recovered separately from
+\(\ell=\mu\rho^2\dot\theta\).  This is a common pattern in mechanics:
+symmetry first gives the geometry of a trajectory, while the conserved
+quantity that generated the reduction then reconstructs the motion in time.
+
 The Kepler problem also has the Laplace-Runge-Lenz vector
 \[
   A=p\times J-\mu k\frac{r}{\norm r},
@@ -659,6 +745,13 @@ distinguish coordinates, frames, angular velocity, and kinetic energy. Later
 chapters return to the same system as a reduced Hamiltonian flow and as an
 integrable model, but the essential geometric data are visible already here.
 The reduced equations derived below were first written by Euler in 1758.
+
+\paragraph{Local notation.}
+Here \(R(t)\in\SO(3)\) maps body coordinates to space coordinates, \(X\) labels
+a material point in the body frame, and \(x(t)=R(t)X\) is its position in
+space.  The body angular velocity is \(\Omega\), the body angular momentum is
+\(M=I\Omega\), and \(I\) is the inertia tensor.  The symbol \(I\) in this
+section is therefore not an action variable.
 
 \begin{assumption}[Free rigid body]
 A material point \(X\) in the body frame is located at
@@ -764,8 +857,11 @@ In principal axes this is
 
 \begin{itemize}
 \item Hamilton's principle starts from a configuration manifold \(Q\), paths
-\(q(t)\in Q\), and an action \(S=\int L\,\dd t\). Stationarity gives the
-Euler-Lagrange equations, and the endpoint term defines conjugate momentum.
+\(q(t)\in Q\), an action \(S=\int L\,\dd t\), and a chosen class of admissible
+variations. For the fixed-endpoint boundary-value problem, the variational
+postulate requires stationarity under endpoint-fixing variations. That
+stationarity gives the Euler-Lagrange equations, and the endpoint term defines
+conjugate momentum when endpoint variations are allowed.
 \item Natural Lagrangians encode kinetic energy as a mass metric. Forces,
 constraints, and nonconservative virtual work enter as covectors, multipliers,
 or potentials, depending on how they act on virtual displacements.
@@ -802,6 +898,13 @@ where
   +
   \frac{\partial q^i}{\partial t}.
 \]
+
+\paragraph{Local notation.}
+The symbols \(q^i\) and \(s^a\) are two coordinate systems on the same
+configuration manifold, not two different physical systems.  The index \(a\)
+labels the new coordinates, and regularity means the coordinate change has an
+invertible Jacobian at each point under discussion.
+
 Two elementary identities do the work:
 \[
   \frac{\partial \dot q^i}{\partial \dot s^a}
@@ -871,6 +974,14 @@ Let a particle of mass \(m\) move in a central potential \(V(r)\), where
   \qquad
   x\in\R^3\setminus\{0\}.
 \]
+
+\paragraph{Local notation.}
+In this laboratory \(r=\norm{x}\) is the radial distance, \(J=x\times p\) is
+the angular-momentum vector, and \(\ell=\norm J\) is its scalar value in the
+orbital plane.  The prime in \(V'(r)\) denotes differentiation with respect to
+the radial coordinate \(r\); later, a prime on \(u(\theta)\) denotes
+\(\dd/\dd\theta\).
+
 The Lagrangian is
 \[
   L=\frac12m\norm{\dot x}^2-V(r).
@@ -922,6 +1033,13 @@ Let
 \[
   u(\theta)=\frac1r.
 \]
+
+\paragraph{Local notation.}
+From this point until the end of the Binet derivation, a prime means
+\(\dd/\dd\theta\), not a derivative with respect to \(r\) or time.  The function
+\(u\) has units of inverse length and is introduced only to write the orbit
+shape as a function of the polar angle.
+
 Since
 \[
   \dot\theta=\frac{\ell}{mr^2}=\frac{\ell}{m}u^2,
@@ -1150,6 +1268,13 @@ Let
     \frac12m\dot q^2-\frac12kq^2
   \right).
 \]
+
+\paragraph{Local notation.}
+The coordinate \(q(t)\) is the physical oscillator displacement, \(s(t)\) is a
+rescaled variable introduced for the calculation, \(\gamma\) is the damping
+rate, \(m\) is the mass, and \(k\) is the spring constant.  The explicit factor
+\(e^{\gamma t}\) makes the Lagrangian time-dependent.
+
 The Euler-Lagrange equation is
 \[
   \frac{\dd}{\dd t}(e^{\gamma t}m\dot q)+e^{\gamma t}kq=0,
@@ -1246,6 +1371,13 @@ vertical. The bead position has speed
 \[
   v^2=a^2\dot\theta^2+a^2\omega^2\sin^2\theta.
 \]
+
+\paragraph{Local notation.}
+The angular speed \(\omega\) is imposed by an external motor and is not the
+bead's generalized velocity.  The only dynamical coordinate is \(\theta(t)\);
+the term \(a\omega\sin\theta\) is the speed of the bead due to the hoop's
+rotation about the vertical axis.
+
 The Lagrangian is
 \[
   L
@@ -1337,6 +1469,12 @@ pitchfork bifurcation in an effective potential.
 
 Rolling examples force one to distinguish coordinates, constraints, and
 reaction forces.
+
+\paragraph{Local notation.}
+The symbol \(N\) below denotes the normal contact force, not the dimension of a
+configuration space.  The angles \(\theta\) and \(\phi\) describe orbital
+motion of the center and spin of the rolling body, respectively; the rolling
+condition relates their time derivatives.
 
 \subsubsection{Hoop Rolling On A Fixed Cylinder}
 
@@ -1461,6 +1599,14 @@ Consider the central Lagrangian
   A(r)=1-\frac{R}{r},
   \qquad r>R.
 \]
+
+\paragraph{Local notation.}
+In this laboratory \(R\) is the Schwarzschild radius parameter, while \(r\) is
+the radial coordinate of the orbit.  The quantity \(L_z\) is angular momentum
+about the symmetry axis; it should not be confused with the Lagrangian \(L\).
+The symbol \(B\) is only an abbreviation for the expression inside the square
+root.
+
 This is the geodesic Lagrangian for the Schwarzschild metric, derived by
 Schwarzschild in 1916, with horizon at \(r=R\), restricted to the equatorial
 plane, in units \(c=1\). Here the parameter is Schwarzschild coordinate time.

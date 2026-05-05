@@ -17,6 +17,11 @@ quadrupole Hamiltonian is
 
 where omega is the argument of periapse.  The pair (omega, j) is canonical up
 to the fixed Kepler action scale.
+
+The trajectory integrator is classical RK4.  It is intentionally transparent
+for lecture use, but it is not symplectic and does not preserve the reduced
+Hamiltonian exactly.  The JSON and text output report Hamiltonian drift; the
+regression test for the quick configuration requires drift below 5e-5.
 """
 
 from __future__ import annotations
@@ -141,6 +146,8 @@ def integrate(cfg: Config) -> dict[str, object]:
             "name": "quadrupole Lidov-Kozai test-particle limit",
             "hamiltonian_scale": "dimensionless; positive constant factors omitted",
             "canonical_pair": "(omega, j) at fixed Kepler action and fixed h=j cos(i)",
+            "integrator": "classical RK4; transparent but not symplectic",
+            "diagnostic_note": "monitor hamiltonian_max_abs_drift and repeat with smaller dt for long runs",
         },
         "configuration": {
             "inclination_deg": cfg.inclination_deg,
@@ -165,6 +172,7 @@ def integrate(cfg: Config) -> dict[str, object]:
             "inclination_max_deg": float(np.max(inclination_series)),
             "hamiltonian_initial": float(energy[0]),
             "hamiltonian_max_abs_drift": float(np.max(np.abs(energy - energy[0]))),
+            "quick_test_hamiltonian_drift_bound": 5.0e-5,
             "initial_j_physical": j0_physical,
             "initial_j_used": j0,
             "initial_eccentricity_used": float(math.sqrt(max(0.0, 1.0 - j0 * j0))),

@@ -84,6 +84,13 @@ If \(f(x,t)\) is a scalar or vector field, its value along a particle path
   =
   \partial_t f(x(t),t)+\dot x(t)\cdot\nabla f(x(t),t).
 \]
+
+\paragraph{Local notation.}
+The coordinate \(x\) is a spatial point and \(X\) is a material label.  The
+operator \(D/Dt\) differentiates along the particle path passing through
+\(x\) at time \(t\).  It is different from a partial derivative at fixed
+spatial position.
+
 Since \(\dot x=u(x(t),t)\), the material derivative is
 \[
   \boxed{
@@ -110,6 +117,13 @@ velocity is \(u\). For a scalar field \(f\), we want the time derivative of
 \[
   I(t)=\int_{V(t)} f(x,t)\,\dd^3x.
 \]
+
+\paragraph{Local notation.}
+The set \(V(t)\) is a moving material volume, while \(U\) in the derivation is
+the fixed set of material labels that maps to \(V(t)\).  The deformation
+gradient \(F^i{}_A\) and Jacobian \(J=\det F\) are temporary Lagrangian
+bookkeeping devices used to prove an Eulerian transport formula.
+
 There are two sources of change. The value of \(f\) can change along each
 particle path, and the volume element occupied by neighboring particles can
 expand or contract. The Reynolds transport theorem is the formula that
@@ -217,6 +231,13 @@ Mass in a material volume is constant:
 \[
   \frac{\dd}{\dd t}\int_{V(t)}\rho\,\dd^3x=0.
 \]
+
+\paragraph{Local notation.}
+Here \(\rho(x,t)\) is spatial mass density and \(u(x,t)\) is velocity.  A
+material volume is one that moves with the fluid.  Incompressibility is the
+condition \(\nabla\cdot u=0\), while constant density is a compatible special
+case, not the definition itself.
+
 Using the transport theorem,
 \[
   \int_{V(t)}
@@ -254,6 +275,12 @@ fluid balance laws used in these notes. The same traction theorem that produced
 stress in Chapter~\ref{chap:elastic-body} now produces the stress tensor of a
 moving fluid.
 
+\paragraph{Local notation.}
+The stress tensor \(\sigma_{ij}\) is Cauchy stress, force per current area.
+The traction \(t(n)=\sigma n\) is the force per area exerted across a surface
+whose outward unit normal is \(n\).  The body force \(b\) is force per unit
+mass, so \(\rho b\) is force per current volume.
+
 Newton's second law for a material volume \(V(t)\) is
 \[
   \frac{\dd}{\dd t}\int_{V(t)}\rho u\,\dd^3x
@@ -264,6 +291,13 @@ Newton's second law for a material volume \(V(t)\) is
 \]
 where \(b\) is body force per unit mass and \(t(n)\) is surface traction on a
 surface whose outward unit normal is \(n\).
+
+There are three levels in this equation.  The left side is the rate of change
+of the total momentum of the same moving material volume.  The first term on
+the right is a body force distributed through volume, such as gravity.  The
+second is the force exerted across the boundary by neighboring fluid or by a
+solid wall.  The stress tensor enters only after Cauchy's theorem turns this
+surface force into a local linear function of the normal \(n\).
 
 \begin{proposition}[Cauchy's traction theorem]
 Under the same locality and continuity hypotheses used in the tetrahedron
@@ -362,6 +396,12 @@ the continuum framework; Saint-Venant (1843) added continuum viscous stresses;
 and Stokes (1845) gave the formulation that became standard. Truesdell and
 Noll later systematized objectivity and constitutive response in the 1960s.
 
+\paragraph{Local notation.}
+The pressure \(p\) is the scalar normal stress variable, \(\mu\) is dynamic
+shear viscosity, \(\lambda\) is second viscosity, \(D\) is the symmetric
+strain-rate tensor, and \(W\) in the velocity-gradient split below is the
+antisymmetric spin tensor, not stored energy.
+
 The balance laws so far are universal for continua, but they are not yet a
 closed fluid model: the stress tensor \(\sigma\) is still unknown. For a simple
 Newtonian fluid the closure is
@@ -376,6 +416,13 @@ second viscosity coefficient, and
   D_{ij}=\frac12(\partial_i u_j+\partial_j u_i)
 \]
 is the symmetric strain-rate tensor.
+
+This is the constitutive step.  Momentum balance says how stress accelerates
+fluid; the constitutive law says what stress the material produces during a
+given motion.  Replacing the law below would give a different continuum theory,
+such as an elastic solid, a non-Newtonian fluid, or a micropolar fluid.  Thus
+Navier-Stokes is not Newton's law alone: it is Newton's law plus the Newtonian
+stress law and the chosen mass-balance constraint.
 
 The assumptions behind the formula are local, linear, objective, and isotropic.
 The stress may depend on the instantaneous rate of deformation, not on the
@@ -496,6 +543,12 @@ propagation time is neglected.
 \section{Initial And Boundary Data For Navier-Stokes}
 \label{sec:navier-stokes-data}
 
+Here \(\Omega\) is the spatial fluid domain, not an angular velocity.  The
+velocity field is \(u(x,t)\), the initial velocity is \(u_0(x)\),
+\(\partial\Omega\) is the boundary, \(n\) is the outward unit normal, and
+\(U_{\mathrm{wall}}\) is the prescribed wall velocity.  Pressure \(p\) is
+defined only up to an additive constant in a closed incompressible domain.
+
 A Navier-Stokes problem is not specified by the differential equation alone.
 One must also state the initial velocity, the domain, and the boundary
 conditions. For incompressible flow in a fixed domain \(\Omega\), a typical
@@ -572,6 +625,12 @@ problem for the pressure correction that restores \(\nabla\cdot u=0\).
 \section{Nondimensionalization And Reynolds Number}
 \label{sec:reynolds-number}
 
+The dimensional scales in this section are \(U\) for speed and \(L\) for
+length.  Primed variables are dimensionless.  The density \(\rho\) and dynamic
+viscosity \(\mu\) are assumed constant, and
+\(\nu=\mu/\rho\) is the kinematic viscosity.  This \(\mu\) is a fluid
+viscosity, not the elastic shear modulus of Chapter~\ref{chap:elastic-body}.
+
 Let \(U\) be a typical speed, \(L\) a typical length, and define
 \[
   x=Lx',\qquad
@@ -612,6 +671,13 @@ Dot the Navier-Stokes equation with \(u\) and integrate:
   +
   \mu\int_\Omega u\cdot\Delta u\,\dd^3x.
 \]
+
+\paragraph{Local notation.}
+The domain \(\Omega\) is fixed in space in this energy estimate.  The kinetic
+energy density is \(\frac12\rho|u|^2\), and \(\mu|\nabla u|^2\) is the
+dissipation density after integration by parts under the stated boundary
+conditions.
+
 The nonlinear term is a divergence:
 \[
   u\cdot(u\cdot\nabla u)=u\cdot\nabla\left(\frac12\norm u^2\right)
@@ -652,7 +718,15 @@ The vorticity is
 \[
   \omega=\nabla\times u.
 \]
-Taking the curl of the incompressible Navier-Stokes equation gives
+
+\paragraph{Local notation.}
+In this section \(\omega\) is vorticity, not angular velocity and not the
+symplectic form.  The circulation of a closed curve \(\gamma(t)\) is
+\(\oint_{\gamma(t)}u\cdot\dd x\).  A material loop is transported by the fluid
+velocity \(u\).
+
+Taking the curl of the incompressible Navier-Stokes equation, with no body
+force or with a conservative body force whose curl vanishes, gives
 \[
   \boxed{
   \partial_t\omega+u\cdot\nabla\omega
@@ -785,7 +859,15 @@ inviscid barotropic flow with conservative body force
   \frac{D u}{D t}=-\nabla h-\nabla\Phi,
 \]
 where \(h\) is specific enthalpy, defined by \(\dd h=\rho^{-1}\dd p\). Assume
-the flow is steady. The vector identity
+the flow is steady.
+
+\paragraph{Local notation.}
+The potential \(\Phi\) is body-force potential per unit mass, \(h\) is specific
+enthalpy, and \(\omega=\nabla\times u\) is vorticity.  Steady means
+\(\partial_tu=0\) in the chosen inertial frame.  The Bernoulli constant is
+streamline-wise unless the flow is also irrotational on a connected region.
+
+The vector identity
 \[
   (u\cdot\nabla)u
   =
@@ -818,6 +900,18 @@ field that kills \(u\cdot\nabla u\) by directionality, a fully developed
 geometry that makes the same cancellation transverse, or a pressure field that
 absorbs the nonlinear term as a gradient. The examples below isolate these
 mechanisms.
+
+\paragraph{Local notation.}
+In this section \(V\) is a scalar velocity profile, not a material volume.
+For channel flows \(y\) is wall-normal distance and \(x\) is the streamwise
+coordinate.  The pressure gradient \(G=-\dd p/\dd x\) is taken positive when it
+drives flow in the positive streamwise direction.
+
+The examples are organized by the mechanism that makes the nonlinear PDE
+solvable.  In each example the reader should identify the ansatz, check
+incompressibility, compute \(u\cdot\nabla u\), and only then solve the
+remaining scalar equation.  The boundary conditions are part of the solution:
+they decide which member of the reduced family is being described.
 
 \begin{enumerate}
 \item \emph{Unidirectional shear flow.} If
@@ -861,6 +955,11 @@ theory asks which of these organized solutions persist under disturbance.
 Each solution follows from three choices: geometry, boundary conditions, and
 pressure gradient or wall motion. Changing any one of these choices changes the
 profile and the instability problem.
+
+\paragraph{Local notation.}
+The profiles below use \(V(y)\) or \(V(r)\) for the nonzero velocity component.
+The symbol \(Q\) in the flow formulas is volume flux, not a configuration
+manifold.  The wall shear \(\tau\) is a stress component, not a time variable.
 
 \subsection{The Couette-Poiseuille Family}
 \label{subsec:couette-poiseuille-family}
@@ -1068,10 +1167,15 @@ of viscous laminar flow.
     \node at (1.5,-0.35) {\(V(0)=V(h)=0\)};
   \end{scope}
 \end{tikzpicture}
-\caption{Couette flow is linear because it is driven by wall motion. Poiseuille
-flow is parabolic because it balances pressure forcing against viscous
-diffusion of momentum. The arrows are spatial velocity vectors, not a graph
-with velocity on the vertical axis.}
+\caption{Two steady shear profiles between parallel plates separated by
+distance \(h\).  In both panels the vertical direction in the drawing is the
+wall-normal coordinate \(y\), with \(y=0\) at the lower wall and \(y=h\) at the
+upper wall; the horizontal arrow length represents the streamwise velocity
+component \(V(y)\).  Left: Couette flow, \(V(0)=0\) and \(V(h)=U\), is linear
+because it is driven by wall motion.  Right: Poiseuille flow,
+\(V(0)=V(h)=0\), is parabolic because it balances the pressure force
+\(-\partial_xp=G\) against viscous diffusion of momentum.  The arrows are
+spatial velocity vectors, not a graph with velocity on the vertical axis.}
 \label{fig:couette-poiseuille-profiles}
 \end{figure}
 
@@ -1102,6 +1206,13 @@ instantaneously set into motion with velocity \(Ue_x\). Seek
   \qquad
   p=\text{constant}.
 \]
+
+\paragraph{Local notation.}
+Here \(V(y,t)\) is the streamwise velocity induced by the moving wall,
+\(\nu=\mu/\rho\) is kinematic viscosity, \(U\) is wall speed, and
+\(\eta=y/(2\sqrt{\nu t})\) is a similarity variable.  The function
+\(\operatorname{erfc}\) is the complementary error function.
+
 As before, incompressibility is automatic and \(u\cdot\nabla u=0\). The
 Navier-Stokes equation reduces to the heat equation
 \[
@@ -1163,6 +1274,13 @@ Now let the wall at \(y=0\) oscillate tangentially:
   \qquad
   V(y,t)\to0\quad(y\to\infty).
 \]
+
+\paragraph{Local notation.}
+The frequency \(\Omega_s\) is the imposed wall oscillation frequency; it is not
+the spatial fluid domain \(\Omega\) and not angular velocity of a rigid body.
+The thickness \(\delta_s=\sqrt{2\nu/\Omega_s}\) is a viscous penetration
+depth.
+
 Again \(V\) solves \(\partial_tV=\nu V_{yy}\). Use a complex solution and take
 the real part at the end:
 \[
@@ -1202,6 +1320,12 @@ incompressible Navier-Stokes equation. On a periodic square, set
   A(t)&=U_0e^{-2\nu k^2t}.
 \end{aligned}
 \]
+
+\paragraph{Local notation.}
+The constant \(k\) is the spatial wavenumber, \(U_0\) is the initial amplitude,
+and \(A(t)\) is the decaying amplitude.  The pressure \(p(x,y,t)\) is chosen so
+that the nonlinear advection term is exactly balanced by a pressure gradient.
+
 The divergence vanishes because
 \[
   \partial_xu_x+\partial_yu_y
@@ -1311,12 +1435,17 @@ and the cell-averaged kinetic energy density is
       {Taylor-Green vortex:\\periodic eddies decay as \(e^{-2\nu k^2t}\)};
   \end{scope}
 \end{tikzpicture}
-\caption{Two unsteady exact solutions. Left: an impulsively moved wall creates
-the profile \(V/U=\operatorname{erfc}(y/(2\sqrt{\nu t}))\), sampled at
-three times. Right: the curved arrows show the alternating vorticity cells of
-the Taylor-Green velocity
-\((A\sin kx\cos ky,-A\cos kx\sin ky)\); advection is absorbed by pressure
-while viscosity damps the amplitude.}
+\caption{Two unsteady exact solutions, drawn by evaluating the formulas in the
+text rather than by numerically integrating Navier-Stokes.  Left: an
+impulsively moved wall creates the profile
+\(V/U=\operatorname{erfc}(y/(2\sqrt{\nu t}))\).  The horizontal axis is the
+distance \(y\) from the wall, the vertical axis is the normalized velocity
+\(V/U\), and the three curves show increasing times \(t_1<t_2<t_3\); the growing
+penetration depth is the viscous scale \(\sqrt{\nu t}\).  Right: the square is
+one periodic \(x,y\) cell of the Taylor-Green velocity
+\((A\sin kx\cos ky,-A\cos kx\sin ky)\).  The curved arrows indicate the
+alternating eddy circulation; advection is absorbed by pressure while viscosity
+damps the common amplitude by \(e^{-2\nu k^2t}\).}
 \label{fig:unsteady-ns-exact-solutions}
 \end{figure}
 
@@ -1328,6 +1457,13 @@ are understood. Stability analysis supplies this local question. We linearize
 Navier-Stokes around a known base flow and ask whether infinitesimal
 disturbances grow or decay. This gives a mathematically controlled diagnostic
 that can be compared with experiments and simulations.
+
+Local notation separates the base flow from the perturbation.  The scalar
+\(U(y)\) is the streamwise base velocity, \(e_x\) is the unit vector in the
+streamwise direction, \(P(x)\) is the base pressure, and tildes denote
+perturbations: \(\tilde u\) for velocity and \(\tilde p\) for pressure.  In
+the Orr-Sommerfeld subsection below, \(D\) means differentiation with respect
+to \(y\), not the material derivative.
 
 Let a steady base flow be
 \[
@@ -1502,6 +1638,16 @@ If dissipation dominates production for all admissible perturbations, the base
 flow is energy stable. If not, the estimate does not prove instability, but it
 reveals the only possible energy source for perturbation growth. This identity
 is the Reynolds-Orr energy equation for perturbations of a shear flow.
+The boundary conditions are part of the identity: the integrations by parts
+assume periodic boundaries, no-slip walls, or no-penetration perturbations with
+boundary terms that do no work.  The sign of the production term is local in
+space.  A perturbation with \(\tilde u\,\tilde v\,U'(y)<0\) extracts kinetic
+energy from the mean shear, while the opposite correlation returns energy to
+the mean flow.  If \(U'(y)=0\), no mean-shear production exists and the
+disturbance energy decays monotonically under viscosity.  Energy stability is
+therefore a sufficient stability criterion, not a necessary one: failure of the
+estimate means that the energy method has lost control, not that a growing
+solution has been constructed.
 
 \section{Point Vortices As A Hamiltonian Fluid Model}
 \label{sec:point-vortices}
@@ -1514,7 +1660,16 @@ where \(\Gamma_i\) is circulation. Helmholtz introduced point-vortex
 idealizations alongside the 1858 vortex theorems; Kirchhoff cast them as a
 Hamiltonian system in his 1876 lectures.
 Here they serve as a finite-dimensional Hamiltonian reduction of ideal-fluid
-motion. The point vortex equations are
+motion.
+
+\paragraph{Local notation.}
+The point \(i\) has position \((x_i,y_i)\) and circulation \(\Gamma_i\).  The
+Hamiltonian \(H\) is not fluid kinetic energy in full Eulerian form; it is the
+finite-dimensional interaction Hamiltonian after point-vortex reduction.  The
+two-form \(\omega_{\mathrm{vortex}}\) is symplectic structure, while
+\(\omega(x,y)\) above is vorticity.
+
+The point vortex equations are
 \[
 \begin{aligned}
   \Gamma_i\dot x_i &= \frac{\partial H}{\partial y_i},\\
@@ -1543,6 +1698,29 @@ can derive this finite-dimensional symplectic form by reducing the ideal-fluid
 Hamiltonian bracket to delta-function vorticity; in this section we use the
 resulting point-vortex bracket as the model.
 
+For completeness, here is the elementary velocity calculation behind the same
+Hamiltonian.  A vortex of circulation \(\Gamma_j\) at \(z_j=(x_j,y_j)\)
+produces the streamfunction
+\[
+  \psi_j(x,y)=-\frac{\Gamma_j}{2\pi}
+  \log\sqrt{(x-x_j)^2+(y-y_j)^2}.
+\]
+The velocity field is \(u=(\pd_y\psi,-\pd_x\psi)\).  The singular self-field of
+vortex \(i\) is omitted, so
+\[
+  \dot x_i
+  =
+  \sum_{j\ne i}\pd_y\psi_j(z_i),
+  \qquad
+  \dot y_i
+  =
+  -\sum_{j\ne i}\pd_x\psi_j(z_i).
+\]
+Differentiating the displayed Hamiltonian with respect to \(y_i\) and \(x_i\)
+gives exactly these two equations after multiplication by \(\Gamma_i\).  The
+sum \(i<j\) counts each interacting pair once; the derivatives see both members
+of the pair, which is why no extra factor is missing in Hamilton's equations.
+
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[scale=1.05, >=Latex, font=\small]
@@ -1565,9 +1743,14 @@ resulting point-vortex bracket as the model.
   \node[blue, align=center, fill=white, inner sep=1pt] at (0.62,1.82)
     {common\\translation};
 \end{tikzpicture}
-\caption{A vortex dipole is the simplest point-vortex motion: the two vortices
-translate together with fixed separation. More complicated point-vortex
-systems give finite-dimensional Hamiltonian models of ideal-fluid motion.}
+\caption{Point-vortex dipole in the plane.  The displayed axes are spatial
+coordinates \(x\) and \(y\).  The two marked singular vortices have equal and
+opposite circulations \(+\Gamma\) and \(-\Gamma\), separated by a fixed
+distance \(d\).  Each blue arrow is the velocity induced at one vortex by the
+other; because the induced velocities are equal and parallel, the pair
+translates together without changing separation.  More complicated
+point-vortex systems give finite-dimensional Hamiltonian models of
+ideal-fluid motion.}
 \label{fig:vortex-dipole}
 \end{figure}
 

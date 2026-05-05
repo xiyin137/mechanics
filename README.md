@@ -12,6 +12,7 @@ can be studied through the same geometric language.
 ## Current Contents
 
 - `notes/tex`: TeX source for the integrated course notes.
+- `main.pdf`: current rendered PDF at the repository root.
 - `demos/python`: runnable Python simulations and numerical experiments.
 - `demos/mathematica`: Wolfram Language scripts for symbolic and numerical demos.
 - `demos/labs`: public laboratory guides attached to selected chapters.
@@ -70,14 +71,14 @@ python3 -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-Run the highlighted asteroid ejection probability demo:
+Run the highlighted planar asteroid ejection probability demo:
 
 ```sh
 python demos/python/asteroid_ejection_probability.py --lecture --seed 7 --output-dir data/asteroid_lecture --plot figures/ejection_demo.png
 ```
 
-Run the circular restricted three-body demo with Jacobi-drift diagnostics and
-zero-velocity curves:
+Run the planar circular restricted three-body demo with Jacobi-drift
+diagnostics and zero-velocity curves:
 
 ```sh
 python demos/python/circular_restricted_three_body.py --preset sun-jupiter --periods 3 --dt 0.0025 --plot figures/cr3bp_zero_velocity.png --json-output data/cr3bp_zero_velocity.json
@@ -99,6 +100,19 @@ The Makefile alias for this figure is:
 
 ```sh
 make standard-map-breakdown-demo
+```
+
+Run the stable/unstable manifold and homoclinic-tangle figure for the standard
+map:
+
+```sh
+python demos/python/standard_map_homoclinic_tangle.py --quick --plot figures/standard_map_homoclinic_tangle.png
+```
+
+The Makefile alias for this figure is:
+
+```sh
+make homoclinic-tangle-demo
 ```
 
 Run the Henon-Heiles Poincare-section demo used for the numerical section
@@ -152,19 +166,22 @@ python demos/python/lidov_kozai.py --quick --plot figures/lidov_kozai.png
 python demos/python/heavy_symmetric_top.py --quick --plot figures/heavy_symmetric_top.png
 ```
 
-Run the binary-single capture/exchange scattering demo:
+Run the planar binary-single capture/exchange scattering demo:
 
 ```sh
 python demos/python/binary_capture_scattering.py --quick --json
 ```
 
 Here `--v-inf` is the asymptotic incoming speed; reported capture classes are
-finite-time binding-energy outcomes for the stated scattering ensemble.
+finite-time binding-energy outcomes for the stated planar scattering ensemble.
+The reported cross sections use the script's area-weighted convention and are
+not a full spatial binary-single scattering survey.
 
-Run the compact benchmark statistical studies:
+Run the compact benchmark statistical studies, combining the planar asteroid
+ensemble and planar binary-single scattering sweep:
 
 ```sh
-python demos/python/three_body_benchmark_studies.py --quick --json-output data/three_body_benchmark_quick.json --plot figures/three_body_benchmark_quick.png
+python demos/python/three_body_benchmark_studies.py --quick --json-output data/three_body_benchmark_quick.json --plot figures/three_body_benchmark_quick.png --asteroid-plot figures/three_body_asteroid_loss_quick.png --binary-plot figures/three_body_binary_scattering_quick.png
 ```
 
 Run all smoke tests:

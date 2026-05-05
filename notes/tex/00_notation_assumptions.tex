@@ -1,13 +1,13 @@
-\chapter{Reading Rules, Conventions, And Standing Assumptions}
+\chapter[Reading Rules And Logical Roles]{Reading Rules, Conventions, Postulates, And Assumptions}
 \label{chap:notation}
 
 \section{Purpose Of These Notes}
 \label{sec:notation-purpose}
 
-Each chapter states its assumptions, defines its symbols before use, and derives
-the central equations from a named structure: an action principle, a symplectic
-form, a symmetry, or a balance law. The standard for every major derivation is
-the same:
+Each chapter separates formal postulates, modelling assumptions, mathematical
+hypotheses, conventions, and definitions before deriving central equations from
+a named structure: an action principle, a symplectic form, a symmetry, or a
+balance law. The standard for every major derivation is the same:
 \[
 \begin{array}{rcl}
 \text{model} &:& \text{what physical idealization is being made?}\\
@@ -27,14 +27,20 @@ a group action. The notes keep the conventional language but define it locally:
 each important symbol is tied to a space, a convention, and a physical
 interpretation.
 
-The notes also distinguish three kinds of equality. A definition introduces a
+The notes also distinguish several logical roles. A definition introduces a
 symbol, as in \(p_i=\partial L/\partial\dot q^i\). A convention fixes a choice
 that could have been made differently: the sign convention for the canonical
-symplectic form on \(T^*Q\) is fixed by writing \(\omega=-\dd\Theta\). After that
-choice has been made, the same displayed relation is used as an identity inside
-that convention. An equation of motion holds only along physical trajectories,
-as in \(\dot p_i=-\partial H/\partial q^i\). Many confusions in mechanics come
-from silently moving an equation from one category to another.
+symplectic form on \(T^*Q\) is fixed by writing \(\omega=-\dd\Theta\). A formal
+postulate names the rule of the formalism being used, such as Hamilton's
+stationary-action principle for a fixed-endpoint boundary-value problem. A
+modelling assumption restricts the physical system, such as treating a body as
+rigid or a fluid as Newtonian. A mathematical hypothesis records a regularity
+or nondegeneracy condition needed by a theorem or derivation. After a
+convention or postulate has been adopted, a displayed relation may be used as
+an identity inside that formalism. An equation of motion holds only along
+physical trajectories, as in \(\dot p_i=-\partial H/\partial q^i\). Many
+confusions in mechanics come from silently moving an equation from one category
+to another.
 
 There is a fourth reading habit of the same importance: keep track of the
 stage of a calculation. Before a variational principle is imposed, \(q(t)\) is
@@ -51,14 +57,22 @@ indices in finite-dimensional mechanics label coordinates on a manifold and its
 cotangent bundle; in continuum chapters, capital indices such as \(A,B\) label
 material coordinates and lower-case indices such as \(i,j\) label spatial
 coordinates.
+When a symbol reappears after a long interval, or when a familiar letter takes
+on a new role, the text should remind the reader of its meaning.  These local
+reminders are part of the exposition, not optional decoration: they keep
+\(\omega\) as a symplectic form distinct from angular velocity and vorticity,
+\(M\) as an angular momentum distinct from mean anomaly, and \(F\) as a
+deformation gradient distinct from an abstract map or force.
 
 \section{Notation And Conventions}
 \label{sec:notation-conventions}
 
 A convention fixes how formulas are written or oriented. It is not a modelling
 assumption and does not restrict which motions, forces, or materials are being
-studied. The standing assumptions in the next section state genuine restrictions
-on regularity, endpoints, or invertibility.
+studied. Postulates, assumptions, and hypotheses play different roles: a
+postulate is part of the formalism being used, an assumption restricts the
+model being studied, and a hypothesis supplies a mathematical condition needed
+by a theorem or derivation.
 
 \begin{convention}[Einstein summation]
 Repeated upper/lower coordinate indices are summed unless stated otherwise:
@@ -71,37 +85,50 @@ vector formulas, dots and cross products use the standard metric and
 orientation unless a different metric or orientation is specified locally.
 \end{convention}
 
-\section{Standing Mathematical Assumptions}
-\label{sec:standing-assumptions}
+\section{Scope And Formal Postulates}
+\label{sec:scope-postulates}
 
-The assumptions below are different in kind from the conventions above. They
-identify the regularity and nondegeneracy conditions under which the first
-derivations are valid. Later chapters replace or refine them when a model
-requires weaker smoothness, boundary work, constraints, singular Legendre
-transforms, or continuum fields.
+A scope statement names the arena in which a discussion is taking place. A
+formal postulate names a rule of the formalism. Neither is, by itself, an
+intrinsic property of a particular physical system.
 
-\begin{assumption}[Smoothness]
-Unless explicitly stated otherwise, all functions, curves, vector fields, and
-maps are assumed smooth enough for the differentiations and integrations being
-performed. For most finite-dimensional chapters, \(C^2\) regularity is enough.
-For continuum chapters, additional differentiability is assumed locally.
-\end{assumption}
-
-\begin{assumption}[Finite-dimensional mechanics]
+\begin{setting}[Finite-dimensional setting]
 When the configuration space is a finite-dimensional manifold \(Q\), a motion is
 a curve \(q:I\to Q\) on a time interval \(I=[t_0,t_1]\). The velocity
 \(\dot q(t)\) lies in the tangent space \(T_{q(t)}Q\). Local coordinates are
 written \(q^1,\ldots,q^n\).
-\end{assumption}
+\end{setting}
 
-\begin{assumption}[Endpoint variations]
-For Hamilton's principle in its basic form, variations of the path satisfy
-\(\delta q(t_0)=\delta q(t_1)=0\). Free-endpoint and boundary-force variants
-are introduced when boundary work or transversality conditions are part of the
-model.
-\end{assumption}
+\begin{postulate}[Fixed-endpoint variational principle]
+In the basic form of Hamilton's principle, the physical path between prescribed
+endpoint configurations is a stationary point of the action with respect to
+variations satisfying
+\[
+  \delta q(t_0)=\delta q(t_1)=0.
+\]
+This is a postulate of the variational formalism, not a material property of
+the system.  It says which boundary-value problem is being posed. Free-endpoint
+and boundary-force variants are introduced when boundary work or
+transversality conditions are part of the variational problem.
+\end{postulate}
 
-\begin{assumption}[Regular Lagrangians]
+\section{Standing Mathematical Hypotheses}
+\label{sec:standing-hypotheses}
+
+The hypotheses below are different in kind from the conventions, postulates,
+and modelling assumptions above. They identify regularity and nondegeneracy
+conditions under which the first derivations are valid. Later chapters replace
+or refine them when a model requires weaker smoothness, constraints, singular
+Legendre transforms, or continuum fields.
+
+\begin{hypothesis}[Smoothness]
+Unless explicitly stated otherwise, all functions, curves, vector fields, and
+maps are assumed smooth enough for the differentiations and integrations being
+performed. For most finite-dimensional chapters, \(C^2\) regularity is enough.
+For continuum chapters, additional differentiability is assumed locally.
+\end{hypothesis}
+
+\begin{hypothesis}[Regular Lagrangians]
 The Legendre transform from velocities to momenta is assumed locally invertible
 whenever we pass from \(L(q,\dot q,t)\) to \(H(q,p,t)\). In coordinates this
 means the matrix
@@ -128,7 +155,7 @@ developed by Bergmann (1949) and Dirac (1950). These notes name this boundary
 of the regular theory but do not develop the Dirac-Bergmann algorithm; the
 gauge and continuum chapters use constrained ideas only in settings where the
 relevant reduction is stated explicitly.
-\end{assumption}
+\end{hypothesis}
 
 \section{A Map Of The Course}
 \label{sec:course-map}
@@ -196,8 +223,25 @@ units before it is interpreted dynamically.
 Figures in the notes are schematic unless explicitly generated from a numerical
 demo. Their purpose is to identify variables, spaces, and geometric relations.
 For quantitative plots, the corresponding Python or Mathematica script should be
-treated as part of the figure caption: the model assumptions and numerical
-parameters matter.
+treated as part of the figure caption: the modelling assumptions, mathematical
+hypotheses, formal postulates, and numerical parameters matter.
+
+A numerical figure should answer five questions in or near its caption:
+\[
+\begin{array}{rcl}
+\text{setup} &:& \text{which equations, units, parameters, and initial ensemble?}\\
+\text{method} &:& \text{which integrator, timestep, horizon, and stopping rule?}\\
+\text{axes} &:& \text{what does each axis measure, and in what units or normalization?}\\
+\text{quantity} &:& \text{what is plotted, and what estimator produced it?}\\
+\text{scope} &:& \text{what should not be inferred from the plot?}
+\end{array}
+\]
+The caption should also identify which visible curves are computed data, which
+are analytic reference curves, and which are schematic guides. If a figure has
+multiple panels, the caption must say whether the panels are different views of
+one calculation or separate calculations placed together for comparison.  This
+is especially important for statistical plots: the visual similarity of two
+panels does not imply that they share an ensemble, units, or physical model.
 
 \subsection*{Derivations}
 \label{sec:read-long-derivations}
@@ -214,15 +258,16 @@ To read each derivation, keep a small ledger:
 \begin{array}{c|c}
 \text{input} & \text{output}\\
 \hline
-\text{model assumptions} & \text{equation of motion or constraint}\\
+\text{postulate, assumption, or hypothesis} & \text{equation of motion or constraint}\\
 \text{symmetry} & \text{conserved quantity or reduced variable}\\
 \text{constitutive law} & \text{closed continuum PDE}\\
 \text{choice of frame} & \text{connection and curvature}
 \end{array}
 \]
 Many mistakes in mechanics are ledger mistakes: using an equation outside the
-assumptions that produced it, changing a frame without transforming the
-components, or interpreting a reduced equation as if no reduction had occurred.
+postulates, assumptions, or hypotheses that produced it, changing a frame
+without transforming the components, or interpreting a reduced equation as if no
+reduction had occurred.
 
 When a derivation contains a local coordinate calculation, the conclusion should
 be read as coordinate-independent only after the geometric object has been
@@ -238,6 +283,15 @@ sentences. When the prose summary breaks down, return to the model, space,
 principle, and interpretation before trying more algebra. Long derivations in
 these notes are meant to be reconstructible from those four pieces.
 
+The same standard applies to the prose between displayed equations. A reader
+should not have to infer, from notation alone, whether a step is changing
+coordinates, imposing an equation of motion, restricting to a special model,
+or applying a theorem. When a calculation changes stage, the text should say
+so: arbitrary curve to stationary curve, full phase space to reduced phase
+space, exact equation to approximation, deterministic trajectory to statistical
+ensemble, or continuum balance law to constitutive model. Those transitions are
+where much of the meaning of mechanics lives.
+
 \subsection*{Laboratories}
 \label{sec:chapter-end-laboratories}
 
@@ -249,8 +303,9 @@ criterion, or a gauge holonomy.
 
 Laboratories are checkpoints for the reading rule: state the model, name the
 variables, derive the diagnostic, and interpret what the diagnostic measures.
-For teaching, this gives three layers inside each example: local conventions
-and assumptions, the derivation of the diagnostic, and the interpretation.
+For teaching, this gives three layers inside each example: local conventions,
+postulates, assumptions, and hypotheses; the derivation of the diagnostic; and
+the interpretation.
 Stability, bifurcation, transport, reaction force, pressure projection,
 ejection, and holonomy are interpretations only after the model and diagnostic
 have been specified.
@@ -267,7 +322,8 @@ Every computational laboratory in this repository should record the following
 metadata:
 \[
   \text{model}+\text{variables}+\text{parameters}
-  +\text{units}+\text{invariants}+\text{numerical method}.
+  +\text{units}+\text{invariants}+\text{numerical method}
+  +\text{scope note}.
 \]
 For Hamiltonian demos, the minimum checks are
 \[

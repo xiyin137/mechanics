@@ -24,6 +24,10 @@ env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
   python demos/python/standard_map.py --quick \
   --plot figures/canonical/standard_map_quick.png
 
+env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
+  python demos/python/standard_map_homoclinic_tangle.py --quick \
+  --plot figures/canonical/standard_map_homoclinic_tangle_quick.png
+
 env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache MPLBACKEND=Agg \
   python demos/python/standard_map_torus_breakdown.py --quick \
   --plot figures/canonical/standard_map_torus_breakdown_quick.png
@@ -46,7 +50,9 @@ env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
 
 env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
   python demos/python/three_body_benchmark_studies.py --quick \
-  --plot figures/canonical/three_body_benchmark_quick.png
+  --plot figures/canonical/three_body_benchmark_quick.png \
+  --asteroid-plot figures/canonical/three_body_asteroid_loss_quick.png \
+  --binary-plot figures/canonical/three_body_binary_scattering_quick.png
 
 env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
   python demos/python/linear_elasticity.py --quick \

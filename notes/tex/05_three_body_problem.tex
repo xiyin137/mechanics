@@ -10,9 +10,10 @@ points in the rotating frame, resonant islands, chaotic scattering, and
 long-time transport.
 
 Sundman (1907 announcement, 1912 publication) constructed a convergent series
-solution away from triple collision, but the result is not a substitute for
-integrability. Binary collisions can be regularized by changing variables and
-time scale. In the planar problem, the Levi-Civita change
+solution away from triple collision.  The result is a remarkable existence
+theorem, but it does not restore practical integrability or a usable
+closed-form classification of motion. Binary collisions can be regularized by
+changing variables and time scale. In the planar problem, the Levi-Civita change
 \[
   z=u^2,\qquad \dd t=|u|^2\,\dd s
 \]
@@ -58,6 +59,18 @@ The reader should keep four levels separate:
 The later levels are controlled reductions chosen to isolate transport, escape
 channels, and resonance-driven loss in a teachable setting.
 
+\paragraph{Dimension convention.}
+The phrase ``three-body problem'' by itself does not specify dimension.  The
+Newtonian equations make sense for \(q_i\in\R^d\), with the physically spatial
+case \(d=3\).  The planar problem, \(d=2\), is an invariant subproblem when the
+initial positions and velocities lie in one plane; it is not a different force
+law.  This chapter uses the spatial problem when discussing angular-momentum
+geometry, hierarchical triples, and the general Newtonian formulation.  It uses
+planar reductions for the CR3BP figures, the Sun-Jupiter-asteroid ensemble, the
+equal-mass laboratory, and the current binary-scattering benchmark. Whenever a
+numerical figure or probability estimate appears, the caption and surrounding
+prose state whether the underlying run is planar or spatial.
+
 \section{Astrophysical Regimes Of The Three-Body Problem}
 \label{sec:three-body-astrophysical-regimes}
 
@@ -69,9 +82,19 @@ orbit is the reference problem?  Which small parameter makes the motion nearly
 integrable?  Which resonances are slow?  Which invariant or approximate
 invariant controls escape, capture, or long-time stability?
 
+\paragraph{Local notation.}
+The symbols in the table are observables or control parameters for different
+experiments.  \(a_{\rm p}\) is a planetary semimajor axis,
+\(a_{\rm bin}\) a binary semimajor axis, \(T_{\rm inst}\) an instability time,
+\(\sigma_{\rm cap}\) a capture cross section, and
+\(\widehat P_{\rm ej}(T)\) a finite-sample ejection estimator at time \(T\).
+None of these numbers is model-independent without the ensemble and stopping
+rule that define it.
+
 \begin{center}
 \small
-\begin{tabular}{@{}p{0.20\textwidth} p{0.23\textwidth} p{0.25\textwidth} p{0.17\textwidth}@{}}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{0.20\textwidth} p{0.27\textwidth} p{0.27\textwidth} p{0.14\textwidth}@{}}
 \hline
 regime & controlled limit & typical question & observable\\
 \hline
@@ -99,6 +122,13 @@ flyby, capture, exchange, ionization, or collision &
 \end{tabular}
 \end{center}
 
+The dimensional convention for the rows is as follows.  The
+Sun-Jupiter-asteroid demo is planar.  The S-type and circumbinary planetary
+problems are spatial in general, although planar slices are common first
+models.  The hierarchical-triple calculation is spatial because mutual
+inclination is dynamical.  The binary-single benchmark in these notes is
+planar, while stellar-dynamical scattering in general is spatial.
+
 This table is a map, not a replacement for derivation.  The Sun-Jupiter-
 asteroid model is the detailed numerical example in these notes because its
 semimajor-axis resonances connect cleanly to the perturbation theory of
@@ -108,9 +138,14 @@ around one star in a binary is close to a Kepler problem with a distant
 periodic perturber.  A circumbinary planet is close to a Kepler problem around
 the binary center of mass, with a time-dependent multipole perturbation from
 the inner pair.  A hierarchical triple is close to two Kepler problems coupled
-by secular torques.  A binary-single encounter is less nearly integrable during
+by secular torques; because mutual inclination is one of its essential
+dynamical variables, the Lidov--Kozai discussion below is spatial even after
+secular reduction.  A binary-single encounter is less nearly integrable during
 close approach, but its outcomes are still classified by the binding energies
-of the outgoing pairs.
+of the outgoing pairs.  The benchmark later in this chapter uses a coplanar
+binary-single ensemble for speed and visual clarity; a production
+stellar-dynamical scattering calculation would sample the full
+three-dimensional orientation and impact-parameter geometry.
 
 \begin{figure}[htbp]
 \centering
@@ -207,7 +242,10 @@ place for reproducibility.
 \label{sec:lidov-kozai-mechanism}
 
 The hierarchical-triple row of the preceding table has its own canonical
-calculation.  Consider an inner Kepler pair with semimajor axis \(a_1\),
+calculation.  This is a spatial three-dimensional problem: if the motion were
+strictly planar, the mutual inclination \(i\) would be fixed at \(0\) or
+\(\pi\), and the Lidov--Kozai exchange between inclination and eccentricity
+would disappear.  Consider an inner Kepler pair with semimajor axis \(a_1\),
 eccentricity \(e\), argument of periapse \(\omega\), and inclination \(i\)
 relative to a distant outer orbit.  Assume
 \[
@@ -223,6 +261,13 @@ limit: the outer orbit supplies a fixed angular-momentum axis.  The question is
 what remains after averaging over both mean anomalies.  The answer is a
 one-degree-of-freedom Hamiltonian in which eccentricity and inclination
 exchange periodically.
+
+\paragraph{Local notation.}
+The subscript \(1\) labels the inner orbit and \(2\) labels the outer orbit.
+The angle \(\omega\) here is the argument of periapse, not an angular velocity
+or the symplectic form.  The inclination \(i\) is measured between the inner
+and outer orbital angular-momentum directions.  The variables \(j\) and \(j_z\)
+introduced below are dimensionless angular-momentum quantities.
 
 Let
 \[
@@ -262,7 +307,82 @@ All symbols in this expression have a direct orbital meaning:
 \(1-h^2/j^2=\sin^2 i\) is the squared mutual-inclination sine.  The canonical
 pair is \((\omega,j)\), with \(h\) fixed.
 
-The Hamiltonian may be checked against the vector form
+Here is where the numerical coefficients in this formula come from.  Write the
+inner position as
+\[
+  r=xP+yQ,
+\]
+where \(P\) is the unit vector toward periapse and \(Q\) is the unit vector
+obtained by rotating \(P\) by \(90^\circ\) in the orbital plane.  For an ellipse
+with semimajor axis \(a_1\),
+\[
+  x=a_1(\cos E-e),
+  \qquad
+  y=a_1\sqrt{1-e^2}\sin E,
+  \qquad
+  \dd M=(1-e\cos E)\,\dd E,
+\]
+where \(E\) is eccentric anomaly and \(M\) is mean anomaly.  Averaging over
+the inner mean anomaly gives
+\[
+  \left\langle\frac{x^2}{a_1^2}\right\rangle
+  =
+  \frac12+2e^2,
+  \qquad
+  \left\langle\frac{y^2}{a_1^2}\right\rangle
+  =
+  \frac12(1-e^2),
+  \qquad
+  \left\langle xy\right\rangle=0.
+\]
+Therefore
+\[
+  \left\langle\frac{r^2}{a_1^2}\right\rangle
+  =
+  1+\frac32e^2 .
+\]
+If the line of nodes is used as the reference direction, then
+\[
+  P\cdot\hat z=\sin i\,\sin\omega,
+  \qquad
+  Q\cdot\hat z=\sin i\,\cos\omega,
+\]
+and hence
+\[
+  \left\langle\frac{(r\cdot\hat z)^2}{a_1^2}\right\rangle
+  =
+  \sin^2 i
+  \left[
+  \frac12+e^2\left(\frac52\sin^2\omega-\frac12\right)
+  \right].
+\]
+The quadrupole term is obtained by expanding the distant perturber's potential
+to second order in \(a_1/a_2\), dropping the monopole and dipole pieces, and
+averaging the circular outer orbit.  After multiplying by a positive constant
+and choosing the irrelevant additive constant conveniently, the dimensionless
+Hamiltonian can be taken as
+\[
+  \mathcal H_{\rm LK}
+  =
+  -2\left\langle\frac{r^2}{a_1^2}\right\rangle
+  +6\left\langle\frac{(r\cdot\hat z)^2}{a_1^2}\right\rangle .
+\]
+Substituting the two averages gives
+\[
+  \mathcal H_{\rm LK}
+  =
+  1-6e^2-3(1-e^2)\cos^2 i
+  +15e^2\sin^2 i\,\sin^2\omega .
+\]
+Finally \(h=j\cos i\) and \(j^2=1-e^2\), so
+\[
+  (1-e^2)\cos^2 i=h^2,
+  \qquad
+  \sin^2 i=1-\frac{h^2}{j^2},
+\]
+which is the boxed expression above.
+
+The same result may be checked against the vector form
 \[
   \Phi_{\rm quad}
   \propto
@@ -374,7 +494,34 @@ demo therefore reports a tiny regularizing eccentricity seed when the requested
 initial condition is circular, monitors the Hamiltonian drift, and terminates
 with an explicit boundary diagnostic if the computed \(j=\sqrt{1-e^2}\) leaves
 the regular chart.  This is a coordinate issue in the secular model, not an
-additional physical force.
+additional physical force.  The numerical trajectory in the demo is integrated
+with classical fourth-order Runge--Kutta.  RK4 is transparent enough for a
+lecture laboratory, but it is not symplectic and does not preserve
+\(\mathcal H_{\rm LK}\) exactly.  The plotted orbit should therefore be read
+together with the printed Hamiltonian drift; for longer integrations one should
+repeat the run at smaller \(\Delta \tau\) and check convergence of that drift.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.96\textwidth]{../../figures/canonical/lidov_kozai_quick.png}
+\caption{Numerical Lidov--Kozai laboratory generated by
+\protect\path{demos/python/lidov_kozai.py} for an orbit initialized near
+\(i_0=65^\circ\) with a tiny eccentricity seed.  The left panel is the reduced
+phase portrait at fixed
+\(h=\sqrt{1-e^2}\cos i\): the horizontal axis is the argument of periapse
+\(\omega\) and the vertical axis is eccentricity \(e\).  Contours are level
+sets of the quadrupole-averaged Hamiltonian, and the blue curve is one
+numerically integrated secular trajectory on that same level-set geometry.  The
+inline contour labels are numerical values of the dimensionless Hamiltonian
+\(\mathcal H_{\rm LK}\) used by the script.  In the right panel the horizontal
+axis is the script's dimensionless secular time \(\tau\), the vertical axis is
+\(e(\tau)\), the blue curve is the numerical solution, and the dashed red line
+is the analytic maximum
+\(e_{\max}=\sqrt{1-(5/3)\cos^2 i_0}\).  The seed is a coordinate
+regularization because \(\omega\) is undefined at exactly \(e=0\); it is not an
+extra physical perturbation.}
+\label{fig:lidov-kozai-numerical-lab}
+\end{figure}
 
 The lesson for the rest of the chapter is methodological.  A generic
 three-body problem is not integrable, but a controlled hierarchical limit can
@@ -399,11 +546,22 @@ of low \(N\), not a general safety theorem for Newtonian gravity.
 \label{sec:newtonian-three-body-problem}
 
 The restricted problem will be derived as a limit of the Newtonian three-body
-problem; we therefore start with the full problem. The classical conserved
+problem; we therefore start with the full problem.  Unless a planar reduction
+is explicitly named, the equations in this section are the spatial equations
+with \(q_i\in\R^3\).  The same force formula restricts consistently to
+\(\R^2\) when all initial data are coplanar. The classical conserved
 quantities, momentum, angular momentum, and energy, survive, but they no longer
 reduce the dynamics to a one-dimensional radial equation. The restricted
 problem is not a different force law; it is a controlled limit and coordinate
 choice inside the same Newtonian interaction.
+
+\paragraph{Local notation.}
+The position \(q_i(t)\) and momentum \(p_i(t)\) belong to body \(i\), while
+\(\mathbf r_{ij}=q_i-q_j\) is a relative vector and
+\(r_{ij}=\norm{\mathbf r_{ij}}\) its length.  The total mass is
+\(M=m_1+m_2+m_3\).  The total angular
+momentum \(J\) should not be confused with the resonant action \(J\) used in
+Chapter~\ref{chap:perturbation-chaos}.
 
 Let \(q_i(t)\in\R^3\) be the inertial position of mass
 \(m_i>0\), and write
@@ -465,18 +623,23 @@ The total momentum, angular momentum, and energy are
 \]
 These conserved quantities are essential, but they do not make the generic
 three-body problem integrable. After removing center-of-mass motion, the
-planar problem has four configuration degrees of freedom and an
-eight-dimensional phase space.  Fixing angular momentum and quotienting the
-remaining planar rotation removes two phase dimensions; a fixed-energy reduced
-space is still five-dimensional.  This is vastly richer than the one-degree
-radial problem left by the two-body reduction, leaving enough room for
-separatrices, homoclinic tangles, chaotic scattering, and transport.
+spatial problem has six relative configuration degrees of freedom and a
+twelve-dimensional relative phase space. Fixing total angular momentum and
+using rotational symmetry removes further dimensions, but not enough to leave a
+one-degree radial problem. The planar invariant subproblem has four relative
+configuration degrees of freedom and an eight-dimensional phase space. Fixing
+the scalar angular momentum and quotienting the remaining planar rotation
+removes two phase dimensions; a fixed-energy reduced space is still
+five-dimensional.  Both the spatial and planar problems therefore have enough
+room for separatrices, homoclinic tangles, chaotic scattering, and transport.
 
 \subsection{Translation Reduction And Jacobi Coordinates}
 \label{subsec:three-body-jacobi-coordinates}
 
 The center-of-mass degree of freedom is dynamically trivial. Removing it shows
-which variables remain in the interacting problem. Let
+which variables remain in the interacting problem. The formulas below hold in
+both \(d=3\) and \(d=2\): in the spatial problem the Jacobi vectors are in
+\(\R^3\), while in the planar reduction they are in \(\R^2\). Let
 \[
   m_{12}=m_1+m_2,\qquad M=m_{12}+m_3,
 \]
@@ -488,6 +651,14 @@ and define Jacobi coordinates
   \qquad
   \rho_2=q_3-\frac{m_1q_1+m_2q_2}{m_{12}}.
 \]
+
+\paragraph{Local notation.}
+The coordinate \(R\) is the total center of mass, \(\rho_1\) is the separation
+inside the pair \((1,2)\), and \(\rho_2\) points from that pair's center of
+mass to body \(3\).  The reduced masses \(\mu_1\) and \(\mu_2\) belong to
+these two Jacobi vectors; they are not the CR3BP mass parameter
+\(\mu_{\mathrm{CR3BP}}\).
+
 Here \(\rho_1\) is the relative vector inside the pair \((1,2)\), while
 \(\rho_2\) points from the center of mass of that pair to the third body.  The
 inverse transformation is
@@ -607,6 +778,17 @@ if there is a scalar \(\lambda\) such that
   \qquad
   (i=1,2,3).
 \]
+
+\paragraph{Local notation.}
+The vectors \(a_i\) are a fixed shape, not the instantaneous positions
+\(q_i(t)\).  The scalar \(\lambda\) sets the angular frequency of the rigidly
+rotating solution after the overall scale is chosen.  Central configurations
+are special shapes inside the full configuration space.
+For three bodies, the noncollinear central configurations span a plane, and the
+collinear ones lie on a line.  Thus the classical Lagrange and Euler examples
+below are planar special motions even when they are embedded in the spatial
+\(\R^3\) problem.
+
 Then the ansatz
 \[
   q_i(t)=R(\omega t)a_i
@@ -697,6 +879,22 @@ integrable. Special exact orbits can exist without integrability.
 
 \section{Circular Restricted Three-Body Problem}
 \label{sec:circular-restricted-three-body-problem}
+
+This section treats the planar CR3BP.  The primaries move on a circular orbit
+in the \(x\)-\(y\) plane, and the test particle is also restricted to that
+plane.  There is also a spatial CR3BP, with a third coordinate \(z\) and
+vertical motion; it has the same rotating-frame origin and a Jacobi integral,
+but its phase space is six-dimensional instead of four-dimensional.  The
+figures and numerical demo in these notes use the planar version.
+
+The local symbols in the circular restricted problem differ from the
+heliocentric asteroid notation used later.  The two primaries have masses
+\(m_1,m_2\), the dimensionless mass parameter is
+\(\mu_{\mathrm{CR3BP}}=m_2/(m_1+m_2)\), and the test-particle coordinates in
+the rotating barycentric frame are \(r=(x,y)\).  The distances from the test
+particle to the primaries are \(r_1\) and \(r_2\), and
+\(\Omega_{\mathrm{eff}}\) is the effective potential in the rotating frame.
+This \(\Omega_{\mathrm{eff}}\) is not an angular velocity.
 
 The circular restricted three-body problem is the standard autonomous model
 behind the Sun-Jupiter-asteroid story. Two massive primaries move on circular
@@ -1001,6 +1199,13 @@ Equilibria in the rotating frame satisfy
   \qquad
   \nabla\Omega_{\mathrm{eff}}(x,y)=0.
 \]
+
+\paragraph{Local notation.}
+The points \(L_1,\ldots,L_5\) are fixed points in the rotating barycentric
+coordinates of the CR3BP.  The symbol \(\mu\) in this subsection is the
+dimensionless CR3BP mass parameter, and \(P_1,P_2\) are the fixed primary
+locations defined in Section~\ref{sec:circular-restricted-three-body-problem}.
+
 There are five such points. The collinear points \(L_1,L_2,L_3\) lie on the
 \(x\)-axis and solve the scalar equation
 \[
@@ -1148,6 +1353,19 @@ and, in research calculations, against a structure-aware integrator.
 \section{Heliocentric Sun-Jupiter-Asteroid Equations}
 \label{sec:restricted-sun-jupiter-asteroid}
 
+In this section \(r\) is the asteroid position relative to the Sun, \(r_J(t)\)
+is Jupiter's prescribed heliocentric position, \(a_J\) is Jupiter's orbital
+radius, and \(n_J\) is Jupiter's mean motion.  The masses \(M_\odot\) and
+\(M_J\) are the solar and Jovian masses.  The momentum \(p\) in
+\(H_{\mathrm{hel}}(r,p,t)\) is the asteroid momentum per unit asteroid mass in
+the chosen units; it should not be confused with the integer \(p\) used in a
+\(p:q\) resonance label.
+This section is planar: \(r,r_J,p\in\R^2\).  A spatial restricted asteroid
+model would use \(r\in\R^3\), include inclination and nodal variables, and
+change the resonance bookkeeping.  The repository ejection demo deliberately
+uses the planar model so that mean-motion resonance, eccentricity growth, and
+finite-time loss can be displayed with a small reproducible ensemble.
+
 Let \(r\in\R^2\) be the asteroid position relative to the Sun. Jupiter is
 prescribed by
 \[
@@ -1200,8 +1418,20 @@ the extended Hamiltonian is
   H_{\mathrm{hel}}(r,p,\phi)+n_JI_\phi,
 \]
 so Hamilton's equation gives \(\dot\phi=\partial K/\partial I_\phi=n_J\). The
-resulting autonomous system has more than one degree of freedom and can exhibit
-resonance and chaotic transport.
+remaining equations are
+\[
+  \dot r=\pd_p H_{\mathrm{hel}},
+  \qquad
+  \dot p=-\pd_r H_{\mathrm{hel}},
+  \qquad
+  \dot I_\phi=-\pd_\phi H_{\mathrm{hel}}.
+\]
+Because \(I_\phi\) does not appear in \(H_{\mathrm{hel}}\), the equations for
+\((r,p,\phi)\) reproduce exactly the original periodically forced
+heliocentric system with \(\phi=n_Jt\).  The extra variable \(I_\phi\) is a
+bookkeeping action: its evolution records the energy exchanged with the
+periodic forcing phase.  The resulting autonomous system has more than one
+degree of freedom and can exhibit resonance and chaotic transport.
 
 \begin{derivation}[Indirect term]
 Let \(x\) be the asteroid position in an inertial frame and \(x_\odot\) the Sun
@@ -1255,6 +1485,13 @@ Sun-Jupiter-asteroid model, the typical chain of reasoning has several links:
 The nominal semimajor-axis location \(a_{p:q}\) identifies where a slow angle
 can form; it is not itself a loss criterion.
 
+\paragraph{Local notation.}
+The initial semimajor axis \(a_0\) labels an ensemble member before integration,
+whereas \(a(t)\) is the osculating semimajor axis inferred from the current
+state.  The perihelion distance \(q_{\rm peri}\) should not be confused with a
+configuration coordinate \(q^i\), and \(Q_{\rm aph}\) denotes aphelion distance.
+The resonant integers \(p,q\) in \(\phi_{p:q}\) are not momenta.
+
 For an osculating Kepler ellipse around the Sun, define perihelion and aphelion
 distances by
 \[
@@ -1297,9 +1534,50 @@ maximum eccentricity, crossing thresholds, and the finite-time loss class.
 \section{Numerical Ejection Probability}
 \label{sec:numerical-ejection-probability}
 
-The highlighted simulation samples \(N\) test particles with initial semimajor
-axes \(a_0\in[a_{\min},a_{\max}]\), small eccentricities, random orbital phases,
-and random periapse directions. Let \(T\) be the integration horizon.
+The symbols in this section describe an ensemble rather than one trajectory.
+\(N\) is the number of sampled asteroids, \(a_0\) is an initial semimajor axis,
+\(T\) is the finite integration horizon, \(\tau_{\rm ej}\) is the first
+ejection time, and \(\widehat P_{\rm ej}(T)\) is a Monte Carlo estimator for
+the stated model and stopping rule.  The hat reminds the reader that the
+quantity is estimated from a finite sample.
+
+This section turns the qualitative phrase ``asteroids are lost near
+resonances'' into a finite numerical experiment.  The experiment is not the real
+asteroid belt.  It is a planar restricted Sun-Jupiter-asteroid model in which
+Jupiter is prescribed, the asteroids are massless and noninteracting, and a
+finite integration horizon is chosen before the run begins.  The numerical
+object is therefore a finite-time probability for a specified ensemble and loss
+rule.
+
+The highlighted simulation samples \(N\) test particles.  Their initial
+semimajor axes lie in
+\[
+  a_0\in[a_{\min},a_{\max}],
+\]
+with small eccentricities, random orbital phases, and random periapse
+directions.  Each sampled Kepler ellipse is converted to a Cartesian
+heliocentric state, evolved in Jupiter's time-dependent restricted field, and
+assigned the first absorbing event it reaches: ejection, solar collision, close
+encounter with Jupiter, or survival to the end of the run. Let \(T\) be the
+integration horizon.
+
+The workflow is:
+\[
+\begin{gathered}
+\text{choose model and units}
+\longrightarrow
+\text{sample initial Kepler elements}
+\longrightarrow
+\text{convert to Cartesian states}\\
+\longrightarrow
+\text{integrate the restricted equations}
+\longrightarrow
+\text{apply a loss rule}
+\longrightarrow
+\text{estimate a finite-time fraction}.
+\end{gathered}
+\]
+Every arrow is part of the definition of the reported probability.
 
 \begin{definition}[Finite-time ejection probability]
 For a specified model, sampling distribution, time step, and ejection criterion,
@@ -1403,6 +1681,37 @@ The asteroid ejection fraction and the binary capture cross section are
 different physical observables, but they share the same statistical grammar:
 specified ensemble first, number second.
 
+It is useful to name the estimand before naming the estimator.  For an
+asteroid ensemble \(\mathcal E\), loss rule \(\mathcal L\), and integration
+horizon \(T\), the finite-time probability is
+\[
+  p_{\mathcal E,\mathcal L}(T)
+  =
+  \mathbb P_{\mathcal E}\{\tau_{\mathcal L}\le T\},
+\]
+where \(\tau_{\mathcal L}\) is the first time at which the loss rule is
+satisfied.  A Monte Carlo run estimates this number for the stated model, not
+for all asteroids and not for all future time.  A binary-scattering cross
+section is analogous:
+\[
+  \sigma_A(v_\infty)
+  =
+  \int 2\pi b\,\dd b\;
+  P_A(b,v_\infty,\text{phase data}),
+\]
+where \(A\) is a stated finite-horizon outcome such as capture, exchange, or
+collision.  The symbol \(A\) is part of the definition: changing the stopping
+time or the binding-energy criterion changes the cross section being
+estimated.
+
+Three uncertainties must therefore be kept separate.  Sampling uncertainty is
+the randomness of the finite ensemble.  Discretization uncertainty is the
+change produced by \(\Delta t\), integration method, and close-encounter
+handling.  Model uncertainty is the gap between the simplified problem and the
+astrophysical system it represents.  A standard error reports only the first
+of these.  A convergence table and invariant-drift diagnostics address the
+second.  The third is a modelling judgment and must be discussed in words.
+
 \section{Benchmark Statistical Studies}
 \label{sec:three-body-benchmark-statistics}
 
@@ -1410,14 +1719,38 @@ The repository now contains a compact benchmark driver whose purpose is
 different from a smoke test.  A smoke test asks whether code runs and preserves
 basic invariants.  A benchmark statistical study asks whether a stated ensemble
 produces a reproducible finite-time observable with uncertainty estimates.
-The benchmark has two parts.
+
+\paragraph{Local notation.}
+In this section \(N\) is the number of trials in a stated ensemble,
+\(N_{\rm loss}\) is the number of asteroid trials classified as lost,
+\(N_{\rm cap}\) and \(N_{\rm exch}\) are scattering trials classified as
+capture and exchange, and \(b_{\max}\) is the maximum impact parameter sampled
+in the binary experiment.  The plotted error bars are sampling estimates, not
+model uncertainties.
+
+Figures~\ref{fig:three-body-asteroid-loss-benchmark}
+and~\ref{fig:three-body-binary-scattering-benchmark} are intentionally
+separate.  They are not two views of one simulation.  They are two independent
+classroom experiments with the same statistical grammar: specify an ensemble,
+integrate a three-body model, classify finite-time events, and estimate an
+observable with sampling uncertainty.  The first figure is a planar restricted
+asteroid-loss experiment.  The second is a planar Newtonian binary-single
+scattering experiment.  The common lesson is methodological, not that the
+physical systems are directly coupled.
 
 \paragraph{Accelerated asteroid loss benchmark.}
 The asteroid benchmark uses the same planar restricted model as the ejection
 demo, but increases Jupiter's mass by a stated factor so that a short
 classroom integration produces visible losses.  The output is not a
 Solar-System probability; it is a controlled stress test of the resonance-loss
-pipeline.  For seeds \(s\in S\), the code estimates
+pipeline.
+
+For the canonical quick-run figure, the script uses \(48\) asteroids per seed,
+two seeds, \(T=12\) yr, \(\Delta t=0.04\) yr, eight semimajor-axis bins, and a
+Jupiter mass multiplied by \(25\).  These choices are deliberately artificial:
+the mass scaling increases scattering and resonance-driven loss enough that the
+mechanism can be seen in a small lecture-note run.  For seeds \(s\in S\), the
+code estimates
 \[
   \widehat P_{\rm loss}(T)
   =
@@ -1435,26 +1768,130 @@ also reports resonance-labelled rows, so one can see whether the visible loss
 is concentrated near the nominal resonant regions or instead spread through
 the entire annulus.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.78\textwidth]{../../figures/canonical/three_body_asteroid_loss_quick.png}
+\caption{Accelerated restricted asteroid-loss benchmark generated by
+\protect\path{demos/python/three_body_benchmark_studies.py}.  The horizontal axis is
+the initial asteroid semimajor axis \(a_0\) in astronomical units, binned into
+the displayed intervals.  The vertical axis is the finite-time loss fraction
+in each bin after the stated integration horizon.  A loss means ejection,
+collision with the Sun, or close approach to Jupiter according to the absorbing
+rules in the script.  Each blue rectangle is one semimajor-axis bin: its width
+is the bin interval in \(a_0\), and its height is the measured fraction
+\(N_{\rm loss}/N_{\rm bin}\).  The blue dots mark the same bin estimates with
+plug-in binomial standard-error bars; dots on the baseline are bins with
+\(N_{\rm loss}=0\), for which the rectangle has zero height and the error
+whisker has zero length.  Thus a dot sitting on the horizontal axis is not an
+extra data set; it is the bin-center marker for a zero-loss bin.  In the quick
+run shown here, the only nonzero bin is the last interval,
+\(3.5375\,{\rm AU}\le a_0\le3.75\,{\rm AU}\), where \(5\) of \(16\) sampled
+particles are lost, giving \(N_{\rm loss}/N_{\rm bin}=5/16=0.3125\).  The red
+vertical lines mark nominal low-order Jovian resonances.  Jupiter's mass is
+deliberately scaled up to make a short classroom run visibly lossy; the figure
+is a stress test of the resonance-loss pipeline, not an estimate of the real
+asteroid-belt loss probability.}
+\label{fig:three-body-asteroid-loss-benchmark}
+\end{figure}
+
 \paragraph{Binary-single scattering benchmark.}
 The binary benchmark sweeps over a small grid of incoming speeds
-\(v_\infty\).  For each speed it samples binary phase and impact parameter,
-classifies finite-horizon outcomes by pair binding energies, and reports
+\(v_\infty\).  The canonical quick run uses an equal-mass circular binary
+\((m_1,m_2)=(1,1)\) with \(a_{\rm bin}=1\), an incoming mass \(m_3=0.2\), launch
+radius \(8a_{\rm bin}\), \(b_{\max}=1.5\), \(16\) samples per speed,
+\(\Delta t=0.015\), and \(T=4\) in the binary units of the script.  The
+benchmark is a planar Newtonian three-body calculation: all positions and
+velocities have two components, and the binary and incoming body are coplanar.
+It should not be read as a full spatial binary-single scattering survey.  In
+the script's positive orientation the unshifted circular binary
+has angular momentum in the \(+\hat z\) direction: if its separation vector is
+\(a_{\rm bin}(\cos\phi,\sin\phi)\), its relative velocity is tangent to
+increasing \(\phi\).  For each speed the code samples binary phase and impact
+parameter.  With uniform-in-area sampling, it draws a random sign and
+\(|b|=b_{\max}\sqrt{u}\) with \(u\) uniform on \([0,1]\).  Before subtracting
+the total center of mass, the binary center of mass is placed at the origin and
+the incoming body is launched from
+\[
+  q_3(0)=(-8a_{\rm bin},\,b),
+  \qquad
+  \dot q_3(0)=(v_{\rm launch},\,0),
+\]
+so the incoming trajectory is initially parallel to the positive \(x\)-axis and
+the signed impact parameter \(b\) is the initial \(y\)-offset.  The binary
+separation vector from body \(1\) to body \(2\) is
+\[
+  q_2(0)-q_1(0)
+  =
+  a_{\rm bin}(\cos\phi,\sin\phi),
+\]
+with \(\phi\) sampled uniformly in \([0,2\pi)\).  Thus Fig.~\ref{fig:three-body-binary-scattering-benchmark}
+does not use one fixed binary orientation; it averages over binary orbital
+phase at each \(v_\infty\).  By rotational invariance in the plane, sampling
+\(\phi\) at fixed incoming direction is equivalent to fixing the binary phase
+and sampling the incoming direction.  After this initialization the code
+subtracts the total three-body center-of-mass position and velocity, which
+changes neither relative orientation nor impact parameter.  The code chooses a
+finite launch speed corresponding to the stated asymptotic \(v_\infty\),
+integrates the planar Newtonian three-body equations, classifies finite-horizon
+outcomes by pair binding energies, and reports
 \[
   \widehat\sigma_{\rm cap/exch}(v_\infty)
   =
   \pi b_{\max}^2
   \frac{N_{\rm cap}+N_{\rm exch}}{N}
 \]
-for uniform-in-area sampling.  The expected qualitative trend is that lower
-incoming speeds have larger capture-or-exchange cross sections, because
-gravitational focusing and longer interaction times make temporary binding
-easier.  The benchmark is still a classroom calculation: capture means
+for uniform-in-area sampling.  This \(\pi b_{\max}^2\) factor is an
+axisymmetric area normalization attached to a planar trajectory ensemble; a
+genuine three-dimensional scattering study would sample a two-component impact
+parameter vector and the orientation of the binary plane relative to the
+incoming direction.  The expected qualitative trend is that lower incoming
+speeds have larger capture-or-exchange cross sections, because gravitational
+focusing and longer interaction times make temporary binding easier.  The
+benchmark is still a classroom calculation: capture means
 ``bound by the stopping-time classifier,'' not guaranteed permanent capture.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.78\textwidth]{../../figures/canonical/three_body_binary_scattering_quick.png}
+\caption{Binary-single scattering benchmark generated by
+\protect\path{demos/python/three_body_benchmark_studies.py}.  The horizontal axis is
+the incoming speed \(v_\infty\) in the script's binary units.  For each value
+of \(v_\infty\), the incoming body starts at \((-8a_{\rm bin},b)\) relative to
+the binary center of mass and initially moves in the \(+x\) direction; the
+binary orientation is the sampled phase
+\(q_2-q_1=a_{\rm bin}(\cos\phi,\sin\phi)\), with \(\phi\) uniform on
+\([0,2\pi)\).  The code then integrates the planar Newtonian three-body
+equations and classifies the finite-horizon outcome using pair binding
+energies.  The green curve uses the left vertical axis and plots the effective
+capture-or-exchange cross section
+\(\widehat\sigma_{\rm cap/exch}=\pi b_{\max}^2
+(N_{\rm cap}+N_{\rm exch})/N\).  The purple dashed curve uses the right
+vertical axis and plots the corresponding event fraction
+\((N_{\rm cap}+N_{\rm exch})/N\).  The two vertical axes therefore show the
+same event counts in two normalizations: fraction of sampled trials and
+area-weighted cross section.  The two curves coincide by construction up to the
+constant factor \(\pi b_{\max}^2\); the dual axis is a normalization of the
+same estimator, not an independent measurement.  Capture here is a
+finite-horizon classifier, not a claim of permanent astrophysical capture.}
+\label{fig:three-body-binary-scattering-benchmark}
+\end{figure}
 
 Together these two studies turn the phrase ``three-body probability'' into a
 specified data product.  The product contains the ensemble, the integration
 horizon, the timestep, the event definition, the estimator, and the diagnostic
 drifts.  Without that metadata, the reported number is not reproducible.
+
+The figures should be read as model-audit devices.  In the asteroid-loss
+figure, a visible bar asks for five checks before interpretation: how many
+particles were
+in the bin, what counted as loss, whether the bar is close to a meaningful
+resonance marker, whether the loss persists under seed changes, and whether it
+persists under timestep refinement.  In the scattering figure, the downward
+trend with \(v_\infty\) is physically sensible because faster interlopers spend
+less time in the strong-interaction region, but the plotted value is still
+conditional on \(b_{\max}\), the phase distribution, the finite launch radius,
+the stopping time, and the binding-energy classifier.  Neither panel should be
+read without its metadata.
 
 \section{Integrator Used In The Demo}
 \label{sec:asteroid-integrator}
@@ -1468,57 +1905,87 @@ then
   v_{n+1} &= v_{n+1/2}+\frac{\Delta t}{2}a(r_{n+1},t_{n+1}).
 \end{aligned}
 \]
+
+\paragraph{Local notation.}
+In this integrator formula \(a(r,t)\) is acceleration, not semimajor axis.
+The integer \(n\) labels a time step, \(\Delta t\) is the fixed step size,
+\(r_n\) and \(v_n\) are the asteroid position and velocity at step \(n\), and
+\(v_{n+1/2}\) is an intermediate half-step velocity.
+
 As written in physical time with prescribed Jupiter forcing, this update is not
 the symplectic map of the autonomous extended Hamiltonian \(K\). It is still
 pedagogically preferable to an opaque black-box integrator because every force
 evaluation is visible.
 
+The acceleration used in this update is the heliocentric restricted
+acceleration displayed in Appendix~\ref{app:three-body-numerics}: solar
+attraction, Jupiter's direct attraction, and the indirect term associated with
+using the Sun as the origin.  The same timestep is used for all particles in one
+run.  After each diagnostic step the code tests the absorbing loss rules; once a
+particle is marked lost, it no longer contributes to later survival counts.  The
+resulting probability estimate is therefore a property of the whole numerical
+protocol: differential equation, timestep, stopping rule, and absorbing-event
+bookkeeping.
+
 \section{What To Take Forward}
 \label{sec:three-body-take-forward}
 
 \begin{itemize}
-\item The full three-body problem is Newtonian and Hamiltonian, but its
-translation and rotation symmetries do not reduce it to a one-degree-of-freedom
-radial equation.  The failure is structural, not a lack of clever coordinates:
-Bruns proved in 1887 that there are no additional integrals algebraic in the
-coordinates, momenta, and time, apart from the classical ones; Painleve extended
-the algebraic scope to velocity variables. Poincare's 1890 theorem addressed a
-different class, ruling out generic additional analytic integrals in the
-perturbative setting. The obstruction is the same small-divisor mechanism seen
-in Chapter~\ref{chap:perturbation-chaos}: a formal integral must solve
+\item The full spatial three-body problem is Newtonian and Hamiltonian, with
+positions \(q_i\in\R^3\).  Its planar subproblem, \(q_i\in\R^2\), is obtained
+by choosing coplanar initial positions and velocities.  In neither version do
+translation and rotation symmetries reduce the dynamics to a one-degree-of-freedom
+radial equation.  The failure is structural, not a lack of clever
+coordinates: Bruns proved in 1887, under algebraic hypotheses, that there are
+no additional algebraic first integrals beyond the classical ones. Painleve's
+work addressed a distinct question, the nature of finite-time singularities;
+for the three-body problem such singularities are collision singularities.
+Poincare's 1890 theorem addressed yet another class, ruling out generic
+additional analytic integrals in the perturbative setting. The obstruction in
+Poincare's setting is the same small-divisor mechanism seen in
+Chapter~\ref{chap:perturbation-chaos}: a formal integral must solve
 homological equations whose resonant denominators cannot be made to vanish
-generically. These theorems are not identical statements with different names:
-Bruns and Painleve limit algebraic first integrals of the full problem, while
-Poincare explains why analytic integrability fails under generic perturbation
-of an integrable model.
+generically. These are not identical theorems with different names. Bruns
+limits algebraic first integrals of the full problem, Painleve clarifies the
+singularity structure, and Poincare explains why analytic integrability fails
+under generic perturbation of an integrable model.
 \item Jacobi coordinates remove center-of-mass motion and diagonalize the mass
 metric.  They reveal two coupled relative vectors, which is the simplest
 coordinate-level reason the two-body Kepler solution does not generalize.
 \item Central configurations are exact special motions, not generic solutions.
 They are valuable because they organize nearby dynamics and survive as
 Lagrange-point structures in the restricted problem.
-\item The circular restricted three-body problem supplies an autonomous
-rotating-frame model with Lagrange points, zero-velocity curves, a canonical
-Hamiltonian, and the Jacobi constant. These structures are the standard
-geometric language for capture and escape channels.
+\item The circular restricted three-body problem used in this chapter is the
+planar CR3BP: the primaries and massless particle move in one rotating plane,
+and the phase space has coordinates \(x,y,\dot x,\dot y\).  It supplies an
+autonomous rotating-frame model with Lagrange points, zero-velocity curves, a
+canonical Hamiltonian, and the Jacobi constant. These structures are the
+standard geometric language for capture and escape channels. The spatial CR3BP
+adds vertical motion and a larger phase space.
 \item The astrophysical three-body problem includes more than the Solar System.
 Planets in binary-star systems, circumbinary planets, hierarchical triples, and
 binary-single scattering all use the same ideas: a reference two-body motion
 when one exists, a perturbing third body, resonant or secular exchange, and a
-finite-time stability, capture, exchange, or ejection observable.
-\item The Lidov--Kozai mechanism is the controlled hierarchical-triple example:
-double averaging leaves one slow degree of freedom, conserves
+finite-time stability, capture, exchange, or ejection observable. Some of these
+applications are intrinsically spatial, especially hierarchical triples with
+inclination dynamics.  Planar slices remain useful when they are announced as
+controlled reductions.
+\item The Lidov--Kozai mechanism is the controlled spatial hierarchical-triple
+example: double averaging leaves one slow degree of freedom, conserves
 \(\sqrt{1-e^2}\cos i\), and predicts high eccentricity above the critical
-inclination.
-\item The heliocentric Sun-Jupiter-asteroid model is a periodically forced
-Kepler problem.  Its indirect term is part of the coordinate transformation,
-not an optional correction.
+inclination.  The symbol \(i\) is the mutual inclination of the inner and outer
+orbits; without this three-dimensional angle, the effect disappears.
+\item The heliocentric Sun-Jupiter-asteroid model in this chapter is a planar,
+periodically forced Kepler problem.  Its indirect term is part of the
+coordinate transformation, not an optional correction. A spatial asteroid model
+would also track inclination and nodal variables.
 \item A nominal resonance location is not a loss criterion.  Loss requires an
 additional dynamical route, such as eccentricity growth to a crossing condition,
 followed by the stated close-encounter, collision, or escape rule.
-\item Numerical ejection probabilities are finite-time, model-dependent
-observables. They become meaningful only when the ensemble, integration time,
-timestep, invariants, and loss criterion are stated.
+\item Numerical ejection, capture, and exchange probabilities are finite-time,
+model-dependent observables. They become meaningful only when the dimension
+of the phase space, the ensemble, integration time, timestep, invariant or
+drift diagnostics, event classifier, and estimator are stated.
 \end{itemize}
 
 \section{Chapter-End Laboratories And Exercises}
@@ -1540,6 +2007,15 @@ where
 \[
   r_{ij}=\norm{r_i-r_j}.
 \]
+
+\paragraph{Local notation.}
+The vectors \(r_i\) in this laboratory are planar positions of the three equal
+masses; they are not the relative separation \(r=x_1-x_2\) used in the Kepler
+problem.  The constant \(k>0\) sets the gravitational coupling, and
+\(\epsilon\) later denotes a small velocity perturbation.  This is a planar
+finite-mass laboratory, not the full spatial three-body problem; the same
+pair force can of course be written for \(r_i\in\R^3\).
+
 The Lagrangian is
 \[
   L=\sum_{i=1}^3\frac12m\norm{\dot r_i}^2
@@ -1636,26 +2112,49 @@ Lidov--Kozai Hamiltonian to derive
 \[
   e_{\max}=\sqrt{1-\frac53\cos^2 i_0}\, .
 \]
+\item In Figure~\ref{fig:lidov-kozai-numerical-lab}, compare the numerical
+maximum eccentricity with the analytic \(e_{\max}\).  Which part of the
+comparison would fail if the plotted trajectory had large Hamiltonian drift?
 \item In a binary-single scattering experiment, what information must be
 specified before the phrase ``capture probability'' has a definite meaning?
+\item For each numerical experiment in this chapter, identify whether the
+integrated Cartesian state is planar or spatial.  Which quantities would have
+to be added to turn the planar asteroid or binary-scattering demos into full
+spatial ensembles?
 \item If impact parameters are sampled uniformly in area for
 \(0\le b\le b_{\max}\), derive
 \(\widehat\sigma_{\rm cap}=\pi b_{\max}^2N_{\rm cap}/N\).
+\item Use Figures~\ref{fig:three-body-asteroid-loss-benchmark}
+and~\ref{fig:three-body-binary-scattering-benchmark} to separate sampling
+statements from modelling statements.  Which uncertainty displayed in the
+asteroid-loss figure comes from finite \(N\), and which questions require new
+simulations rather than larger error bars?
 \end{enumerate}
 
 \section{Associated Demos}
 \label{sec:three-body-demos}
 
 \begin{itemize}
-\item \path{demos/python/circular_restricted_three_body.py}
-\item \path{demos/python/lidov_kozai.py}
-\item \path{demos/python/asteroid_ejection_probability.py}
-\item \path{demos/python/asteroid_resonance_normal_form.py}
-\item \path{demos/python/binary_capture_scattering.py}
-\item \path{demos/python/three_body_benchmark_studies.py}
-\item \path{demos/mathematica/CircularRestrictedThreeBody.wl}
-\item \path{demos/mathematica/AsteroidEjectionProbability.wl}
-\item \path{demos/mathematica/AsteroidResonanceNormalForm.wl}
+\item \path{demos/python/circular_restricted_three_body.py}.\\
+Planar CR3BP.
+\item \path{demos/python/lidov_kozai.py}.\\
+Spatial hierarchical triple reduced by double averaging to one secular degree
+of freedom.
+\item \path{demos/python/asteroid_ejection_probability.py}.\\
+Planar restricted Sun-Jupiter-asteroid ensemble.
+\item \path{demos/python/asteroid_resonance_normal_form.py}.\\
+Planar resonant normal-form calculation.
+\item \path{demos/python/binary_capture_scattering.py}.\\
+Planar Newtonian binary-single scattering, with the reported cross section
+using the stated area normalization.
+\item \path{demos/python/three_body_benchmark_studies.py}.\\
+Planar asteroid and planar binary-scattering benchmark statistics.
+\item \path{demos/mathematica/CircularRestrictedThreeBody.wl}.\\
+Planar CR3BP.
+\item \path{demos/mathematica/AsteroidEjectionProbability.wl}.\\
+Planar restricted asteroid ensemble.
+\item \path{demos/mathematica/AsteroidResonanceNormalForm.wl}.\\
+Planar resonance-normal-form calculation.
 \end{itemize}
 Use the CR3BP demo first: it checks the Jacobi constant and draws the
 zero-velocity geometry. Use the ejection-probability demo second: it turns the
@@ -1664,7 +2163,13 @@ not only trajectories but also loss criteria, timestep sensitivity, resonance
 bins, and finite-time uncertainty. Use the resonance-normal-form demo to see
 the pendulum approximation behind resonance width. Use the binary-capture demo
 as a parallel statistical experiment: its capture and exchange fractions are
-not universal constants, but ensemble-dependent scattering observables. Use the
-Lidov--Kozai demo for the integrable secular hierarchical-triple limit, and use
-the benchmark driver when the goal is an aggregate statistical result rather
-than a single smoke-test trajectory.
+not universal constants, but ensemble-dependent observables for the stated
+planar scattering protocol. Use the Lidov--Kozai demo for the integrable
+spatial secular hierarchical-triple limit, and use the benchmark driver when
+the goal is an aggregate statistical result rather than a single smoke-test
+trajectory. Figures~\ref{fig:lidov-kozai-numerical-lab},
+\ref{fig:three-body-asteroid-loss-benchmark}, and
+\ref{fig:three-body-binary-scattering-benchmark} are the reference visual
+outputs for those uses.  Appendix~\ref{app:three-body-numerics}, especially
+Section~\ref{sec:three-body-benchmark-figure-protocol}, records the numerical
+protocol behind the benchmark figures.

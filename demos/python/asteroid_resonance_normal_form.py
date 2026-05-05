@@ -284,12 +284,19 @@ def save_plot(path: Path, summary: dict[str, object]) -> None:
     widths = summary["width_scaling"]
     pendulum = summary["pendulum"]
 
-    fig, (ax0, ax1, ax2) = plt.subplots(
-        1,
+    fig = plt.figure(figsize=(13.2, 4.8))
+    gs = fig.add_gridspec(
+        2,
         3,
-        figsize=(13.0, 4.2),
-        gridspec_kw={"width_ratios": [1.05, 1.15, 0.70]},
+        width_ratios=[1.05, 1.18, 0.72],
+        height_ratios=[1.0, 1.0],
+        wspace=0.36,
+        hspace=0.44,
     )
+    ax0 = fig.add_subplot(gs[:, 0])
+    ax1_model = fig.add_subplot(gs[0, 1])
+    ax1_au = fig.add_subplot(gs[1, 1])
+    ax2 = fig.add_subplot(gs[:, 2])
 
     ax0.set_title("Interior Jovian resonances")
     ax0.set_xlabel("semimajor axis [AU]")
@@ -306,24 +313,28 @@ def save_plot(path: Path, summary: dict[str, object]) -> None:
 
     for label in RESONANCE_RATIOS:
         data = [row for row in widths if row["resonance"] == label]
-        ax1.plot(
+        ax1_model.plot(
             [row["eccentricity"] for row in data],
             [row["half_width_action_units"] for row in data],
             label=label,
         )
     width_21 = summary["width_2to1_disturbing_function"]
-    ax1.plot(
+    ax1_au.plot(
         [row["eccentricity"] for row in width_21],
         [row["half_width_au"] for row in width_21],
         color="black",
         linestyle="--",
         linewidth=1.6,
-        label="2:1 actual [AU]",
+        label="2:1 disturbing function",
     )
-    ax1.set_title("Normal-form width scaling")
-    ax1.set_xlabel("eccentricity")
-    ax1.set_ylabel(r"half-width: model units or AU")
-    ax1.legend(frameon=False)
+    ax1_model.set_title("Model width scaling")
+    ax1_model.set_ylabel("half-width\n[action units]")
+    ax1_model.tick_params(labelbottom=False)
+    ax1_model.legend(frameon=False, fontsize=8, ncol=2)
+    ax1_au.set_title("2:1 coefficient width")
+    ax1_au.set_xlabel("eccentricity")
+    ax1_au.set_ylabel("half-width [AU]")
+    ax1_au.legend(frameon=False, fontsize=8)
 
     phi = [row["phi"] for row in pendulum]
     ax2.plot(phi, [row["separatrix_positive"] for row in pendulum], color="0.25")
@@ -334,7 +345,6 @@ def save_plot(path: Path, summary: dict[str, object]) -> None:
     ax2.set_xticks([-math.pi, 0, math.pi])
     ax2.set_xticklabels([r"$-\pi$", "0", r"$\pi$"])
 
-    fig.tight_layout()
     fig.savefig(path, dpi=160)
     plt.close(fig)
 

@@ -59,6 +59,14 @@ space? A choice of body axes at each shape gives a local description, while
 holonomy around a closed loop records the observable rigid motion produced by
 the shape cycle.
 
+The word ``gauge'' is used here in a concrete mechanical sense.  The physical
+object is the placed deforming body.  To describe it, we choose a convention
+for separating overall rigid placement from internal shape.  That convention
+is not unique, just as a vector potential is not unique in electromagnetism.
+Changing the convention changes the components of the connection, but it does
+not change the actual rigid displacement reconstructed after a closed shape
+cycle.
+
 The Wilczek-Shapere point of view begins with a finite deformable body moving in
 space. Separate its configuration into:
 \[
@@ -101,8 +109,22 @@ different electromagnetic gauge changes the vector potential. What survives is
 the reconstructed rigid motion, especially the holonomy around a closed shape
 cycle and the curvature that controls small cycles.
 
+For readers meeting this language for the first time, the operational test is
+simple.  Give the body a closed cycle of shapes \(s(t)\) with \(s(t_1)=s(t_0)\).
+If the body returns to the same shape but not to the same orientation or
+position, the difference is holonomy.  The connection is the infinitesimal rule
+used to reconstruct that rigid motion from the shape velocity; curvature is the
+leading small-loop diagnostic for how much holonomy a loop encloses.
+
 \subsection{Principal-Bundle Form Of The Split}
 \label{subsec:deforming-body-principal-bundle}
+
+The principal-bundle notation is local but will recur throughout the chapter.
+\(Q_{\mathrm{full}}\) is the full configuration space of placed shapes,
+\(G\) is the rigid-motion group, \(\mathcal S\) is the shape space, and
+\(\pi:Q_{\mathrm{full}}\to\mathcal S\) forgets the rigid placement.  A point
+\(q\in Q_{\mathrm{full}}\) is a full configuration, while
+\(s=\pi(q)\) is only its shape.
 
 The geometric content of the split is a principal bundle.  Let
 \(Q_{\mathrm{full}}\)
@@ -117,14 +139,14 @@ internal shape.  The shape space is the quotient
 \]
 The point \(s=\pi(q)\) remembers the shape and forgets the rigid placement.
 
-\begin{assumption}[Regular shape bundle]
+\begin{hypothesis}[Regular shape bundle]
 In this chapter the \(G\)-action is assumed to be free and proper on the
 configurations under discussion, so that \(\mathcal S\) is a smooth manifold
 and \(Q_{\mathrm{full}}\to\mathcal S\) is locally a product.  Shapes with
 extra symmetry, such as a perfectly spherical body, have stabilizers and require
 minor orbifold or stratified-space modifications.  The formulas below describe
 the generic regular stratum.
-\end{assumption}
+\end{hypothesis}
 
 A local choice of body frame is a local section
 \[
@@ -217,6 +239,13 @@ changed; the effect is the holonomy of a connection.}
 \subsection{Mechanical Connection From Zero Momentum}
 \label{subsec:mechanical-connection-zero-momentum}
 
+In this subsection \(A(s)\) denotes a mechanical connection, not the
+Laplace-Runge-Lenz vector and not a vector potential in physical space.  The
+rigid velocity is \(\xi\in\mathfrak g\), the shape velocity is \(\dot s\), and
+\(\Pi\) is the total rigid-motion momentum written in body coordinates.  The
+zero-momentum condition determines the rigid velocity required by a prescribed
+shape change.
+
 The mechanical connection is obtained by solving a constraint, not by adding a
 new force law. If the body has no total rigid momentum, then any internal shape
 velocity that would otherwise create angular or linear momentum must be
@@ -235,8 +264,27 @@ Let the body velocity in the moving frame be
 \[
   \xi=g^{-1}\dot g\in\mathfrak g,
 \]
-where \(\mathfrak g\) is the Lie algebra of \(G\). Suppose the kinetic energy
-has the block form
+where \(\mathfrak g\) is the Lie algebra of \(G\). The block form below is just
+the kinetic energy written in the split variables \((\xi,\dot s)\).  To see
+where it comes from, let \(Y(X,s)\) be the body-frame position of material point
+\(X\) at shape \(s\), with the center of mass already separated.  In the
+simplest rotational case \(x=RY(X,s)\) and
+\[
+  R^{-1}\dot x=\Omega\times Y+\pd_\alpha Y\,\dot s^\alpha ,
+\]
+where \(\Omega\) is the body angular velocity corresponding to \(\xi\).  More
+generally, \(\xi\) acts on \(Y\) by the infinitesimal rigid-motion velocity.
+Denote that infinitesimal velocity by \(\xi^\#Y\).  Squaring this velocity and
+integrating over the body gives three terms:
+\[
+  \int_B\rho\,|\xi^\#Y|^2\,\dd^3X,\qquad
+  2\int_B\rho\,(\xi^\#Y)\cdot(\pd_\alpha Y)\,\dot s^\alpha\,\dd^3X,\qquad
+  \int_B\rho\,(\pd_\alpha Y\cdot\pd_\beta Y)
+    \dot s^\alpha\dot s^\beta\,\dd^3X .
+\]
+The first term is the rigid locked inertia \(M(s)\), the third is the shape
+metric \(m(s)\), and the cross term is the off-diagonal coupling \(A(s)\).
+Thus suppose the kinetic energy has the block form
 \[
   T
   =
@@ -262,13 +310,13 @@ in the chosen frame.  The off-diagonal block \(A(s)\) is the crucial one: it
 measures the rigid momentum generated by changing shape while the chosen body
 frame is held fixed.
 
-\begin{assumption}[Regular locked inertia]
+\begin{hypothesis}[Regular locked inertia]
 The zero-momentum reconstruction formula below assumes that \(M(s)\) is
 invertible on the rigid motions being reconstructed.  If a shape has an exact
 symmetry that makes some rigid velocity physically invisible, then \(M(s)\)
 has a null direction and the regular principal-bundle description must be
 restricted or quotient further.
-\end{assumption}
+\end{hypothesis}
 
 The momentum conjugate to rigid motion is
 \[
@@ -326,6 +374,17 @@ in the chosen internal frame. The corresponding inertia tensor is
   =
   \delta_{ij}\sum_{k=1}^3Q_{kk}-Q_{ij}.
 \]
+
+\paragraph{Local notation.}
+In this subsection \(A=R^{-1}\dot R\) is the skew angular-velocity matrix.  It
+is distinct from the off-diagonal kinetic-energy block \(A(s)\) in the previous
+subsection.  The connection one-form is written calligraphically as
+\(\mathcal A\) throughout the chapter.  Here \(Q\) is a second moment tensor of
+the instantaneous shape.  The symbol \(\widetilde I\) is the inertia tensor
+about the current internal frame, and \(\widetilde J\) is the internal angular
+momentum generated by deformation. These tildes distinguish the quantities from
+rigid-body \(I\) and \(J\) used earlier.
+
 Let \(Y(X,s(t))\) be the position of a material point in the chosen internal
 frame, with the center of mass at the origin. The spatial position is
 \(x=RY\). In the body frame,
@@ -439,6 +498,14 @@ as
   \Ad_{h^{-1}}\mathcal A-h^{-1}\dd h.
   }
 \]
+
+\paragraph{Local notation.}
+The map \(h:\mathcal S\to G\) is a change of local section over shape space.
+The one-form \(\mathcal A=\mathcal A_\alpha ds^\alpha\) takes values in the Lie
+algebra \(\mathfrak g\).  The curvature \(\mathcal F\) below is a two-form on
+shape space, and \(\mathcal P\) denotes path ordering in the reconstruction
+integral.
+
 The sign of the inhomogeneous term follows from the reconstruction convention
 \(g^{-1}\dot g=-\mathcal A(\dot s)\). With the opposite convention, the same
 geometric connection is written with the more familiar plus sign. The base space
@@ -480,7 +547,7 @@ finite-dimensional curvature used for shape holonomy is
   \boxed{
   \mathcal F
   =
-  \dd\mathcal A-\mathcal A\wedge\mathcal A,
+  \dd\mathcal A-\frac12[\mathcal A\wedge\mathcal A],
   }
 \]
 or in components,
@@ -493,9 +560,14 @@ or in components,
   -
   [\mathcal A_\alpha,\mathcal A_\beta].
 \]
-This sign is tied to the minus sign in the reconstruction equation. The local
-frame connection used later for Cosserat and defect geometry follows the
-standard Maurer-Cartan convention \(F=\dd A+A\wedge A\).
+Here \([\mathcal A\wedge\mathcal A]\) is the bracketed wedge, so its
+\((\alpha,\beta)\)-component is
+\(2[\mathcal A_\alpha,\mathcal A_\beta]\). This convention removes the common
+factor-of-two ambiguity in Lie-algebra-valued curvature formulas. The minus
+sign is tied to the minus sign in the reconstruction equation. The local frame
+connection used later for Cosserat and defect geometry follows the standard
+Maurer-Cartan convention \(F=\dd A+\frac12[A\wedge A]\), with components
+\(\partial_AA_B-\partial_BA_A+[A_A,A_B]\).
 
 \begin{derivation}[Small-loop holonomy]
 Take shape coordinates \((s^1,s^2)\) and traverse a tiny rectangle based at
@@ -589,10 +661,11 @@ developed the gauge-kinematic program for deformable bodies; and Montgomery
 is geometric phase; the underlying mechanisms differ as described above.
 
 Flat connections can still produce frame changes along open paths, but a small
-closed loop detects curvature. The curvature is the local observable of the
-gauge description. Different choices of body frame change \(\mathcal A\), while
-the holonomy around a loop changes by conjugation and therefore represents the
-same physical displacement.
+closed loop detects curvature. The curvature is the local gauge-covariant
+diagnostic of the description: under a change of body frame it is conjugated,
+not left componentwise unchanged. Different choices of body frame change
+\(\mathcal A\), while the holonomy around a loop changes by conjugation and
+therefore represents the same physical displacement.
 
 \section{A Two-Rotor Deforming-Body Model}
 \label{sec:two-rotor-deforming-body-model}
@@ -602,6 +675,13 @@ rotors. The rotor angles are shape variables
 \[
   s=(\alpha,\beta)\in S^1\times S^1.
 \]
+
+\paragraph{Local notation.}
+The carrier angular velocity is \(\Omega\), while \(\alpha\) and \(\beta\) are
+internal rotor angles.  The unit vectors \(e_x,e_y,e_z\) are body-frame axes.
+The constants \(I_0,I_1,I_2\) are moments of inertia of the carrier and
+rotors, not action variables.
+
 This is the compact version of the helicopter-rotor laboratory in
 Section~\ref{sec:lab-helicopter-gauge}: here we strip the device down to its
 two noncommuting shape directions so the curvature calculation can be seen in
@@ -699,6 +779,14 @@ Navier-Stokes and the surrounding fluid satisfies Stokes equations:
 \[
   -\nabla p+\mu\Delta u=0,\qquad \nabla\cdot u=0.
 \]
+
+\paragraph{Local notation.}
+Here \(u(x,t)\) is the fluid velocity, \(p(x,t)\) is pressure, and \(\mu\) is
+fluid dynamic viscosity.  The rigid velocity \(\xi=g^{-1}\dot g\) packages the
+swimmer's translational and rotational velocity in a body frame, while
+\(\dot s\) is shape velocity.  The matrix \(R(s)\) below is hydrodynamic
+resistance, not a rotation matrix.
+
 Boundary velocity is prescribed by the swimmer's rigid motion plus deformation
 rate. Because the Stokes problem is linear, the force and torque on the body
 depend linearly on:
@@ -760,6 +848,13 @@ point carries a local frame. A Cosserat body has, in addition to
 \[
   R(X,t)\in\SO(3).
 \]
+
+\paragraph{Local notation.}
+The coordinate \(X\) labels a material point, \(R(X,t)\) is a local director
+frame, \(d_a\) are spatial directors, \(A_A=R^{-1}\partial_A R\) is a material
+connection component, and \(A_t=R^{-1}\partial_tR\) is its time component.  The
+symbol \(\Gamma_A\) denotes translational strain in the local frame.
+
 The directors are
 \[
   d_a(X,t)=R(X,t)E_a,
@@ -853,6 +948,14 @@ then it is pure gauge and satisfies the Maurer-Cartan identity:
   =
   0.
 \]
+
+\paragraph{Local notation.}
+In this section \(A_A\) and \(\omega^a{}_b\) are two notations for the same
+local frame connection, depending on whether matrix or differential-form
+components are being displayed.  \(F_{AB}\) is curvature here, not the
+deformation gradient of Chapter~\ref{chap:elastic-body}.  The torsion two-form
+\(T^a\) is also unrelated to kinetic energy.
+
 Conversely, on a simply connected material patch, \(F=0\) implies locally that
 the connection is pure gauge: parallel transport is path independent, so one
 can define \(R(X)\) by transporting a chosen initial frame from a base point to
@@ -865,8 +968,9 @@ Equivalently, the parallel transport around a small coordinate rectangle is
 \]
 so vanishing curvature removes the infinitesimal obstruction; simple
 connectedness then removes the global path-dependence obstruction.
-Nonzero curvature means that local frames cannot be integrated into a single
-smooth orientation field without singularities or defects. In defect theory,
+Nonzero curvature means that a prescribed connection cannot be written, even on
+a contractible patch, as \(R^{-1}\dd R\) for a single smooth orientation field
+\(R(X)\). In defect theory,
 curvature is associated with disclinations, or rotational defects. More
 precisely, in three dimensions the disclination-density tensor is the Hodge
 dual of the curvature two-form, just as the dislocation-density tensor below is
@@ -946,6 +1050,14 @@ orientation angle \(\theta(s)\). Its director is
 \[
   d_1=(\cos\theta,\sin\theta).
 \]
+
+\paragraph{Local notation.}
+The coordinate \(s\) is arclength along the rod, not a point of finite
+shape space.  The vector \(r(s)\) is the centerline, \(\theta(s)\) the director
+angle, \(\kappa=\theta'\) the curvature, \(B\) the bending stiffness, and
+\(M=B(\kappa-\kappa_0)\) the bending moment.  A prime denotes
+\(\dd/\dd s\) throughout this section.
+
 Eugene and Francois Cosserat (1909) introduced the idea that a continuum point
 can carry an independent local frame, not only a position.
 Let
@@ -1055,9 +1167,10 @@ The progression from rigid body to the gauge theory of deforming bodies is:
   \text{elastic body:}&\quad \varphi(X,t),\quad F=\partial_X\varphi,\quad W(F),\\
   \text{deformable body:}&\quad g(t),\ s(t),\quad
   g^{-1}\dot g=-\mathcal A(s)\dot s,\quad
-  \mathcal F=\dd\mathcal A-\mathcal A\wedge\mathcal A,\\
+  \mathcal F=\dd\mathcal A-\frac12[\mathcal A\wedge\mathcal A],\\
   \text{Cosserat continuum:}&\quad R(X,t),\quad R^{-1}\partial_A R,\\
-  \text{defect theory:}&\quad A,\quad F=\dd A+A\wedge A,\quad T=\dd\theta+\omega\wedge\theta.
+  \text{defect theory:}&\quad A,\quad F=\dd A+\frac12[A\wedge A],\quad
+  T=\dd\theta+\omega\wedge\theta.
 \end{aligned}
 \]
 The first line is ordinary rigid-body mechanics. The second is
@@ -1085,6 +1198,14 @@ reconstruction equation be
   =
   -\mathcal A_\alpha(s)\dot s^\alpha.
 \]
+
+\paragraph{Local notation.}
+The index \(\alpha=1,2\) labels shape coordinates in this exercise.  The
+symbols \(\mathcal A_1,\mathcal A_2\) mean the connection evaluated on the
+coordinate directions \(\partial/\partial s^1\) and \(\partial/\partial s^2\).
+The group element \(g_{\mathrm{loop}}\) is the net rigid motion after the
+closed shape loop.
+
 For a tiny rectangular loop based at \(s_0\), first move by
 \(\Delta s^1\), then \(\Delta s^2\), then back by \(-\Delta s^1\), then back
 by \(-\Delta s^2\). To second order in the side lengths, the net group element
@@ -1125,10 +1246,11 @@ where
   [\mathcal A_1,\mathcal A_2].
   }
 \]
-This is why curvature is the local density of geometric phase. Even if the
-connection components are constant, a nonabelian structure group can give
-nonzero holonomy through the commutator term. The helicopter rotor laboratory
-below is a concrete instance of this constant-connection case.
+This is why curvature is the local, frame-covariant density of geometric phase.
+Even if the connection components are constant in a chosen frame, a nonabelian
+structure group can give nonzero holonomy through the commutator term. The
+helicopter rotor laboratory below is a concrete instance of this
+constant-connection case.
 
 \subsection{Helicopter Rotor Model As A Gauge Connection}
 \label{sec:lab-helicopter-gauge}

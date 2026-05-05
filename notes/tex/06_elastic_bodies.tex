@@ -49,17 +49,19 @@ technical register, including weak forms, boundary terms, incompressibility as
 a constraint, and the functional-analytic caveats behind existence and
 regularity statements.
 
-\begin{assumption}[Regular deformation map]
-Unless stated otherwise, \(\varphi(\cdot,t)\) is a smooth orientation-preserving
-embedding of the reference body into space:
+\begin{hypothesis}[Regular deformation]
+Unless stated otherwise, \(\varphi(\cdot,t)\) is smooth and has nonsingular
+orientation-preserving deformation gradient:
 \[
   J(X,t)=\det F(X,t)>0.
 \]
 The inequality \(J>0\) rules out local interpenetration and orientation
-reversal. Global injectivity is stronger than \(J>0\). We assume it when contact
+reversal. It is a local condition, not a global one: a map can have \(J>0\)
+everywhere and still overlap itself far away. Global injectivity, or embedding
+of the whole body, is therefore a stronger hypothesis. We assume it when contact
 or self-intersection matters; otherwise the local stress derivations use only
 nonsingularity of \(F\).
-\end{assumption}
+\end{hypothesis}
 
 \begin{definition}[Reference versus spatial densities]
 The reference density \(\rho_0(X)\) is mass per reference volume. The spatial
@@ -80,6 +82,13 @@ deformation. Local strain is measured by the derivative of the displacement
 map: two deformations that differ by a rigid translation have the same local
 strain. This is why the deformation gradient \(F\), and the metric-like tensor
 \(C=F^TF\), are introduced before stresses and constitutive laws.
+
+\paragraph{Local notation.}
+Capital indices \(A,B\) label reference coordinates \(X^A\), and lower-case
+indices \(i,j\) label spatial coordinates \(x^i\).  The deformation gradient
+\(F^i{}_A\) has one spatial and one material slot.  The tensor
+\(C_{AB}=F^i{}_AF^i{}_B\) is material: it compares material vectors before
+and after deformation by pulling spatial lengths back to the reference body.
 
 The deformation gradient is the local linearization of the deformation map:
 \[
@@ -119,7 +128,7 @@ of the displacement. To see this, write
 \[
   \varphi(X,t)=X+\xi(X,t),
 \]
-one has
+so
 \[
   F^i{}_A=\delta^i_A+\partial_A\xi^i.
 \]
@@ -192,6 +201,14 @@ For \(J=\det F>0\), polar decomposition gives
   F=R_{\mathrm p}U=VR_{\mathrm p},
   }
 \]
+
+\paragraph{Local notation.}
+The subscript in \(R_{\mathrm p}\) stands for polar rotation and is used to
+avoid confusing this rotation factor with a position vector or a center of
+mass.  The tensors \(U\) and \(V\) are positive-definite stretches; \(U\) acts
+on material vectors and \(V\) on spatial vectors.  The scalar \(J=\det F\) is
+the volume ratio.
+
 where \(R_{\mathrm p}\in\SO(3)\), and \(U,V\) are symmetric positive-definite
 stretch tensors. The right stretch \(U\) acts on material vectors before the
 polar rotation; the left stretch \(V\) acts on spatial vectors after the
@@ -320,6 +337,11 @@ the statement that the stored energy factors through \(C\):
 \[
   W(F,X)=\widehat W(C,X).
 \]
+The equivalence uses the polar decomposition on \(\det F>0\): two deformation
+gradients with the same \(C=F^TF\) have the same stretch \(U=C^{1/2}\) and
+therefore differ only by a superposed rotation. Thus invariance under all
+superposed rotations is precisely invariance under the information discarded by
+passing from \(F\) to \(C\).
 The qualifier ``ordinary'' matters: if the material carries additional internal
 directors or micro-rotations, as in Cosserat or liquid-crystal models, those
 variables must be transformed along with \(F\), and frame indifference is a
@@ -386,8 +408,25 @@ for a smooth deformation, then mixed partial derivatives commute:
   \partial_AF^i{}_B-\partial_BF^i{}_A=0.
   }
 \]
+
+\paragraph{Local notation.}
+In this section \(F(X)\) is a prescribed field of linear maps and
+\(\varphi(X)\) is the deformation one hopes to reconstruct.  In the
+linearized part, \(e_{ij}\) is the symmetric infinitesimal strain and
+\(\xi_i\) is the displacement.  Compatibility is a condition on the strain
+field itself, not a constitutive law.
+
 On a simply connected body, this curl-free condition is also enough to recover
 \(\varphi\) from \(F\), up to a rigid translation.
+
+This is the finite-deformation version of compatibility.  It asks whether a
+field of local linear maps \(F(X)\) can be integrated to a single deformation
+map \(\varphi(X)\).  The issue is global consistency: neighboring material
+line elements may each be assigned plausible images, but those assignments
+must close around every small loop.  The equation
+\(\partial_AF^i{}_B-\partial_BF^i{}_A=0\) is exactly the statement that the
+image of an infinitesimal material rectangle does not acquire a gap when its
+four sides are transported by \(F\).
 
 For small strain, the compatibility question is subtler because \(e\) is only
 the symmetric part of \(\nabla\xi\). Given a symmetric tensor field \(e_{ij}\),
@@ -413,6 +452,14 @@ This is often written
 When the condition fails, the local strain field cannot be assembled into a
 single-valued displacement without cuts, defects, residual stress, or a
 non-Euclidean reference geometry.
+
+The distinction between \(F\)-compatibility and \(e\)-compatibility is worth
+keeping visible.  The full gradient \(F\) contains rotations and stretches, so
+commuting mixed derivatives directly test whether it is a gradient.  The small
+strain \(e\) has discarded the infinitesimal rotation
+\(\omega_{ij}=\frac12(\partial_i\xi_j-\partial_j\xi_i)\).  Saint-Venant
+compatibility is the condition that a missing rotation field can be chosen so
+that \(e+\omega\) becomes an actual displacement gradient.
 
 \begin{derivation}[Saint-Venant compatibility as linearized curvature]
 A small strain field defines the metric
@@ -490,6 +537,14 @@ the expected rigid motion.
 
 \section{Hyperelastic Action And Piola Stress}
 \label{sec:hyperelastic-action}
+
+Local notation returns here to the material description.  \(X^A\) labels a
+material point in the reference body \(B\), \(\varphi^i(X,t)\) is its current
+spatial position, \(F^i{}_A=\partial_A\varphi^i\) is the deformation gradient,
+\(\rho_0\) is reference mass density, \(W(F,X)\) is stored energy per reference
+volume, and \(P^A{}_i\) is the first Piola-Kirchhoff stress.  Capital indices
+belong to reference coordinates; lower-case indices belong to spatial
+coordinates.
 
 A hyperelastic material has stored energy density \(W(F,X)\) per reference
 volume. Let \(\rho_0(X)\) be reference mass density. The action is
@@ -727,6 +782,12 @@ is symmetric, and therefore so is \(\sigma=J^{-1}PF^T\).
 \section{Linear Isotropic Elasticity}
 \label{sec:linear-isotropic-elasticity}
 
+The linearized notation deliberately reuses familiar letters with narrower
+meaning.  The displacement is \(\xi\), the small strain is
+\(e_{ij}=\frac12(\partial_i\xi_j+\partial_j\xi_i)\), \(\sigma_{ij}\) is the
+linear Cauchy stress, and \(\lambda,\mu\) are the Lame moduli.  In this section
+\(\mu\) is a shear modulus, not a reduced mass and not a fluid viscosity.
+
 For small strain in an isotropic homogeneous solid, the quadratic energy density
 is
 \[
@@ -860,6 +921,13 @@ measures. The notation \(E_{\mathrm Y}\), \(\nu_{\mathrm P}\), \(\lambda\),
 \(\mu\), and \(K_{\mathrm{bulk}}\) is therefore not interchangeable; each symbol
 names a different response.
 
+\paragraph{Local notation.}
+The force in the bar formula is written \(F_{\mathrm{end}}\) below to avoid
+confusion with the deformation gradient \(F\).  \(A_{\mathrm{cs}}\) is a
+cross-sectional area, \(J_{\mathrm{polar}}\) or \(J_t\) is a torsional geometric
+constant, and \(I_{\mathrm{area}}\) is a second moment of area, not an action
+variable or an inertia tensor.
+
 Saint-Venant's principle gives the modelling justification behind many of the
 one-dimensional reductions below. Details of how a load is applied at an end
 are expected to decay over distances comparable to the cross-section size, so a
@@ -959,6 +1027,13 @@ In static linear elasticity, inertia is absent and the displacement
   (\lambda+\mu)\nabla(\nabla\cdot\xi)+\mu\Delta\xi+\rho_0 b=0.
   }
 \]
+
+\paragraph{Local notation.}
+The body force \(b\) is force per unit mass, so \(\rho_0 b\) is force per
+reference volume.  The displacement boundary \(\partial B_D\) and traction
+boundary \(\partial B_N\) are prescribed parts of the reference boundary.  The
+test displacement \(\eta\) in the weak form vanishes on \(\partial B_D\).
+
 Equivalently,
 \[
   \partial_j\sigma_{ij}+\rho_0b_i=0,
@@ -1032,6 +1107,13 @@ applied at the end, and lateral surfaces are traction-free. The axial stress is
   \qquad
   \sigma_{22}=\sigma_{33}=0.
 \]
+
+\paragraph{Local notation.}
+The coordinate direction \(1\) is the bar axis.  The cross-sectional area
+\(A_{\mathrm{cs}}\) is geometric, \(E_{\mathrm Y}\) is Young's modulus, and
+\(\nu_{\mathrm P}\) is Poisson's ratio.  The lateral stresses vanish because
+the lateral surfaces are traction-free, while lateral strains need not vanish.
+
 Hooke's law in the \(E_{\mathrm Y},\nu_{\mathrm P}\) form gives
 \[
   e_{11}=\frac{\sigma_{11}}{E_{\mathrm Y}},
@@ -1072,6 +1154,13 @@ section, there is no warping correction, and the twist per length is constant:
   \qquad
   J_{\mathrm{polar}}=\frac{\pi a^4}{2}.
 \]
+
+\paragraph{Local notation.}
+The torque is \(T_{\mathrm{end}}\), while the kinetic energy symbol \(T\) is no
+longer in use here.  The axial coordinate is \(z\), the twist angle is
+\(\Theta(z)\), and \(J_{\mathrm{polar}}\) is a geometric polar moment of area.
+The Lame modulus \(\mu\) is the shear modulus in this section.
+
 The total twist angle is
 \[
   \boxed{
@@ -1146,6 +1235,14 @@ assumptions are:
 \item plane cross-sections remain plane and normal to the neutral axis;
 \item shear deformation and rotary inertia are neglected.
 \end{enumerate}
+
+\paragraph{Local notation.}
+The coordinate \(x\) in this subsection is arclength along the beam, not the
+spatial placement vector \(x=\varphi(X,t)\).  The function \(w(x)\) is
+transverse deflection, \(q(x)\) is distributed load per unit length, and
+\(I_{\mathrm{area}}\) is the second moment of area of the cross-section about
+the neutral axis.
+
 Under these assumptions the axial displacement at height \(y\) from the neutral
 axis is \(u_x(x,y)=-y\,w'(x)\) to leading order. Hence the dominant axial strain
 is
@@ -1209,6 +1306,18 @@ and shear force
 \[
   V_{\mathrm{shear}}=-E_{\mathrm Y}I_{\mathrm{area}}w'''.
 \]
+This conclusion uses the same variational distinction that appeared in finite
+dimensional mechanics.  If the end displacement \(w\) is prescribed, then the
+endpoint variation \(\eta\) is zero there and the coefficient of \(\eta\) is
+not constrained by stationarity.  If the end slope \(w'\) is prescribed, then
+\(\eta'\) is zero there and the coefficient of \(\eta'\) is not constrained.
+These are essential boundary conditions.  When \(w\) or \(w'\) is left free,
+stationarity instead fixes the corresponding natural boundary quantity: the
+coefficient of \(\eta'\) is the bending moment \(M\), and the coefficient of
+\(\eta\) is the signed shear quantity \(V_{\mathrm{shear}}\).  The sign of a
+reported shear force depends on the end orientation convention; throughout this
+beam example the convention is chosen so that a positive downward end load at
+\(x=L\) is written as \(V_{\mathrm{shear}}(L)=P_{\mathrm{end}}\).
 
 For a cantilever clamped at \(x=0\) and loaded by a downward end force
 \(P_{\mathrm{end}}\) at \(x=L\), the boundary conditions are
@@ -1292,9 +1401,9 @@ linear theory.
 
 The variational derivation is parallel to finite-dimensional Lagrangian
 mechanics but with fields. A hyperelastic stored energy \(W(F,X)\) defines the
-first Piola-Kirchhoff stress \(P^i{}_A=\partial W/\partial F^i{}_A\), and
+first Piola-Kirchhoff stress \(P^A{}_i=\partial W/\partial F^i{}_A\), and
 stationarity of the action gives material momentum balance
-\(\rho_0\ddot\varphi^i=\partial_A P^i{}_A+\rho_0 b^i\) together with the
+\(\rho_0\ddot\varphi_i=\partial_A P^A{}_i+\rho_0 b_i\) together with the
 correct traction boundary term. Frame indifference forces the stored energy to
 depend on deformation through rotationally invariant combinations such as
 \(C=F^T F\), and it implies symmetry of the spatial Cauchy stress.
