@@ -58,11 +58,330 @@ The reader should keep four levels separate:
 The later levels are controlled reductions chosen to isolate transport, escape
 channels, and resonance-driven loss in a teachable setting.
 
+\section{Astrophysical Regimes Of The Three-Body Problem}
+\label{sec:three-body-astrophysical-regimes}
+
+The three-body problem is not only a Solar-System problem.  It is the first
+gravitational problem in which exact Keplerian integrability is generically
+lost, and for that reason it appears throughout astrophysics.  The same
+mechanical questions recur in different asymptotic regimes: Which two-body
+orbit is the reference problem?  Which small parameter makes the motion nearly
+integrable?  Which resonances are slow?  Which invariant or approximate
+invariant controls escape, capture, or long-time stability?
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.20\textwidth} p{0.23\textwidth} p{0.25\textwidth} p{0.17\textwidth}@{}}
+\hline
+regime & controlled limit & typical question & observable\\
+\hline
+Sun-Jupiter-asteroid &
+massless asteroid, nearly Keplerian heliocentric orbit &
+mean-motion resonance, eccentricity growth, finite-time loss &
+\(\widehat P_{\rm ej}(T)\)\\
+S-type planet in a binary &
+planet orbits one star, \(a_{\rm p}/a_{\rm bin}\ll1\) &
+how far can the companion star perturb the planet before instability? &
+stable fraction, \(T_{\rm inst}\)\\
+circumbinary planet &
+planet orbits outside a stellar binary, \(a_{\rm bin}/a_{\rm p}\ll1\) &
+where is the inner chaotic boundary? &
+critical semimajor axis\\
+hierarchical triple &
+inner binary plus distant third body &
+secular exchange of inclination and eccentricity &
+\(e_{\max}\), secular timescale\\
+binary-single scattering &
+incoming body meets a bound pair &
+flyby, capture, exchange, ionization, or collision &
+\(\sigma_{\rm cap}\), \(\sigma_{\rm exch}\)\\
+\hline
+\end{tabular}
+\end{center}
+
+This table is a map, not a replacement for derivation.  The Sun-Jupiter-
+asteroid model is the detailed numerical example in these notes because its
+semimajor-axis resonances connect cleanly to the perturbation theory of
+Chapter~\ref{chap:perturbation-chaos}.  Binary stars and hierarchical triples
+are equally central applications of the same Newtonian structure.  A planet
+around one star in a binary is close to a Kepler problem with a distant
+periodic perturber.  A circumbinary planet is close to a Kepler problem around
+the binary center of mass, with a time-dependent multipole perturbation from
+the inner pair.  A hierarchical triple is close to two Kepler problems coupled
+by secular torques.  A binary-single encounter is less nearly integrable during
+close approach, but its outcomes are still classified by the binding energies
+of the outgoing pairs.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=0.78cm,y=1cm, >=Latex, font=\scriptsize]
+  \tikzset{
+    star/.style={circle, draw=orange!80!black, fill=orange!25, inner sep=1.5pt},
+    body/.style={circle, draw=blue!70!black, fill=blue!15, inner sep=1.1pt},
+    panel/.style={draw=gray!55, rounded corners=2pt, minimum width=3.0cm,
+      minimum height=2.35cm}
+  }
+  \foreach \x/\title in {
+    0/{restricted\\Solar System},
+    3.45/{S-type\\binary planet},
+    6.90/{circumbinary\\planet},
+    10.35/{hierarchical\\triple},
+    13.80/{binary-single\\scattering}}
+  {
+    \node[panel] at (\x,0) {};
+    \node[align=center] at (\x,1.33) {\title};
+  }
+
+  \node[star] at (-0.45,0.18) {};
+  \node[body] at (0.38,0.18) {};
+  \draw[gray!60] (-0.45,0.18) circle (0.72);
+  \fill[blue!70!black] (0.26,0.33) circle (1pt);
+  \node[align=center] at (0,-1.05) {resonant\\transport};
+
+  \node[star] at (3.02,0.12) {};
+  \node[star] at (4.15,0.12) {};
+  \draw[gray!60] (3.58,0.12) circle (0.58);
+  \draw[blue!60!black] (3.02,0.12) circle (0.35);
+  \fill[blue!70!black] (3.34,0.26) circle (1pt);
+  \node[align=center] at (3.45,-1.05) {planet\\stability};
+
+  \node[star] at (6.70,0.15) {};
+  \node[star] at (7.10,0.15) {};
+  \draw[gray!60] (6.90,0.15) circle (0.78);
+  \fill[blue!70!black] (7.58,0.52) circle (1pt);
+  \node[align=center] at (6.90,-1.05) {chaotic\\inner edge};
+
+  \node[star] at (10.12,0.10) {};
+  \node[star] at (10.52,0.10) {};
+  \draw[gray!60] (10.32,0.10) ellipse (0.42 and 0.20);
+  \draw[blue!60!black] (10.32,0.10) ellipse (0.92 and 0.55);
+  \fill[blue!70!black] (11.08,0.40) circle (1pt);
+  \node[align=center] at (10.35,-1.05) {secular\\eccentricity};
+
+  \node[star] at (13.48,0.12) {};
+  \node[star] at (13.90,0.12) {};
+  \draw[gray!60] (13.69,0.12) ellipse (0.42 and 0.22);
+  \draw[blue!70!black, ->] (12.70,-0.55) -- (13.22,-0.05);
+  \draw[blue!70!black, ->] (14.15,0.35) -- (14.73,0.72);
+  \fill[blue!70!black] (12.70,-0.55) circle (1pt);
+  \node[align=center] at (13.80,-1.05) {capture or\\exchange};
+\end{tikzpicture}
+\caption{Five astrophysical regimes of the three-body problem.  The diagrams
+look different, but the mechanical questions are the same: choose a reference
+Kepler problem when one exists, identify the slow perturbations, and define a
+finite-time stability, escape, capture, or exchange observable.}
+\label{fig:three-body-astrophysical-regimes}
+\end{figure}
+
+The word probability must be read with this model dependence in mind.  In
+binary-single scattering, a ``capture probability'' is not a number attached to
+the binary alone.  It is a probability for a stated ensemble of incoming
+speeds, impact parameters, binary phases, orientations, masses, stopping
+times, and outcome criteria.  If \(b\) is the impact parameter and
+\(v_\infty\) is the incoming speed at large separation, scattering studies
+often report a cross section,
+\[
+  \sigma_{\rm cap}(v_\infty)
+  =
+  \int 2\pi b\,\dd b\,
+  P_{\rm cap}(b,v_\infty,\text{phase data},\text{criterion}),
+\]
+or its Monte Carlo estimate for a specified sampling rule.  This is the same
+logical structure as the asteroid ejection statistic later in this chapter:
+first define the experiment, then estimate the fraction or cross section.
+The phrase ``at large separation'' is important.  If a numerical experiment
+starts the incoming body at a finite distance, the launch speed must be chosen
+so that energy conservation gives the desired \(v_\infty\) after the bodies are
+separated.  The word capture also carries a finite-time convention in a
+conservative three-body calculation: a body that is bound at the stopping time
+may later escape unless a dissipative mechanism or an additional long-time
+stability criterion is included.
+
 Appendix~\ref{app:three-body-numerics} records the numerical protocol behind
 the last two levels: coordinate choices, event definitions, resonance windows,
 uncertainty estimates, and convergence checks. The chapter introduces these
 choices where they first affect the mechanics; the appendix gathers them in one
 place for reproducibility.
+
+\section{Hierarchical Triples And The Lidov--Kozai Mechanism}
+\label{sec:lidov-kozai-mechanism}
+
+The hierarchical-triple row of the preceding table has its own canonical
+calculation.  Consider an inner Kepler pair with semimajor axis \(a_1\),
+eccentricity \(e\), argument of periapse \(\omega\), and inclination \(i\)
+relative to a distant outer orbit.  Assume
+\[
+  a_1\ll a_2,
+  \qquad
+  e_2=0,
+  \qquad
+  \frac{L_1}{L_2}\ll1,
+\]
+where \(a_2,e_2\) are the outer orbital elements and \(L_1,L_2\) are the
+Kepler angular-momentum scales.  The last assumption is the test-particle
+limit: the outer orbit supplies a fixed angular-momentum axis.  The question is
+what remains after averaging over both mean anomalies.  The answer is a
+one-degree-of-freedom Hamiltonian in which eccentricity and inclination
+exchange periodically.
+
+Let
+\[
+  j=\sqrt{1-e^2},
+  \qquad
+  h=j\cos i.
+\]
+Here \(j\) is the inner angular momentum divided by the circular angular
+momentum at the same \(a_1\), and \(h\) is its component along the fixed outer
+angular-momentum axis.  In Delaunay variables, \(j\) is proportional to the
+action \(G_{\rm D}\), while \(h\) is proportional to the node action \(H_{\rm
+D}\).  After double averaging, the longitude of the ascending node is cyclic,
+so \(h\) is conserved.  This conservation law is sometimes called the Kozai
+constant:
+\[
+  \boxed{\sqrt{1-e^2}\cos i=\text{constant}.}
+\]
+The name is historical; mechanically it is Noether's theorem for rotations
+about the outer orbit's angular-momentum axis.
+
+\begin{derivation}[Quadrupole-averaged Hamiltonian]
+Let the outer angular-momentum direction be the \(z\)-axis.  In the
+test-particle quadrupole limit, the averaged perturbing potential is, up to a
+positive constant factor,
+\[
+  \mathcal H_{\rm LK}
+  =
+  1-6e^2-3h^2
+  +15e^2\left(1-\frac{h^2}{j^2}\right)\sin^2\omega,
+  \qquad
+  j^2=1-e^2 .
+\]
+The constant factor fixes the secular time unit but not the phase portrait.
+All symbols in this expression have a direct orbital meaning:
+\(\omega\) is the inner argument of periapse, \(e\) is inner eccentricity,
+\(j\) is normalized inner angular momentum, and
+\(1-h^2/j^2=\sin^2 i\) is the squared mutual-inclination sine.  The canonical
+pair is \((\omega,j)\), with \(h\) fixed.
+
+The Hamiltonian may be checked against the vector form
+\[
+  \Phi_{\rm quad}
+  \propto
+  1-6e^2-3(\mathbf j\cdot \hat z)^2
+  +15(\mathbf e\cdot \hat z)^2,
+\]
+where \(\mathbf j\) is the dimensionless angular-momentum vector and
+\(\mathbf e\) is the eccentricity vector.  Since
+\(\mathbf j\cdot\hat z=h\) and
+\((\mathbf e\cdot\hat z)^2=e^2\sin^2 i\,\sin^2\omega\), the scalar Hamiltonian
+above follows.
+\end{derivation}
+
+The reduced equations are
+\[
+  \dot j=-\pd_\omega\mathcal H_{\rm LK},
+  \qquad
+  \dot\omega=\pd_j\mathcal H_{\rm LK},
+\]
+after choosing the dimensionless secular time associated with the omitted
+positive factor.  Thus the quadrupole Lidov--Kozai problem is integrable: one
+degree of freedom, one Hamiltonian, and one parameter \(h\).  The motion is
+nontrivial because \(e\) and \(i\) are tied by \(h=j\cos i\).  If \(e\)
+increases, then \(j\) decreases, and \(\cos i=h/j\) changes.  The inner orbit
+can become highly eccentric without any close encounter; the slow secular
+torque transfers angular momentum between inclination and eccentricity.
+
+\begin{derivation}[Critical inclination and maximum eccentricity]
+Take an initially circular inner orbit, \(e_0=0\), with inclination \(i_0\).
+Then
+\[
+  j_0=1,\qquad h=\cos i_0,
+\]
+and the initial Hamiltonian is
+\[
+  \mathcal H_0=1-3\cos^2 i_0.
+\]
+At the maximum eccentricity reached by a Lidov--Kozai cycle, the orbit passes
+through \(\omega=\pi/2\) or \(3\pi/2\).  Setting
+\(\mathcal H_{\rm LK}(e_{\max},\omega=\pi/2)=\mathcal H_0\) gives
+\[
+  1-6e_{\max}^2-3h^2
+  +15e_{\max}^2\left(1-\frac{h^2}{1-e_{\max}^2}\right)
+  =
+  1-3h^2 .
+\]
+The nonzero-eccentricity branch satisfies
+\[
+  9-\frac{15h^2}{1-e_{\max}^2}=0,
+\]
+so
+\[
+  \boxed{
+  e_{\max}
+  =
+  \sqrt{1-\frac{5}{3}\cos^2 i_0}.
+  }
+\]
+This expression is real only when
+\[
+  \cos^2 i_0<\frac35,
+  \qquad
+  \arccos\sqrt{\frac35}<i_0<\pi-\arccos\sqrt{\frac35}.
+\]
+Thus, in degrees, the quadrupole Lidov--Kozai window for an initially circular
+orbit is approximately
+\[
+  39.23^\circ<i_0<140.77^\circ .
+\]
+Outside this window, the circular orbit is stable against the quadrupole secular
+eccentricity growth.
+\end{derivation}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,font=\small]
+  \draw[->] (-0.2,0) -- (5.0,0) node[right] {\(\omega\)};
+  \draw[->] (0,-0.15) -- (0,3.1) node[above] {\(e\)};
+  \foreach \x/\lab in {0/{\(0\)},1.57/{\(\pi/2\)},3.14/{\(\pi\)},4.71/{\(3\pi/2\)}}
+    \draw (\x,0.06)--(\x,-0.06) node[below] {\lab};
+  \draw[blue!70!black,thick]
+    plot[smooth cycle] coordinates {
+      (0.60,0.35) (1.05,1.55) (1.57,2.55) (2.10,1.55)
+      (2.55,0.35) (2.10,0.12) (1.57,0.05) (1.05,0.12)
+    };
+  \draw[blue!70!black,thick]
+    plot[smooth cycle] coordinates {
+      (3.20,0.35) (3.65,1.55) (4.18,2.55) (4.70,1.55)
+      (5.15,0.35) (4.70,0.12) (4.18,0.05) (3.65,0.12)
+    };
+  \draw[gray!65,dashed] (1.57,0) -- (1.57,2.8);
+  \draw[gray!65,dashed] (4.18,0) -- (4.18,2.8);
+  \node[blue!70!black,align=center,fill=white,inner sep=2pt] at (2.55,2.55)
+    {libration islands\\around \(\omega=\pi/2,3\pi/2\)};
+  \node[align=center] at (2.55,-0.68)
+    {fixed \(h=\sqrt{1-e^2}\cos i\): eccentricity growth is inclination loss};
+\end{tikzpicture}
+\caption{Schematic Lidov--Kozai phase portrait at fixed \(h\).  The precise
+contours are level sets of the quadrupole-averaged Hamiltonian; the islands
+show the counter-intuitive secular route from inclined nearly circular motion
+to high eccentricity.}
+\label{fig:lidov-kozai-phase-portrait}
+\end{figure}
+
+There is a small numerical subtlety in plotting this reduced system.  The
+argument of periapse \(\omega\) is not defined at exactly \(e=0\), even though
+the limiting instability of the circular orbit is physically meaningful.  The
+demo therefore reports a tiny regularizing eccentricity seed when the requested
+initial condition is circular, monitors the Hamiltonian drift, and terminates
+with an explicit boundary diagnostic if the computed \(j=\sqrt{1-e^2}\) leaves
+the regular chart.  This is a coordinate issue in the secular model, not an
+additional physical force.
+
+The lesson for the rest of the chapter is methodological.  A generic
+three-body problem is not integrable, but a controlled hierarchical limit can
+average to an integrable slow problem.  That slow problem can still produce a
+large observable: high eccentricity, orbital flips in extended models, and
+instability once short-range forces, octupole terms, tides, or encounters are
+restored.
 
 \paragraph{Historical context.}
 Poincare's prize essay for King Oscar II's 1889 competition was substantially
@@ -915,6 +1234,66 @@ problem. Including the indirect term ensures that the coordinate origin
 accelerates exactly as the Sun does in the prescribed Sun-Jupiter motion.
 \end{remark}
 
+\section{From Resonance To Loss}
+\label{sec:from-resonance-to-loss}
+
+The phrase ``resonance causes ejection'' is too compressed.  In the
+Sun-Jupiter-asteroid model, the typical chain of reasoning has several links:
+\[
+  \begin{gathered}
+  \text{mean-motion commensurability}
+  \longrightarrow
+  \text{slow resonant angle}
+  \longrightarrow
+  \text{resonant island or chaotic layer}\\
+  \longrightarrow
+  \text{eccentricity growth}
+  \longrightarrow
+  \text{crossing or escape criterion}.
+  \end{gathered}
+\]
+The nominal semimajor-axis location \(a_{p:q}\) identifies where a slow angle
+can form; it is not itself a loss criterion.
+
+For an osculating Kepler ellipse around the Sun, define perihelion and aphelion
+distances by
+\[
+  q_{\rm peri}=a(1-e),
+  \qquad
+  Q_{\rm aph}=a(1+e).
+\]
+The orbit crosses the radial range of a planet with orbital radius \(a_P\) only
+if
+\[
+  q_{\rm peri}\le a_P\le Q_{\rm aph},
+\]
+with additional phase and inclination conditions in a more realistic model.
+For an asteroid interior to Jupiter, Jupiter crossing requires approximately
+\[
+  Q_{\rm aph}\gtrsim a_J.
+\]
+Mars or Earth crossing is instead controlled by the perihelion distance:
+\[
+  q_{\rm peri}\lesssim a_{\rm Mars}
+  \quad\text{or}\quad
+  q_{\rm peri}\lesssim a_\oplus .
+\]
+These inequalities are only crossing tests.  Actual collision, close
+encounter, or ejection still depends on phase, encounter geometry, and the
+chosen stopping rule.
+
+The resonant angle from Chapter~\ref{chap:perturbation-chaos} gives the
+dynamical diagnostic.  If
+\[
+  \phi_{p:q}=p\lambda_J-q\lambda-(p-q)\varpi
+\]
+librates over an interval of time, the asteroid is phase locked to the
+resonance.  If \(\phi_{p:q}\) circulates but the eccentricity diffuses near
+overlapping resonances or separatrices, the particle may still be transported.
+Thus a good numerical report records more than the final alive/lost count: it
+records the initial distance from nominal resonance, an eccentricity history or
+maximum eccentricity, crossing thresholds, and the finite-time loss class.
+
 \section{Numerical Ejection Probability}
 \label{sec:numerical-ejection-probability}
 
@@ -932,6 +1311,21 @@ the finite-time ejection probability estimate is
   \sum_{i=1}^{N}\mathbf 1\{\text{particle \(i\) is ejected before time \(T\)}\}.
 \]
 \end{definition}
+
+The corresponding survival estimate is
+\[
+  \widehat S(T)=1-\widehat P_{\rm loss}(T),
+\]
+where ``loss'' may mean ejection alone or the union of ejection, close
+encounter, and collision, depending on the stated experiment.  If a bin
+\(B\) in initial semimajor axis contains \(n_B\) particles and \(e_B(T)\) of
+them are ejected by time \(T\), the conditional finite-time estimate is
+\[
+  \widehat P_{\rm ej}(T\mid a_0\in B)=\frac{e_B(T)}{n_B}.
+\]
+The notation displays the dependence that ordinary prose often hides:
+changing \(T\), the bin \(B\), the integrator, or the loss definition changes
+the quantity being estimated.
 
 \begin{remark}[Ejection criterion in the demo]
 The Python demo counts a particle as ejected if it reaches a large heliocentric
@@ -968,6 +1362,10 @@ These labels are a diagnostic overlay. A semimajor-axis bin is wider and cruder
 than a resonance island, and the actual resonance width depends on eccentricity
 and perturbation strength. The overlay asks whether large loss fractions cluster
 near the same places where perturbation theory predicts slow resonant angles.
+The upgraded diagnostic output also groups particles by nearest nominal
+resonance and reports finite-time survival checkpoints.  Those checkpoints do
+not extrapolate to infinite time; they show how the chosen ensemble empties
+over the stated interval.
 
 For a bin containing \(n_b\) sampled particles and \(e_b\) ejections, the
 reported fraction is
@@ -984,6 +1382,79 @@ rough sampling uncertainty is
 This is only a Monte Carlo error bar for the chosen numerical experiment. It
 does not measure modeling error, timestep error, or the long-time instability
 of the idealized Hamiltonian system.
+
+The same caution applies to binary capture probabilities.  If a binary-single
+scattering calculation reports
+\[
+  \widehat P_{\rm cap}
+  =
+  \frac{N_{\rm cap}}{N},
+\]
+that number is meaningful only with the incoming velocity distribution,
+impact-parameter sampling rule, binary elements, integration horizon, and
+capture criterion.  If the sampling is uniform in area for
+\(0\le b\le b_{\max}\), a corresponding cross-section estimate is
+\[
+  \widehat\sigma_{\rm cap}
+  =
+  \pi b_{\max}^2\,\frac{N_{\rm cap}}{N}.
+\]
+The asteroid ejection fraction and the binary capture cross section are
+different physical observables, but they share the same statistical grammar:
+specified ensemble first, number second.
+
+\section{Benchmark Statistical Studies}
+\label{sec:three-body-benchmark-statistics}
+
+The repository now contains a compact benchmark driver whose purpose is
+different from a smoke test.  A smoke test asks whether code runs and preserves
+basic invariants.  A benchmark statistical study asks whether a stated ensemble
+produces a reproducible finite-time observable with uncertainty estimates.
+The benchmark has two parts.
+
+\paragraph{Accelerated asteroid loss benchmark.}
+The asteroid benchmark uses the same planar restricted model as the ejection
+demo, but increases Jupiter's mass by a stated factor so that a short
+classroom integration produces visible losses.  The output is not a
+Solar-System probability; it is a controlled stress test of the resonance-loss
+pipeline.  For seeds \(s\in S\), the code estimates
+\[
+  \widehat P_{\rm loss}(T)
+  =
+  \frac{\sum_{s\in S}N_{\rm loss}(s,T)}
+       {\sum_{s\in S}N(s)}
+\]
+and the same quantity in semimajor-axis bins.  The binomial standard error
+\[
+  \widehat{\operatorname{se}}
+  =
+  \sqrt{\frac{\widehat p(1-\widehat p)}{N}}
+\]
+measures only sampling variation for the stated finite ensemble.  The benchmark
+also reports resonance-labelled rows, so one can see whether the visible loss
+is concentrated near the nominal resonant regions or instead spread through
+the entire annulus.
+
+\paragraph{Binary-single scattering benchmark.}
+The binary benchmark sweeps over a small grid of incoming speeds
+\(v_\infty\).  For each speed it samples binary phase and impact parameter,
+classifies finite-horizon outcomes by pair binding energies, and reports
+\[
+  \widehat\sigma_{\rm cap/exch}(v_\infty)
+  =
+  \pi b_{\max}^2
+  \frac{N_{\rm cap}+N_{\rm exch}}{N}
+\]
+for uniform-in-area sampling.  The expected qualitative trend is that lower
+incoming speeds have larger capture-or-exchange cross sections, because
+gravitational focusing and longer interaction times make temporary binding
+easier.  The benchmark is still a classroom calculation: capture means
+``bound by the stopping-time classifier,'' not guaranteed permanent capture.
+
+Together these two studies turn the phrase ``three-body probability'' into a
+specified data product.  The product contains the ensemble, the integration
+horizon, the timestep, the event definition, the estimator, and the diagnostic
+drifts.  Without that metadata, the reported number is not reproducible.
 
 \section{Integrator Used In The Demo}
 \label{sec:asteroid-integrator}
@@ -1030,9 +1501,21 @@ Lagrange-point structures in the restricted problem.
 rotating-frame model with Lagrange points, zero-velocity curves, a canonical
 Hamiltonian, and the Jacobi constant. These structures are the standard
 geometric language for capture and escape channels.
+\item The astrophysical three-body problem includes more than the Solar System.
+Planets in binary-star systems, circumbinary planets, hierarchical triples, and
+binary-single scattering all use the same ideas: a reference two-body motion
+when one exists, a perturbing third body, resonant or secular exchange, and a
+finite-time stability, capture, exchange, or ejection observable.
+\item The Lidov--Kozai mechanism is the controlled hierarchical-triple example:
+double averaging leaves one slow degree of freedom, conserves
+\(\sqrt{1-e^2}\cos i\), and predicts high eccentricity above the critical
+inclination.
 \item The heliocentric Sun-Jupiter-asteroid model is a periodically forced
 Kepler problem.  Its indirect term is part of the coordinate transformation,
 not an optional correction.
+\item A nominal resonance location is not a loss criterion.  Loss requires an
+additional dynamical route, such as eccentricity growth to a crossing condition,
+followed by the stated close-encounter, collision, or escape rule.
 \item Numerical ejection probabilities are finite-time, model-dependent
 observables. They become meaningful only when the ensemble, integration time,
 timestep, invariants, and loss criterion are stated.
@@ -1148,6 +1631,16 @@ canonical momenta to rotating-frame velocities.
 \item Which losses are close encounters, and which are clean ejections?
 \item How sensitive are the results to \(\Delta t\)?
 \item Are apparent resonance structures stable under a different random seed?
+\item For an initially circular hierarchical triple, use the quadrupole
+Lidov--Kozai Hamiltonian to derive
+\[
+  e_{\max}=\sqrt{1-\frac53\cos^2 i_0}\, .
+\]
+\item In a binary-single scattering experiment, what information must be
+specified before the phrase ``capture probability'' has a definite meaning?
+\item If impact parameters are sampled uniformly in area for
+\(0\le b\le b_{\max}\), derive
+\(\widehat\sigma_{\rm cap}=\pi b_{\max}^2N_{\rm cap}/N\).
 \end{enumerate}
 
 \section{Associated Demos}
@@ -1155,12 +1648,23 @@ canonical momenta to rotating-frame velocities.
 
 \begin{itemize}
 \item \path{demos/python/circular_restricted_three_body.py}
+\item \path{demos/python/lidov_kozai.py}
 \item \path{demos/python/asteroid_ejection_probability.py}
+\item \path{demos/python/asteroid_resonance_normal_form.py}
+\item \path{demos/python/binary_capture_scattering.py}
+\item \path{demos/python/three_body_benchmark_studies.py}
 \item \path{demos/mathematica/CircularRestrictedThreeBody.wl}
 \item \path{demos/mathematica/AsteroidEjectionProbability.wl}
+\item \path{demos/mathematica/AsteroidResonanceNormalForm.wl}
 \end{itemize}
 Use the CR3BP demo first: it checks the Jacobi constant and draws the
 zero-velocity geometry. Use the ejection-probability demo second: it turns the
 same dynamical ideas into an ensemble statistic, so the meaningful outputs are
 not only trajectories but also loss criteria, timestep sensitivity, resonance
-bins, and finite-time uncertainty.
+bins, and finite-time uncertainty. Use the resonance-normal-form demo to see
+the pendulum approximation behind resonance width. Use the binary-capture demo
+as a parallel statistical experiment: its capture and exchange fractions are
+not universal constants, but ensemble-dependent scattering observables. Use the
+Lidov--Kozai demo for the integrable secular hierarchical-triple limit, and use
+the benchmark driver when the goal is an aggregate statistical result rather
+than a single smoke-test trajectory.

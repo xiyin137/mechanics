@@ -177,6 +177,176 @@ The small parameter \(\eps\) should be interpreted physically. In the
 Sun-Jupiter-asteroid problem, a natural scale is \(M_J/M_\odot\), though close
 encounters and resonances can amplify its effect.
 
+\section{Planar Delaunay And Poincare Variables}
+\label{sec:planar-delaunay-poincare}
+
+The previous section described action-angle variables abstractly.  Celestial
+mechanics needs a concrete version for Kepler ellipses, because resonances are
+defined by combinations of orbital phases.  In this section the symbol
+\[
+  \mu_\odot=GM_\odot
+\]
+denotes the solar gravitational parameter.  This is not the reduced mass; it is
+the parameter that appears in the specific Kepler Hamiltonian
+\[
+  h_0(r,v)=\frac12\norm v^2-\frac{\mu_\odot}{r}.
+\]
+The specific energy of a bound orbit is
+\[
+  h_0=-\frac{\mu_\odot}{2a}.
+\]
+The action conjugate to the fast Kepler phase is
+\[
+  \boxed{\Lambda=\sqrt{\mu_\odot a}.}
+\]
+Solving for \(a=\Lambda^2/\mu_\odot\) gives
+\[
+  \boxed{
+  H_0(\Lambda)=-\frac{\mu_\odot^2}{2\Lambda^2}.
+  }
+\]
+Therefore the Kepler mean motion is
+\[
+  \dot\lambda=\frac{\partial H_0}{\partial \Lambda}
+  =
+  \frac{\mu_\odot^2}{\Lambda^3}
+  =
+  \sqrt{\frac{\mu_\odot}{a^3}},
+\]
+which is exactly Kepler's third law.
+
+\begin{derivation}[Radial action and the second planar Delaunay action]
+In the planar Kepler problem the angular momentum per unit mass is
+\[
+  G_{\rm D}=\sqrt{\mu_\odot a(1-e^2)}.
+\]
+The subscript reminds us that \(G_{\rm D}\) is the Delaunay angular-momentum
+action; it is not Newton's gravitational constant.  The radial momentum is
+determined by the energy equation
+\[
+  \frac12 p_r^2+\frac{G_{\rm D}^2}{2r^2}-\frac{\mu_\odot}{r}
+  =
+  -\frac{\mu_\odot}{2a}.
+\]
+The radial action is
+\[
+  J_r=\frac{1}{2\pi}\oint p_r\,\dd r .
+\]
+For a Kepler ellipse this integral evaluates to
+\[
+  J_r
+  =
+  \sqrt{\mu_\odot a}-\sqrt{\mu_\odot a(1-e^2)}
+  =
+  \Lambda-G_{\rm D}.
+\]
+Thus the two planar actions may be taken as \(\Lambda\) and \(G_{\rm D}\), or
+equivalently as \(\Lambda\) and
+\[
+  \Gamma=\Lambda-G_{\rm D}.
+\]
+For small eccentricity,
+\[
+  \Gamma
+  =
+  \Lambda\left(1-\sqrt{1-e^2}\right)
+  =
+  \frac12\Lambda e^2+O(e^4).
+\]
+The action \(\Gamma\) is therefore the eccentricity action: it vanishes on a
+circular orbit and grows quadratically with \(e\).
+\end{derivation}
+
+Let \(M\) be the mean anomaly and let \(\varpi\) be the longitude of
+periapse.  The symbol \(M\) is used here to avoid conflict with the specific
+angular momentum \(\ell=r^2\dot\theta\) used in the preceding Kepler
+derivation.  Planar Delaunay coordinates are
+\[
+  (\Lambda,M),\qquad (G_{\rm D},\varpi),
+\]
+with canonical one-form
+\[
+  \Lambda\,\dd M+G_{\rm D}\,\dd\varpi .
+\]
+Since \(H_0\) depends only on \(\Lambda\),
+\[
+  \dot M=\frac{\partial H_0}{\partial \Lambda},
+  \qquad
+  \dot\varpi=\frac{\partial H_0}{\partial G_{\rm D}}=0.
+\]
+This is the Kepler degeneracy.  The periapse does not precess in the ideal
+two-body problem, so the frequency map is degenerate in the full set of
+Delaunay actions.  Celestial KAM theory therefore cannot be applied to the pure
+Kepler problem by simply quoting the nondegenerate theorem from
+Section~\ref{sec:kam-theorem-sketch}; one first needs the secular structure
+created by interactions, averaging, or additional degrees of freedom.
+
+For perturbations near circular orbits, \(\varpi\) is a poor coordinate because
+the direction of periapse is undefined when \(e=0\).  Poincare variables remove
+this artificial singularity.  Define the mean longitude and eccentricity angle
+by
+\[
+  \lambda=M+\varpi,\qquad \gamma=-\varpi,
+\]
+and keep
+\[
+  \Gamma=\Lambda-G_{\rm D}.
+\]
+Then
+\[
+  \Lambda\,\dd M+G_{\rm D}\,\dd\varpi
+  =
+  \Lambda\,\dd\lambda+\Gamma\,\dd\gamma,
+\]
+so \((\Lambda,\lambda)\) and \((\Gamma,\gamma)\) are canonical pairs.  Finally
+set
+\[
+  x=\sqrt{2\Gamma}\cos\gamma,\qquad
+  y=\sqrt{2\Gamma}\sin\gamma.
+\]
+The pair \((x,y)\) is a Cartesian representation of the eccentricity degree of
+freedom.  The origin \((x,y)=(0,0)\) is the circular orbit; no angle has to be
+chosen there.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm, >=Latex, font=\small]
+  \begin{scope}
+    \draw[->] (-2.0,0) -- (2.2,0) node[right] {major axis};
+    \draw[->] (0,-1.45) -- (0,1.65) node[above] {minor axis};
+    \draw[blue!70!black, thick, rotate=18] (0,0) ellipse (1.65 and 0.86);
+    \fill[yellow!80!black] (-0.55,0) circle (2.5pt)
+      node[below=4pt, fill=white, inner sep=1pt] {Sun};
+    \fill[blue!70!black] (0.98,0.56) circle (1.8pt)
+      node[above right, fill=white, inner sep=1pt] {asteroid};
+    \draw[red!75!black, ->, thick] (0,0) -- (1.56,0.51)
+      node[midway, above, fill=white, inner sep=1pt] {\(\varpi\)};
+    \draw[green!45!black, ->, thick] (0,0) -- (0.98,0.56)
+      node[midway, below right, fill=white, inner sep=1pt] {\(\lambda\)};
+    \node[align=center] at (0,-1.85)
+      {ellipse: size \(a\), shape \(e\),\\phase \(\lambda\), periapse \(\varpi\)};
+  \end{scope}
+  \begin{scope}[xshift=6.0cm]
+    \draw[->] (-1.6,0) -- (1.8,0) node[right] {\(x\)};
+    \draw[->] (0,-1.45) -- (0,1.65) node[above] {\(y\)};
+    \draw[blue!35, fill=blue!6] (0,0) circle (1.02);
+    \draw[red!75!black, ->, thick] (0,0) -- (0.72,0.72)
+      node[midway, above left, fill=white, inner sep=1pt] {\(\sqrt{2\Gamma}\)};
+    \draw[gray!70, ->] (0.55,0) arc (0:45:0.55);
+    \node[gray!50!black, fill=white, inner sep=1pt] at (0.82,0.24) {\(\gamma\)};
+    \fill[blue!70!black] (0,0) circle (2pt)
+      node[below left, fill=white, inner sep=1pt] {\(e=0\)};
+    \node[align=center] at (0,-1.85)
+      {Poincare eccentricity plane:\\\(\Gamma\approx\Lambda e^2/2\)};
+  \end{scope}
+\end{tikzpicture}
+\caption{Planar Poincare variables replace the singular periapse angle at
+\(e=0\) by Cartesian eccentricity coordinates.  The action \(\Lambda\)
+measures semimajor axis, while \(\Gamma\) measures eccentricity to leading
+order.}
+\label{fig:delaunay-poincare-variables}
+\end{figure}
+
 \section{Resonance}
 \label{sec:resonance}
 
@@ -214,6 +384,46 @@ The missing-asteroid bands at these resonances are the Kirkwood gaps,
 identified empirically by Daniel Kirkwood in 1866 before modern Hamiltonian
 perturbation theory supplied the phase-space explanation.
 
+In the planar Sun-Jupiter-asteroid model, let
+\[
+  \lambda_J=n_Jt+\lambda_{J,0}
+\]
+be Jupiter's mean longitude.  For an interior \(p:q\) resonance, with
+\(p>q\) and \(n/n_J\approx p/q\), the lowest-order eccentricity-type resonant
+angle is
+\[
+  \boxed{
+  \phi_{p:q}
+  =
+  p\lambda_J-q\lambda-(p-q)\varpi .
+  }
+\]
+The coefficient of \(\varpi\) is forced by rotational invariance: adding a
+constant angle to all longitudes must leave the phase unchanged.  Differentiating
+gives
+\[
+  \dot\phi_{p:q}
+  =
+  pn_J-qn-(p-q)\dot\varpi .
+ \]
+At exact Keplerian commensurability \(qn=pn_J\), and in the unperturbed Kepler
+problem \(\dot\varpi=0\), so this angle is slow.  The resonant perturbation
+depends on a slow phase and therefore does not average away.
+
+For the low-order interior Jovian resonances used in the demos,
+\[
+\begin{array}{ccl}
+3:1 &:& \phi=3\lambda_J-\lambda-2\varpi,\\
+5:2 &:& \phi=5\lambda_J-2\lambda-3\varpi,\\
+7:3 &:& \phi=7\lambda_J-3\lambda-4\varpi,\\
+2:1 &:& \phi=2\lambda_J-\lambda-\varpi .
+\end{array}
+\]
+The order of the eccentricity-type term is \(p-q\).  Thus the \(3:1\) term is
+second order in eccentricity, the \(5:2\) term is third order, and the \(2:1\)
+term is first order.  This order statement is a scaling statement, not a full
+disturbing-function calculation.
+
 \begin{figure}[htbp]
 \centering
 \begin{tikzpicture}[x=0.72cm,y=1cm, >=Latex, font=\small]
@@ -238,6 +448,168 @@ across an asteroid-belt-like range. The resonance positions use
 show that the listed resonances lie interior to Jupiter.}
 \label{fig:jupiter-resonance-locations}
 \end{figure}
+
+\subsection{Celestial Resonant Normal Form}
+\label{subsec:celestial-resonant-normal-form}
+
+The generic resonant normal form derived later in
+Section~\ref{subsec:resonant-normal-form-island-width} has a direct celestial
+interpretation.  In the planar restricted problem, after introducing the
+forcing phase \(\lambda_J\) and its conjugate action, write the Hamiltonian
+schematically as
+\[
+  K(\Lambda,\Gamma,\lambda,\gamma,\lambda_J,I_J)
+  =
+  H_0(\Lambda)+n_JI_J
+  +\eps R(\Lambda,\Gamma,\lambda,\gamma,\lambda_J),
+\]
+where \(\eps\) is of order \(M_J/M_\odot\) away from close encounters.  Near a
+\(p:q\) resonance, perform a canonical change in which the slow angle is
+\(\phi_{p:q}\).  Averaging over the remaining fast angle gives a one-degree
+resonant Hamiltonian of the form
+\[
+  K_{\rm res}(J,\phi)
+  =
+  K_*
+  +
+  \frac12 A(J-J_*)^2
+  +
+  \eps B_{p:q}(\Gamma_*)\cos\phi
+  +\cdots .
+\]
+Here \(J\) is the resonant action measuring displacement from the exact
+commensurability, \(J_*\) is its resonant value, \(A\) is the local curvature of
+the frequency mismatch, and \(B_{p:q}\) is the relevant disturbing-function
+coefficient after averaging.  For an eccentricity-type resonance of order
+\(r=p-q\),
+\[
+  B_{p:q}(\Gamma_*)=O(e_*^r)
+\]
+for small eccentricity, with the coefficient depending on Laplace coefficients
+and on the chosen normalization.
+
+The pendulum calculation gives the scaling
+\[
+  \Delta J_{\max}
+  =
+  2\sqrt{\frac{\eps |B_{p:q}(\Gamma_*)|}{|A|}},
+\]
+up to the convention used to normalize \(J\).  This formula explains why
+resonance widths grow like \(\sqrt{\eps}\) but it does not by itself give a
+measured Kirkwood-gap width.  A gap in the observed asteroid belt also depends
+on secular resonances, multiple planets, chaotic diffusion, collisions,
+Yarkovsky drift, primordial depletion, and the finite age of the Solar System.
+
+\subsection{A First Disturbing-Function Coefficient: The Interior 2:1 Resonance}
+\label{subsec:disturbing-function-2to1}
+
+The previous paragraph used \(B_{p:q}=O(e^{p-q})\) as a scaling statement.  A
+real celestial-mechanics calculation must compute the coefficient multiplying
+the resonant cosine.  We do this for the first-order interior \(2:1\)
+resonance, because it is the cleanest example and it appears in the asteroid
+demo.
+
+Use units \(a_J=1\) temporarily, and write
+\[
+  \alpha=\frac{a}{a_J}.
+\]
+Jupiter is circular, with longitude \(\lambda_J\).  The asteroid has mean
+longitude \(\lambda=M+\varpi\).  The heliocentric disturbing function per unit
+\(Gm_J/a_J\) is
+\[
+  \mathcal R
+  =
+  \frac{1}{|r_J-r|}
+  -
+  r\cdot r_J ,
+\]
+where the second term is the indirect part in these units.  For small
+eccentricity,
+\[
+  \frac{|r|}{a} = 1-e\cos M+O(e^2),
+  \qquad
+  f+\varpi=\lambda+2e\sin M+O(e^2).
+\]
+Let
+\[
+  \psi=\lambda-\lambda_J .
+\]
+At \(e=0\), define
+\[
+  Q(\psi)=1-2\alpha\cos\psi+\alpha^2,
+  \qquad
+  D(\psi)=Q(\psi)^{-1/2}.
+\]
+Differentiating the direct term with respect to the radial factor \(\rho\) and
+the angular separation \(\psi\) gives
+\[
+  D_\rho=(\alpha\cos\psi-\alpha^2)Q^{-3/2},
+  \qquad
+  D_\psi=-\alpha\sin\psi\,Q^{-3/2}.
+\]
+The indirect term \(\alpha\rho\cos\psi\) contributes
+\[
+  I_\rho=\alpha\cos\psi,
+  \qquad
+  I_\psi=-\alpha\sin\psi .
+\]
+Project the first-order eccentricity variation of
+\(\mathcal R=D-I\) onto
+\[
+  \phi=2\lambda_J-\lambda-\varpi .
+\]
+Setting \(\varpi=0\) after using rotational invariance, averaging over the
+ignorable rotation angle leaves the one-dimensional integral below.  The factor
+of two relative to the raw inner product with \(\cos\phi\) is important: it is
+what converts the projection into the coefficient \(C_{2:1}\) in
+\(eC_{2:1}\cos\phi\).
+\[
+  C_{2:1}(\alpha)
+  =
+  \frac{1}{2\pi}\int_0^{2\pi}
+  \left[
+  -\cos(2\psi)(D_\rho-I_\rho)
+  +
+  2\sin(2\psi)(D_\psi-I_\psi)
+  \right]\dd\psi .
+\]
+Thus the resonant term is
+\[
+  \mathcal R_{2:1}
+  =
+  e\,C_{2:1}(\alpha)
+  \cos(2\lambda_J-\lambda-\varpi)+O(e^2).
+\]
+For the nominal \(2:1\) location,
+\[
+  \alpha_*=2^{-2/3}.
+\]
+The Python demo evaluates the integral numerically and independently checks it
+by a two-angle finite-difference projection.  In the convention above it finds
+\[
+  C_{2:1}(\alpha_*)\simeq -1.19049 .
+\]
+The sign depends on whether the Hamiltonian is written with \(+\mathcal R\) or
+\(-\mathcal R\); the resonance half-width depends on \(|C_{2:1}|\).
+
+Using the local pendulum approximation in the action \(\Lambda=\sqrt{\mu_\odot
+a}\), and then converting from \(\Delta\Lambda\) to semimajor axis, gives the
+classroom estimate
+\[
+  \Delta a_{\rm half}
+  \simeq
+  4a_J
+  \sqrt{
+    \frac{\eps |C_{2:1}| e\,\alpha_*^3}{3}
+  },
+  \qquad
+  \eps=\frac{M_J}{M_\odot}.
+\]
+This formula is still an idealized resonance width: it assumes the planar
+circular restricted model, small eccentricity, no close encounter, and a single
+isolated resonance.  Its status is nevertheless different from the
+\(\eta e^r\) model: the coefficient is now computed from the disturbing
+function rather than inserted as a placeholder.
 
 \section{Perturbing An Integrable System}
 \label{sec:perturbing-integrable-system}
@@ -1538,6 +1910,11 @@ picture: rotational invariant curves at small coupling, island chains around
 rational rotation numbers, cantori and partial barriers near the breakup
 threshold, and widespread diffusion when barriers are gone.
 
+For asteroid resonances, the same pendulum geometry becomes quantitative only
+after a disturbing-function coefficient is computed. The \(2:1\) calculation
+in this chapter is the first such coefficient-level bridge between the formal
+normal form and the numerical asteroid experiments.
+
 The three-body problem in Chapter~\ref{chap:three-body-problem} is a principal
 physical arena for these ideas. It is not included here because its Newtonian
 reduction, restricted limit, Lagrange points, and asteroid-belt ensembles
@@ -1793,10 +2170,13 @@ property of the dynamics changes when invariant tori break?
 
 The associated torus-breakdown and finite-dimensional chaos demos are:
 \begin{itemize}
+\item \path{demos/python/asteroid_resonance_normal_form.py}
 \item \path{demos/python/standard_map_torus_breakdown.py}
 \item \path{demos/python/henon_heiles_poincare.py}
 \item \path{demos/mathematica/StandardMapTorusBreakdown.wl}
 \end{itemize}
-They reproduce the qualitative transition from invariant curves to resonance
-islands and chaotic layers.  They are intentionally small so that the phase
-portrait can be compared directly with the perturbative derivation.
+They reproduce the transition from invariant curves to resonance islands and
+chaotic layers.  The asteroid normal-form script also computes the \(2:1\)
+disturbing-function coefficient and the corresponding width estimate, so the
+chapter contains both a universal pendulum model and one coefficient-level
+celestial calculation.

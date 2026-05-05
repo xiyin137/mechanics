@@ -212,13 +212,13 @@ unique symmetric positive square root
 \]
 The square root is constructed by the spectral theorem. Write
 \[
-  C=O\Lambda O^T,\qquad
-  \Lambda=\operatorname{diag}(\lambda_1,\lambda_2,\lambda_3),
-  \qquad \lambda_i>0,
+  C=O\Lambda_C O^T,\qquad
+  \Lambda_C=\operatorname{diag}(c_1,c_2,c_3),
+  \qquad c_i>0,
 \]
 with \(O\) orthogonal. Define
 \[
-  C^{1/2}=O\operatorname{diag}(\sqrt{\lambda_1},\sqrt{\lambda_2},\sqrt{\lambda_3})O^T.
+  C^{1/2}=O\operatorname{diag}(\sqrt{c_1},\sqrt{c_2},\sqrt{c_3})O^T.
 \]
 This matrix is symmetric positive definite and squares to \(C\). If \(S\) is
 another symmetric positive square root, then \(S\) commutes with \(C=S^2\) and
@@ -249,12 +249,15 @@ is unique, so \(R_{\mathrm p}=FU^{-1}\) and \(V=R_{\mathrm p}UR_{\mathrm p}^T\)
 are unique for every \(F\) with \(\det F>0\).
 \end{derivation}
 
-The eigenvalues of \(U\) are the principal stretches. They are intrinsic
-measurements of local length change: a unit material vector in a principal
-direction is stretched by \(\lambda_i>0\) before the rigid rotation
-\(R_{\mathrm p}\) is applied. The polar rotation is not the same thing as
-material spin; it is the rotation factor in the instantaneous deformation
-gradient.
+The eigenvalues
+\[
+  \lambda_i=\sqrt{c_i}
+\]
+of \(U\) are the principal stretches. They are intrinsic measurements of local
+length change: a unit material vector in a principal direction is stretched by
+\(\lambda_i>0\) before the rigid rotation \(R_{\mathrm p}\) is applied. The
+polar rotation is not the same thing as material spin; it is the rotation factor
+in the instantaneous deformation gradient.
 
 This distinction is the doorway to objectivity. A constitutive law for an
 ordinary elastic solid may depend on stretch invariants such as those of
@@ -641,7 +644,7 @@ Nanson's formula states
 \[
   n_i\,\dd a
   =
-  J(F^{-T})_{Ai}N_A\,\dd S.
+  J(F^{-T})_{iA}N_A\,\dd S.
 \]
 The force across the same cut can be written in material variables as
 \[
@@ -655,17 +658,17 @@ Substituting Nanson's formula gives
 \[
   P^A{}_iN_A\,\dd S
   =
-  \sigma_{ij}J(F^{-T})_{Aj}N_A\,\dd S.
+  \sigma_{ij}J(F^{-T})_{jA}N_A\,\dd S.
 \]
 Since \(N_A\) is arbitrary,
 \[
   P^A{}_i
   =
-  J\sigma_{ij}(F^{-T})_{Aj}.
+  J\sigma_{ij}(F^{-T})_{jA}.
 \]
 Multiplying by \(F^k{}_A\) and using
 \[
-  (F^{-T})_{Aj}F^k{}_A=\delta^k{}_j
+  (F^{-T})_{jA}F^k{}_A=\delta^k{}_j
 \]
 gives
 \[

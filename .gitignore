@@ -104,5 +104,14 @@ deepseek_review*.md
 
 # Local/private planning and source-extraction ledgers
 PLANNING.md
+NEXT_STAGE_DEVELOPMENT_PLAN.md
 references/*_extraction.md
 references/local/
+
+# Downloaded reference libraries are local only.
+references/asteroid_belt_resonances/
+references/**/*.pdf
+references/**/*.html
+references/**/*.htm
+references/**/*.epub
+references/**/*.djvu

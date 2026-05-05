@@ -34,7 +34,9 @@ Legendre transform, Hamiltonian flow, and symplectic phase space.  The second
 layer uses Kepler motion and rigid bodies to make that language concrete, then
 builds integrability through action-angle variables and invariant tori.  The
 third layer studies perturbation: canonical transformations, resonances, KAM
-mechanisms, breakdown of tori, and restricted three-body dynamics.  The final
+mechanisms, breakdown of tori, and three-body astrophysics from asteroid
+transport to Lidov--Kozai secular cycles and binary capture/exchange
+statistics.  The final
 layer carries the same structural ideas into continuum mechanics: elastic
 media emphasize material deformation, shape-changing bodies emphasize
 connections and holonomy, and fluids emphasize Eulerian fields, Navier-Stokes
@@ -55,8 +57,9 @@ meaning. The starting point is the configuration space and the action. From
 there the notes pass to phase space, symplectic geometry, canonical
 transformations, integrability, perturbation, chaos, elasticity, gauge
 kinematics of deformation, and fluids. Kepler motion, the rigid body, the
-standard map, the restricted Sun-Jupiter-asteroid model, deforming bodies,
-laminar flows, and point vortices are the main laboratories.
+heavy symmetric top, the standard map, restricted, secular, and scattering
+three-body models, deforming bodies, laminar flows, and point vortices are the
+main laboratories.
 
 The intended reading style is active. At each derivation, identify the space,
 the variables, the assumptions, the conserved quantities, and the geometric
@@ -99,7 +102,10 @@ role in the overall architecture:
 \text{perturbation and chaos} &\longrightarrow&
 \text{canonical perturbation, KAM, and transport},\\
 \text{three-body problem} &\longrightarrow&
-\text{celestial reduction, restricted dynamics, and ejection},\\
+\begin{gathered}
+\text{celestial reduction, restricted dynamics,}\\
+\text{scattering, and finite-time loss}
+\end{gathered},\\
 \text{elastic bodies} &\longrightarrow&
 \text{stress, strain, and boundary-value problems},\\
 \text{deforming bodies} &\longrightarrow&
@@ -146,12 +152,12 @@ part of the mechanics.
 \chapter*{Further Directions}
 
 Natural continuations include Dirac constraints and symplectic reduction,
-Delaunay variables for celestial mechanics, resonance normal forms, Arnold
-diffusion, heavy-top dynamics, numerical Poincare-section construction, and
-structure-preserving integrators for fluids and deforming bodies. Each addition
-should follow the same standard used here: state the model, define the symbols,
-derive the equations, draw the geometry, and connect the mathematics to a
-reproducible computation.
+Arnold diffusion, heavy-top dynamics, secular theory for hierarchical triples,
+more accurate disturbing-function coefficients, numerical Poincare-section
+construction, and structure-preserving integrators for fluids and deforming
+bodies. Each addition should follow the same standard used here: state the
+model, define the symbols, derive the equations, draw the geometry, and
+connect the mathematics to a reproducible computation.
 
 \chapter*{Suggested Further Reading}
 
@@ -162,12 +168,15 @@ momentum maps, see Abraham and Marsden's \emph{Foundations of Mechanics} and
 Marsden and Ratiu's \emph{Introduction to Mechanics and Symmetry}. For
 perturbation theory and KAM context, Arnold, Kozlov, and Neishtadt's
 \emph{Mathematical Aspects of Classical and Celestial Mechanics} and Holmes's
-\emph{Introduction to Perturbation Methods} are useful next steps. For fluids
-and elasticity, standard references include Batchelor's \emph{An Introduction
-to Fluid Dynamics}, Drazin and Reid's \emph{Hydrodynamic Stability}, and
-Marsden and Hughes's \emph{Mathematical Foundations of Elasticity}. For
-geometric phases and deforming bodies, read Shapere and Wilczek's original
-gauge-kinematics papers alongside modern discussions of mechanical
-connections.
+\emph{Introduction to Perturbation Methods} are useful next steps. For
+celestial mechanics and three-body applications, see Murray and Dermott's
+\emph{Solar System Dynamics}, Szebehely's \emph{Theory of Orbits}, Valtonen
+and Karttunen's \emph{The Three-Body Problem}, and Heggie and Hut's
+\emph{The Gravitational Million-Body Problem}. For fluids and elasticity,
+standard references include Batchelor's \emph{An Introduction to Fluid
+Dynamics}, Drazin and Reid's \emph{Hydrodynamic Stability}, and Marsden and
+Hughes's \emph{Mathematical Foundations of Elasticity}. For geometric phases
+and deforming bodies, read Shapere and Wilczek's original gauge-kinematics
+papers alongside modern discussions of mechanical connections.
 
 \end{document}

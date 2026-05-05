@@ -1,0 +1,480 @@
+{
+  "disturbing_function_2to1": {
+    "alpha": 0.6299605249474366,
+    "coefficient_angle": "2 lambda_J - lambda - varpi",
+    "coefficient_units_gmj_over_aj": -1.1904936978495035,
+    "finite_difference_abs_error": 1.5208900805419034e-10,
+    "finite_difference_check": -1.1904936976974145,
+    "laplace_b_half_1": 0.7568403868182974,
+    "laplace_b_half_2": 0.3653142707567062
+  },
+  "model": {
+    "a_jupiter": 5.2044,
+    "coefficient_note": "B_r(e)=eta e^r is illustrative for generic resonances; the 2:1 rows use a first-order quadrature coefficient of the heliocentric disturbing function.",
+    "curvature": 1.0,
+    "epsilon": 0.0009543,
+    "eta": 1.0,
+    "name": "resonant pendulum normal form with 2:1 disturbing-function coefficient"
+  },
+  "outputs": {
+    "json": "data/canonical/asteroid_resonance_normal_form_quick.json",
+    "plot": "figures/canonical/asteroid_resonance_normal_form_quick.png"
+  },
+  "pendulum": [
+    {
+      "phi": -3.141592653589793,
+      "separatrix_negative": -1.2246467991473532e-16,
+      "separatrix_positive": 1.2246467991473532e-16
+    },
+    {
+      "phi": -2.9845130209103035,
+      "separatrix_negative": -0.15691819145569,
+      "separatrix_positive": 0.15691819145569
+    },
+    {
+      "phi": -2.827433388230814,
+      "separatrix_negative": -0.31286893008046185,
+      "separatrix_positive": 0.31286893008046185
+    },
+    {
+      "phi": -2.670353755551324,
+      "separatrix_negative": -0.46689072771181095,
+      "separatrix_positive": 0.46689072771181095
+    },
+    {
+      "phi": -2.5132741228718345,
+      "separatrix_negative": -0.6180339887498949,
+      "separatrix_positive": 0.6180339887498949
+    },
+    {
+      "phi": -2.356194490192345,
+      "separatrix_negative": -0.7653668647301797,
+      "separatrix_positive": 0.7653668647301797
+    },
+    {
+      "phi": -2.199114857512855,
+      "separatrix_negative": -0.9079809994790937,
+      "separatrix_positive": 0.9079809994790937
+    },
+    {
+      "phi": -2.0420352248333655,
+      "separatrix_negative": -1.0449971294318978,
+      "separatrix_positive": 1.0449971294318978
+    },
+    {
+      "phi": -1.8849555921538759,
+      "separatrix_negative": -1.1755705045849463,
+      "separatrix_positive": 1.1755705045849463
+    },
+    {
+      "phi": -1.7278759594743862,
+      "separatrix_negative": -1.2988960966603673,
+      "separatrix_positive": 1.2988960966603673
+    },
+    {
+      "phi": -1.5707963267948966,
+      "separatrix_negative": -1.4142135623730951,
+      "separatrix_positive": 1.4142135623730951
+    },
+    {
+      "phi": -1.413716694115407,
+      "separatrix_negative": -1.5208119312000619,
+      "separatrix_positive": 1.5208119312000619
+    },
+    {
+      "phi": -1.2566370614359172,
+      "separatrix_negative": -1.618033988749895,
+      "separatrix_positive": 1.618033988749895
+    },
+    {
+      "phi": -1.0995574287564276,
+      "separatrix_negative": -1.7052803287081846,
+      "separatrix_positive": 1.7052803287081846
+    },
+    {
+      "phi": -0.9424777960769379,
+      "separatrix_negative": -1.7820130483767358,
+      "separatrix_positive": 1.7820130483767358
+    },
+    {
+      "phi": -0.7853981633974483,
+      "separatrix_negative": -1.8477590650225735,
+      "separatrix_positive": 1.8477590650225735
+    },
+    {
+      "phi": -0.6283185307179586,
+      "separatrix_negative": -1.902113032590307,
+      "separatrix_positive": 1.902113032590307
+    },
+    {
+      "phi": -0.47123889803846897,
+      "separatrix_negative": -1.9447398407953531,
+      "separatrix_positive": 1.9447398407953531
+    },
+    {
+      "phi": -0.3141592653589793,
+      "separatrix_negative": -1.9753766811902755,
+      "separatrix_positive": 1.9753766811902755
+    },
+    {
+      "phi": -0.15707963267948966,
+      "separatrix_negative": -1.993834667466256,
+      "separatrix_positive": 1.993834667466256
+    },
+    {
+      "phi": 0.0,
+      "separatrix_negative": -2.0,
+      "separatrix_positive": 2.0
+    },
+    {
+      "phi": 0.15707963267948966,
+      "separatrix_negative": -1.993834667466256,
+      "separatrix_positive": 1.993834667466256
+    },
+    {
+      "phi": 0.3141592653589793,
+      "separatrix_negative": -1.9753766811902755,
+      "separatrix_positive": 1.9753766811902755
+    },
+    {
+      "phi": 0.47123889803846897,
+      "separatrix_negative": -1.9447398407953531,
+      "separatrix_positive": 1.9447398407953531
+    },
+    {
+      "phi": 0.6283185307179586,
+      "separatrix_negative": -1.902113032590307,
+      "separatrix_positive": 1.902113032590307
+    },
+    {
+      "phi": 0.7853981633974483,
+      "separatrix_negative": -1.8477590650225735,
+      "separatrix_positive": 1.8477590650225735
+    },
+    {
+      "phi": 0.9424777960769379,
+      "separatrix_negative": -1.7820130483767358,
+      "separatrix_positive": 1.7820130483767358
+    },
+    {
+      "phi": 1.0995574287564276,
+      "separatrix_negative": -1.7052803287081846,
+      "separatrix_positive": 1.7052803287081846
+    },
+    {
+      "phi": 1.2566370614359172,
+      "separatrix_negative": -1.618033988749895,
+      "separatrix_positive": 1.618033988749895
+    },
+    {
+      "phi": 1.413716694115407,
+      "separatrix_negative": -1.5208119312000619,
+      "separatrix_positive": 1.5208119312000619
+    },
+    {
+      "phi": 1.5707963267948966,
+      "separatrix_negative": -1.4142135623730951,
+      "separatrix_positive": 1.4142135623730951
+    },
+    {
+      "phi": 1.7278759594743862,
+      "separatrix_negative": -1.2988960966603673,
+      "separatrix_positive": 1.2988960966603673
+    },
+    {
+      "phi": 1.8849555921538759,
+      "separatrix_negative": -1.1755705045849463,
+      "separatrix_positive": 1.1755705045849463
+    },
+    {
+      "phi": 2.0420352248333655,
+      "separatrix_negative": -1.0449971294318978,
+      "separatrix_positive": 1.0449971294318978
+    },
+    {
+      "phi": 2.199114857512855,
+      "separatrix_negative": -0.9079809994790937,
+      "separatrix_positive": 0.9079809994790937
+    },
+    {
+      "phi": 2.356194490192345,
+      "separatrix_negative": -0.7653668647301797,
+      "separatrix_positive": 0.7653668647301797
+    },
+    {
+      "phi": 2.5132741228718345,
+      "separatrix_negative": -0.6180339887498949,
+      "separatrix_positive": 0.6180339887498949
+    },
+    {
+      "phi": 2.670353755551324,
+      "separatrix_negative": -0.46689072771181095,
+      "separatrix_positive": 0.46689072771181095
+    },
+    {
+      "phi": 2.827433388230814,
+      "separatrix_negative": -0.31286893008046185,
+      "separatrix_positive": 0.31286893008046185
+    },
+    {
+      "phi": 2.9845130209103035,
+      "separatrix_negative": -0.15691819145569,
+      "separatrix_positive": 0.15691819145569
+    },
+    {
+      "phi": 3.141592653589793,
+      "separatrix_negative": -1.2246467991473532e-16,
+      "separatrix_positive": 1.2246467991473532e-16
+    }
+  ],
+  "resonances": [
+    {
+      "a_au": 2.502014554569292,
+      "label": "3:1",
+      "order": 2,
+      "p": 3,
+      "q": 1
+    },
+    {
+      "a_au": 2.8253830087613063,
+      "label": "5:2",
+      "order": 3,
+      "p": 5,
+      "q": 2
+    },
+    {
+      "a_au": 2.9583721903965685,
+      "label": "7:3",
+      "order": 4,
+      "p": 7,
+      "q": 3
+    },
+    {
+      "a_au": 3.2785665560364388,
+      "label": "2:1",
+      "order": 1,
+      "p": 2,
+      "q": 1
+    }
+  ],
+  "width_2to1_disturbing_function": [
+    {
+      "coefficient_units_gmj_over_aj": -1.1904936978495035,
+      "eccentricity": 0.01,
+      "full_width_au": 0.04051128736955998,
+      "half_width_au": 0.02025564368477999,
+      "resonance": "2:1",
+      "semimajor_axis_au": 3.2785665560364388
+    },
+    {
+      "coefficient_units_gmj_over_aj": -1.1904936978495035,
+      "eccentricity": 0.06799999999999999,
+      "full_width_au": 0.10564051282299644,
+      "half_width_au": 0.05282025641149822,
+      "resonance": "2:1",
+      "semimajor_axis_au": 3.2785665560364388
+    },
+    {
+      "coefficient_units_gmj_over_aj": -1.1904936978495035,
+      "eccentricity": 0.126,
+      "full_width_au": 0.14380080491663558,
+      "half_width_au": 0.07190040245831779,
+      "resonance": "2:1",
+      "semimajor_axis_au": 3.2785665560364388
+    },
+    {
+      "coefficient_units_gmj_over_aj": -1.1904936978495035,
+      "eccentricity": 0.184,
+      "full_width_au": 0.17377406319655095,
+      "half_width_au": 0.08688703159827547,
+      "resonance": "2:1",
+      "semimajor_axis_au": 3.2785665560364388
+    },
+    {
+      "coefficient_units_gmj_over_aj": -1.1904936978495035,
+      "eccentricity": 0.242,
+      "full_width_au": 0.1992891833116025,
+      "half_width_au": 0.09964459165580125,
+      "resonance": "2:1",
+      "semimajor_axis_au": 3.2785665560364388
+    },
+    {
+      "coefficient_units_gmj_over_aj": -1.1904936978495035,
+      "eccentricity": 0.3,
+      "full_width_au": 0.22188945925882128,
+      "half_width_au": 0.11094472962941064,
+      "resonance": "2:1",
+      "semimajor_axis_au": 3.2785665560364388
+    }
+  ],
+  "width_scaling": [
+    {
+      "coefficient_model": 0.0001,
+      "eccentricity": 0.01,
+      "half_width_action_units": 0.0006178349294107611,
+      "order": 2,
+      "resonance": "3:1"
+    },
+    {
+      "coefficient_model": 0.004623999999999999,
+      "eccentricity": 0.06799999999999999,
+      "half_width_action_units": 0.004201277519993174,
+      "order": 2,
+      "resonance": "3:1"
+    },
+    {
+      "coefficient_model": 0.015876,
+      "eccentricity": 0.126,
+      "half_width_action_units": 0.007784720110575589,
+      "order": 2,
+      "resonance": "3:1"
+    },
+    {
+      "coefficient_model": 0.033856,
+      "eccentricity": 0.184,
+      "half_width_action_units": 0.011368162701158,
+      "order": 2,
+      "resonance": "3:1"
+    },
+    {
+      "coefficient_model": 0.058564,
+      "eccentricity": 0.242,
+      "half_width_action_units": 0.014951605291740416,
+      "order": 2,
+      "resonance": "3:1"
+    },
+    {
+      "coefficient_model": 0.09,
+      "eccentricity": 0.3,
+      "half_width_action_units": 0.01853504788232283,
+      "order": 2,
+      "resonance": "3:1"
+    },
+    {
+      "coefficient_model": 1.0000000000000002e-06,
+      "eccentricity": 0.01,
+      "half_width_action_units": 6.17834929410761e-05,
+      "order": 3,
+      "resonance": "5:2"
+    },
+    {
+      "coefficient_model": 0.00031443199999999985,
+      "eccentricity": 0.06799999999999999,
+      "half_width_action_units": 0.0010955591405305328,
+      "order": 3,
+      "resonance": "5:2"
+    },
+    {
+      "coefficient_model": 0.002000376,
+      "eccentricity": 0.126,
+      "half_width_action_units": 0.002763301515795915,
+      "order": 3,
+      "resonance": "5:2"
+    },
+    {
+      "coefficient_model": 0.006229503999999999,
+      "eccentricity": 0.184,
+      "half_width_action_units": 0.004876398534656494,
+      "order": 3,
+      "resonance": "5:2"
+    },
+    {
+      "coefficient_model": 0.014172487999999999,
+      "eccentricity": 0.242,
+      "half_width_action_units": 0.0073552172771169716,
+      "order": 3,
+      "resonance": "5:2"
+    },
+    {
+      "coefficient_model": 0.026999999999999996,
+      "eccentricity": 0.3,
+      "half_width_action_units": 0.010152063829586572,
+      "order": 3,
+      "resonance": "5:2"
+    },
+    {
+      "coefficient_model": 1e-08,
+      "eccentricity": 0.01,
+      "half_width_action_units": 6.17834929410761e-06,
+      "order": 4,
+      "resonance": "7:3"
+    },
+    {
+      "coefficient_model": 2.138137599999999e-05,
+      "eccentricity": 0.06799999999999999,
+      "half_width_action_units": 0.0002856868713595358,
+      "order": 4,
+      "resonance": "7:3"
+    },
+    {
+      "coefficient_model": 0.000252047376,
+      "eccentricity": 0.126,
+      "half_width_action_units": 0.0009808747339325242,
+      "order": 4,
+      "resonance": "7:3"
+    },
+    {
+      "coefficient_model": 0.0011462287359999999,
+      "eccentricity": 0.184,
+      "half_width_action_units": 0.0020917419370130724,
+      "order": 4,
+      "resonance": "7:3"
+    },
+    {
+      "coefficient_model": 0.0034297420959999996,
+      "eccentricity": 0.242,
+      "half_width_action_units": 0.0036182884806011803,
+      "order": 4,
+      "resonance": "7:3"
+    },
+    {
+      "coefficient_model": 0.0081,
+      "eccentricity": 0.3,
+      "half_width_action_units": 0.005560514364696849,
+      "order": 4,
+      "resonance": "7:3"
+    },
+    {
+      "coefficient_model": 0.01,
+      "eccentricity": 0.01,
+      "half_width_action_units": 0.0061783492941076094,
+      "order": 1,
+      "resonance": "2:1"
+    },
+    {
+      "coefficient_model": 0.06799999999999999,
+      "eccentricity": 0.06799999999999999,
+      "half_width_action_units": 0.016111163831331366,
+      "order": 1,
+      "resonance": "2:1"
+    },
+    {
+      "coefficient_model": 0.126,
+      "eccentricity": 0.126,
+      "half_width_action_units": 0.02193096441107869,
+      "order": 1,
+      "resonance": "2:1"
+    },
+    {
+      "coefficient_model": 0.184,
+      "eccentricity": 0.184,
+      "half_width_action_units": 0.026502165949220075,
+      "order": 1,
+      "resonance": "2:1"
+    },
+    {
+      "coefficient_model": 0.242,
+      "eccentricity": 0.242,
+      "half_width_action_units": 0.030393459822797404,
+      "order": 1,
+      "resonance": "2:1"
+    },
+    {
+      "coefficient_model": 0.3,
+      "eccentricity": 0.3,
+      "half_width_action_units": 0.03384021276528858,
+      "order": 1,
+      "resonance": "2:1"
+    }
+  ]
+}

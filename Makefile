@@ -3,7 +3,7 @@ WOLFRAM ?= /Applications/Wolfram.app/Contents/MacOS/WolframKernel
 PYCACHE ?= .pycache-build
 MPLCACHE ?= .matplotlib-cache
 
-.PHONY: smoke test mathematica-smoke asteroid-demo asteroid-accelerated-demo cr3bp-demo cr3bp-zerovel-demo rigid-body-demo standard-map-demo torus-breakdown-demo standard-map-breakdown-demo henon-heiles-demo pendulum-demo fluids-demo navier-stokes-demo elasticity-demo rod-demo notes clean
+.PHONY: smoke test mathematica-smoke asteroid-demo asteroid-accelerated-demo asteroid-normal-form-demo binary-capture-demo three-body-benchmark-demo lidov-kozai-demo cr3bp-demo cr3bp-zerovel-demo rigid-body-demo heavy-top-demo standard-map-demo torus-breakdown-demo standard-map-breakdown-demo henon-heiles-demo pendulum-demo fluids-demo navier-stokes-demo elasticity-demo rod-demo notes clean
 
 smoke:
 	env PYTHONPYCACHEPREFIX=$(PYCACHE) $(PYTHON) -m compileall -q demos/python
@@ -14,6 +14,7 @@ test:
 
 mathematica-smoke:
 	$(WOLFRAM) -script demos/mathematica/AsteroidEjectionProbability.wl
+	$(WOLFRAM) -script demos/mathematica/AsteroidResonanceNormalForm.wl
 	$(WOLFRAM) -script demos/mathematica/CircularRestrictedThreeBody.wl
 	$(WOLFRAM) -script demos/mathematica/GaugeDeformingBody.wl
 	$(WOLFRAM) -script demos/mathematica/LinearElasticity.wl
@@ -34,6 +35,26 @@ asteroid-accelerated-demo: figures/ejection_accelerated_demo.png
 figures/ejection_accelerated_demo.png: demos/python/asteroid_ejection_probability.py | figures data
 	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) $(PYTHON) demos/python/asteroid_ejection_probability.py --n 128 --years 50 --dt 0.02 --bins 12 --jupiter-mass-scale 25 --seed 4 --plot figures/ejection_accelerated_demo.png --csv data/ejection_accelerated_demo.csv
 
+asteroid-normal-form-demo: figures/asteroid_resonance_normal_form.png
+
+figures/asteroid_resonance_normal_form.png: demos/python/asteroid_resonance_normal_form.py | figures data
+	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) $(PYTHON) demos/python/asteroid_resonance_normal_form.py --quick --plot figures/asteroid_resonance_normal_form.png --csv data/asteroid_resonance_normal_form_widths.csv
+
+binary-capture-demo: figures/binary_capture_scattering.png
+
+figures/binary_capture_scattering.png: demos/python/binary_capture_scattering.py | figures data
+	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) $(PYTHON) demos/python/binary_capture_scattering.py --quick --plot figures/binary_capture_scattering.png --json-output data/binary_capture_scattering_quick.json
+
+three-body-benchmark-demo: figures/three_body_benchmark_quick.png
+
+figures/three_body_benchmark_quick.png: demos/python/three_body_benchmark_studies.py demos/python/asteroid_ejection_probability.py demos/python/binary_capture_scattering.py | figures data
+	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) $(PYTHON) demos/python/three_body_benchmark_studies.py --quick --plot figures/three_body_benchmark_quick.png --json-output data/three_body_benchmark_quick.json
+
+lidov-kozai-demo: figures/lidov_kozai.png
+
+figures/lidov_kozai.png: demos/python/lidov_kozai.py | figures
+	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) $(PYTHON) demos/python/lidov_kozai.py --quick --plot figures/lidov_kozai.png
+
 cr3bp-demo: figures/cr3bp_zero_velocity.png
 
 cr3bp-zerovel-demo: cr3bp-demo
@@ -45,6 +66,11 @@ rigid-body-demo: figures/rigid_body_euler_top.png
 
 figures/rigid_body_euler_top.png: demos/python/rigid_body_euler_top.py | figures
 	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) $(PYTHON) demos/python/rigid_body_euler_top.py --plot figures/rigid_body_euler_top.png
+
+heavy-top-demo: figures/heavy_symmetric_top.png
+
+figures/heavy_symmetric_top.png: demos/python/heavy_symmetric_top.py | figures
+	env PYTHONPYCACHEPREFIX=$(PYCACHE) MPLCONFIGDIR=$(MPLCACHE) $(PYTHON) demos/python/heavy_symmetric_top.py --quick --plot figures/heavy_symmetric_top.png
 
 standard-map-demo: figures/standard_map.png
 

@@ -20,6 +20,11 @@ Matplotlib.
 python -m compileall -q demos/python
 python demos/python/circular_restricted_three_body.py --quick
 python demos/python/asteroid_ejection_probability.py --quick --no-plot
+python demos/python/asteroid_resonance_normal_form.py --quick
+python demos/python/binary_capture_scattering.py --quick
+python demos/python/lidov_kozai.py --quick
+python demos/python/heavy_symmetric_top.py --quick
+python demos/python/three_body_benchmark_studies.py --quick
 ```
 
 The repository test suite exercises all core scripts:
@@ -39,12 +44,17 @@ python demos/python/standard_map.py --quick --json
 python demos/python/standard_map_torus_breakdown.py --quick --json
 python demos/python/henon_heiles_poincare.py --quick --json
 python demos/python/circular_restricted_three_body.py --quick --json
+python demos/python/lidov_kozai.py --quick --json
 python demos/python/asteroid_ejection_probability.py --quick --no-plot --json
+python demos/python/asteroid_resonance_normal_form.py --quick --json
+python demos/python/binary_capture_scattering.py --quick --json
+python demos/python/three_body_benchmark_studies.py --quick --json
 python demos/python/linear_elasticity.py --quick --json
 python demos/python/navier_stokes_solutions.py --quick --json
 python demos/python/deforming_body_gauge.py --quick --json
 python demos/python/cosserat_rod_demo.py --quick --json
 python demos/python/fluids_vorticity.py --quick --json
+python demos/python/heavy_symmetric_top.py --quick --json
 ```
 
 Selected runs can write persistent JSON and figures:
@@ -75,6 +85,47 @@ python demos/python/asteroid_ejection_probability.py \
   --plot figures/ejection_demo.png
 ```
 
+The resonance-normal-form script is the fast analytic companion to the
+asteroid ensemble.  It computes nominal resonance locations, illustrative
+pendulum width scaling, and a genuine first-order disturbing-function
+coefficient for the 2:1 resonance:
+
+```sh
+python demos/python/asteroid_resonance_normal_form.py \
+  --quick \
+  --csv data/asteroid_resonance_normal_form_widths.csv \
+  --plot figures/asteroid_resonance_normal_form.png
+```
+
+The binary-scattering script is a parallel three-body probability experiment.
+It samples binary-single encounters and reports ensemble-dependent finite-time
+capture, exchange, ionization, flyby, and collision statistics.  The `--v-inf`
+parameter is the asymptotic incoming speed; the script derives the finite launch
+speed from the initial interaction energy.
+
+```sh
+python demos/python/binary_capture_scattering.py \
+  --quick \
+  --json-output data/binary_capture_scattering_quick.json \
+  --plot figures/binary_capture_scattering.png
+```
+
+The Lidov-Kozai and heavy-top scripts are analytic/reduced phase-space labs:
+
+```sh
+python demos/python/lidov_kozai.py --quick --plot figures/lidov_kozai.png
+python demos/python/heavy_symmetric_top.py --quick --plot figures/heavy_symmetric_top.png
+```
+
+The benchmark driver runs a compact pair of statistical three-body studies:
+
+```sh
+python demos/python/three_body_benchmark_studies.py \
+  --quick \
+  --json-output data/three_body_benchmark_quick.json \
+  --plot figures/three_body_benchmark_quick.png
+```
+
 For finite-time sensitivity checks in the asteroid lab:
 
 ```sh
@@ -88,20 +139,39 @@ python demos/python/asteroid_ejection_probability.py \
 The JSON summaries are designed for lab records.  They include the model,
 configuration, integrator note, diagnostic quantities, output paths, and, for
 the asteroid ensemble, binomial standard errors, resonance-window diagnostics,
-and optional sensitivity rows.
+survival checkpoints, per-particle outcome rows, and optional sensitivity rows.
+For binary scattering, the JSON records the sampling rule, exclusive outcome
+fractions, derived capture-or-exchange count, cross-section estimates,
+finite-launch speed diagnostics, and energy-drift diagnostics.
+The benchmark JSON records aggregate asteroid loss bins across seeds and a
+binary-scattering cross-section sweep over \(v_\infty\).
 
 ## Numerical Diagnostics
 
 - Rigid-body runs monitor energy, angular momentum, attitude orthogonality, and
   determinant drift.
+- Heavy-top runs monitor the one-dimensional effective-potential reduction and
+  energy drift during nutation.
 - Hamiltonian pendulum and standard-map runs illustrate structure-preserving
   behavior and area preservation.
 - Henon-Heiles runs generate genuine Poincare sections on \(y=0,\ p_y>0\) and
   report energy drift for the velocity-Verlet integration.
 - CR3BP runs report Jacobi drift.  RK4 is transparent, but it is not a
   structure-preserving long-time integrator.
+- Lidov-Kozai runs report the conserved \(j\cos i\), the critical inclination,
+  the tiny regularizing eccentricity used when the requested initial orbit is
+  exactly circular, Hamiltonian drift, chart-boundary termination diagnostics,
+  and the maximum eccentricity for the initially circular limit.
 - Asteroid ensemble runs report loss counts, ejection probability, loss
-  probability, and binned standard errors.
+  probability, binned standard errors, nearest-resonance summaries, and
+  survival curves.
+- Resonance-normal-form runs report nominal Jovian resonance locations, the
+  generic scaling, and the computed 2:1 disturbing-function width estimate.
+- Binary-scattering runs report finite-horizon binding-energy outcome classes,
+  launch-speed diagnostics, and cross sections for the stated
+  impact-parameter sampling rule.
+- Three-body benchmark runs report aggregate asteroid loss statistics and
+  binary capture/exchange cross sections with finite-sample error estimates.
 - Fluid and elasticity demos compare formulas, residuals, or boundary values
   against exact expressions.
 

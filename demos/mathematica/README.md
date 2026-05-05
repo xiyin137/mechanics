@@ -31,6 +31,7 @@ make mathematica-smoke WOLFRAM=/path/to/WolframKernel
 | `StandardMapTorusBreakdown.wl` | standard-map phase portraits and torus breakup |
 | `CircularRestrictedThreeBody.wl` | CR3BP Lagrange points and Jacobi diagnostics |
 | `AsteroidEjectionProbability.wl` | small restricted-asteroid ensemble |
+| `AsteroidResonanceNormalForm.wl` | nominal Jovian resonances and pendulum width scaling |
 | `LinearElasticity.wl` | elastic constants and formula checks |
 | `GaugeDeformingBody.wl` | shape loops, connection, and holonomy |
 | `NavierStokesSolutions.wl` | exact laminar-flow and vortex formulas |

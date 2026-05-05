@@ -43,10 +43,15 @@ figure path.
 | lab | main script | chapter |
 | --- | --- | --- |
 | rigid-body invariants and reconstruction | `python/rigid_body_euler_top.py` | Integrability and the Rigid Body |
+| heavy symmetric top nutation | `python/heavy_symmetric_top.py` | Integrability and the Rigid Body |
 | standard-map torus breakdown | `python/standard_map_torus_breakdown.py` | Perturbation, KAM, and Breakdown |
 | Henon-Heiles Poincare sections | `python/henon_heiles_poincare.py` | Perturbation, KAM, and Breakdown |
+| asteroid resonance normal form | `python/asteroid_resonance_normal_form.py` | Perturbation, KAM, and Breakdown |
 | CR3BP and zero-velocity curves | `python/circular_restricted_three_body.py` | The Three-Body Problem |
+| Lidov-Kozai secular cycles | `python/lidov_kozai.py` | The Three-Body Problem |
 | asteroid ejection probability | `python/asteroid_ejection_probability.py` | The Three-Body Problem |
+| binary capture and exchange scattering | `python/binary_capture_scattering.py` | The Three-Body Problem |
+| benchmark three-body statistics | `python/three_body_benchmark_studies.py` | The Three-Body Problem |
 | elastic constants and boundary formulas | `python/linear_elasticity.py` | Elastic Bodies |
 | gauge holonomy of a deforming body | `python/deforming_body_gauge.py` | Gauge Theory of Deforming Bodies |
 | exact Navier-Stokes flows | `python/navier_stokes_solutions.py` | Fluid Mechanics |

@@ -30,6 +30,10 @@ Jacobi integral, zero-velocity curves, Lagrange point locations\\
 heliocentric Sun-Jupiter-asteroid ensemble &
 Sun and prescribed Jupiter, many noninteracting massless test particles &
 loss classification, binned ejection probability, resonance labels\\
+binary-single scattering ensemble &
+one bound pair and one incoming body in inertial barycentric coordinates &
+binding-energy outcome classification, capture/exchange fractions, cross
+sections\\
 \hline
 \end{tabular}
 \end{center}
@@ -38,6 +42,9 @@ The first model is autonomous and Hamiltonian.  The circular restricted model
 is autonomous only after passing to the rotating frame.  The heliocentric
 ensemble used for the asteroid lab is a time-dependent restricted model
 because Jupiter is prescribed as a moving source.
+The binary-single scattering model is again an autonomous Newtonian three-body
+problem, but the observable is different: one samples incoming scattering data
+and classifies outgoing binding states.
 
 \section{Units And Equations}
 \label{sec:three-body-numerical-units}
@@ -85,6 +92,35 @@ The Jacobi integral is
 \]
 The printed value of \(\max_t |C(t)-C(0)|\) is a numerical error diagnostic.
 
+For binary-single scattering demos, the natural inertial coordinates are
+barycentric.  The equations are the full Newtonian equations
+\[
+  \ddot q_i
+  =
+  \sum_{j\ne i}Gm_j\frac{q_j-q_i}{|q_j-q_i|^3},
+  \qquad i=1,2,3.
+\]
+The center-of-mass position and velocity should be subtracted from the initial
+data.  The diagnostic is the drift in total energy
+\[
+  H=\sum_i\frac12m_i|\dot q_i|^2
+  -
+  \sum_{i<j}\frac{Gm_im_j}{|q_i-q_j|}
+\]
+and, when relevant, the drift in total angular momentum.  At the end of a
+scattering integration, pair binding energies
+\[
+  E_{ij}
+  =
+  \frac12\mu_{ij}|v_i-v_j|^2-\frac{Gm_im_j}{|q_i-q_j|},
+  \qquad
+  \mu_{ij}=\frac{m_im_j}{m_i+m_j},
+\]
+identify which pair, if any, remains bound.  Negative \(E_{ij}\) means that the
+pair is instantaneously bound in the two-body sense; an outcome classifier must
+also check that the third body is receding and that the result is stable over
+the stated stopping time.
+
 \section{Initial Ensembles}
 \label{sec:three-body-initial-ensembles}
 
@@ -128,6 +164,44 @@ random seed is part of the experiment.  Two reported probabilities are
 comparable only when the sampling law, seed policy, time horizon, and loss
 thresholds are stated.
 
+For a binary-single scattering laboratory, a minimal ensemble specifies
+\[
+  m_1,m_2,m_3,\qquad a_{\rm bin},e_{\rm bin},\qquad
+  v_\infty,\qquad b,\qquad \text{binary phase}.
+\]
+In a planar equal-mass classroom version one may take a circular initial binary
+and sample the binary phase uniformly.  If impact parameters are sampled
+uniformly in area, use
+\[
+  b=b_{\max}\sqrt u,\qquad u\sim U(0,1),
+\]
+not \(b\sim U(0,b_{\max})\).  Uniform sampling in \(b\) and uniform sampling in
+area estimate different integrals, so the convention must be printed with any
+capture cross section.
+
+The symbol \(v_\infty\) denotes the relative speed of the incoming body and the
+binary center of mass at infinite separation.  A code that begins at a finite
+launch radius \(R_0\) should not use \(v_\infty\) itself as the launch speed.
+Let \(\mu_{\rm out}=m_3(m_1+m_2)/(m_1+m_2+m_3)\), and let \(r_{13}\) and
+\(r_{23}\) be the initial distances from the incoming body to the two binary
+members.  The finite-start speed \(v_{\rm launch}\) should satisfy
+\[
+  \frac12\mu_{\rm out}v_{\rm launch}^2
+  -Gm_3\left(\frac{m_1}{r_{13}}+\frac{m_2}{r_{23}}\right)
+  =
+  \frac12\mu_{\rm out}v_\infty^2 .
+\]
+For \(R_0\gg a_{\rm bin}\), this reduces to the familiar monopole estimate
+\[
+  v_{\rm launch}
+  \simeq
+  \left(v_\infty^2+\frac{2G(m_1+m_2+m_3)}{R_0}\right)^{1/2}.
+\]
+The planar demo uses signed impact parameters for the trajectories but reports
+the conventional axisymmetric area cross section.  Thus uniform-in-area
+sampling estimates \(\int_0^{b_{\max}}2\pi b\,P(b)\,\dd b\), while uniform
+sampling in \(b\) requires the corresponding \(2\pi b\) weight.
+
 \section{Loss Classification}
 \label{sec:three-body-loss-classification}
 
@@ -148,6 +222,30 @@ The Kepler energy used in the first line is
 This energy is not an invariant of the perturbed problem.  It is used only as
 a practical escape indicator.  The ejection radius and close-encounter radius
 therefore must be printed with the output.
+
+For binary-single scattering the absorbing classes are different.  A compact
+classroom classifier can use the final pair energies \(E_{ij}\):
+\[
+\begin{array}{lll}
+\text{flyby} &:& \text{the original pair remains the only bound pair},\\[1mm]
+\text{exchange} &:& \text{a different pair is the most bound outgoing pair},\\[1mm]
+\text{capture} &:& \text{the incoming body remains bound by the stated
+criterion},\\[1mm]
+\text{ionization} &:& E_{12},E_{13},E_{23}\ge0,\\[1mm]
+\text{collision/close encounter} &:& |q_i-q_j|<R_{\rm close}
+\text{ for some pair}.
+\end{array}
+\]
+The labels depend on the initial state.  If bodies \(1\) and \(2\) are the
+initial binary and body \(3\) is incoming, then a final bound pair \((1,3)\) or
+\((2,3)\) is naturally called an exchange.  In a capture problem where an
+initially unbound object becomes bound to a binary or to one component, the
+same final binding-energy calculation may be summarized as a capture event.
+The code must state which language it is using.
+In conservative Newtonian dynamics such a capture label is a finite-horizon
+binding-energy classification.  A temporarily bound triple can later dissolve,
+so permanent capture requires either an additional stability criterion, a much
+longer integration protocol, dissipation, or interaction with further bodies.
 
 \section{Time Integration And Invariant Drift}
 \label{sec:three-body-time-integration-protocol}
@@ -239,6 +337,33 @@ time step reduces discretization error.  Increasing the horizon changes the
 event being estimated.  These limits answer different questions and should not
 be conflated.
 
+If \(T_i\) is the first loss time of particle \(i\), a no-censoring classroom
+survival curve is
+\[
+  \widehat S(t)
+  =
+  \frac{1}{N}\sum_{i=1}^N{\bf 1}\{T_i>t\}.
+\]
+This curve is nonincreasing in \(t\).  It is often more informative than a
+single terminal probability because it shows whether losses happen in an early
+burst or through a long tail.  Kaplan-Meier machinery is unnecessary unless the
+experiment introduces censoring beyond the finite integration horizon.
+
+The binary-scattering analogue is an outcome fraction or a cross section.  For
+uniform sampling in area on \(0\le b\le b_{\max}\),
+\[
+  \widehat\sigma_{\rm cap}
+  =
+  \pi b_{\max}^2\frac{N_{\rm cap}}{N},
+  \qquad
+  \widehat\sigma_{\rm exch}
+  =
+  \pi b_{\max}^2\frac{N_{\rm exch}}{N}.
+\]
+These formulas estimate the cross section for the chosen \(v_\infty\), binary
+elements, stopping rule, and classifier.  They should not be quoted without
+those inputs.
+
 \section{Bootstrap Intervals And Resonance Windows}
 \label{sec:three-body-bootstrap-resonance-windows}
 
@@ -279,8 +404,47 @@ resonance is
 where \(\lambda_J\) is Jupiter's mean longitude, \(\lambda\) is the asteroid's
 mean longitude, and \(\varpi\) is the asteroid periapse longitude.  Libration
 of \(\phi_{p:q}\) is stronger evidence of resonant behavior than proximity in
-initial semimajor axis alone.  The present demo labels bins by nominal
-locations; an upgraded project version can add resonant-angle time series.
+initial semimajor axis alone.  The upgraded demo reports nominal resonance
+locations, nearest-resonance labels, finite-window loss fractions, and survival
+checkpoints.  A long project version can add full resonant-angle time series;
+the quick classroom version keeps the output small and deterministic.
+
+\section{Machine-Readable Output Contracts}
+\label{sec:three-body-output-contracts}
+
+The JSON output of the asteroid demo should contain at least:
+\[
+\begin{array}{ll}
+\texttt{model} & \text{equations, units, masses, and integrator},\\
+\texttt{integration} & \text{time horizon, timestep, elapsed time},\\
+\texttt{ensemble} & \text{sampling law and random seed},\\
+\texttt{resonances} & \text{labels, ratios, and nominal locations},\\
+\texttt{summary\_by\_bin} & \text{binned loss and ejection fractions},\\
+\texttt{summary\_by\_resonance} & \text{finite-window resonance diagnostics},\\
+\texttt{survival\_curve} & \text{finite-time survival checkpoints},\\
+\texttt{diagnostics} & \text{global counts and numerical metadata}.
+\end{array}
+\]
+Additional keys may appear, but these names are stable enough for tests and lab
+notebooks.  The text output can be human-readable; the JSON output is the lab
+record.
+
+The JSON output of a binary-scattering demo should contain:
+\[
+\begin{array}{ll}
+\texttt{model} & \text{Newtonian three-body masses and units},\\
+\texttt{ensemble} & \text{binary elements, }v_\infty,b_{\max},
+  \text{ sampling rule},\\
+\texttt{integration} & \text{step size, horizon, and stopping criteria},\\
+\texttt{outcome\_counts} & \text{flyby, capture, exchange, ionization,
+  collision},\\
+\texttt{outcome\_fractions} & \text{the same counts divided by }N,\\
+\texttt{cross\_sections} & \text{reported only with the sampling convention},\\
+\texttt{diagnostics} & \text{energy drift and close-approach data}.
+\end{array}
+\]
+Tests should verify that fractions lie in \([0,1]\), sum to one over the
+exclusive outcome classes, and that cross sections are nonnegative.
 
 \section{Convergence Table Template}
 \label{sec:three-body-convergence-template}
@@ -320,6 +484,9 @@ A publication-quality classroom run should report:
 \end{enumerate}
 
 The flagship asteroid script now follows this standard closely enough that its
-text, CSV, and JSON outputs can be used as lab records.  A more advanced
-version could add symplectic extended-phase integration, adaptive encounter
-handling, and comparison against a high-accuracy reference integrator.
+text, CSV, and JSON outputs can be used as lab records.  For a binary-scattering
+run, replace the semimajor-axis bins by the impact-parameter sampling rule,
+outcome classifier, binding-energy table, and cross-section estimator.  A more
+advanced version of either experiment could add symplectic extended-phase
+integration, adaptive encounter handling, and comparison against a
+high-accuracy reference integrator.

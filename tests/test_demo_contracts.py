@@ -61,17 +61,22 @@ def test_python_demos_compile() -> None:
 def test_major_python_demos_expose_help() -> None:
     scripts = [
         "asteroid_ejection_probability.py",
+        "asteroid_resonance_normal_form.py",
+        "binary_capture_scattering.py",
         "circular_restricted_three_body.py",
         "cosserat_rod_demo.py",
         "deforming_body_gauge.py",
         "fluids_vorticity.py",
         "hamiltonian_pendulum.py",
+        "heavy_symmetric_top.py",
         "henon_heiles_poincare.py",
         "linear_elasticity.py",
+        "lidov_kozai.py",
         "navier_stokes_solutions.py",
         "rigid_body_euler_top.py",
         "standard_map.py",
         "standard_map_torus_breakdown.py",
+        "three_body_benchmark_studies.py",
     ]
     for script in scripts:
         result = run_python_demo("demos/python/" + script, "--help")
@@ -82,6 +87,7 @@ def test_major_python_demos_expose_help() -> None:
 def test_core_demos_run_small_cases() -> None:
     run_python_demo("demos/python/rigid_body_euler_top.py", "--steps", "20")
     run_python_demo("demos/python/hamiltonian_pendulum.py", "--steps", "20")
+    run_python_demo("demos/python/heavy_symmetric_top.py", "--quick")
     run_python_demo("demos/python/standard_map.py", "--orbits", "3", "--steps", "5")
     run_python_demo("demos/python/standard_map_torus_breakdown.py", "--orbits", "4", "--steps", "8")
     run_python_demo("demos/python/henon_heiles_poincare.py", "--quick")
@@ -91,6 +97,10 @@ def test_core_demos_run_small_cases() -> None:
     run_python_demo("demos/python/cosserat_rod_demo.py", "--points", "20")
     run_python_demo("demos/python/deforming_body_gauge.py", "--delta-alpha", "0.05", "--delta-beta", "0.04")
     run_python_demo("demos/python/circular_restricted_three_body.py", "--periods", "0.05", "--dt", "0.02")
+    run_python_demo("demos/python/lidov_kozai.py", "--quick")
+    run_python_demo("demos/python/asteroid_resonance_normal_form.py", "--quick")
+    run_python_demo("demos/python/binary_capture_scattering.py", "--quick", "--samples", "4")
+    run_python_demo("demos/python/three_body_benchmark_studies.py", "--quick")
 
 
 @pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
@@ -114,12 +124,17 @@ def test_asteroid_ejection_probability_runs_small_case() -> None:
 def test_core_demos_emit_quick_json() -> None:
     cases = [
         ("demos/python/hamiltonian_pendulum.py", ["--quick", "--json"], "model"),
+        ("demos/python/heavy_symmetric_top.py", ["--quick", "--json"], "diagnostics"),
         ("demos/python/rigid_body_euler_top.py", ["--quick", "--json"], "energy_max_abs_drift"),
         ("demos/python/standard_map.py", ["--quick", "--json"], "finite_rotation_mean"),
         ("demos/python/standard_map_torus_breakdown.py", ["--quick", "--json"], "diagnostics"),
         ("demos/python/henon_heiles_poincare.py", ["--quick", "--json"], "sections"),
         ("demos/python/circular_restricted_three_body.py", ["--quick", "--json"], "jacobi_max_abs_drift"),
+        ("demos/python/lidov_kozai.py", ["--quick", "--json"], "constants"),
         ("demos/python/asteroid_ejection_probability.py", ["--quick", "--no-plot", "--json"], "ejection_standard_error"),
+        ("demos/python/asteroid_resonance_normal_form.py", ["--quick", "--json"], "width_scaling"),
+        ("demos/python/binary_capture_scattering.py", ["--quick", "--json"], "outcome_counts"),
+        ("demos/python/three_body_benchmark_studies.py", ["--quick", "--json"], "headline"),
         ("demos/python/linear_elasticity.py", ["--quick", "--json"], "moduli_round_trip_error"),
         ("demos/python/deforming_body_gauge.py", ["--quick", "--json"], "bch_error_norm"),
         ("demos/python/cosserat_rod_demo.py", ["--quick", "--json"], "frame_holonomy"),
@@ -156,6 +171,9 @@ def test_asteroid_ejection_probability_writes_json(tmp_path: Path) -> None:
     assert data["configuration"]["dt"] == pytest.approx(0.05)
     assert "ejection_standard_error" in data
     assert "ejection_standard_error" in data["bin_rows"][0]
+    assert "survival_curve" in data
+    assert "summary_by_resonance" in data
+    assert "particle_rows" in data
 
 
 @pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
@@ -674,6 +692,179 @@ def test_asteroid_resonance_locations_match_kepler_scaling() -> None:
     label, distance = demo.nearest_resonance(locations["5:2"] + 0.01, demo.A_JUPITER)
     assert label == "5:2"
     assert distance == pytest.approx(0.01)
+
+
+def test_asteroid_normal_form_locations_and_widths_are_sensible() -> None:
+    np = pytest.importorskip("numpy")
+    demo = load_demo_module("asteroid_resonance_normal_form.py")
+    locations = {row["label"]: row for row in demo.resonance_locations(demo.A_JUPITER)}
+    assert locations["3:1"]["a_au"] == pytest.approx(demo.A_JUPITER * (1.0 / 3.0) ** (2.0 / 3.0))
+    widths = demo.width_scaling(np.array([0.05, 0.10]), epsilon=demo.M_JUPITER_OVER_M_SUN, eta=1.0, curvature=1.0)
+    assert all(row["half_width_action_units"] >= 0.0 for row in widths)
+    by_resonance = [row for row in widths if row["resonance"] == "2:1"]
+    assert by_resonance[1]["half_width_action_units"] > by_resonance[0]["half_width_action_units"]
+
+
+def test_asteroid_disturbing_function_coefficient_is_reproducible() -> None:
+    np = pytest.importorskip("numpy")
+    demo = load_demo_module("asteroid_resonance_normal_form.py")
+    alpha = (1.0 / 2.0) ** (2.0 / 3.0)
+    coefficient = demo.two_to_one_resonant_coefficient(alpha, samples=2048)
+    finite_difference = demo.finite_difference_two_to_one_coefficient(alpha, eccentricity=1.0e-5, samples=128)
+    assert coefficient == pytest.approx(-1.1904936978, rel=1.0e-9)
+    assert finite_difference == pytest.approx(coefficient, abs=5.0e-9)
+    rows = demo.two_to_one_width_rows(np.array([0.02, 0.08]), demo.M_JUPITER_OVER_M_SUN, demo.A_JUPITER, 2048)
+    assert rows[1]["half_width_au"] > rows[0]["half_width_au"] > 0.0
+
+
+@pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
+def test_lidov_kozai_emax_formula_and_integral() -> None:
+    demo = load_demo_module("lidov_kozai.py")
+    cfg = demo.Config(inclination_deg=65.0, eccentricity=0.0, omega_deg=10.0, tau_max=3.0, dt=0.004, grid=32)
+    summary = demo.integrate(cfg)
+    assert summary["constants"]["critical_inclination_deg"] == pytest.approx(39.2315204836)
+    assert summary["diagnostics"]["eccentricity_max_numeric"] == pytest.approx(
+        summary["constants"]["analytic_emax_initially_circular"],
+        abs=5.0e-4,
+    )
+    assert summary["diagnostics"]["hamiltonian_max_abs_drift"] < 5.0e-5
+    assert summary["diagnostics"]["initial_j_adjusted_for_regular_chart"] is True
+    assert summary["diagnostics"]["initial_eccentricity_used"] > 0.0
+    assert summary["diagnostics"]["boundary_termination"] is None
+
+
+@pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
+def test_heavy_symmetric_top_effective_potential_conserves_energy() -> None:
+    demo = load_demo_module("heavy_symmetric_top.py")
+    cfg = demo.Config(
+        i1=1.0,
+        i3=0.45,
+        mgl=0.4,
+        p_phi=1.15,
+        p_psi=0.9,
+        theta0=0.75,
+        p_theta0=0.08,
+        t_max=8.0,
+        dt=0.008,
+        grid=200,
+    )
+    summary = demo.integrate(cfg)
+    assert summary["diagnostics"]["energy_max_abs_drift"] < 1.0e-10
+    assert summary["diagnostics"]["theta_min"] < cfg.theta0 < summary["diagnostics"]["theta_max"]
+    assert demo.effective_potential(cfg.theta0, cfg) < summary["diagnostics"]["energy_initial"]
+
+
+@pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
+def test_asteroid_survival_curve_is_monotone() -> None:
+    demo = load_demo_module("asteroid_ejection_probability.py")
+    cfg = demo.Config(
+        n=12,
+        years=0.2,
+        dt=0.05,
+        seed=1,
+        a_min=2.05,
+        a_max=3.75,
+        e_max=0.08,
+        bins=4,
+        m_sun=demo.M_SUN,
+        m_jupiter=demo.M_JUPITER,
+        a_jupiter=demo.A_JUPITER,
+        ejection_radius=20.0,
+        sun_radius=0.02,
+        jupiter_close_radius=0.03,
+        include_indirect=True,
+        resonance_window=0.05,
+    )
+    summary = demo.integrate(cfg)
+    survival = [row["survival_fraction"] for row in summary["survival_curve"]]
+    assert survival == sorted(survival, reverse=True)
+    assert sum(row["count"] for row in summary["summary_by_resonance"]) == summary["n"]
+
+
+@pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
+def test_binary_capture_scattering_fractions_and_cross_sections() -> None:
+    np = pytest.importorskip("numpy")
+    demo = load_demo_module("binary_capture_scattering.py")
+    cfg = demo.Config(
+        samples=4,
+        seed=2,
+        m1=1.0,
+        m2=1.0,
+        m3=0.2,
+        a_binary=1.0,
+        v_inf=0.8,
+        b_max=1.5,
+        start_distance=6.0,
+        years=1.0,
+        dt=0.05,
+        close_radius=0.02,
+        uniform_area=True,
+    )
+    summary = demo.summarize(cfg)
+    fractions = summary["outcome_fractions"]
+    assert sum(fractions.values()) == pytest.approx(1.0)
+    assert all(0.0 <= value <= 1.0 for value in fractions.values())
+    assert all(value >= 0.0 for value in summary["cross_sections"].values())
+    assert summary["diagnostics"]["exclusive_outcome_fraction_sum"] == pytest.approx(1.0)
+    area = np.pi * cfg.b_max**2
+    capture_or_exchange = summary["derived_counts"]["capture_or_exchange"]
+    assert summary["cross_sections"]["capture_or_exchange"] == pytest.approx(area * capture_or_exchange / cfg.samples)
+    assert summary["diagnostics"]["launch_speed_min"] > cfg.v_inf
+    assert summary["diagnostics"]["max_outer_energy_abs_error"] < 1.0e-14
+    assert "finite-horizon" in summary["model"]["outcome_note"]
+
+
+@pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
+def test_binary_scattering_v_inf_is_asymptotic_speed() -> None:
+    np = pytest.importorskip("numpy")
+    demo = load_demo_module("binary_capture_scattering.py")
+    cfg = demo.Config(
+        samples=1,
+        seed=4,
+        m1=1.0,
+        m2=0.7,
+        m3=0.3,
+        a_binary=1.2,
+        v_inf=0.6,
+        b_max=1.0,
+        start_distance=7.0,
+        years=0.0,
+        dt=0.05,
+        close_radius=0.02,
+        uniform_area=True,
+    )
+    pos, vel, sample = demo.initial_conditions(cfg, np.random.default_rng(cfg.seed))
+    binary_com_velocity = (cfg.m1 * vel[0] + cfg.m2 * vel[1]) / (cfg.m1 + cfg.m2)
+    relative_speed = float(np.linalg.norm(vel[2] - binary_com_velocity))
+    assert relative_speed == pytest.approx(sample["launch_speed"])
+    assert sample["launch_speed"] > cfg.v_inf
+    assert sample["outer_energy_initial"] == pytest.approx(sample["outer_energy_asymptotic"], abs=1.0e-14)
+    assert demo.incoming_launch_speed(pos, cfg) == pytest.approx(sample["launch_speed"])
+
+
+@pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")
+def test_three_body_benchmark_has_nontrivial_statistical_outputs() -> None:
+    demo = load_demo_module("three_body_benchmark_studies.py")
+    cfg = demo.BenchmarkConfig(
+        asteroid_n=32,
+        asteroid_years=10.0,
+        asteroid_dt=0.04,
+        asteroid_bins=8,
+        asteroid_jupiter_mass_scale=25.0,
+        asteroid_seeds=(4,),
+        binary_samples=12,
+        binary_years=3.0,
+        binary_dt=0.015,
+        binary_v_infs=(0.35, 0.8),
+        binary_b_max=1.5,
+    )
+    summary = demo.run_benchmark(cfg)
+    assert summary["asteroid"]["summary"]["total_particles"] == 32
+    assert summary["asteroid"]["summary"]["total_lost"] > 0
+    rows = summary["binary_scattering"]["rows"]
+    assert len(rows) == 2
+    assert rows[0]["capture_or_exchange_cross_section"] >= rows[1]["capture_or_exchange_cross_section"]
+    assert all(row["max_energy_abs_drift"] < 1.0e-5 for row in rows)
 
 
 @pytest.mark.skipif(importlib.util.find_spec("numpy") is None, reason="numpy is not installed")

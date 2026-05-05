@@ -46,6 +46,13 @@ EJECTED = 1
 SUN_COLLISION = 2
 JUPITER_CLOSE = 3
 
+LOSS_LABELS = {
+    ALIVE: "alive",
+    EJECTED: "ejected",
+    SUN_COLLISION: "sun_collision",
+    JUPITER_CLOSE: "jupiter_close",
+}
+
 DEFAULT_CONFIG = {
     "n": 512,
     "years": 100.0,
@@ -163,6 +170,29 @@ def nearest_resonance(a: float, a_jupiter: float) -> tuple[str, float]:
     return label, abs(a - location)
 
 
+def osculating_elements_from_state(pos: np.ndarray, vel: np.ndarray, gm: float) -> tuple[np.ndarray, np.ndarray]:
+    """Return heliocentric osculating semimajor axis and eccentricity.
+
+    These elements are diagnostics of the instantaneous two-body orbit around
+    the Sun. They are not invariants of the perturbed restricted problem.
+    """
+    if len(pos) == 0:
+        return np.array([], dtype=float), np.array([], dtype=float)
+    radius = np.linalg.norm(pos, axis=1)
+    speed_sq = np.sum(vel * vel, axis=1)
+    energy = 0.5 * speed_sq - gm / np.maximum(radius, 1.0e-18)
+    semimajor = np.full(len(pos), np.inf, dtype=float)
+    bound = energy < -1.0e-18
+    semimajor[bound] = -gm / (2.0 * energy[bound])
+    radial_velocity = np.sum(pos * vel, axis=1)
+    eccentricity_vector = (
+        (speed_sq - gm / np.maximum(radius, 1.0e-18))[:, None] * pos
+        - radial_velocity[:, None] * vel
+    ) / gm
+    eccentricity = np.linalg.norm(eccentricity_vector, axis=1)
+    return semimajor, eccentricity
+
+
 def wrap_angle(angle: np.ndarray) -> np.ndarray:
     return (angle + math.pi) % (2.0 * math.pi) - math.pi
 
@@ -235,6 +265,123 @@ def binomial_standard_error(successes: int, count: int) -> float:
     return math.sqrt(p * (1.0 - p) / count)
 
 
+def finite_median(values: np.ndarray) -> float:
+    finite = values[np.isfinite(values)]
+    if len(finite) == 0:
+        return float("nan")
+    return float(np.median(finite))
+
+
+def resonance_summary_rows(
+    elements: dict[str, np.ndarray],
+    status: np.ndarray,
+    loss_time: np.ndarray,
+    max_eccentricity: np.ndarray,
+    cfg: Config,
+) -> list[dict[str, float | int | str]]:
+    a0 = elements["a"]
+    rows: list[dict[str, float | int | str]] = []
+    locations = resonance_locations(cfg.a_jupiter)
+    nearest_labels = np.array([nearest_resonance(float(a), cfg.a_jupiter)[0] for a in a0])
+    for label, (p, q) in RESONANCE_RATIOS.items():
+        mask = nearest_labels == label
+        count = int(np.count_nonzero(mask))
+        if count:
+            ejected = int(np.count_nonzero(mask & (status == EJECTED)))
+            lost = int(np.count_nonzero(mask & (status != ALIVE)))
+            ejection_fraction = ejected / count
+            loss_fraction = lost / count
+            max_e = float(np.max(max_eccentricity[mask]))
+            median_loss_time = finite_median(loss_time[mask & (status != ALIVE)])
+        else:
+            ejected = 0
+            lost = 0
+            ejection_fraction = float("nan")
+            loss_fraction = float("nan")
+            max_e = float("nan")
+            median_loss_time = float("nan")
+        rows.append(
+            {
+                "resonance": label,
+                "p": p,
+                "q": q,
+                "order": p - q,
+                "location": float(locations[label]),
+                "count": count,
+                "ejected": ejected,
+                "lost": lost,
+                "ejection_fraction": ejection_fraction,
+                "ejection_standard_error": binomial_standard_error(ejected, count),
+                "loss_fraction": loss_fraction,
+                "loss_standard_error": binomial_standard_error(lost, count),
+                "max_eccentricity": max_e,
+                "median_loss_time": median_loss_time,
+            }
+        )
+    return rows
+
+
+def survival_curve_rows(
+    status: np.ndarray,
+    loss_time: np.ndarray,
+    elapsed_years: float,
+    checkpoints: int = 5,
+) -> list[dict[str, float | int]]:
+    total = len(status)
+    if checkpoints < 2:
+        raise ValueError("checkpoints must be at least 2")
+    times = np.linspace(0.0, max(0.0, elapsed_years), checkpoints)
+    rows: list[dict[str, float | int]] = []
+    for time in times:
+        lost_by_time = (status != ALIVE) & (loss_time <= time)
+        ejected_by_time = (status == EJECTED) & (loss_time <= time)
+        lost = int(np.count_nonzero(lost_by_time))
+        ejected = int(np.count_nonzero(ejected_by_time))
+        rows.append(
+            {
+                "time": float(time),
+                "alive": total - lost,
+                "lost": lost,
+                "ejected": ejected,
+                "survival_fraction": (total - lost) / total if total else 0.0,
+                "loss_fraction": lost / total if total else 0.0,
+                "ejection_fraction": ejected / total if total else 0.0,
+            }
+        )
+    return rows
+
+
+def particle_outcome_rows(
+    elements: dict[str, np.ndarray],
+    status: np.ndarray,
+    loss_time: np.ndarray,
+    max_eccentricity: np.ndarray,
+    max_radius: np.ndarray,
+    cfg: Config,
+) -> list[dict[str, float | int | str | None]]:
+    rows: list[dict[str, float | int | str | None]] = []
+    eccentricity = elements.get("eccentricity", np.zeros(len(status)))
+    for index, a0 in enumerate(elements["a"]):
+        nearest_label, distance = nearest_resonance(float(a0), cfg.a_jupiter)
+        first_loss_time = float(loss_time[index])
+        rows.append(
+            {
+                "particle": index,
+                "a0": float(a0),
+                "e0": float(eccentricity[index]),
+                "mean_anomaly0": float(elements["mean_anomaly"][index]),
+                "periapse_longitude0": float(elements["periapse_longitude"][index]),
+                "nearest_resonance": nearest_label,
+                "resonance_distance": float(distance),
+                "status": LOSS_LABELS[int(status[index])],
+                "first_loss_time": None if math.isinf(first_loss_time) else first_loss_time,
+                "max_eccentricity": float(max_eccentricity[index]),
+                "max_radius": float(max_radius[index]),
+            }
+        )
+    return rows
+
+
 def acceleration(t: float, pos: np.ndarray, cfg: Config) -> np.ndarray:
     if len(pos) == 0:
         return np.zeros_like(pos)
@@ -289,6 +436,9 @@ def classify_losses(
 def integrate(cfg: Config) -> dict[str, object]:
     pos, vel, elements = sample_initial_conditions(cfg)
     status = np.zeros(cfg.n, dtype=np.int8)
+    loss_time = np.full(cfg.n, np.inf, dtype=float)
+    max_radius = np.linalg.norm(pos, axis=1) if cfg.n else np.array([], dtype=float)
+    max_eccentricity = np.array(elements["eccentricity"], copy=True)
     steps = int(round(cfg.years / cfg.dt))
     t = 0.0
 
@@ -307,9 +457,27 @@ def integrate(cfg: Config) -> dict[str, object]:
         acc_new[active] = acceleration(t, pos[active], cfg)
         vhalf[active] += cfg.dt * acc_new[active]
         vel_now = vhalf - 0.5 * cfg.dt * acc_new
+        active_after_drift = status == ALIVE
+        if np.any(active_after_drift):
+            active_pos = pos[active_after_drift]
+            active_vel = vel_now[active_after_drift]
+            _, ecc_now = osculating_elements_from_state(active_pos, active_vel, cfg.gm_sun)
+            max_eccentricity[active_after_drift] = np.maximum(max_eccentricity[active_after_drift], ecc_now)
+            max_radius[active_after_drift] = np.maximum(max_radius[active_after_drift], np.linalg.norm(active_pos, axis=1))
+        before = status.copy()
         classify_losses(t, pos, vel_now, status, cfg)
+        newly_lost = (before == ALIVE) & (status != ALIVE)
+        loss_time[newly_lost] = t
 
-    return summarize(elements, status, cfg, elapsed_years=t)
+    return summarize(
+        elements,
+        status,
+        cfg,
+        elapsed_years=t,
+        loss_time=loss_time,
+        max_eccentricity=max_eccentricity,
+        max_radius=max_radius,
+    )
 
 
 def summarize(
@@ -317,9 +485,18 @@ def summarize(
     status: np.ndarray,
     cfg: Config,
     elapsed_years: float,
+    loss_time: np.ndarray | None = None,
+    max_eccentricity: np.ndarray | None = None,
+    max_radius: np.ndarray | None = None,
 ) -> dict[str, object]:
     a0 = elements["a"]
     total = len(status)
+    if loss_time is None:
+        loss_time = np.where(status == ALIVE, np.inf, elapsed_years).astype(float)
+    if max_eccentricity is None:
+        max_eccentricity = np.array(elements.get("eccentricity", np.zeros(total)), dtype=float)
+    if max_radius is None:
+        max_radius = np.full(total, float("nan"), dtype=float)
     ejected = int(np.count_nonzero(status == EJECTED))
     sun = int(np.count_nonzero(status == SUN_COLLISION))
     jupiter = int(np.count_nonzero(status == JUPITER_CLOSE))
@@ -365,6 +542,20 @@ def summarize(
             }
         )
 
+    summary_by_resonance = resonance_summary_rows(elements, status, loss_time, max_eccentricity, cfg)
+    survival_curve = survival_curve_rows(status, loss_time, elapsed_years)
+    particle_rows = particle_outcome_rows(elements, status, loss_time, max_eccentricity, max_radius, cfg)
+    resonances = [
+        {
+            "label": label,
+            "p": p,
+            "q": q,
+            "location": float(resonance_locations(cfg.a_jupiter)[label]),
+            "order": p - q,
+        }
+        for label, (p, q) in RESONANCE_RATIOS.items()
+    ]
+
     return {
         "n": total,
         "elapsed_years": elapsed_years,
@@ -398,8 +589,37 @@ def summarize(
             "jupiter_close_radius": cfg.jupiter_close_radius,
             "resonance_window": cfg.resonance_window,
         },
+        "integration": {
+            "requested_years": cfg.years,
+            "elapsed_years": elapsed_years,
+            "dt": cfg.dt,
+            "steps": int(round(cfg.years / cfg.dt)),
+            "integrator": "kick-drift-kick style restricted-field integrator",
+        },
+        "ensemble": {
+            "n": total,
+            "seed": cfg.seed,
+            "a_min": cfg.a_min,
+            "a_max": cfg.a_max,
+            "e_max": cfg.e_max,
+            "sampling": "uniform a, uniform e, uniform mean anomaly, uniform periapse longitude",
+        },
+        "resonances": resonances,
         "resonance_locations": resonance_locations(cfg.a_jupiter),
         "resonance_angle_rows": resonance_angle_rows(elements, status, cfg),
+        "summary_by_bin": rows,
+        "summary_by_resonance": summary_by_resonance,
+        "survival_curve": survival_curve,
+        "particle_rows": particle_rows,
+        "diagnostics": {
+            "alive": alive,
+            "ejected": ejected,
+            "sun_collision": sun,
+            "jupiter_close": jupiter,
+            "max_recorded_eccentricity": float(np.max(max_eccentricity)) if total else 0.0,
+            "max_recorded_radius": float(np.max(max_radius)) if total else 0.0,
+            "loss_classes": dict(LOSS_LABELS),
+        },
         "bin_rows": rows,
         "sensitivity_mode": "none",
         "outputs": {},

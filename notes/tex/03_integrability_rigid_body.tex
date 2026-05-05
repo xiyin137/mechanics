@@ -890,6 +890,149 @@ This is the reduced reason that the intersection curves in
 Figure~\ref{fig:rigid-body-reduced-geometry} are the phase curves of the
 system.
 
+\section{The Heavy Symmetric Top}
+\label{sec:heavy-symmetric-top}
+
+The free rigid body is the cleanest introduction to reduction, but the first
+non-free rigid-body example should still be integrable.  The Lagrange heavy top
+has a fixed point, a symmetry axis, and gravity.  Assume
+\[
+  I_1=I_2,\qquad I_3\ \text{arbitrary},
+\]
+and assume that the center of mass lies a distance \(\ell\) along the body
+axis \(e_3\) from the fixed point.  Let \(\theta\) be the angle between \(e_3\)
+and the upward vertical.  With the Euler-angle convention of
+Section~\ref{sec:euler-angles-so3}, the angular velocity gives
+\[
+  T
+  =
+  \frac12 I_1(\dot\theta^2+\dot\phi^2\sin^2\theta)
+  +
+  \frac12 I_3(\dot\psi+\dot\phi\cos\theta)^2,
+\]
+and the gravitational potential is
+\[
+  V=mg\ell\cos\theta .
+\]
+Thus
+\[
+  L=T-V.
+\]
+The coordinates \(\phi\) and \(\psi\) are cyclic.  Their conjugate momenta are
+\[
+  p_\psi=I_3(\dot\psi+\dot\phi\cos\theta),
+\]
+and
+\[
+  p_\phi
+  =
+  I_1\dot\phi\sin^2\theta+p_\psi\cos\theta .
+\]
+The first is the angular momentum along the body symmetry axis; the second is
+the angular momentum along the fixed vertical.  Both are conserved because the
+system is invariant under rotations about the body symmetry axis and about the
+vertical axis.
+
+Solving for the angular rates gives
+\[
+  \dot\phi
+  =
+  \frac{p_\phi-p_\psi\cos\theta}{I_1\sin^2\theta},
+  \qquad
+  \dot\psi
+  =
+  \frac{p_\psi}{I_3}-\dot\phi\cos\theta .
+\]
+The energy becomes a one-dimensional problem:
+\[
+  E
+  =
+  \frac{p_\theta^2}{2I_1}
+  +
+  U_{\rm eff}(\theta),
+  \qquad
+  p_\theta=I_1\dot\theta,
+\]
+where
+\[
+  \boxed{
+  U_{\rm eff}(\theta)
+  =
+  \frac{(p_\phi-p_\psi\cos\theta)^2}{2I_1\sin^2\theta}
+  +
+  \frac{p_\psi^2}{2I_3}
+  +
+  mg\ell\cos\theta .
+  }
+\]
+The nutation angle \(\theta\) oscillates between turning points determined by
+\[
+  E=U_{\rm eff}(\theta).
+\]
+Once \(\theta(t)\) is known, \(\phi(t)\) and \(\psi(t)\) follow by quadrature
+from the two rate formulas above.  The heavy symmetric top is therefore
+integrable by the same logic as a particle in a one-dimensional effective
+potential, but its reconstruction still winds on the rotation group.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,font=\small]
+  \draw[->] (-0.2,0) -- (3.55,0) node[right] {\(\theta\)};
+  \draw[->] (0,-0.15) -- (0,3.4) node[above] {\(U_{\rm eff}\)};
+  \draw[blue!70!black,thick]
+    plot[smooth] coordinates {
+      (0.18,3.08) (0.35,2.10) (0.58,1.34) (0.86,0.80)
+      (1.20,0.56) (1.55,0.63) (1.90,0.93) (2.24,1.45)
+      (2.58,2.20) (2.88,2.95) (3.05,3.22)
+    };
+  \draw[red!75!black,dashed,thick] (0.28,1.35) -- (3.12,1.35)
+    node[right] {\(E\)};
+  \draw[gray!70,dashed] (0.58,0) -- (0.58,1.35);
+  \draw[gray!70,dashed] (2.20,0) -- (2.20,1.35);
+  \draw[<->,purple!80!black,thick] (0.58,0.28) -- (2.20,0.28)
+    node[midway,below=3pt] {nutation interval};
+  \node[blue!70!black,fill=white,inner sep=2pt] at (1.90,2.75)
+    {effective potential};
+\end{tikzpicture}
+\caption{The heavy symmetric top reduces to one-dimensional motion in
+\(U_{\rm eff}(\theta)\) at fixed \(p_\phi\) and \(p_\psi\).  The precession and
+spin angles are reconstructed after the nutation has been solved.}
+\label{fig:heavy-top-effective-potential}
+\end{figure}
+
+The same system has a Lie-Poisson form that makes the bridge to geometric
+mechanics explicit.  Let
+\[
+  \Gamma=R^T\hat z
+\]
+be the upward vertical written in body components, and let
+\(\chi=e_3\) be the body symmetry axis.  Then
+\[
+  H(M,\Gamma)
+  =
+  \frac12\left(\frac{M_1^2+M_2^2}{I_1}+\frac{M_3^2}{I_3}\right)
+  +
+  mg\ell\,\Gamma\cdot\chi .
+\]
+The equations are
+\[
+  \dot M=M\times\Omega+mg\ell\,\Gamma\times\chi,
+  \qquad
+  \dot\Gamma=\Gamma\times\Omega,
+  \qquad
+  \Omega=I^{-1}M .
+\]
+The conserved quantities are
+\[
+  H,\qquad
+  \norm{\Gamma}^2=1,\qquad
+  M\cdot\Gamma=p_\phi,\qquad
+  M\cdot\chi=p_\psi .
+\]
+The last conservation law uses \(I_1=I_2\) and the fact that \(\chi\) is the
+symmetry axis.  Without axial symmetry, \(M\cdot\chi\) would not be conserved,
+and the effective-potential reduction would disappear.
+
 \section{Liouville Integrability And Invariant Tori}
 \label{sec:liouville-tori}
 
@@ -1479,6 +1622,9 @@ and the sign of the reduced Lie-Poisson bracket depends on that choice.
 \item The free rigid body is integrable because energy and angular momentum
 confine the reduced motion to curves on angular-momentum spheres; after
 reconstruction these curves lift to invariant tori.
+\item The heavy symmetric top keeps enough symmetry to remain integrable:
+gravity breaks full rotational symmetry but leaves two cyclic momenta, reducing
+nutation to one-dimensional motion in an effective potential.
 \item Liouville tori are produced by commuting Hamiltonian flows, with action
 variables defined by period integrals of the canonical one-form. The operation
 \(R^T\dd R\) used here will reappear as the connection language of deformable
@@ -1820,3 +1966,8 @@ and reports drift in \(H\), \(C=\norm M^2\), the spatial momentum
 companion for the reduced equations. A useful check is to compare the numerical
 drift in \(H\), \(C\), and \(J\) for several time steps and initial conditions
 near the intermediate axis.
+The script \path{demos/python/heavy_symmetric_top.py} complements this by
+integrating the Lagrange top's effective one-dimensional nutation problem and
+reconstructing the cyclic Euler angles.  It is the most direct numerical check
+that the heavy symmetric top is integrable for a different reason than the
+free asymmetric top: axial symmetry supplies the extra conserved momentum.

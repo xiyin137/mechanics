@@ -1,0 +1,281 @@
+{
+  "asteroid": {
+    "bin_rows": [
+      {
+        "a_high": 2.2624999999999997,
+        "a_low": 2.05,
+        "count": 8,
+        "ejected": 0,
+        "ejection_fraction": 0.0,
+        "ejection_standard_error": 0.0,
+        "loss_fraction": 0.0,
+        "loss_standard_error": 0.0,
+        "lost": 0,
+        "nearest_resonance": "3:1",
+        "resonance_distance": 0.3457645545692918
+      },
+      {
+        "a_high": 2.4749999999999996,
+        "a_low": 2.2624999999999997,
+        "count": 12,
+        "ejected": 0,
+        "ejection_fraction": 0.0,
+        "ejection_standard_error": 0.0,
+        "loss_fraction": 0.0,
+        "loss_standard_error": 0.0,
+        "lost": 0,
+        "nearest_resonance": "3:1",
+        "resonance_distance": 0.13326455456929232
+      },
+      {
+        "a_high": 2.6875,
+        "a_low": 2.4749999999999996,
+        "count": 10,
+        "ejected": 0,
+        "ejection_fraction": 0.0,
+        "ejection_standard_error": 0.0,
+        "loss_fraction": 0.0,
+        "loss_standard_error": 0.0,
+        "lost": 0,
+        "nearest_resonance": "3:1",
+        "resonance_distance": 0.07923544543070804
+      },
+      {
+        "a_high": 2.9,
+        "a_low": 2.6875,
+        "count": 14,
+        "ejected": 0,
+        "ejection_fraction": 0.0,
+        "ejection_standard_error": 0.0,
+        "loss_fraction": 0.0,
+        "loss_standard_error": 0.0,
+        "lost": 0,
+        "nearest_resonance": "5:2",
+        "resonance_distance": 0.03163300876130615
+      },
+      {
+        "a_high": 3.1125,
+        "a_low": 2.9,
+        "count": 11,
+        "ejected": 0,
+        "ejection_fraction": 0.0,
+        "ejection_standard_error": 0.0,
+        "loss_fraction": 0.0,
+        "loss_standard_error": 0.0,
+        "lost": 0,
+        "nearest_resonance": "7:3",
+        "resonance_distance": 0.04787780960343113
+      },
+      {
+        "a_high": 3.325,
+        "a_low": 3.1125,
+        "count": 16,
+        "ejected": 0,
+        "ejection_fraction": 0.0,
+        "ejection_standard_error": 0.0,
+        "loss_fraction": 0.0,
+        "loss_standard_error": 0.0,
+        "lost": 0,
+        "nearest_resonance": "2:1",
+        "resonance_distance": 0.05981655603643876
+      },
+      {
+        "a_high": 3.5375,
+        "a_low": 3.325,
+        "count": 9,
+        "ejected": 0,
+        "ejection_fraction": 0.0,
+        "ejection_standard_error": 0.0,
+        "loss_fraction": 0.0,
+        "loss_standard_error": 0.0,
+        "lost": 0,
+        "nearest_resonance": "2:1",
+        "resonance_distance": 0.1526834439635616
+      },
+      {
+        "a_high": 3.75,
+        "a_low": 3.5375,
+        "count": 16,
+        "ejected": 5,
+        "ejection_fraction": 0.3125,
+        "ejection_standard_error": 0.11587810136086973,
+        "loss_fraction": 0.3125,
+        "loss_standard_error": 0.11587810136086973,
+        "lost": 5,
+        "nearest_resonance": "2:1",
+        "resonance_distance": 0.36518344396356106
+      }
+    ],
+    "configuration": {
+      "bins": 8,
+      "dt": 0.04,
+      "jupiter_mass_scale": 25.0,
+      "n_per_seed": 48,
+      "seeds": [
+        3,
+        4
+      ],
+      "years": 12.0
+    },
+    "model": "accelerated planar restricted Sun-Jupiter-asteroid ensemble",
+    "note": "Jupiter mass is scaled to make a short benchmark visibly lossy; this is not a Solar-System probability.",
+    "resonance_rows": [
+      {
+        "count": 27,
+        "ejected": 0,
+        "ejection_fraction": 0.0,
+        "ejection_standard_error": 0.0,
+        "location": 2.502014554569292,
+        "loss_fraction": 0.0,
+        "loss_standard_error": 0.0,
+        "lost": 0,
+        "max_eccentricity": 0.11971404483827719,
+        "order": 2,
+        "p": 3,
+        "q": 1,
+        "resonance": "3:1"
+      },
+      {
+        "count": 16,
+        "ejected": 0,
+        "ejection_fraction": 0.0,
+        "ejection_standard_error": 0.0,
+        "location": 2.8253830087613063,
+        "loss_fraction": 0.0,
+        "loss_standard_error": 0.0,
+        "lost": 0,
+        "max_eccentricity": 0.17227144700139535,
+        "order": 3,
+        "p": 5,
+        "q": 2,
+        "resonance": "5:2"
+      },
+      {
+        "count": 12,
+        "ejected": 0,
+        "ejection_fraction": 0.0,
+        "ejection_standard_error": 0.0,
+        "location": 2.9583721903965685,
+        "loss_fraction": 0.0,
+        "loss_standard_error": 0.0,
+        "lost": 0,
+        "max_eccentricity": 0.2779544254994482,
+        "order": 4,
+        "p": 7,
+        "q": 3,
+        "resonance": "7:3"
+      },
+      {
+        "count": 41,
+        "ejected": 5,
+        "ejection_fraction": 0.12195121951219512,
+        "ejection_standard_error": 0.05110465578801792,
+        "location": 3.2785665560364388,
+        "loss_fraction": 0.12195121951219512,
+        "loss_standard_error": 0.05110465578801792,
+        "lost": 5,
+        "max_eccentricity": 2.805871738810137,
+        "order": 1,
+        "p": 2,
+        "q": 1,
+        "resonance": "2:1"
+      }
+    ],
+    "seed_rows": [
+      {
+        "ejected": 1,
+        "ejection_probability": 0.020833333333333332,
+        "loss_probability": 0.020833333333333332,
+        "lost": 1,
+        "max_recorded_eccentricity": 1.9233185784654347,
+        "n": 48,
+        "seed": 3
+      },
+      {
+        "ejected": 4,
+        "ejection_probability": 0.08333333333333333,
+        "loss_probability": 0.08333333333333333,
+        "lost": 4,
+        "max_recorded_eccentricity": 2.805871738810137,
+        "n": 48,
+        "seed": 4
+      }
+    ],
+    "summary": {
+      "ejection_probability": 0.052083333333333336,
+      "ejection_standard_error": 0.022677691801411687,
+      "loss_probability": 0.052083333333333336,
+      "loss_standard_error": 0.022677691801411687,
+      "total_ejected": 5,
+      "total_lost": 5,
+      "total_particles": 96
+    }
+  },
+  "binary_scattering": {
+    "configuration": {
+      "b_max": 1.5,
+      "dt": 0.015,
+      "samples_per_v_inf": 16,
+      "v_infs": [
+        0.35,
+        0.55,
+        0.8
+      ],
+      "years": 4.0
+    },
+    "model": "planar Newtonian binary-single scattering sweep",
+    "note": "Capture is a finite-horizon binding-energy class in a conservative calculation.",
+    "rows": [
+      {
+        "capture": 7,
+        "capture_or_exchange": 7,
+        "capture_or_exchange_cross_section": 3.0925052683774528,
+        "capture_or_exchange_fraction": 0.4375,
+        "capture_or_exchange_standard_error": 0.12401959270615269,
+        "collision_fraction": 0.0,
+        "exchange": 0,
+        "flyby_fraction": 0.5625,
+        "max_energy_abs_drift": 3.4041736096668274e-10,
+        "samples": 16,
+        "v_inf": 0.35
+      },
+      {
+        "capture": 6,
+        "capture_or_exchange": 6,
+        "capture_or_exchange_cross_section": 2.650718801466388,
+        "capture_or_exchange_fraction": 0.375,
+        "capture_or_exchange_standard_error": 0.12103072956898178,
+        "collision_fraction": 0.0,
+        "exchange": 0,
+        "flyby_fraction": 0.625,
+        "max_energy_abs_drift": 3.398591408299012e-10,
+        "samples": 16,
+        "v_inf": 0.55
+      },
+      {
+        "capture": 4,
+        "capture_or_exchange": 4,
+        "capture_or_exchange_cross_section": 1.7671458676442586,
+        "capture_or_exchange_fraction": 0.25,
+        "capture_or_exchange_standard_error": 0.10825317547305482,
+        "collision_fraction": 0.0,
+        "exchange": 0,
+        "flyby_fraction": 0.75,
+        "max_energy_abs_drift": 3.431827044764191e-10,
+        "samples": 16,
+        "v_inf": 0.8
+      }
+    ]
+  },
+  "headline": {
+    "asteroid_seed_mean_ejection_probability": 0.05208333333333333,
+    "asteroid_seed_standard_error": 0.031249999999999997,
+    "binary_low_speed_capture_or_exchange_cross_section": 3.0925052683774528
+  },
+  "model": "three-body benchmark statistical studies",
+  "outputs": {
+    "json": "data/canonical/three_body_benchmark_quick.json",
+    "plot": "figures/canonical/three_body_benchmark_quick.png"
+  },
+  "scope_note": "Compact benchmark suite for course notes; not a production celestial-mechanics survey."
+}

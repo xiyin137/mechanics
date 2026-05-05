@@ -17,6 +17,10 @@ env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
   --plot figures/canonical/rigid_body_euler_top_quick.png
 
 env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
+  python demos/python/heavy_symmetric_top.py --quick \
+  --plot figures/canonical/heavy_symmetric_top_quick.png
+
+env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
   python demos/python/standard_map.py --quick \
   --plot figures/canonical/standard_map_quick.png
 
@@ -29,8 +33,20 @@ env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
   --plot figures/canonical/cr3bp_quick.png
 
 env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
+  python demos/python/lidov_kozai.py --quick \
+  --plot figures/canonical/lidov_kozai_quick.png
+
+env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
   python demos/python/asteroid_ejection_probability.py --quick \
   --plot figures/canonical/asteroid_ejection_probability_quick.png
+
+env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
+  python demos/python/asteroid_resonance_normal_form.py --quick \
+  --plot figures/canonical/asteroid_resonance_normal_form_quick.png
+
+env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
+  python demos/python/three_body_benchmark_studies.py --quick \
+  --plot figures/canonical/three_body_benchmark_quick.png
 
 env PYTHONPYCACHEPREFIX=.pycache-build MPLCONFIGDIR=.matplotlib-cache \
   python demos/python/linear_elasticity.py --quick \

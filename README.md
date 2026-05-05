@@ -31,7 +31,11 @@ can be studied through the same geometric language.
    - Jupiter as a perturbation
    - circular restricted three-body problem, Lagrange points, and Jacobi integral
    - full three-body reduction, central configurations, and Jacobi coordinates
-   - resonances, chaotic transport, resonance-labelled ejection probabilities
+   - resonances, chaotic transport, resonance-labelled finite-time ejection
+     probabilities
+   - binary-star and binary-single scattering examples as broader
+     astrophysical three-body applications
+   - Lidov-Kozai secular cycles and benchmark statistical studies
 
 3. **Elastic and deforming bodies**
    - finite strain, linear elasticity, elastic waves, bars, shafts, and beams
@@ -133,6 +137,34 @@ Run a faster smoke version:
 
 ```sh
 python demos/python/asteroid_ejection_probability.py --quick --no-plot
+```
+
+Run the analytic resonance-normal-form companion:
+
+```sh
+python demos/python/asteroid_resonance_normal_form.py --quick --plot figures/asteroid_resonance_normal_form.png
+```
+
+Run the Lidov-Kozai and heavy symmetric top reduced phase-space labs:
+
+```sh
+python demos/python/lidov_kozai.py --quick --plot figures/lidov_kozai.png
+python demos/python/heavy_symmetric_top.py --quick --plot figures/heavy_symmetric_top.png
+```
+
+Run the binary-single capture/exchange scattering demo:
+
+```sh
+python demos/python/binary_capture_scattering.py --quick --json
+```
+
+Here `--v-inf` is the asymptotic incoming speed; reported capture classes are
+finite-time binding-energy outcomes for the stated scattering ensemble.
+
+Run the compact benchmark statistical studies:
+
+```sh
+python demos/python/three_body_benchmark_studies.py --quick --json-output data/three_body_benchmark_quick.json --plot figures/three_body_benchmark_quick.png
 ```
 
 Run all smoke tests:

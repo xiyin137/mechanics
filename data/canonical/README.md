@@ -40,8 +40,20 @@ env PYTHONPYCACHEPREFIX=.pycache-build \
   --json-output data/canonical/circular_restricted_three_body_quick.json
 
 env PYTHONPYCACHEPREFIX=.pycache-build \
+  python demos/python/lidov_kozai.py --quick \
+  --json-output data/canonical/lidov_kozai_quick.json
+
+env PYTHONPYCACHEPREFIX=.pycache-build \
   python demos/python/asteroid_ejection_probability.py --quick --no-plot \
   --json-output data/canonical/asteroid_ejection_probability_quick.json
+
+env PYTHONPYCACHEPREFIX=.pycache-build \
+  python demos/python/three_body_benchmark_studies.py --quick \
+  --json-output data/canonical/three_body_benchmark_quick.json
+
+env PYTHONPYCACHEPREFIX=.pycache-build \
+  python demos/python/heavy_symmetric_top.py --quick \
+  --json-output data/canonical/heavy_symmetric_top_quick.json
 
 env PYTHONPYCACHEPREFIX=.pycache-build \
   python demos/python/linear_elasticity.py --quick \
